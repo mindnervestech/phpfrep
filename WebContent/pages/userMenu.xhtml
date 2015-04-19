@@ -1,0 +1,104 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+		<h:form id="menuForm">
+			<h:outputText id="activeMenuValue" value="#{userBean.activeMenu}"
+				style="display:none" />
+			 <nav id="sidebar" style="position: fixed;">
+            <div id="main-menu">
+                <ul class="sidebar-nav">
+						<li class="p-t-20"></li>
+						<li id="menu2"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{settingsBean.checkVisible(2) || userBean.loginUser.userType.userType=='Super Admin'}">
+								<i class="fa fa-user"></i>
+								<span class="sidebar-text">Manage Users</span>
+								<f:param name="menuId" value="2" />
+							</h:commandLink></li>
+						<li id="menu3"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{settingsBean.checkVisible(3) || userBean.loginUser.userType.userType=='Super Admin'}">
+								<i class="fa fa-group" style="margin-left:-4px;"></i>
+								<span class="sidebar-text">Manage Subscriber </span>
+								<f:param name="menuId" value="3" />
+							</h:commandLink></li>
+								<li id="menu7"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{settingsBean.checkVisible(7) || userBean.loginUser.userType.userType=='Super Admin'}">
+								<i class="fa fa-group" style="margin-left:-4px;"></i>
+								<span class="sidebar-text">Manage Configurations </span>
+								<f:param name="menuId" value="7" />
+							</h:commandLink></li>
+						<li id="menu4"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{settingsBean.checkVisible(4)}">
+								<i class="glyph-icon flaticon-frontend"></i><span class="sidebar-text">Transcription</span>
+								<f:param name="menuId" value="4" />
+							</h:commandLink></li>
+								<li id="menu5"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{settingsBean.checkVisible(5)}">
+								<i class="fa fa-cloud-upload"></i><span class="sidebar-text">Image upload</span>
+								<f:param name="menuId" value="5" />
+							</h:commandLink></li>
+							<li id="menu6"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{settingsBean.checkVisible(6)}">
+								<i class="glyph-icon flaticon-gallery"></i>
+								<span class="sidebar-text">Parent Image</span>
+								<f:param name="menuId" value="6" />
+							</h:commandLink></li>
+								<li id="menu8"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
+								<i class="fa fa-gear"></i>
+								<span class="sidebar-text">Settings</span>
+								<f:param name="menuId" value="8" />
+							</h:commandLink></li>
+							<li id="menu9"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Quality Check'}">
+								<i class="glyph-icon flaticon-frontend"></i>
+								<span class="sidebar-text">QC Job</span>
+								<f:param name="menuId" value="9" />
+							</h:commandLink></li>
+					</ul>
+				</div>
+				
+			</nav>
+		</h:form>
+	<!-- get value from activeMenuValue Label and set class to appropriate li tag-->
+	<script type="text/javascript">
+		var menuval = document.getElementById("menuForm:activeMenuValue").innerHTML;
+		if (menuval == "2")
+			document.getElementById("menu2").setAttribute("class", "current active");
+		else if (menuval == "3")
+			document.getElementById("menu3").setAttribute("class", "current active");
+		else if (menuval == "4")
+			document.getElementById("menu4").setAttribute("class", "current active");
+		else if (menuval == "5")
+			document.getElementById("menu5").setAttribute("class", "current active");
+		else if (menuval == "6")
+			document.getElementById("menu6").setAttribute("class", "current active");
+		else if (menuval == "7")
+			document.getElementById("menu7").setAttribute("class", "current active");
+		else if (menuval == "8")
+			document.getElementById("menu8").setAttribute("class", "current active");
+		else if (menuval == "9")
+			document.getElementById("menu9").setAttribute("class", "current active");
+		else if (menuval == "10")
+			document.getElementById("menu10").setAttribute("class", "current active");
+
+
+		else if (menuval == "111")
+			document.getElementById("menu111").setAttribute("class", "");
+		else
+			document.getElementById("menu2").setAttribute("class", "current active");
+	</script>
+</ui:composition>
+
+

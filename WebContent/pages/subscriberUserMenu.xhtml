@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+		<h:form id="menuForm">
+			<h:outputText id="activeMenuValue" value="#{userBean.activeMenu}"
+				style="display:none" />
+			 <nav id="sidebar">
+            <div id="main-menu">
+                <ul class="sidebar-nav">
+						<li class="p-t-20"></li>
+								<li id="menu2"><h:commandLink
+								action="#{userBean.redirctSubscriberMenuLink}"
+								rendered="#{userBean.loginSubscriberUser.userType.userType=='Subscriber Admin' || userBean.loginSubscriberUser.userType.userType=='Subscriber RegularUser'}">
+								<i class="fa fa-user"></i>
+								<span class="sidebar-text">Manage Subscriber User </span>
+								<f:param name="menuId" value="2" />
+							</h:commandLink></li>
+								<li id="menu3"><h:commandLink
+								action="#{userBean.redirctSubscriberMenuLink}"
+								rendered="#{userBean.loginSubscriberUser.userType.userType=='Subscriber Admin'}">
+								<i class="fa fa-group" style="margin-left:-4px;"></i>
+								<span class="sidebar-text">Manage Regions </span>
+								<f:param name="menuId" value="3" />
+							</h:commandLink></li>
+								<li id="menu4"><h:commandLink
+								action="#{userBean.redirctSubscriberMenuLink}"
+								rendered="#{userBean.loginSubscriberUser.userType.userType=='Subscriber Admin'}">
+								<i class="fa fa-file" style="margin-left:-4px;"></i>
+								<span class="sidebar-text">Reports </span>
+								<f:param name="menuId" value="4" />
+							</h:commandLink></li>
+					</ul>
+				</div>
+				
+			</nav>
+		</h:form>
+	<!-- get value from activeMenuValue Label and set class to appropriate li tag-->
+	<script type="text/javascript">
+		var menuval = document.getElementById("menuForm:activeMenuValue").innerHTML;
+		if (menuval == "2")
+			document.getElementById("menu2").setAttribute("class", "current active");
+		else if (menuval == "3")
+			document.getElementById("menu3").setAttribute("class", "current active");
+		else if (menuval == "4")
+			document.getElementById("menu4").setAttribute("class", "current active");
+		else if (menuval == "5")
+			document.getElementById("menu5").setAttribute("class", "current active");
+		else if (menuval == "6")
+			document.getElementById("menu6").setAttribute("class", "current active");
+		else if (menuval == "7")
+			document.getElementById("menu7").setAttribute("class", "current active");
+		else if (menuval == "8")
+			document.getElementById("menu8").setAttribute("class", "current active");
+		else if (menuval == "9")
+			document.getElementById("menu9").setAttribute("class", "current active");
+		else if (menuval == "10")
+			document.getElementById("menu10").setAttribute("class", "current active");
+
+
+		else if (menuval == "111")
+			document.getElementById("menu111").setAttribute("class", "");
+		else
+			document.getElementById("menu1").setAttribute("class", "current active");
+	</script>
+</ui:composition>
+
+

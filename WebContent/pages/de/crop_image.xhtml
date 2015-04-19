@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<!-- BEGIN META SECTION -->
+	<meta charset="utf-8" />
+	<title>Fracts</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon"
+		href="#{request.contextPath}/assets/img/favicon.png" />
+	<!-- END PAGE LEVEL STYLE -->
+	<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script src="#{request.contextPath}/customjs/jquery.Jcrop.js"></script>
+	<script type="text/javascript">
+		jQuery(function($) {
+
+			var jcrop_api;
+
+			$('.target').Jcrop({
+				onChange : showCoords,
+				onSelect : showCoords
+			}, function() {
+				jcrop_api = this;
+			});
+
+			$('#coords').on(
+					'change',
+					'input',
+					function(e) {
+						var x1 = $('.x1').val(), x2 = $('.x2').val(), y1 = $(
+								'.y1').val(), y2 = $('.y2').val();
+						jcrop_api.setSelect([ x1, y1, x2, y2 ]);
+					});
+
+		});
+		// Simple event handler, called from onChange and onSelect
+		// event handlers, as per the Jcrop invocation above
+		function showCoords(c) {
+			$('.x1').val(c.x);
+			$('.y1').val(c.y);
+			$('.x2').val(c.x2);
+			$('.y2').val(c.y2);
+			$('.w').val(c.w);
+			$('.h').val(c.h);
+		};
+	</script>
+	<link rel="stylesheet"
+		href="#{request.contextPath}/custom_css/main.css" type="text/css" />
+	<link rel="stylesheet"
+		href="#{request.contextPath}/custom_css/demos.css" type="text/css" />
+	<link rel="stylesheet"
+		href="#{request.contextPath}/custom_css/jquery.Jcrop.css"
+		type="text/css" />
+	<!-- END META SECTION -->
+	<!-- BEGIN MANDATORY STYLE -->
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.min.css"
+		rel="stylesheet" />
+	<link href="#" rel="stylesheet" id="theme-color" />
+	<!-- END  MANDATORY STYLE -->
+	<!-- BEGIN PAGE LEVEL STYLE -->
+	<link rel="stylesheet"
+		href="#{request.contextPath}/assets/plugins/dropzone/dropzone.css" />
+	<link rel="stylesheet"
+		href="#{request.contextPath}/assets/plugins/jquery-file-upload/css/jquery.fileupload.css" />
+	<link rel="stylesheet"
+		href="#{request.contextPath}/assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" />
+	<f:metadata data-page="tables">
+		<f:event type="preRenderView" listener="#{deBean.loadCropImageInfo}" />
+	</f:metadata>
+	<f:loadBundle var="global"
+	basename="/com/obs/brs/properties/Application"></f:loadBundle>
+</h:head>
+
+<h:body data-page="file_upload">
+	<ui:include src="/pages/header_admin.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/userMenu.xhtml" />
+		<!-- BEGIN MAIN CONTENT -->
+		<div id="main-content">
+			<div class="page-title">
+				<i class="icon-custom-left"></i>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h:form id="coords">
+								<p:messages id="messages" showSummary="false" autoUpdate="true"
+									closable="true" showDetail="true" showIcon="false"
+									severity="info,fatal" />
+								<!-- Define Diaglog for assigning questions against the choices  -->
+								<p:dialog id="basicDialog" header="Cropped Image"
+									widgetVar="dlg1">
+									<div id="main-content">
+										<div class="panel-content">
+											<div class="row media-manager">
+												<t:div styleClass="data_image m-b-20" id="imgcrp_div">
+													<h:graphicImage id="imgcrp"
+														value="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['tempPath']}#{deBean.croppedImageName}" />
+												</t:div>
+												<h:commandLink action="#{deBean.saveCroppedImage}"
+													styleClass="btn btn-primary m-10">Done</h:commandLink>
+												<h:outputLink value="crop_image.xhtml"
+													class="btn btn-default m-5">Cancel</h:outputLink>
+											</div>
+										</div>
+									</div>
+								</p:dialog>
+								<h:inputText id="x1" styleClass="x1" style="display:none"
+									value="#{deBean.cropX1}" />
+								<h:inputText id="y1" styleClass="y1" style="display:none"
+									value="#{deBean.cropY1}" />
+								<h:inputText id="x2" styleClass="x2" style="display:none"
+									value="#{deBean.cropX2}" />
+								<h:inputText id="y2" styleClass="y2" style="display:none"
+									value="#{deBean.cropY2}" />
+								<h:inputText id="w" styleClass="w" style="display:none"
+									value="#{deBean.cropWidth}" />
+								<h:inputText id="h" styleClass="h" style="display:none"
+									value="#{deBean.cropHeight}" />
+
+											
+								<ul class="media-header box_border p-0 m-0 m-b-20">
+									
+									
+
+									<h:commandLink update="imgcrp_div" ajax="true"
+										styleClass="btn btn-primary m-10" action="#{deBean.cropping}">
+										<f:param name="imgId" value="#{deBean.parentImage.id}" />
+										<i class="fa fa-crop p-r-10"></i>Crop</h:commandLink>
+									<h:commandLink action="#{deBean.callChildPage}"
+										styleClass="btn btn-default m-10">
+										<f:param name="img" value="#{deBean.parentImage.id}" />Back</h:commandLink>
+									<h:commandLink update="imgcrp_div" ajax="true"
+										styleClass="btn btn-primary m-10" action="#{deBean.takeFullImageAsChild}">
+										<f:param name="imgId" value="#{deBean.parentImage.id}" />
+										<i class="fa fa-crop p-r-10"></i>Take full image as child</h:commandLink>
+								</ul>
+
+
+								<div class="row">
+
+									<div class="col-md-8 f_l">
+										<div class="data_image m-b-20" id="testWrap">
+											<h:graphicImage alt="crop image" id="target"
+												styleClass="target"
+												value="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImage.id}/#{deBean.parentImage.imageName}" />
+										</div>
+										<!--data_image-->
+									</div>
+
+									<div class="col-md-4 f_l">
+
+										<!--data_image-->
+									</div>
+
+								</div>
+								<!--row-->
+
+							</h:form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+		<!-- END MAIN CONTENT -->
+
+
+
+	</div>
+	<!-- END WRAPPER -->
+
+	<!-- BEGIN MANDATORY SCRIPTS -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+</h:body>
+
+</html>
+

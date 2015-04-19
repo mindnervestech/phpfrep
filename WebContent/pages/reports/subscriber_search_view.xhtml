@@ -1,0 +1,958 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta charset="utf-8" />
+	<title>Fracts-Manage Subscriber User</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon" type="text/css"
+		href="#{request.contextPath}/assets/img/favicon.png" />
+	<!-- END META SECTION -->
+	<!-- BEGIN MANDATORY STYLE -->
+	<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+		
+	<script
+		src="#{request.contextPath}/assets/plugins/dropdownchecklist/ui.dropdownchecklist.js"></script>
+		
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/my_style.css"
+		rel="stylesheet" />
+	<link href="#" rel="stylesheet" id="theme-color" />
+	<!-- END  MANDATORY STYLE -->
+	<style>
+#main-content .table a {
+	color: #000000;
+	margin-bottom: 5px;
+}
+
+.panel-body .btn {
+	padding: 3px 10px;
+}
+
+.bootstrap-select.btn-group:not(.input-group-btn),.bootstrap-select.btn-group[class*="span"]
+	{
+	float: none;
+	display: inline-block;
+	margin-bottom: 2px;
+	margin-left: 0;
+}
+
+label {
+	margin-left: 4px !important;
+	margin-right: 4px;
+}
+.select-business span.ui-dropdownchecklist.ui-dropdownchecklist-selector-wrapper.ui-widget {
+	padding:3px 10px;
+	border-radius:4px;
+	border:1px solid #d4dee0;
+	background:#f5f5f5;
+}
+.select-business span.ui-dropdownchecklist.ui-dropdownchecklist-selector-wrapper.ui-widget span {
+	background:none;
+	border:none;
+	padding:0;
+}
+.select-business .btn-group.bootstrap-select + span.ui-dropdownchecklist {
+	display:none !important;
+}
+
+</style>
+
+   <script type="text/javascript">
+        $(document).ready(function() {
+            $(".companyName").dropdownchecklist();
+          		
+        });
+    </script>
+    
+<script type="text/javascript">
+function switchOnOrSwitchOffAllOption(selectedCheckBoxObj){
+	var selectedCheckBoxName 			= selectedCheckBoxObj.getAttribute("name");
+	var selectedCheckBoxValue 			= selectedCheckBoxObj.getAttribute("value");
+	var checkBoxesOfSameName 			= document.getElementsByName(selectedCheckBoxName);
+	var isChecked 						= selectedCheckBoxObj.checked;
+	var isValueEqualsAll 				= (selectedCheckBoxValue == "all");
+	var allOptionCheckBoxObj 			= null;
+	var isSwitchOnAllOption 			= false;
+	var checkedStateSpanClassAttr 		= "ui-chkbox-icon ui-c ui-icon ui-icon-check";
+	var uncheckedStateSpanClassAttr 	= "ui-chkbox-icon ui-c";
+	var checkedStateDivClassAttr 		= "ui-chkbox-box ui-widget ui-corner-all ui-state-default ui-state-active";
+	var uncheckedStateDivClassAttr 		= "ui-chkbox-box ui-widget ui-corner-all ui-state-default";
+	
+	//alert("selectedCheckBoxName : " 	+ selectedCheckBoxName);
+	//alert("selectedCheckBoxValue : " 	+ selectedCheckBoxValue);
+	//alert("checkBoxesOfSameName : " 	+ checkBoxesOfSameName);
+	//alert("isChecked : " 				+ isChecked);
+	//alert("isValueEqualsAll : " 		+ isValueEqualsAll);
+
+	for(var i = 0;i &lt; checkBoxesOfSameName.length;i++){
+		if(checkBoxesOfSameName[i].getAttribute("value") == "all"){
+			allOptionCheckBoxObj = checkBoxesOfSameName[i];
+			break;
+		}
+	}
+
+	//alert("allOptionCheckBoxObj : " 		+ allOptionCheckBoxObj);
+	//alert("isChecked != undefined &amp;&amp; isChecked : " 		+ (isChecked != undefined &amp;&amp; isChecked));
+
+	if(isChecked != undefined &amp;&amp; isChecked){
+		if(!isValueEqualsAll){
+			allOptionCheckBoxObj.checked = isSwitchOnAllOption;
+			if(isSwitchOnAllOption){
+				allOptionCheckBoxObj.parentNode.nextSibling.setAttribute("class",checkedStateDivClassAttr);
+				allOptionCheckBoxObj.parentNode.nextSibling.childNodes[0].setAttribute("class",checkedStateSpanClassAttr);
+			}else{
+				allOptionCheckBoxObj.parentNode.nextSibling.setAttribute("class",uncheckedStateDivClassAttr);
+				allOptionCheckBoxObj.parentNode.nextSibling.childNodes[0].setAttribute("class",uncheckedStateSpanClassAttr);
+			}
+		}else{
+			for(var i = 0;i &lt; checkBoxesOfSameName.length;i++){
+				//alert("checkBoxesOfSameName[i] != allOptionCheckBoxObj : " + (checkBoxesOfSameName[i] != allOptionCheckBoxObj));
+				if(checkBoxesOfSameName[i] != allOptionCheckBoxObj){
+					//alert("unsetting all other options");
+					checkBoxesOfSameName[i].checked = false;
+					checkBoxesOfSameName[i].parentNode.nextSibling.setAttribute("class",uncheckedStateDivClassAttr);
+					checkBoxesOfSameName[i].parentNode.nextSibling.childNodes[0].setAttribute("class",uncheckedStateSpanClassAttr);
+				}
+			}
+		}
+	}else if(isChecked != undefined &amp;&amp; !isChecked){
+		isSwitchOnAllOption = true;
+		for(var i = 0;i &lt; checkBoxesOfSameName.length;i++){
+			if(checkBoxesOfSameName[i] != allOptionCheckBoxObj &amp;&amp; checkBoxesOfSameName[i].checked){
+				isSwitchOnAllOption = false;
+				break;
+			}
+		}
+		allOptionCheckBoxObj.checked = (isSwitchOnAllOption);
+		if(isSwitchOnAllOption){
+			allOptionCheckBoxObj.parentNode.nextSibling.setAttribute("class",checkedStateDivClassAttr);
+			allOptionCheckBoxObj.parentNode.nextSibling.childNodes[0].setAttribute("class",checkedStateSpanClassAttr);
+		}else{
+			allOptionCheckBoxObj.parentNode.nextSibling.setAttribute("class",uncheckedStateDivClassAttr);
+			allOptionCheckBoxObj.parentNode.nextSibling.childNodes[0].setAttribute("class",uncheckedStateSpanClassAttr);
+		}
+	}
+}
+
+</script>
+<script>
+function dropdownchecklistselection(){
+	var dc = document.getElementById("ddcl-emp_stafflist:companyName-i0");
+	if(dc.checked = true){
+		document.getElementById("ddcl-emp_stafflist:companyName-i1").checked = false;
+		document.getElementById("ddcl-emp_stafflist:companyName-i2").checked = false;
+	}
+}
+</script>
+</h:head>
+<f:metadata>
+	<f:event type="preRenderView"
+		listener="#{reportsBean.loadCurrentMonthAndYear}" />
+</f:metadata>
+<h:body data-page="tables">
+	<ui:include src="/pages/header_subscriber.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/subscriberUserMenu.xhtml" />
+		<div id="main-content">
+			<div class="page-title">
+				<i class="icon-custom-left"></i>
+				<h3>Search View Reports</h3>
+			</div>
+			<div class="row">
+				<div class="col-md-12 p-0">
+					<div class="panel panel-default">
+						<h:form id="emp_stafflist" enctype="multipart/form-data">
+							<p:messages closable="true" showDetail="true" showSummary="false" />
+							<div class="col-md-12 p-10">
+								<div class="manage_button">
+									<h:commandLink styleClass="btn btn-success fileinput-button"
+										action="#{reportsBean.searchViewReport}"
+										value="SearchViewReport"></h:commandLink>
+								</div>
+								<div class="manage_button">
+									<h:commandLink styleClass="btn btn-success fileinput-button"
+										action="#{reportsBean.calendarViewReport}"
+										value="CalendarViewReport"></h:commandLink>
+								</div>
+								<div class="manage_button">
+									<h:commandLink styleClass="btn btn-success fileinput-button"
+										action="#{reportsBean.advertiserViewReport}"
+										value="AdvertiserViewReport"></h:commandLink>
+								</div>
+								<div class="manage_button">
+									<h:commandLink styleClass="btn btn-success fileinput-button"
+										action="#{reportsBean.journalViewReport}"
+										value="JournalViewReport"></h:commandLink>
+								</div>
+								<div style="float: right"
+									class="col-md-2 col-sm-6 p-1 p-t-10  sub_lab">Do not
+									display Image</div>
+								<div style="float: right" class="p-0  p-t-10">
+									<div class="btn-group bootstrap-select form-control but_pad">
+										<p:selectBooleanCheckbox value="#{reportsBean.displayImage}">
+											<p:ajax update="dt_orgList" />
+										</p:selectBooleanCheckbox>
+									</div>
+								</div>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+
+										<div class="row m-0">
+											<div class="col-md-1 col-sm-3 p-1 p-t-10 sub_lab" style="font-size:75%;font-weight:bold;">Date
+												range</div>
+											<div class="col-md-1 col-sm-3 p-0 m-1">
+												<div class="btn-group bootstrap-select form-control">
+													<h:selectOneMenu styleClass="form-control"   
+														value="#{reportsBean.fromMonthRange}" id="fromMonthRange">
+														<f:selectItem itemLabel="Jan" itemValue="1" />
+														<f:selectItem itemLabel="Feb" itemValue="2" />
+														<f:selectItem itemLabel="Mar" itemValue="3" />
+														<f:selectItem itemLabel="April" itemValue="4" />
+														<f:selectItem itemLabel="May" itemValue="5" />
+														<f:selectItem itemLabel="June" itemValue="6" />
+														<f:selectItem itemLabel="July" itemValue="7" />
+														<f:selectItem itemLabel="Aug" itemValue="8" />
+														<f:selectItem itemLabel="Sep" itemValue="9" />
+														<f:selectItem itemLabel="Oct" itemValue="10" />
+														<f:selectItem itemLabel="Nov" itemValue="11" />
+														<f:selectItem itemLabel="Dec" itemValue="12" />
+													</h:selectOneMenu>
+												</div>
+											</div>
+											<div class="col-md-1 col-sm-3 p-0 m-1">
+												<div class="btn-group bootstrap-select form-control">
+													<h:selectOneMenu styleClass="form-control"   
+														value="#{reportsBean.fromYearRange}" id="fromYearRange">
+														<f:selectItem itemLabel="2014" itemValue="2014" />
+														<f:selectItem itemLabel="2015" itemValue="2015" />
+														<f:selectItem itemLabel="2016" itemValue="2016" />
+														<f:selectItem itemLabel="2017" itemValue="2017" />
+														<f:selectItem itemLabel="2018" itemValue="2018" />
+														<f:selectItem itemLabel="2019" itemValue="2019" />
+														<f:selectItem itemLabel="2020" itemValue="2020" />
+														<f:selectItem itemLabel="2021" itemValue="2021" />
+														<f:selectItem itemLabel="2022" itemValue="2022" />
+														<f:selectItem itemLabel="2023" itemValue="2023" />
+													</h:selectOneMenu>
+												</div>
+											</div>
+											<div class="col-md-1 col-sm-3 p-0 m-1">
+												<div class="btn-group bootstrap-select form-control">
+													<h:selectOneMenu styleClass="form-control"   
+														value="#{reportsBean.toMonthRange}" id="toMonthRange">
+														<f:selectItem itemLabel="Jan" itemValue="1" />
+														<f:selectItem itemLabel="Feb" itemValue="2" />
+														<f:selectItem itemLabel="Mar" itemValue="3" />
+														<f:selectItem itemLabel="April" itemValue="4" />
+														<f:selectItem itemLabel="May" itemValue="5" />
+														<f:selectItem itemLabel="June" itemValue="6" />
+														<f:selectItem itemLabel="July" itemValue="7" />
+														<f:selectItem itemLabel="Aug" itemValue="8" />
+														<f:selectItem itemLabel="Sep" itemValue="9" />
+														<f:selectItem itemLabel="Oct" itemValue="10" />
+														<f:selectItem itemLabel="Nov" itemValue="11" />
+														<f:selectItem itemLabel="Dec" itemValue="12" />
+													</h:selectOneMenu>
+												</div>
+											</div>
+											<div class="col-md-1 col-sm-3 p-0 m-1">
+												<div class="btn-group bootstrap-select form-control">
+													<h:selectOneMenu styleClass="form-control"   
+														value="#{reportsBean.toYearRange}" id="toYearRange">
+														<f:selectItem itemLabel="2014" itemValue="2014" />
+														<f:selectItem itemLabel="2015" itemValue="2015" />
+														<f:selectItem itemLabel="2016" itemValue="2016" />
+														<f:selectItem itemLabel="2017" itemValue="2017" />
+														<f:selectItem itemLabel="2018" itemValue="2018" />
+														<f:selectItem itemLabel="2019" itemValue="2019" />
+														<f:selectItem itemLabel="2020" itemValue="2020" />
+														<f:selectItem itemLabel="2021" itemValue="2021" />
+														<f:selectItem itemLabel="2022" itemValue="2022" />
+														<f:selectItem itemLabel="2023" itemValue="2023" />
+													</h:selectOneMenu>
+												</div>
+											</div>
+										<div class="col-md-1 col-sm-3 p-1 p-t-10 sub_lab" style="font-size:75%;font-weight:bold;">CompanyName</div>
+											<!-- Company Name -->
+											<div class="col-md-2 col-sm-3 p-0">
+												<div class="btn-group bootstrap-select form-control select-business">
+												<h:outputLabel value="" for=""/>
+													<h:selectManyMenu layout="pageDirection" styleClass="companyName"
+														value="#{reportsBean.companyName}" id="companyName" >
+														<f:selectItem itemLabel="All" itemValue="all"  />
+														<f:selectItems 
+															value="#{reportsBean.allSubscriberCompanyName}" var="c"
+															itemLabel="#{c.companyName}" itemValue="#{c.id}" />
+													</h:selectManyMenu >
+												</div>
+											</div>
+											</div>
+										<div class="row m-0" style="border-top-style:dotted;border-top-width:thin;border-top-color:blue;" >
+											<div class="col-md-1 col-sm-3 p-1 p-t-10 sub_lab" style="font-size:75%;font-weight:bold;">Publication Section</div>
+											<div class="col-md-1 col-sm-3 p-1 p-t-10 sub_lab" style="font-size:75%;font-weight:bold;">Publication Title</div>
+											<div class="col-md-1 col-sm-3 p-1 p-t-10 sub_lab" style="font-size:75%;font-weight:bold;">Publication Page</div>
+											<div class="col-md-1 col-sm-3 p-1 p-t-10 sub_lab" style="font-size:75%;font-weight:bold;">Article Type</div>
+											<div class="col-md-1 col-sm-3 p-1 p-t-10 sub_lab" style="font-size:75%;font-weight:bold;">Job Density</div>
+											<div class="col-md-1 col-sm-3 p-1 p-t-10 sub_lab" style="font-size:75%;font-weight:bold;">Size</div>
+											<div class="col-md-2 col-sm-3 p-1 p-t-10 sub_lab" style="font-size:75%;font-weight:bold;">Format</div>
+											<div class="col-md-1 col-sm-3 p-1 p-t-10 sub_lab" style="font-size:75%;font-weight:bold;">Company Type</div>
+											<!-- <div class="col-md-2 col-sm-3 p-1 p-t-10 sub_lab" style="font-size:75%;font-weight:bold;">Company Name</div> -->
+											<div class="col-md-1 col-sm-3 p-1 p-t-10 sub_lab" style="font-size:75%;font-weight:bold;">Country</div>
+											<div class="col-md-1 col-sm-3 p-1 p-t-10 sub_lab" style="font-size:75%;font-weight:bold;">State</div>
+										</div>
+										<div class="row m-0" >
+	 										<!-- Publication Section -->
+											<div class="col-md-1 col-sm-3 p-0 " >
+												<div class="btn-group bootstrap-select form-control but_pad" >
+													<p:selectManyCheckbox layout="pageDirection" styleClass="form-control" style="font-size:75%;line-height:100%;border:none;" onchange="switchOnOrSwitchOffAllOption(this)"
+														value="#{reportsBean.publicationSection}"
+														id="publicationSection">
+														<f:selectItem itemLabel="All" itemValue="all" />
+														<f:selectItems
+															value="#{reportsBean.allSubscriberBySection}" var="c"
+															itemLabel="#{c.companyName}" itemValue="#{c.id}" />
+													</p:selectManyCheckbox>
+												</div>
+											</div>
+	 										<!-- Publication Title -->
+											<div class="col-md-1 col-sm-3 p-0" >
+												<div class="btn-group bootstrap-select form-control but_pad">
+													<p:selectManyCheckbox layout="pageDirection" styleClass="form-control" style="font-size:75%;line-height:100%;border:none;" onchange="switchOnOrSwitchOffAllOption(this)"
+														value="#{reportsBean.publicationTitle}"
+														id="publicationTitle">
+														<f:selectItem itemLabel="All" itemValue="all" />
+														<f:selectItems
+															value="#{reportsBean.allSubscriberByPublicationTitle}"
+															var="c" itemLabel="#{c.publicationTitle}"
+															itemValue="#{c.id}" />
+													</p:selectManyCheckbox>
+												</div>
+											</div>
+	 										<!-- Publication Page -->
+											<div class="col-md-1 col-sm-3 p-0">
+												<div class="btn-group bootstrap-select form-control but_pad">
+													<p:selectManyCheckbox layout="pageDirection" styleClass="form-control" style="font-size:75%;line-height:100%;border:none;" onchange="switchOnOrSwitchOffAllOption(this)"
+														value="#{reportsBean.publicationPage}"
+														id="publicationPage">
+														<f:selectItem itemLabel="All" itemValue="all" />
+														<f:selectItems value="#{reportsBean.allSubscriberByPage}"
+															var="c" itemLabel="#{c.companyName}" itemValue="#{c.id}" />
+													</p:selectManyCheckbox>
+												</div>
+											</div>
+	 										<!-- Article Type -->
+											<div class="col-md-1 col-sm-3 p-0">
+												<div class="btn-group bootstrap-select form-control but_pad">
+													<p:selectManyCheckbox layout="pageDirection"  styleClass="form-control" style="font-size:75%;line-height:100%;border:none;" onchange="switchOnOrSwitchOffAllOption(this)"
+														value="#{reportsBean.adType}" id="adType">
+														<f:selectItem itemLabel="All" itemValue="all" />
+														<f:selectItem itemLabel="Display" itemValue="Display" />
+														<f:selectItem itemLabel="Line" itemValue="Line" />
+														<f:selectItem itemLabel="Insert" itemValue="Insert" />
+													</p:selectManyCheckbox>
+												</div>
+											</div>
+											<!-- Job Density -->
+											<div class="col-md-1 col-sm-3 p-0">
+												<div class="btn-group bootstrap-select form-control but_pad">
+													<p:selectManyCheckbox layout="pageDirection"  styleClass="form-control" style="font-size:75%;line-height:100%;border:none;" onchange="switchOnOrSwitchOffAllOption(this)"
+														value="#{reportsBean.jobDensity}" id="jobDensity">
+														<f:selectItem itemLabel="All" itemValue="all" />
+														<f:selectItem itemLabel="0" itemValue="0" />
+														<f:selectItem itemLabel="1" itemValue="1" />
+														<f:selectItem itemLabel="2" itemValue="2" />
+														<f:selectItem itemLabel="3" itemValue="3" />
+														<f:selectItem itemLabel="4" itemValue="4" />
+													</p:selectManyCheckbox>
+												</div>
+											</div>
+	 										<!-- Size -->
+											<div class="col-md-1 col-sm-3 p-0">
+												<div class="btn-group bootstrap-select form-control but_pad">
+													<p:selectManyCheckbox layout="grid" columns="2" styleClass="form-control" style="font-size:75%;line-height:100%;border:none;" onchange="switchOnOrSwitchOffAllOption(this)"
+														value="#{reportsBean.adSize}" id="adSize">
+														<f:selectItem itemLabel="All" itemValue="all" />
+														<f:selectItem itemLabel="0.25" itemValue="0.25" />
+														<f:selectItem itemLabel="0.33" itemValue="0.33" />
+														<f:selectItem itemLabel="0.50" itemValue="0.50" />
+														<f:selectItem itemLabel="1.0" itemValue="1.0" />
+														<f:selectItem itemLabel="2.0" itemValue="2.0" />
+													</p:selectManyCheckbox>
+												</div>
+											</div>
+	 										<!-- Format -->
+											<div class="col-md-2 col-sm-3 p-0">
+													<div class="btn-group bootstrap-select form-control but_pad">
+														<p:selectManyCheckbox layout="grid" columns="2" styleClass="form-control" style="font-size:75%;line-height:100%;border:none;" onchange="switchOnOrSwitchOffAllOption(this)"
+															value="#{reportsBean.adOrientation}" id="adOrientation">
+															<f:selectItem itemLabel="All" itemValue="all" />
+															<f:selectItem itemLabel="vertical" itemValue="vertical" />
+															<f:selectItem itemLabel="horizontal"
+																itemValue="horizontal" />
+															<f:selectItem itemLabel="rectangle" itemValue="rectangle" />
+															<f:selectItem itemLabel="FP" itemValue="FP" />
+															<f:selectItem itemLabel="DPS" itemValue="DPS" />
+															<f:selectItem itemLabel="fold-out" itemValue="fold-out" />
+															<f:selectItem itemLabel="insert" itemValue="insert" />
+														</p:selectManyCheckbox>
+													</div>
+												</div>
+	 										<!-- Company Type -->
+											<div class="col-md-1 col-sm-3 p-0">
+												<div class="btn-group bootstrap-select form-control but_pad">
+													<p:selectManyCheckbox layout="pageDirection" styleClass="form-control" style="font-size:75%;line-height:100%;border:none;" onchange="switchOnOrSwitchOffAllOption(this)"
+														value="#{reportsBean.companyType}" id="companyType">
+														<f:selectItem itemLabel="All" itemValue="all" />
+														<f:selectItems value="#{reportsBean.noOfInstitutionType}"
+															var="c" itemLabel="#{c.publicationTitle}"
+															itemValue="#{c.id}" />
+													</p:selectManyCheckbox>
+												</div>
+											</div>
+	 										<!-- Company Name -->
+											<!-- <div class="col-md-2 col-sm-3 p-0">
+												<div class="btn-group bootstrap-select form-control but_pad" >
+													<h:selectManyMenu flayout="pageDirection" styleClass="form-control" style="font-size:75%;line-height:100%;border:none;" onchange="switchOnOrSwitchOffAllOption(this)"
+														value="#{reportsBean.companyName}" id="companyName" >
+														<f:selectItem itemLabel="All" itemValue="all"  />
+														<f:selectItems 
+															value="#{reportsBean.allSubscriberCompanyName}" var="c"
+															itemLabel="#{c.companyName}" itemValue="#{c.id}" />
+													</h:selectManyMenu >
+												</div>
+											</div> -->
+	 										<!-- Country -->
+											<div class="col-md-1 col-sm-3 p-0">
+												<div class="btn-group bootstrap-select form-control but_pad">
+													<p:selectManyCheckbox layout="pageDirection" styleClass="form-control" style="font-size:75%;line-height:100%;border:none;" onchange="switchOnOrSwitchOffAllOption(this)"
+														value="#{reportsBean.country}" id="country">
+														<f:selectItem itemLabel="All" itemValue="all" />
+														<f:selectItems value="#{reportsBean.allSubscriberCountry}"
+															var="c" itemLabel="#{c.companyName}" itemValue="#{c.id}" />
+													</p:selectManyCheckbox>
+												</div>
+											</div>
+	 										<!-- State -->
+											<div class="col-md-1 col-sm-3 p-0">
+												<div class="btn-group bootstrap-select form-control but_pad">
+													<p:selectManyCheckbox layout="pageDirection" styleClass="form-control" style="font-size:75%;line-height:100%;border:none;" onchange="switchOnOrSwitchOffAllOption(this)"
+														value="#{reportsBean.state}" id="state">
+														<f:selectItem itemLabel="All" itemValue="all" />
+														<f:selectItems value="#{reportsBean.allSubscriberState}"
+															var="c" itemLabel="#{c.companyName}" itemValue="#{c.id}" />
+													</p:selectManyCheckbox>
+												</div>
+											</div>
+										</div>
+
+										<div class="row m-0">
+											<div>
+												<h:commandLink styleClass="btn btn-success fileinput-button"
+													style="float:right;padding: 7px 24px;"
+													action="#{reportsBean.generateSearchViewReportList}">
+													<i class="fa fa-search"></i>
+													<span>Search</span>
+												</h:commandLink>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div
+										class="col-md-12 col-sm-12 col-xs-12 table-responsive p-0 p-t-10">
+										<!-- <h:outputLabel value="No record found"
+												rendered="#{empty reportsBean.targetList}" /> -->
+										<p:dataTable value="#{reportsBean.targetList}"
+											columnClasses="no-bd" id="dt_orgList" rowClasses="no-bd-y"
+											rendered="#{not empty reportsBean.targetList}"
+											style="color:balck;font-size:9px" var="o"
+											styleClass="table table-striped table-hover" border="0"
+											width="711" rows="#{reportsBean.rowsPerPage}"
+											sortMode="multiple">
+											
+											<!-- NAME Field -->
+											<p:column headerClass="no-bd" sortBy="#{o.jobId}">
+												<f:facet name="header">
+													<h:outputText value="Ad Number" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.jobId}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<!-- Role Field -->
+											<p:column headerClass="no-bd" sortBy="#{o.publication}">
+												<f:facet name="header">
+													<h:outputText value="Pub Name" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.publication}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<!-- Status Field -->
+											<p:column headerClass="no-bd" sortBy="#{o.section}">
+												<f:facet name="header">
+													<h:outputText value="Pub Section" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.section}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<!-- Email Field -->
+											<p:column headerClass="no-bd" sortBy="#{o.page}">
+												<f:facet name="header">
+													<h:outputText value="Pub Page" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.page}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.issueDate}">
+												<f:facet name="header">
+													<h:outputText value="Pub Issue Date" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.issueDate}" converter="DateTimeConverter">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.companyName}">
+												<f:facet name="header">
+													<h:outputText value="Advert Name" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.companyName}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.city}">
+												<f:facet name="header">
+													<h:outputText value="City Advert" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.city}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.state}">
+												<f:facet name="header">
+													<h:outputText value="State Advert" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.state}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.country}">
+												<f:facet name="header">
+													<h:outputText value="Country Advert" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.country}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.jobDensity}">
+												<f:facet name="header">
+													<h:outputText value="Job Density" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.jobDensity}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.adSize}">
+												<f:facet name="header">
+													<h:outputText value="Article Size" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.adSize}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.adOrientation}">
+												<f:facet name="header">
+													<h:outputText value="Article Format" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.adOrientation}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd"
+												rendered="#{reportsBean.displayImage == 'false'}">
+												<f:facet name="header">
+													<h:outputText value="Ad Image" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}">
+													<h:graphicImage value="#{o.thumbnailImageName}" width="60"
+														height="60">
+													</h:graphicImage>
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd"
+												rendered="#{reportsBean.displayImage == 'false'}">
+												<f:facet name="header">
+													<h:outputText value="Page Image" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}">
+													<h:graphicImage value="#{o.parentImageName}" width="60"
+														height="60">
+													</h:graphicImage>
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.companyType}">
+												<f:facet name="header">
+													<h:outputText value="Company Type" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.companyType}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.adType}">
+												<f:facet name="header">
+													<h:outputText value="Article Type" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.adType}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.placementType}">
+												<f:facet name="header">
+													<h:outputText value="Placmt Type" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.placementType}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd"
+												sortBy="#{o.marketOrsectorType}">
+												<f:facet name="header">
+													<h:outputText value="Sector Type" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.marketOrsectorType}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.jobTitle}">
+												<f:facet name="header">
+													<h:outputText value="Job Title" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.jobTitle}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="jobDensity" value="#{o.jobDensity} " />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+
+										</p:dataTable>
+										<t:dataScroller id="scroll_1" for="dt_orgList" fastStep="10"
+											pageCountVar="pageCount" pageIndexVar="pageIndex"
+											paginator="true" paginatorMaxPages="3"
+											paginatorActiveColumnStyle="font-weight:bold;"
+											immediate="true"
+											actionListener="#{reportsBean.scrollerAction}"
+											styleClass="pagination pagination-right"
+											renderFacetsIfSinglePage="false">
+											<f:facet name="first">
+												<t:outputText value="&#171;" />
+											</f:facet>
+											<f:facet name="last">
+												<t:outputText value="&#187;" />
+											</f:facet>
+											<f:facet name="previous">
+												<t:outputText value="&#60;" />
+											</f:facet>
+											<f:facet name="next">
+												<t:outputText value="&#62;" />
+											</f:facet>
+										</t:dataScroller>
+										<label class="p-5 pull-right"> <h:selectOneMenu
+												styleClass="form-control"
+												value="#{reportsBean.changeRowsPerPage}"
+												id="changeRowsPerPage"
+												rendered="#{not empty reportsBean.targetList}"
+												valueChangeListener="#{reportsBean.localeChanged}"
+												onchange="this.form.submit()">
+												<f:selectItem itemLabel="15" itemValue="15" />
+												<f:selectItem itemLabel="30" itemValue="30" />
+												<f:selectItem itemLabel="45" itemValue="45" />
+											</h:selectOneMenu>
+										</label>
+									</div>
+
+								</div>
+							</div>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- 
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		></script>
+ -->
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.js"></script>
+
+
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script>	 -->
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script>	 -->
+
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+ 
+	<!-- END MANDATORY SCRIPTS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/bootstrap-switch/bootstrap-switch.js"></script> -->
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script> -->
+	<!-- END  PAGE LEVEL SCRIPTS -->
+
+
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+</h:body>
+
+</html>

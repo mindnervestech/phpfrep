@@ -1,0 +1,6 @@
+${name}<br/>
+${campaign}<br/>
+${answer}<br/>
+
+Regards,<br/>
+Business Intelligent System

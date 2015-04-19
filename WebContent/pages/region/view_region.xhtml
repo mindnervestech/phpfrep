@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta charset="utf-8" />
+	<title>Fracts-View Region Details</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon" type="text/css"
+		href="#{request.contextPath}/assets/img/favicon.png" />
+	<!-- END META SECTION -->
+	<!-- BEGIN MANDATORY STYLE -->
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.min.css"
+		rel="stylesheet" />
+	<link href="#" rel="stylesheet" id="theme-color" />
+	<!-- END  MANDATORY STYLE -->
+	<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+</h:head>
+<f:metadata data-page="tables">
+	<f:viewParam name="regionId" value="#{userBean.id}" />
+	<f:event type="preRenderView" listener="#{userBean.loadRegionInfo}" />
+</f:metadata>
+<h:body>
+	<ui:include src="/pages/header_subscriber.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/subscriberUserMenu.xhtml" />
+		<h:inputHidden value="#{userBean.id}" />
+		<div id="main-content">
+			<div class="page-title">
+				<i class="icon-custom-left"></i>
+				<h3>View Region Details</h3>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<h:form id="AddUserForm">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-6 col-sm-12 col-xs-12 table-responsive">
+										<div class="tab_border">
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{not empty userBean.country}">Country Name</t:div>
+												<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{not empty userBean.country}">
+													<h:outputText value="#{userBean.country}">
+													</h:outputText>
+												</t:div>
+												<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{userBean.regionCount >0}">No Of Region</t:div>
+												<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{userBean.regionCount >0}">
+													<h:outputText value="#{userBean.regionCount}">
+													</h:outputText>
+												</t:div>
+											
+													<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10"
+												style="width: 40% !important;" rendered="#{not empty userBean.noOfregionList}">Regions </t:div>
+												<t:div styleClass="col-md-6 col-sm-6 p-0 p-b-10" rendered="#{not empty userBean.noOfregionList}" >
+												<t:div styleClass="btn-group bootstrap-select form-control" rendered="#{not empty userBean.noOfregionList}" >
+													<br/>
+												<h:dataTable value="#{userBean.noOfregionList}" var="u" id="regionList"  rendered="#{not empty userBean.noOfregionList}" style="border:none !important ">
+												<p:column >
+													<h:outputText styleClass="form-control" value="#{u.region}" id="noOfPositions"   style="border:none !important "
+														size="5"></h:outputText>
+												</p:column>
+											</h:dataTable>
+											</t:div>
+											</t:div>
+											<div class="col-md-12 col-xs-12 p-0 p-t-20 p-b-10 f_l">
+														<h:outputLink value="manage_region.xhtml" styleClass="btn btn-default">Back</h:outputLink>
+													</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- BEGIN MANDATORY SCRIPTS -->
+	<script src="#{request.contextPath}/assets/plugins/jquery-1.11.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<!-- END MANDATORY SCRIPTS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/bootstrap-switch/bootstrap-switch.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script> -->
+	<!-- END  PAGE LEVEL SCRIPTS -->
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+
+</h:body>
+
+</html>

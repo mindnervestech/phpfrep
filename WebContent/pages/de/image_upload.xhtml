@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <!-- BEGIN META SECTION -->
+    <meta charset="utf-8"/>
+    <title>Fracts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta content="" name="description" />
+    <meta content="themes-lab" name="author" />
+    <link rel="shortcut icon" href="#{request.contextPath}/assets/img/favicon.png"/>
+      <script src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <!-- END META SECTION -->
+    <!-- BEGIN MANDATORY STYLE -->
+    <link href="#{request.contextPath}/assets/css/icons/icons.min.css" rel="stylesheet"/>
+    <link href="#{request.contextPath}/assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="#{request.contextPath}/assets/css/plugins.min.css" rel="stylesheet"/>
+    <link href="#{request.contextPath}/assets/css/style.min.css" rel="stylesheet"/>
+    <link href="#" rel="stylesheet" id="theme-color"/>
+    <!-- END  MANDATORY STYLE -->
+    <!-- BEGIN PAGE LEVEL STYLE -->
+    <link rel="stylesheet" href="#{request.contextPath}/assets/plugins/dropzone/dropzone.css"/>
+    <link rel="stylesheet" href="#{request.contextPath}/assets/plugins/jquery-file-upload/css/jquery.fileupload.css"/>
+    <link rel="stylesheet" href="#{request.contextPath}/assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css"/>
+    <!-- END PAGE LEVEL STYLE -->
+</h:head>
+<f:metadata>
+	<f:viewParam name="userId" value="#{userBean.id}" />
+	<f:event type="preRenderView" listener="#{deBean.makeEmptyTempParentFolder}" />
+</f:metadata>
+<h:body data-page="file_upload">
+    <ui:include src="/pages/header_admin.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/userMenu.xhtml" />
+		<p:messages id="messages"  showSummary="false" autoUpdate="true" closable="true" showDetail="true" showIcon="false" severity="info,fatal"/>
+        <div id="main-content">
+          <div class="page-title"> <i class="icon-custom-left"></i>
+              <h3><strong>Upload</strong> Files</h3>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title"><strong>Multiple</strong> Image Upload</h3>
+              </div>
+              <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <form id="jsfForm" action="#{request.contextPath}/uploadservlet?userId=#{userBean.id}" class="dropzone" method="post">
+                      <input type="hidden" id="path" value="#{request.contextPath}"/>
+                      <input type="hidden" id="userId" value="#{userBean.id}" />
+                      <div class="fallback">
+                        <input type="file" name="file"/>                         
+                      </div>
+                    </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title"><strong>File</strong> Upload(.jpg,.jpeg,.png,.gif format only)</h3>
+              </div>
+              <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                          <h:form id="fileupload">
+                            <div class="row fileupload-buttonbar">
+                                <div class="col-lg-7">
+                                    <p:commandLink  action="#{deBean.saveParentImage}" styleClass="btn btn-primary start" >
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span>Start upload</span>
+                                    </p:commandLink>
+                                    &nbsp;
+                                     &nbsp;
+                                      <h:outputLink value="image_upload.xhtml" type="reset" styleClass="btn btn-warning cancel">
+                                        <i class="glyphicon glyphicon-ban-circle"></i>
+                                        <span>Cancel upload</span>
+                                    </h:outputLink>
+                                    <!-- The global file processing state -->
+                                    <span class="fileupload-process"></span>
+                                </div>
+                                <!-- The global progress state -->
+                                <div class="col-lg-5 fileupload-progress fade">
+                                    <!-- The global progress bar -->
+                                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                                    </div>
+                                    <!-- The extended global progress state -->
+                                    <div class="progress-extended"></div>
+                                </div>
+                            </div>
+                            <!-- The table listing the files available for upload/download -->
+                            <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+                        </h:form>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+       
+
+     
+    </div>
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="#{request.contextPath}/assets/plugins/dropzone/dropzone.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/tmpl.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/load-image.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/canvas-to-blob.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/jquery.blueimp-gallery.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/js/jquery.fileupload-process.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/js/jquery.fileupload-image.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/js/jquery.fileupload-audio.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/js/jquery.fileupload-video.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/js/jquery.fileupload-validate.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/js/jquery.fileupload-ui.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/js/main.js"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script>
+    <script src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js" type="text/javascript"></script>
+    <script src="#{request.contextPath}/assets/js/application.js"></script>
+</h:body>
+
+</html>
+

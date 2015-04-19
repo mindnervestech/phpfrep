@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta charset="utf-8" />
+	<title>Fracts-Profile</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon" type="text/css"
+		href="#{request.contextPath}/assets/img/favicon.png" />
+		<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<!-- END META SECTION -->
+	<!-- BEGIN MANDATORY STYLE -->
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.min.css"
+		rel="stylesheet" />
+	<link href="#" rel="stylesheet" id="theme-color" />
+	<!-- END  MANDATORY STYLE -->
+</h:head>
+<f:metadata data-page="tables">
+	<f:viewParam name="companyUserId" value="#{userBean.id}" />
+	<f:event type="preRenderView" listener="#{userBean.loadUserInfo}" />
+	<f:viewParam name="msgLabel" value="#{userBean.msgLabel}" />
+	<f:event type="preRenderView" listener="#{userBean.loadMessage}" />
+</f:metadata>
+<h:body>
+	<ui:include src="/pages/header_admin.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/userMenu.xhtml" />
+		<p:messages id="messages"  showSummary="false" showDetail="true" autoUpdate="true" closable="true" severity="info,fatal"/>
+		<h:inputHidden value="#{userBean.id}" />
+		<div id="main-content">
+			<div class="page-title">
+				<i class="icon-custom-left"></i>
+				<h3>Profile</h3>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<h:form id="AddUserForm">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-6 col-sm-12 col-xs-12 table-responsive">
+										<div class="tab_border">
+										<div class="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;">First Name </div>
+										<div class="col-md-6 col-sm-6 p-0 p-t-10"><h:outputText
+														value="#{userBean.firstName}">
+													</h:outputText> </div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{userBean.lastName != null}">Last Name</t:div>
+												<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{userBean.lastName != null}">
+													<h:outputText value="#{userBean.lastName}">
+													</h:outputText>
+												</t:div>
+											<div class="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;">Role</div>
+										<div class="col-md-6 col-sm-6 p-0 p-t-10">
+										<h:outputText	value="Super Admin"
+														rendered="#{userBean.userTypeId ==1}">
+													</h:outputText>
+													<h:outputText	value="Data Entry User"
+														rendered="#{userBean.userTypeId ==3}">
+													</h:outputText>
+													<h:outputText 
+														value="Quality Check User"
+														rendered="#{userBean.userTypeId ==2}">
+													</h:outputText>
+													<h:outputText 
+														value="Admin"
+														rendered="#{userBean.userTypeId ==4}">
+													</h:outputText>
+												</div>
+
+													<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{userBean.email != null}">Email</t:div>
+												<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10">
+													<h:outputText value="#{userBean.email}">
+													</h:outputText>
+												</t:div>
+												<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{userBean.gender >0}">Gender</t:div>
+												<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{userBean.gender >0}">
+													<h:outputText value="Male" rendered="#{userBean.gender ==1}">
+													</h:outputText>
+													<h:outputText value="Female" rendered="#{userBean.gender ==2}">
+													</h:outputText>
+												</t:div>
+												<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{userBean.phoneNo != null and not empty userBean.phoneNo}">Phone Number</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{userBean.phoneNo != null and not empty userBean.phoneNo}">
+													<h:outputText value="#{userBean.phoneNo}">
+													</h:outputText>
+												</t:div>
+													<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{userBean.dateofBirth != null and not empty userBean.dateofBirth}">Date Of Birth</t:div>
+												<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{userBean.dateofBirth != null and not empty userBean.dateofBirth}">
+													<h:outputText value="#{userBean.dateofBirth}">
+													</h:outputText>
+												</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{userBean.address != null and not empty userBean.address}">Address</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{userBean.address != null and not empty userBean.address}">
+													<h:outputText
+														value="#{userBean.address}">
+													</h:outputText>
+												</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{userBean.city != null and not empty userBean.city}">City</t:div>
+												<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{userBean.city != null and not empty userBean.city}">
+													<h:outputText
+														value="#{userBean.city}">
+													</h:outputText>
+												</t:div>
+										<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{userBean.state != null and not empty userBean.state}">State</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{userBean.state != null and not empty userBean.state}">
+													<h:outputText value="#{userBean.state}">
+													</h:outputText>
+												</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{userBean.country != null and not empty userBean.country}">Country</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{userBean.country != null and not empty userBean.country}">
+													<h:outputText value="#{userBean.country}">
+													</h:outputText>
+												</t:div>
+										<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{userBean.pincode != null and not empty userBean.pincode}">ZipCode</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{userBean.pincode != null and not empty userBean.pincode}">
+													<h:outputText value="#{userBean.pincode}">
+													</h:outputText>
+												</t:div>
+											<div class="col-md-12 col-xs-12 p-0 p-t-20 p-b-10 f_l">
+											<h:commandButton 
+												class="btn btn-primary"
+												action="#{userBean.loadEditUser}" value="Edit">
+												<f:param name="pageRedirect" value="1" />
+											</h:commandButton>
+											&nbsp;
+											<h:outputLink value="change_password.xhtml"
+												class="btn btn-primary">Change Password</h:outputLink>
+										</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- BEGIN MANDATORY SCRIPTS -->
+<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script
+		src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<!-- END MANDATORY SCRIPTS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/bootstrap-switch/bootstrap-switch.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script> -->
+	<!-- END  PAGE LEVEL SCRIPTS -->
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+
+</h:body>
+
+</html>

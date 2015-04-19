@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta charset="utf-8" />
+	<title>Fracts-Subscriber Admin</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon" type="text/css"
+		href="#{request.contextPath}/assets/img/favicon.png" />
+		<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<!-- END META SECTION -->
+	<!-- BEGIN MANDATORY STYLE -->
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.min.css"
+		rel="stylesheet" />
+	<link href="#" rel="stylesheet" id="theme-color" />
+	<!-- END  MANDATORY STYLE -->
+	<style>
+.bootstrap-select:not([class*="span"]):not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn)
+{
+	 min-width: 120px !important;
+    width: auto !important;
+}
+.btn-group > .btn-group:last-child > .btn:first-child {
+    border-bottom-left-radius: 4px !important;
+    border-top-left-radius: 4px !important;
+}
+</style>
+</h:head>
+<f:metadata>
+	<f:viewParam name="subscriberId" value="#{userBean.id}" />
+	<f:event type="preRenderView"
+		listener="#{userBean.loadSubscriberInfo}" />
+	<f:event type="preRenderView"
+		listener="#{userBean.loadSubscriberProfile}" />	
+</f:metadata>
+<h:body data-page="tables">
+	<ui:include src="/pages/header_subscriber.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/subscriberUserMenu.xhtml" />
+		<p:messages id="messages"  showSummary="false" autoUpdate="true" closable="true" showDetail="true" showIcon="false" severity="info,fatal"/>
+		<h:inputHidden value="#{userBean.id}" />
+		<div id="main-content">
+			<div class="page-title">
+				<i class="icon-custom-left"></i>
+				<h3>Edit Profile</h3>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<h:form id="AddUserForm">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-6 col-sm-12 col-xs-12 table-responsive">
+										<div class="tab_border">
+                                           <div class="col-md-6 col-sm-6 p-0 p-t-10">Company Name *</div>
+											<div class="col-md-6 col-sm-6 p-0 p-b-10 ">
+												<p:inputText styleClass="form-control" required="true"
+													value="#{userBean.companyName}" placeholder="Company Name" id="txt_cname"
+													requiredMessage="Value is required"
+													validatorMessage="Company name, greater than 50 characters not allowed">
+													<f:validateLength  maximum="50" />
+												</p:inputText>
+													<p:message for="txt_cname" display="text"/>
+											</div>
+											  <div class="col-md-6 col-sm-6 p-0 p-t-10">Company Location *</div>
+											<div class="col-md-6 col-sm-6 p-0 p-b-10 ">
+												<p:inputText styleClass="form-control" required="true"
+													value="#{userBean.companyLocation}" placeholder="Company Location" id="txt_clocation"
+													requiredMessage="Value is required"
+													validatorMessage="Company Location, greater than 50 characters not allowed">
+													<f:validateLength  maximum="50" />
+												</p:inputText>
+													<p:message for="txt_clocation" display="text"/>
+											</div>
+												<div class="col-md-6 col-sm-6 p-0 p-t-10">Admin First Name *</div>
+											<div class="col-md-6 col-sm-6 p-0 p-b-10 ">
+												<p:inputText styleClass="form-control" required="true"
+													value="#{userBean.firstName}" placeholder="Admin First Name" id="txt_fname"
+													requiredMessage="Value is required" 
+													validatorMessage="Special characters , Numberic values and greater than 50 characters not allowed">
+													<f:validateLength  maximum="50" />
+													<f:validateRegex pattern="^[a-zA-Z' ']*$" />
+												</p:inputText>
+													<p:message for="txt_fname" display="text"/>
+											</div>
+
+											<div class="col-md-6 col-sm-6 p-0 p-t-10">Admin Last Name</div>
+											<div class="col-md-6 col-sm-6 p-0 p-b-10">
+												<p:inputText styleClass="form-control" 
+													value="#{userBean.lastName}" placeholder="Admin Last Name" id="txt_lname"
+													requiredMessage="Value is required" 
+													validatorMessage="Special characters ,Numberic values and greater than 50 characters not allowed">
+													<f:validateLength  maximum="50" />
+													<f:validateRegex pattern="^[a-zA-Z' ']*$" />
+												</p:inputText>
+												<p:message for="txt_lname" display="text" />
+											</div>
+											<div class="col-md-6 col-sm-6 p-0 p-t-10">Admin Email *</div>
+											<div class="col-md-6 col-sm-6 p-0 p-b-10">
+												<p:inputText value="#{userBean.companyEmail}"  rendered="#{empty userBean.email}"
+													styleClass="form-control" placeholder="Company Email" id="txt_cemail"
+													validatorMessage="Invalid email format" required="true"
+													requiredMessage="Value is required">
+													<f:validateRegex
+														pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+												</p:inputText>
+													<h:inputText styleClass="form-control"  rendered="#{not empty userBean.email}"
+													id="txt_email_v" value="#{userBean.email}" disabled="true">
+												</h:inputText>
+												<p:message for="txt_cemail" display="text" />
+											</div>
+												<div class="col-md-6 col-sm-6 p-0 p-t-10">Phone Number</div>
+											<div class="col-md-6 col-sm-6 p-0 p-b-10">
+												<p:inputText styleClass="form-control" 
+													id="PhoneNo" value="#{userBean.phoneNo}"
+													placeholder="Phone Number"
+													onkeyup="javascript:mask('AddUserForm:PhoneNo', '000-000-0000', event);"
+													validatorMessage="Invalid phone number.">
+													<f:validateRegex pattern="^[0-9_-]{12}$" />
+												</p:inputText>
+												<p:message for="PhoneNo" display="text" />
+											</div>
+											<div class="col-md-6 col-sm-6 p-0 p-t-10">Notes</div>
+											<div class="col-md-6 col-sm-6 p-0 p-b-10">
+												<p:inputTextarea styleClass="form-control" id="txt_notes" maxlength="150"
+													value="#{userBean.notes}" placeholder="Notes upto 150 characters"
+													validatorMessage="Notes it allowed only for 150 characters">
+													 <f:validateLength maximum="150" />
+												</p:inputTextarea>
+												<p:message for="txt_notes" display="text" />
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 p-0 p-t-20 p-b-10 f_l">
+											<h:commandButton rendered="#{userBean.id > 0}"
+												class="btn btn-primary"
+												action="#{userBean.updateAndExitSubscriberProfile}" value="Update">
+											</h:commandButton>
+											&nbsp;
+											<h:outputLink value="subscriber_profile.xhtml"
+												styleClass="btn btn-default">Cancel</h:outputLink>
+										</div>
+									</div>
+								</div>
+							</div>
+						</h:form>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- BEGIN MANDATORY SCRIPTS -->
+<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+		<script
+		src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<!-- END MANDATORY SCRIPTS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/bootstrap-switch/bootstrap-switch.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script> -->
+	<!-- END  PAGE LEVEL SCRIPTS -->
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+	<script src="#{request.contextPath}/assets/js/customValidation.js"></script>
+
+</h:body>
+
+</html>

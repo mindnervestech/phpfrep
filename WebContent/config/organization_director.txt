@@ -1,0 +1,105 @@
+<table cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" style="border-width:0px;margin:0;padding:0;width:100%;min-height:100%">
+	<tbody>
+		<tr>
+			<td valign="top" align="center" style="padding:10px">
+				<table cellspacing="0" cellpadding="0" border="0" align="center" style="border:1px solid #d5d5d5;;margin:0;padding:0;width:707px;height:590px;padding:20px">
+					<tbody>
+						<tr>
+							<td>
+								<table cellspacing="0" cellpadding="0" border="0" align="left" style="border-width:0px;margin:0;padding:0">
+									<tbody>
+										<tr>
+											<td valign="bottom" align="center" style="width:267px;min-height:69px">
+											<!--	<a target="_blank" href="http://50.57.127.125:8080/fms/pages/index.xhtml"><img width="267" border="0" title="Click here to login to Urbanfriend" alt="Click here to login to FMS" src="images/email_logo.png"></a> -->
+											</td>
+											<td valign="middle" align="center" style="width:281px;min-height:79px"></td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+						<tr>
+                            <td>&nbsp;</td>
+						</tr>
+						<tr>
+                            <td>&nbsp;</td>
+						</tr>
+						<tr>
+                            <td>&nbsp;</td>
+						</tr>
+						<tr>
+                            <td>&nbsp;</td>
+						</tr>
+						<tr height="1px">
+                            <td bgcolor="#fff" style="height: 1px;"></td>
+						</tr>
+						<tr>
+							<td align="center">
+								<span style="color:#7d7d7d;display:block;font:36px georgia; font-style:italic;line-height:30px;padding:0">Hi ${firstname} </span>
+								<p style="color: #010101;font-family: georgia;font-size: 36px;font-style: italic;margin: 15px 0 0; padding: 0;">
+									Welcome to Azeema Technologies.
+								</p>
+							</td>
+						</tr>						
+						<tr>
+                            <td align="center">
+                            <p style="font-family: georgia; font-size:15px;margin-top: 20px; font-style: italic;color:#7d7d7d;line-height: 27px;text-align: center;font-weight: bold;">
+                            Your Organization <b>${organization_name}</b> has been created.
+                            </p>
+                            </td>
+                            </tr>						
+						<tr>
+                            <td align="center">
+                            <p style="font-family: georgia; font-size:15px;margin-top: 20px; font-style: italic;color:#7d7d7d;line-height: 27px;text-align: center;font-weight: bold;">
+                            Please Login With Azeema Technologies
+                            </p>
+                            </td>
+						</tr>
+						<tr>
+							<td align="center">
+							URL is : <a href="${url}" style="text-decoration:none;color:red;"><b style="color:blue">${url}</b></a>
+							</td>
+						</tr>
+						<tr>
+							<td align="center">
+								<p style="font-family: georgia; margin-top: 32px;font-size:15px; font-style: italic;color:#7d7d7d;line-height: 27px;text-align: center;font-weight: bold;">
+									If you are having trouble, please contact technical support via email. Support@AzeemaTechnologies.com or toll free 1-800-64-9636 Ext 2.
+									
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td align="center">&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td align="right">
+							<p style="font-family: georgia; margin-top: 32px;font-size:15px; font-style: italic;color:#7d7d7d;line-height: 27px;font-weight: bold;">
+						    The Azeema Technologies Team<br/>
+						    <a href="${url}" style="text-decoration:none;color:red;"><b style="color:blue">${url}</b></a>
+						    </p>
+						</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td align="right" style="width:160px;min-height:128px"></td>
+						</tr>
+                    </tbody>
+				</table>
+			</td>
+		</tr>
+	</tbody>
+</table>

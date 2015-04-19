@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+<h:head>
+	<!-- BEGIN META SECTION -->
+	<meta charset="utf-8" />
+	<title>Fracts</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon"
+		href="#{request.contextPath}/assets/img/favicon.png" />
+	<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<!-- END META SECTION -->
+	<!-- BEGIN MANDATORY STYLE -->
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.css"
+		rel="stylesheet" />
+	<link href="#" rel="stylesheet" id="theme-color" />
+	<!-- END  MANDATORY STYLE -->
+	<f:loadBundle var="global"
+		basename="/com/obs/brs/properties/Application"></f:loadBundle>
+	<style>
+.ui-dialog .ui-dialog-content {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	border: 0 none;
+	overflow: auto;
+	padding: 0.5em 1em;
+	position: relative;
+	width: 685px !important;
+	height: 350px;
+}
+
+.col-md-6 {
+	width: 60%;
+}
+
+.text-muted {
+	color: #999;
+}
+
+input {
+	font-size: 1em !important;
+	height: 37px;
+	width: 100%;
+}
+
+.thumbnail>.overlay>.thumbnail-actions {
+	text-align: left !important;
+	margin-top: -18px;
+}
+
+td,th {
+	padding: 1px 6px 0;
+}
+
+.ui-selectmanycheckbox label,.ui-selectoneradio label {
+	display: block;
+	margin-left: -8px;
+	margin-top: 4px;
+}
+
+.skin-section .list li {
+	position: relative;
+	padding-bottom: 0px !important;
+	padding-left: 30px;
+}
+
+.col-md-6 {
+	width: 70% !important;
+}
+
+.issueDay td,th {
+	padding: 1px 13.3px 0 8px;
+}
+
+.issueDayNext td,th {
+	padding: 1px 9.5px 0 8.1px;
+}
+
+.issueMonth td,th {
+	padding: 1px 24px 8px 8px;
+}
+
+.issueMonthNext td,th {
+	padding: 1px 22px 8px 8px;
+}
+
+.issueYear td,th {
+	padding: 1px 6.8px 8px;
+}
+
+.issueDayNextThird td,th {
+	padding: 1px 8.9px 0 8.1px;
+}
+
+.issueDayNextFour td,th {
+	padding: 1px 13.5px 0 8.1px;
+}
+
+<!--
+Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
+	font-size: 18px;
+}
+
+.ui-dialog.ui-widget-content .ui-dialog-content {
+	padding: 0px;
+	font-size: 11px;
+}
+
+.pagination li {
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	background-color: #FFFFFF;
+	border-color: #DDDDDD;
+	border-image: none;
+	border-style: solid;
+	border-width: 1px 1px 1px 1px;
+	float: left;
+	line-height: 18px;
+	padding: 4px 12px;
+	text-decoration: none;
+	margin: 0px;
+}
+
+.pagination>li:hover {
+	background-color: #e4e7ea;
+}
+.media-header .pull-right {
+background-color: #00A2D9;
+color: #fff;
+padding: 15px;
+}
+</style>
+</h:head>
+<f:metadata>
+	<f:viewParam name="msgFormat" value="#{deBean.msgFormat}" />
+	<f:viewParam name="msgLabel" value="#{deBean.msgLabel}" />
+	<f:event type="preRenderView" listener="#{deBean.loadMessage}" />
+	<f:viewParam name="img" value="#{deBean.id}" />
+	<f:event type="preRenderView"
+		listener="#{deBean.loadAllPublicationInfo}" />
+</f:metadata>
+<h:body data-page="file_upload">
+	<ui:include src="/pages/header_admin.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/userMenu.xhtml" />
+
+		<!-- BEGIN MAIN CONTENT -->
+		<h:form id="coords">
+			<h:inputHidden value="#{deBean.id}" />
+			<div id="main-content">
+				<div class="panel-content">
+					<p:messages id="messages" showSummary="false" autoUpdate="true"
+						closable="true" showDetail="true" showIcon="false"
+						severity="info,fatal" />
+					<div class="row media-manager">
+						<ul class="media-header">
+							<li><p:commandLink styleClass="c-dark" ajax="true"
+									action="#{deBean.allImage}" update="div_photo_list">All</p:commandLink></li>
+							<li><a href="#"><i class="glyphicon glyphicon-camera"></i>
+									Full Image</a></li>
+							<li class="pull-right"><h:commandLink
+									action="#{userBean.redirctMenuLink}">
+									<f:param name="menuId" value="5" />
+									<i class="fa fa-cloud-download c-white"></i> Upload Files</h:commandLink></li>
+						</ul>
+						<div class="margin-bottom-30"></div>
+						<div class="col-sm-11">
+							<div class="row">
+								<h:outputLabel style="margin-left:100px" value="No Image found"
+									rendered="#{empty deBean.parentImageList}" />
+								<t:div id="div_photo_list"
+									rendered="#{not empty deBean.parentImageList}">
+									<ui:repeat var="val" value="#{deBean.parentImageList}"
+										rendered="#{not empty deBean.parentImageList}"
+										size="#{deBean.imagePerPage-1}" offset="#{deBean.imageOffset}"
+										varStatus="status">
+										
+										<div class="col-xs-6 col-sm-4 col-md-3">
+											<div class="panel panel-default">
+												<div class="panel-body"
+													style="max-height: 365px; min-height: 365px;">
+													<div class="thmb">
+														<div class="thmb-prev">
+															<div class="thumbnail"
+																style="max-height: 280px; min-height: 280px;">
+																<div class="overlay"
+																	style="margin-top: 236px; height: 51%;">
+																	<div class="thumbnail-actions">
+																		<small class="text-muted pull-left"
+																			style="margin-top: -52px;"><h:outputText
+																				style="color:#fff;"
+																				value="#{val.publicationTitle.publicationTitle}">
+																			</h:outputText></small> <br /> <small class="text-muted pull-left"
+																			style="margin-top: -52px;">
+																			<div style="width: 147px !important">
+																				<h:outputText style="color:#fff;" value="Section:">
+																				</h:outputText>
+																				&nbsp;
+																				<h:outputText style="color:#fff;"
+																					value="#{val.section.publicationTitle}">
+																				</h:outputText>
+																				
+																				
+																			</div>
+																			
+																		</small> &nbsp; <small class="text-muted pull-right"
+																			style="margin-top: -52px; margin-right: 10px;">
+																			<h:outputText style="color:#fff;" value="Page:" />&nbsp;<h:outputText
+																				style="color:#fff;" value="#{val.page}">
+																			</h:outputText>
+																		</small> <br /> <br /> <small class="text-muted pull-left"
+																			style="margin-top: -52px;"> <h:outputText
+																				style="color:#fff;" value="Issue Date:" />&nbsp;<h:outputText
+																				style="color:#fff;" value="#{val.issueDate}">
+																				<f:convertDateTime pattern="MMM dd, yyyy" />
+																			</h:outputText></small> <br /> <small class="text-muted pull-left"
+																			style="margin-top: -52px;"> <h:outputText
+																				style="color:#fff;" value="Upload By:" />&nbsp;<h:outputText
+																				value="#{val.createdBy.firstName}"
+																				style="color:#fff;">
+																			</h:outputText></small> <br /> <small class="text-muted pull-left"
+																			    style="margin-top: -52px;"><h:outputText
+																				style="color:#fff;" value="On:" />&nbsp;<h:outputText
+																				style="color:#fff;" value="#{val.createdOn}">
+																				<f:convertDateTime pattern="MMM dd, yyyy" />
+																			</h:outputText></small> <br /> <small class="text-muted pull-left"
+																			style="margin-top: -52px;"> <h:commandLink
+																				action="#{deBean.callChildPage}" style="color:#fff;">
+																				<f:param name="img" value="#{val.id}" />
+																		        View
+														</h:commandLink></small> 
+
+														<small class="text-muted pull-right"
+																			style="margin-top: -52px; margin-right: 10px;"><h:commandLink
+																				action="#{deBean.deleteParentImage}" update="@all"
+																				style="color:#fff;"
+																				onclick="if(confirmDelete())return true; else return false;">
+																				<f:param name="imgId" value="#{val.id}" />
+																			Delete
+																	</h:commandLink></small>
+																	</div>
+																</div>
+																<img style="max-height: 280px;"
+																	src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['parentImagePath']}#{val.id}/#{val.imageName}"
+																	class="img-responsive" alt="" />
+															</div>
+
+														</div>
+														<div
+															style="width: 228px; height: 28px; word-wrap: break-word;">
+															<h5 class="media-title">
+																<h:commandLink action="#{deBean.callChildPage}">
+																	<f:param name="img" value="#{val.id}" />#{val.imageName}
+														</h:commandLink>
+															</h5>
+														</div>
+														<br /> <br /> <small class="text-muted pull-left"
+															style="margin-top: -36px;"> <p:commandLink
+																action="#{deBean.callPublication}"
+																rendered="#{empty val.publicationTitle}" ajax="true"
+																oncomplete="PF('dlg').show();" id="add"
+																update=":dlgform:basicDialog">
+																<f:param name="parentImg" value="#{val.id}" />
+																<i class="fa fa-plus"></i>
+																<p:tooltip for="add" showEffect="fade" value="Add Tag" />
+															</p:commandLink>
+															
+																<h:outputText value="Child Images: #{fn:length(deBean.getChildImageListCount(val.id))}" style="margin-left: 30%;" />
+															
+															
+															 <p:commandLink action="#{deBean.callPublication}"
+																rendered="#{not empty val.publicationTitle}" ajax="true"
+																oncomplete="PF('dlg').show();" id="edit"
+																update=":dlgform:basicDialog">
+																<i class="fa fa-edit"></i>
+																<f:param name="parentImg" value="#{val.id}" />
+																<p:tooltip for="edit" showEffect="fade" value="Edit Tag" />
+															</p:commandLink>
+														</small> <small class="text-muted pull-right"
+															style="margin-top: -36px;"><h:commandLink
+																action="#{deBean.callCrop}" id="crop">
+																<f:param name="img" value="#{val.id}" />
+																<i class="fa fa-crop p-r-10" style="font-size: 14px;"></i>
+																<p:tooltip for="crop" showEffect="fade" value="Crop" />
+															</h:commandLink> </small>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</ui:repeat>
+									<div style="clear: both;">
+										<t:div rendered="#{ fn:length(deBean.parentImageList) > 20}">
+											<label style="width: 6%; margin-left: 15px;"
+												class="pull-left"> <h:selectOneMenu
+													styleClass="form-control" value="#{deBean.imagePerPage}"
+													id="imagePerPage"
+													valueChangeListener="#{deBean.localImageChanged}"
+													onchange="this.form.submit()">
+													<f:selectItem itemLabel="20" itemValue="20" />
+													<f:selectItem itemLabel="40" itemValue="40" />
+													<f:selectItem itemLabel="60" itemValue="60" />
+												</h:selectOneMenu>
+											</label>
+										</t:div>
+										<t:div id="paging" styleClass="pull-right"
+											rendered="#{((fn:length(deBean.parentImageList) > (deBean.imagePerPage)) and (deBean.imageOffset == 0)) or ((deBean.imageOffset > 0))}">
+											<ul class="pagination pagination-right"
+												style="margin: 0px; border: 1px solid #ccc;">
+												<li style="padding-bottom: 5px;"><p:commandLink
+														disabled="true"
+														rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) ==1}">	First
+																</p:commandLink> <p:commandLink ajax="true" action="#{deBean.firstPage}"
+														update="div_photo_list"
+														rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1)>1}"> First
+																</p:commandLink></li>
+												<li style="font-size: 13px;"><p:commandLink
+														disabled="true"
+														rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) ==1}">	&#60;
+																</p:commandLink> <p:commandLink ajax="true" action="#{deBean.prevPage}"
+														update="div_photo_list"
+														rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) >1}"> &#60;
+																</p:commandLink></li>
+												<li class="active"><a href="#"> <h:outputText
+															value="#{(deBean.imageOffset/deBean.imagePerPage)+1}">
+															<f:converter converterId="javax.faces.Integer" />
+														</h:outputText></a></li>
+												<li style="font-size: 13px;"><p:commandLink ajax="true"
+														action="#{deBean.nxtPage}" update="div_photo_list"
+														rendered="#{fn:length(deBean.parentImageList) > (deBean.imageOffset+deBean.imagePerPage)}">&#62;															
+																</p:commandLink> <p:commandLink disabled="true"
+														rendered="#{(fn:length(deBean.parentImageList) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.parentImageList) == (deBean.imageOffset+deBean.imagePerPage))}">&#62;
+																</p:commandLink></li>
+												<li style="padding-bottom: 5px;"><p:commandLink
+														ajax="true" action="#{deBean.lastPage}"
+														update="div_photo_list"
+														rendered="#{fn:length(deBean.parentImageList) > (deBean.imageOffset+deBean.imagePerPage)}">Last
+														<f:param name="type" value="parent" />
+													</p:commandLink> <p:commandLink disabled="true"
+														rendered="#{(fn:length(deBean.parentImageList) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.parentImageList) == (deBean.imageOffset+deBean.imagePerPage))}">Last
+																</p:commandLink></li>
+											</ul>
+										</t:div>
+									</div>
+								</t:div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END MAIN CONTENT -->
+		</h:form>
+		<h:form id="dlgform">
+			<h:inputHidden value="#{deBean.id}" />
+			<div id="main-content">
+				<div class="page-title">
+					<i class="icon-custom-left"></i>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="row">
+								<p:dialog id="basicDialog" widgetVar="dlg" draggable="true"
+									resizable="false" header="#{deBean.parentImageName}"
+									visible="#{facesContext.postback and facesContext.validationFailed}">
+									<div class="col-md-12 f_l p-t-10 "
+										style="height: 500px; scroll: overflow;">
+
+										<div class="row m-0" style="width: 607px;">
+											<div class="col-md-2 col-sm-2 p-0 p-t-10" style="width: 18%;">Publication
+												Title *</div>
+											<div class="col-md-3 col-sm-3 p-0 p-b-10  p-l-40 ">
+												<ul class="list col-md-12 p-0">
+													<li><h:selectOneMenu class="form-control"
+															value="#{deBean.publicationTitle}"
+															id="txt_publicationTitle">
+															<f:selectItems value="#{deBean.allPublicationFirstOff}"
+																var="c" itemLabel="#{c.publicationTitle}"
+																itemValue="#{c.id}" />
+														</h:selectOneMenu> <p:message for="txt_publicationTitle" display="text" />
+													</li>
+												</ul>
+											</div>
+											<div class="col-md-5 col-sm-6 p-0 p-l-30 pull-right">
+												<div class="col-md-6 col-sm-6 p-0 p-t-10 "
+													style="width: 17% !important;">Page *</div>
+												<div class="col-md-6 col-sm-6 p-0">
+													<h:selectOneMenu class="form-control"
+														hideNoSelectionOption="false" required="true"
+														id="txt_page" value="#{deBean.page}"
+														requiredMessage="Value is required" placeholder="Page"
+														validatorMessage="Please Check your Page number">
+														<f:selectItem itemLabel="1" itemValue="1" />
+														<f:selectItem itemLabel="2" itemValue="2" />
+														<f:selectItem itemLabel="3" itemValue="3" />
+														<f:selectItem itemLabel="4" itemValue="4" />
+														<f:selectItem itemLabel="5" itemValue="5" />
+														<f:selectItem itemLabel="6" itemValue="6" />
+														<f:selectItem itemLabel="7" itemValue="7" />
+														<f:selectItem itemLabel="8" itemValue="8" />
+														<f:selectItem itemLabel="9" itemValue="9" />
+														<f:selectItem itemLabel="10" itemValue="10" />
+														<f:validateLongRange minimum="0" />
+													</h:selectOneMenu>
+
+												</div>
+											</div>
+
+
+
+										</div>
+										<!--row-->
+										<div class="col-md-2 col-sm-4 p-0 p-b-10"
+											style="width: 17% !important;">Issue Date *</div>
+										<div class="col-md-6 col-sm-6 p-0 p-b-10 ">
+											<div class="skin-section">
+												<div class="radio_b">
+													<ul class="list col-md-12 p-0">
+														<li>
+															<div class="issueDay">
+																<p:selectOneRadio layout="lineDirection"
+																	value="#{deBean.issueDay}" id="txt_issueDay">
+																	<f:selectItems value="#{deBean.noOfDays}" var="c"
+																		itemLabel="#{c}" itemValue="#{c}" />
+																	<p:ajax event="change"
+																		update="txt_issueDayNext,txt_issueDay_Third,txt_issueDay_Four"
+																		listener="#{deBean.hideValueNext}" />
+																</p:selectOneRadio>
+															</div>
+															<div class="issueDayNext">
+																<p:selectOneRadio layout="lineDirection"
+																	value="#{deBean.issueDayNext}" id="txt_issueDayNext">
+																	<f:selectItems value="#{deBean.noOfDaysNext}" var="c"
+																		itemLabel="#{c}" itemValue="#{c}" />
+																	<p:ajax event="change"
+																		update="txt_issueDay,txt_issueDay_Third,txt_issueDay_Four"
+																		listener="#{deBean.hideValue}" />
+																</p:selectOneRadio>
+															</div>
+															<div class="issueDayNextThird">
+																<p:selectOneRadio layout="lineDirection"
+																	value="#{deBean.issueDayNextThird}"
+																	id="txt_issueDay_Third">
+																	<f:selectItems value="#{deBean.noOfDaysThird}" var="c"
+																		itemLabel="#{c}" itemValue="#{c}" />
+																	<p:ajax event="change"
+																		update="txt_issueDay,txt_issueDayNext,txt_issueDay_Four"
+																		listener="#{deBean.hideValueThird}" />
+																</p:selectOneRadio>
+															</div>
+															<div class="issueDayNextFour">
+																<p:selectOneRadio layout="lineDirection"
+																	value="#{deBean.issueDayNextFour}"
+																	id="txt_issueDay_Four">
+																	<f:selectItems value="#{deBean.noOfDaysFour}" var="c"
+																		itemLabel="#{c}" itemValue="#{c}" />
+																	<p:ajax event="change"
+																		update="txt_issueDay,txt_issueDayNext,txt_issueDay_Third"
+																		listener="#{deBean.hideValueFour}" />
+																</p:selectOneRadio>
+															</div> <p:message for="txt_issueDay_Third" display="text" />
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										&nbsp;&nbsp;&nbsp;
+										<div class="col-md-6 col-sm-6 p-0 p-t-10"
+											style="width: 17% !important;">Issue Month *</div>
+										<div class="col-md-6 col-sm-6 p-0 p-b-10 ">
+											<div class="skin-section">
+												<div class="radio_b">
+													<ul class="list col-md-12 p-0">
+														<li>
+															<div class="issueMonth">
+																<p:selectOneRadio layout="lineDirection"
+																	value="#{deBean.issueMonth}" id="txt_issueMonth">
+																	<f:selectItems value="#{deBean.noOfMonth}" var="c"
+																		itemLabel="#{c.noOfMonth}" itemValue="#{c.noOfMonth}" />
+																	<p:ajax event="change" update="txt_issueMonth_Next"
+																		listener="#{deBean.hideMonthValue}" />
+																</p:selectOneRadio>
+															</div>
+															<div class="issueMonthNext">
+																<p:selectOneRadio layout="lineDirection"
+																	value="#{deBean.issueMonthNext}"
+																	id="txt_issueMonth_Next">
+																	<f:selectItems value="#{deBean.noOfMonthNext}" var="c"
+																		itemLabel="#{c.noOfMonth}" itemValue="#{c.noOfMonth}" />
+																	<p:ajax event="change" update="txt_issueMonth"
+																		listener="#{deBean.hideMonthValueNext}" />
+																</p:selectOneRadio>
+															</div> <p:message for="txt_issueMonth" display="text" />
+														</li>
+													</ul>
+												</div>
+											</div>
+
+										</div>
+										&nbsp;&nbsp;&nbsp;
+										<div class="col-md-2 col-sm-6 p-0 p-t-10"
+											style="width: 17% !important;">Issue Year *</div>
+										<div class="col-md-6 col-sm-6 p-0 p-b-10 ">
+											<div class="skin-section">
+												<div class="radio_b">
+													<ul class="list col-md-12 p-0">
+														<li>
+															<div class="issueYear">
+																<p:selectOneRadio layout="lineDirection"
+																	value="#{deBean.issueYear}" id="txt_issueYear">
+																	<f:selectItems value="#{deBean.noOfYear}" var="c"
+																		itemLabel="#{c.noOfYear}" itemValue="#{c.noOfYear}" />
+																</p:selectOneRadio>
+															</div>
+														</li>
+													</ul>
+												</div>
+											</div>
+
+										</div>
+										<div class="row m-0" style="width: 607px;">
+											<div class="col-md-2 col-sm-6 p-0 p-t-10"
+												style="width: 17% !important;">Section *</div>
+											<div class="col-md-5 col-sm-5 p-0">
+												<div class="skin-section">
+													<div class="radio_b">
+														<ul class="list col-md-12 p-0">
+															<li><p:selectOneRadio value="#{deBean.section}"
+																	layout="pageDirection" id="txt_section">
+																	<f:selectItems value="#{deBean.allSectionFirstOff}"
+																		var="c" itemLabel="#{c.publicationTitle}"
+																		itemValue="#{c.id}" />
+																	<p:ajax event="change"
+																		update="txt_section_next,txt_sectionother,txt_sectionspecialRegional,txt_sectionspecialTopic"
+																		listener="#{deBean.hideSectionValue}" />
+																</p:selectOneRadio> <p:message for="txt_section" display="text" /></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-4 col-sm-5 p-0">
+												<div class="skin-section">
+													<div class="radio_b">
+														<ul class="list col-md-12 p-0">
+															<li><p:selectOneRadio
+																	value="#{deBean.sectionNextValue}"
+																	layout="pageDirection" id="txt_section_next">
+																	<f:selectItems value="#{deBean.allSectionSecondOff}"
+																		var="c" itemLabel="#{c.publicationTitle}"
+																		itemValue="#{c.id}" />
+																	<p:ajax event="change"
+																		update="txt_section,txt_sectionother,txt_sectionspecialRegional,txt_sectionspecialTopic"
+																		listener="#{deBean.hideSectionNextValue}" />
+																</p:selectOneRadio> <p:message for="txt_section_next" display="text" /></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0"
+												id="txt_sectionspecialRegional">
+												<p:inputText styleClass="form-control"
+													value="#{deBean.sectionspecialRegional}"
+													rendered="#{deBean.sectionNextValue.equals('973')}"
+													style="margin-left:146px !important;width:134px;"
+													placeholder="Section Special Regional">
+												</p:inputText>
+											</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0"
+												id="txt_sectionspecialTopic">
+												<p:inputText styleClass="form-control"
+													rendered="#{deBean.sectionNextValue.equals('1032')}"
+													value="#{deBean.sectionspecialTopic}"
+													style="margin-left:146px !important;width:134px;"
+													placeholder="Section Special Topic">
+												</p:inputText>
+											</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0"
+												id="txt_sectionother">
+												<p:inputText styleClass="form-control"
+													rendered="#{deBean.section.equals('1033')}"
+													value="#{deBean.sectionother}"
+													style="margin-left:146px !important;width:134px;"
+													placeholder="Section Other">
+												</p:inputText>
+											</t:div>
+										</div>
+										
+										<div class="col-md-12 col-xs-12 p-0 p-t-10 f_l">
+											<h:commandLink style=" float:left;" class="btn btn-primary"
+												action="#{deBean.updateAndExitPublicationByParentImage}"
+												value="Update">
+												<f:param name="parentImg" value="#{deBean.id}" />
+											</h:commandLink>
+											&nbsp;
+											<h:outputLink onclick="dlg.hide()" class="btn btn-default">Cancel</h:outputLink>
+										</div>
+									</div>
+								</p:dialog>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</div>
+	<!-- END WRAPPER -->
+	<script type="text/javascript">
+		function confirmDelete() {
+			if (confirm('Are you sure, you want to delete the Image?'))
+				return true;
+			else
+				return false;
+
+		}
+	</script>
+	<!-- BEGIN MANDATORY SCRIPTS -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<!-- END MANDATORY SCRIPTS -->
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+	<script src="#{request.contextPath}/assets/js/customValidation.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+</h:body>
+</html>
+

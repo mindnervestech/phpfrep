@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta charset="utf-8" />
+	<title>Fracts-Manage Job</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon" type="text/css"
+		href="#{request.contextPath}/assets/img/favicon.png" />
+	<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<!-- END META SECTION -->
+	<!-- BEGIN MANDATORY STYLE -->
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/my_style.css"
+		rel="stylesheet" />
+	<link href="#" rel="stylesheet" id="theme-color" />
+	<!-- END  MANDATORY STYLE -->
+	
+	<f:loadBundle var="global"
+		basename="/com/obs/brs/properties/Application"></f:loadBundle>
+	
+	<style>
+.ui-button-text-only .ui-button-text {
+	padding: 0 !important;
+}
+
+.table>thead>tr>th,.table>tbody>tr>th,.table>tfoot>tr>th,.table>thead>tr>td,.table>tbody>tr>td,.table>tfoot>tr>td
+	{
+	padding: 7px !important;
+}
+
+.form-control {
+ height: 38px;
+}
+
+.table thead .icheckbox_flat,.table thead
+	.icheckbox_flat-red,.table thead .icheckbox_flat-green,.table thead
+	.icheckbox_flat-blue,.table thead .icheckbox_flat-aero,.table thead
+	.icheckbox_flat-grey,.table thead .icheckbox_flat-orange,.table thead
+	.icheckbox_flat-yellow,.table thead .icheckbox_flat-pink,.icheckbox_flat-purple,.table thead .iradio_flat,.iradio_flat-red,.table thead .iradio_flat-green,.table thead .iradio_flat-blue,.table
+	thead .iradio_flat-aero,.table thead .iradio_flat-grey,.table thead
+	.iradio_flat-orange,.table thead .iradio_flat-yellow,.table thead
+	.iradio_flat-pink,.table thead .iradio_flat-purple {
+	margin-left: 19px !important;
+	height:30px;
+}
+
+.table tbody .icheckbox_flat,.table tbody .icheckbox_flat-red,.table tbody .icheckbox_flat-green,.table tbody .icheckbox_flat-blue,.table tbody .icheckbox_flat-aero,.table tbody .icheckbox_flat-grey,.table tbody .icheckbox_flat-orange,.table tbody .icheckbox_flat-yellow,.table tbody .icheckbox_flat-pink,.icheckbox_flat-purple,.table tbody .iradio_flat,.iradio_flat-red,.table tbody .iradio_flat-green,.table tbody .iradio_flat-blue,.table tbody .iradio_flat-aero,.table tbody .iradio_flat-grey,.table tbody .iradio_flat-orange,.table tbody .iradio_flat-yellow,.table tbody .iradio_flat-pink,.table tbody .iradio_flat-purple
+	{
+	margin-left: -2px !important;
+	height:30px;
+}
+
+.btn {
+	padding: 2px 9px !important;;
+}
+.search_box {
+     padding: 5px 2px 0 9px;
+    width: 34%;
+}
+.ui-inputfield {
+    padding: 7px;
+}
+.manage_button {
+    padding: 0px 5px 0 0;
+}
+.col-md-6 {
+    width: 58%;
+}
+input {
+    width: 100%;
+}
+.ui-selectonemenu {
+height: 27px;
+margin-left: 10px;
+}
+.ui-selectonemenu .ui-selectonemenu-trigger {
+width: 24px;
+background: transparent;
+border: none;
+height: 35px;
+padding: 3px;
+}
+.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield {
+background: none;
+font-weight: 600 !important;
+padding: 2px 0px 0px 11px;
+}
+.ui-inputfield {
+height: 26px;
+}
+
+.pagination a{
+-moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #FFFFFF;
+    border-color: #DDDDDD;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    float: left;
+    line-height: 18px;
+    padding: 4px 12px;
+    text-decoration: none;
+}
+.pagination td{
+padding: 0;
+margin:0;
+}
+
+.pagination{
+float: right;
+margin:6px;
+}
+</style>
+</h:head>
+<f:metadata>
+	<f:viewParam name="fromDateSearchValue"
+		value="#{studentInvoicesFormBean.fromDateString}" />
+</f:metadata>
+<h:body data-page="tables">
+	<ui:include src="/pages/header_admin.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/userMenu.xhtml" />
+		<p:messages id="messages" showSummary="false" autoUpdate="true"
+			closable="true" showDetail="true" 
+			severity="info,fatal" />
+		<div id="main-content">
+			<div class="page-title">
+				<i class="icon-custom-left"></i>
+				<h3>Manage Data Entry</h3>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading"></div>
+						<h:form id="emp_stafflist" enctype="multipart/form-data">
+							<h:inputHidden id="activeFilter" value="#{userBean.statusFilter}" />
+							<p:messages closable="true" showDetail="true" showSummary="false" />
+							<div class="col-md-12 p-0 p-b-30" style="margin-top:-3%;">
+								<div class="col-md-6 p-10">
+									<!-- <div class="manage_button">
+										<p:inputText value="#{deBean.searchValue}"
+											styleClass="form-control" placeholder="Search by Record Number" />
+									</div> -->
+										<!-- <div class="manage_button">
+										<p:calendar value="#{deBean.issueDateSerach}" navigator="true" 
+											converter="DateTimeConverter" yearRange="1970" placeholder="Search Date"
+											pattern="MM/dd/yyyy" />
+									</div> -->
+									<!-- <div class="manage_button">
+										<p:commandButton styleClass="btn btn-default" value="Go!"
+											ajax="true" update="@all">
+										</p:commandButton>
+									</div> -->
+									<!-- <div class="manage_button">
+										<p:commandButton styleClass="btn btn-warning" ajax="true"
+											update="@all" value="Reset">
+											<f:setPropertyActionListener target="#{deBean.searchValue}"
+												value="" />
+												<f:setPropertyActionListener target="#{deBean.issueDateSerach}"
+												value="" />
+										</p:commandButton>
+									</div> -->
+								</div>
+								<div class="col-md-5 p-10">
+								<div class="manage_button">
+									<h:commandLink
+										onclick="if(checkboxCheckedDelete())return true; else return false;"
+										action="#{deBean.deleteQcJob}" styleClass="btn btn-danger delete"
+										title="Delete">
+										<i class="glyphicon glyphicon-trash"></i>
+										<span>Delete</span>
+									</h:commandLink>
+								</div>
+									&nbsp;&nbsp;
+								<div class="manage_button">									
+									<p:selectOneMenu value="#{deBean.jobStatus}" style="width: 140px;"
+										valueChangeListener="#{deBean.localeJobChangedValue}"
+										onchange="this.form.submit()">
+										<f:selectItem itemLabel="Edit Job" 	   itemValue="0" />
+										<f:selectItem itemLabel="Approved Job" itemValue="1" />
+										<f:selectItem itemLabel="Rejected Job" itemValue="2" />	
+										<f:selectItem itemLabel="Pending Job"  itemValue="3" />									
+									</p:selectOneMenu>
+								</div>
+								</div>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+										<h:outputLabel value="No record found"
+											rendered="#{empty deBean.deJobListBySeachCriteria}" />
+										<t:dataTable value="#{deBean.deJobListBySeachCriteria}"
+											id="dt_orgList" sortMode="multiple"
+											rendered="#{not empty deBean.deJobListBySeachCriteria}"
+											var="o" styleClass="table table-striped table-hover"
+											border="0" width="711" rows="#{deBean.rowsPerPage}">
+											<h:column headerClass="no-bd">
+												<f:facet name="header">
+													<h:selectBooleanCheckbox styleClass="toggle_checkbox" />
+												</f:facet>
+												<div class="div_checkbox">
+													<h:selectBooleanCheckbox styleClass="uniform"
+														value="#{deBean.checkedDe[o.id]}" />
+												</div>
+											</h:column>
+												<!-- <h:column headerClass="no-bd">
+												<f:facet name="header">
+													<h:outputText value="Parent Image" />
+												</f:facet>
+												<t:div styleClass="data_image m-b-20" style ="max-width:50px;max-hieght:35px"
+											rendered="#{deBean.childImageId ==0}">
+											<img style="width: 50px;"
+												src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{o.parentImage.id}/#{o.parentImage.imageName}"
+												class="img-responsive" alt="#{deBean.parentImageName}" />
+											</t:div>
+											</h:column> -->
+													<h:column headerClass="no-bd">
+																	<f:facet name="header">
+																		<h:outputText value="Job ID" />
+																	</f:facet>
+																	<h:outputText styleClass="text-left color-success no-bd-y"
+																		value="#{o.id}" />
+																</h:column>
+											<h:column headerClass="no-bd">
+												<f:facet name="header">
+													<h:outputText value="Publication" />
+												</f:facet>
+												<h:outputText styleClass="text-left color-success no-bd-y"
+													value="#{o.parentImage.publicationTitle.publicationTitle}" />
+											</h:column>
+											<h:column headerClass="no-bd">
+												<f:facet name="header">
+													<h:outputText value="Section" />
+												</f:facet>
+												<h:outputText styleClass="text-left color-success no-bd-y"
+													value="#{o.parentImage.section.publicationTitle}" />
+											</h:column>
+											<h:column headerClass="no-bd">
+												<f:facet name="header">
+													<h:outputText value="Issue Date" />
+												</f:facet>
+												<h:outputText styleClass="text-left color-success no-bd-y"
+													value="#{o.parentImage.issueDate}" />
+											</h:column>
+											<h:column headerClass="no-bd">
+												<f:facet name="header">
+													<h:outputText value="Created By" />
+												</f:facet>
+											<h:outputText styleClass="text-left color-success no-bd-y"
+													value="#{o.created_by.firstName}"/>
+											</h:column>
+											<h:column headerClass="no-bd">
+												<f:facet name="header">
+													<h:outputText value="Status" />
+												</f:facet>
+												<h:outputText styleClass="text-left color-success no-bd-y" style="color:blue;"
+													value="Edit" rendered="#{deBean.jobStatus==0}"/>
+														<h:outputText styleClass="text-left color-success no-bd-y" style="color:green;"
+													value="Approved" rendered="#{deBean.jobStatus==1}"/>
+														<h:outputText styleClass="text-left color-success no-bd-y" style="color:red;"
+													value="Rejected" rendered="#{deBean.jobStatus==2}"/>
+											</h:column>
+											<h:column headerClass="no-bd">
+												<f:facet name="header">
+													<h:outputText value="Actions" />
+												</f:facet>
+												<p:commandLink action="#{deBean.loadAddOrEditDe}"
+													styleClass="btn btn-warning" value="Review" style="margin-bottom: -3px;height: 27px; margin-top: -6px;margin: -4px;">
+													<f:param name="deJobId" value="#{o.id}" />
+												</p:commandLink>
+											</h:column>
+										</t:dataTable>
+										<t:dataScroller id="scroll_1" for="dt_orgList" fastStep="10"
+											pageCountVar="pageCount" pageIndexVar="pageIndex"
+											paginator="true" paginatorMaxPages="3"
+											paginatorActiveColumnStyle="font-weight:bold;"
+											immediate="true" actionListener="#{deBean.scrollerAction}"
+											styleClass="pagination pagination-right"
+											renderFacetsIfSinglePage="false">
+											<f:facet name="first">
+												<t:outputText value="&#171;" />
+											</f:facet>
+											<f:facet name="last">
+												<t:outputText value="&#187;" />
+											</f:facet>
+											<f:facet name="previous">
+												<t:outputText value="&#60;" />
+											</f:facet>
+											<f:facet name="next">
+												<t:outputText value="&#62;" />
+											</f:facet>
+										</t:dataScroller>
+										<label class="p-5 pull-left" style="width: 6%;"> <h:selectOneMenu
+												styleClass="form-control" 
+												value="#{deBean.changeRowsPerPage}" id="changeRowsPerPage"
+												valueChangeListener="#{deBean.localeChanged}"
+												onchange="this.form.submit()">
+												<f:selectItem itemLabel="15" itemValue="15" />
+												<f:selectItem itemLabel="30" itemValue="30" />
+												<f:selectItem itemLabel="45" itemValue="45" />
+											</h:selectOneMenu>
+										</label>
+									</div>
+								</div>
+							</div>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		function checkboxChecked() {
+			var checkedValue = false;
+			var inputElements = document.getElementsByTagName('input');
+			for ( var i = 0; inputElements[i]; ++i) {
+				if (inputElements[i].className === "uniform")
+					if (inputElements[i].checked) {
+						checkedValue = true;
+						break;
+					}
+			}
+			if (checkedValue) {
+					return true;
+			} else {
+				alert("Please Select Any Data Entry");
+			}
+		}
+	</script>
+
+	<script type="text/javascript">
+		function checkboxCheckedDelete() {
+			var checkedValue = false;
+			var inputElements = document.getElementsByTagName('input');
+			for ( var i = 0; inputElements[i]; ++i) {
+				if (inputElements[i].className === "uniform")
+					if (inputElements[i].checked) {
+						checkedValue = true;
+						break;
+					}
+			}
+			if (checkedValue) {
+				if (confirm('Are you sure, you want to delete the Data Entry?'))
+					return true;
+				else
+					return false;
+			} else {
+				alert("Please Select Any Data Entry");
+			}
+		}
+	</script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<!-- END MANDATORY SCRIPTS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/bootstrap-switch/bootstrap-switch.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script> -->
+	<!-- END  PAGE LEVEL SCRIPTS -->
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+
+</h:body>
+
+</html>

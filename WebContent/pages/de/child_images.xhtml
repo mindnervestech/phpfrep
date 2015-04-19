@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+<h:head>
+	<!-- BEGIN META SECTION -->
+	<!-- BEGIN META SECTION -->
+	<meta charset="utf-8" />
+	<title>Fracts</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon"
+		href="#{request.contextPath}/assets/img/favicon.png" />
+	<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.css"
+		rel="stylesheet" />
+	<link href="#" rel="stylesheet" id="theme-color" />
+	<style>
+.img_name {
+	padding: 31px 0 0 14px !important;
+}
+
+.pagination li {
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	background-color: #FFFFFF;
+	border-color: #DDDDDD;
+	border-image: none;
+	border-style: solid;
+	border-width: 1px 1px 1px 1px;
+	float: left;
+	line-height: 18px;
+	padding: 4px 12px;
+	text-decoration: none;
+	margin: 0px;
+}
+
+.pagination>li:hover {
+	background-color: #e4e7ea;
+}
+</style>
+	<f:metadata data-page="tables">
+		<f:event type="preRenderView" listener="#{deBean.loadCropImageInfo}" />
+	</f:metadata>
+	<f:loadBundle var="global"
+		basename="/com/obs/brs/properties/Application"></f:loadBundle>
+</h:head>
+
+<h:body data-page="file_upload">
+	<ui:include src="/pages/header_admin.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/userMenu.xhtml" />
+
+		<!-- BEGIN MAIN CONTENT -->
+		<h:form id="coords">
+			<div id="main-content">
+				<div class="panel-content">
+					<p:messages id="messages" showSummary="false" autoUpdate="true"
+						closable="true" showDetail="true" showIcon="false"
+						severity="info,fatal" />
+					<div class="row media-manager">
+						<div class="media-header">
+							<div id="gallery_top_menu"
+								class="col-lg-10 col-md-10 col-sm-10 col-xs-10 p-0">
+								<div class="parent_img col-md-2 col-sm-2 col-xs-2">
+									<img
+										src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImage.id}/#{deBean.parentImage.imageName}"
+										class="img-responsive" alt="" />
+								</div>
+
+								<div class="img_name col-md-3 col-sm-3 col-xs-3">#{deBean.parentImage.imageName}
+								</div>
+								<div>
+									<h:commandLink
+										class=" btn pull-right  col-md-3 col-sm-4 col-xs-4 m-10"
+										action="#{deBean.callCrop}">
+										<f:param name="imgId" value="#{deBean.parentImage.id}" />
+										<i class="fa fa-crop p-r-10"></i>Crop</h:commandLink>
+								</div>
+								<br /> <br />
+								<div class="parent_img col-md-2 col-sm-2 col-xs-2"
+									style="width: 43.667%; font-weight: normal !important; font-size: 15px !important;">
+									<h:outputText value="Publication Title:" />
+									&nbsp;#{deBean.parentImage.publicationTitle.publicationTitle} <br />
+									<h:outputText value="Section:" />
+									&nbsp;#{deBean.parentImage.section.publicationTitle} &nbsp;
+									&nbsp; &nbsp; &nbsp; &nbsp;
+									<h:outputText value="Page:" />
+									&nbsp;#{deBean.parentImage.page} <br />
+									<h:outputText value="Issue Date:" />
+									&nbsp;
+
+									<h:outputText value="#{deBean.parentImage.issueDate}">
+										<f:convertDateTime pattern="MMM dd, yyyy" />
+									</h:outputText>
+
+								</div>
+
+							</div>
+							<!--gallery_top_menu-->
+
+						</div>
+						<div class="margin-bottom-30"></div>
+						<div class="col-sm-11" style="margin-top: 150px;">
+							<div class="row">
+								<h:outputLabel style="margin-left:100px"
+									value="Parent have no Child Image"
+									rendered="#{empty deBean.childImageListFromParent}" />
+								<t:div id="div_photo_list"
+									rendered="#{not empty deBean.childImageListFromParent}">
+									<ui:repeat var="val" value="#{deBean.childImageListFromParent}"
+										rendered="#{not empty deBean.childImageListFromParent}"
+										size="#{deBean.imagePerPage-1}" offset="#{deBean.imageOffset}"
+										varStatus="status">
+										<div class="col-xs-6 col-sm-4 col-md-3">
+											<div class="panel panel-default"
+												style="max-height: 365px; min-height: 365px;">
+												<div class="panel-body">
+													<div class="thmb">
+														<div class="thmb-prev">
+															<div class="thumbnail"
+																style="max-height: 280px; min-height: 280px;">
+																<div class="overlay"
+																	style="margin-top: 236px; height: 15%;">
+																	<div class="thumbnail-actions">
+																		<small class="text-muted pull-center"><h:commandLink
+																				action="#{deBean.deleteChildImage}" update="@all"
+																				style="color:#fff;"
+																				onclick="if(confirmDelete())return true; else return false;">
+																				<f:param name="imgId" value="#{val.id}" />
+																			Delete
+																	</h:commandLink></small>
+																	</div>
+																</div>
+																<img style="max-height: 280px"
+																	src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{val.parentImage.id}/#{val.id}/#{val.imageName}"
+																	class="img-responsive" alt="" />
+															</div>
+														</div>
+														<div
+															style="width: 228px; height: 28px; word-wrap: break-word;">
+															<h5 class="media-title">
+																<a href="#">#{val.imageName} </a>
+															</h5>
+														</div>
+														<small class="text-muted pull-left"><h:outputText
+																value="#{val.parentImage.imageName}">
+															</h:outputText> </small> <small class="text-muted pull-right"><h:outputText
+																value="#{val.createdOn}">
+																<f:convertDateTime pattern="MMM dd, yyyy" />
+															</h:outputText></small>
+													</div>
+												</div>
+											</div>
+										</div>
+									</ui:repeat>
+									<div style="clear: both;">
+										<t:div
+											rendered="#{ fn:length(deBean.childImageListFromParent) > 20}">
+											<label style="width: 6%; margin-left: 15px;"
+												class="pull-left"> <h:selectOneMenu
+													styleClass="form-control" value="#{deBean.imagePerPage}"
+													id="imagePerPage"
+													valueChangeListener="#{deBean.localImageChanged}"
+													onchange="this.form.submit()">
+													<f:selectItem itemLabel="20" itemValue="20" />
+													<f:selectItem itemLabel="40" itemValue="40" />
+													<f:selectItem itemLabel="60" itemValue="60" />
+												</h:selectOneMenu>
+											</label>
+										</t:div>
+										<t:div id="paging" styleClass="pull-right"
+											rendered="#{((fn:length(deBean.childImageListFromParent) > (deBean.imagePerPage)) and (deBean.imageOffset == 0)) or ((deBean.imageOffset > 0))}">
+											<ul class="pagination pagination-right"
+												style="margin: 0px; border: 1px solid #ccc;">
+												<li style="padding-bottom: 5px;"><p:commandLink
+														disabled="true"
+														rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) ==1}">	First
+																</p:commandLink> <p:commandLink ajax="true" action="#{deBean.firstPage}"
+														update="div_photo_list"
+														rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1)>1}"> First
+																</p:commandLink></li>
+												<li style="font-size: 13px;"><p:commandLink
+														disabled="true"
+														rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) ==1}">	&#60;
+																</p:commandLink> <p:commandLink ajax="true" action="#{deBean.prevPage}"
+														update="div_photo_list"
+														rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) >1}"> &#60;
+																</p:commandLink></li>
+												<li class="active"><a href="#"> <h:outputText
+															value="#{(deBean.imageOffset/deBean.imagePerPage)+1}">
+															<f:converter converterId="javax.faces.Integer" />
+														</h:outputText></a></li>
+												<li style="font-size: 13px;"><p:commandLink ajax="true"
+														action="#{deBean.nxtPage}" update="div_photo_list"
+														rendered="#{fn:length(deBean.childImageListFromParent) > (deBean.imageOffset+deBean.imagePerPage)}">&#62;
+																</p:commandLink> <p:commandLink disabled="true"
+														rendered="#{(fn:length(deBean.childImageListFromParent) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.childImageListFromParent) == (deBean.imageOffset+deBean.imagePerPage))}">&#62;
+																</p:commandLink></li>
+												<li style="padding-bottom: 5px;"><p:commandLink
+														ajax="true" action="#{deBean.lastPage}"
+														update="div_photo_list"
+														rendered="#{fn:length(deBean.childImageListFromParent) > (deBean.imageOffset+deBean.imagePerPage)}">Last
+														<f:param name="type" value="child" />
+													</p:commandLink> <p:commandLink disabled="true"
+														rendered="#{(fn:length(deBean.childImageListFromParent) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.childImageListFromParent) == (deBean.imageOffset+deBean.imagePerPage))}">Last
+																</p:commandLink></li>
+											</ul>
+										</t:div>
+									</div>
+								</t:div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END MAIN CONTENT -->
+		</h:form>
+
+
+
+	</div>
+	<!-- END WRAPPER -->
+	<script type="text/javascript">
+		function confirmDelete() {
+			if (confirm('Are you sure, you want to delete the Image?'))
+				return true;
+			else
+				return false;
+
+		}
+	</script>
+	<!-- BEGIN MANDATORY SCRIPTS -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<!-- END MANDATORY SCRIPTS -->
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+</h:body>
+
+</html>
+

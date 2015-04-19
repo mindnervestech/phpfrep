@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+	version="2.1">
+
+	<application>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+	</application>
+
+	<converter>
+		<converter-id>DateTimeConverter</converter-id>
+		<converter-class>com.obs.brs.utils.DateTimeConverter</converter-class>
+	</converter>
+
+	<!-- configuration of navigation rules -->
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/login.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>returnhome</from-outcome>
+			<to-view-id>/login.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>returnsubscriberhome</from-outcome>
+			<to-view-id>/subscriber_login.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>dataentry</from-outcome>
+			<to-view-id>/pages/de/create_job.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>managedataentry</from-outcome>
+			<to-view-id>/pages/de/manage_job.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>returnmanagedataentry</from-outcome>
+			<to-view-id>/pages/de/manage_job.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>superadmindashboard</from-outcome>
+			<to-view-id>/pages/admin/super_admin_dashboard.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>admindashboard</from-outcome>
+			<to-view-id>/pages/admin/admin_dashboard.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>deodashboard</from-outcome>
+			<to-view-id>/pages/de/deo_dashboard.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>parentimageupload</from-outcome>
+			<to-view-id>/pages/de/image_upload.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>imageupload</from-outcome>
+			<to-view-id>/pages/de/image_upload.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>qcdashboard</from-outcome>
+			<to-view-id>/pages/qualityCheck/qc_dashboard.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>manageqcjob</from-outcome>
+			<to-view-id>/pages/qualityCheck/manage_qcjob.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>view_qcjob_by_journal</from-outcome>
+			<to-view-id>/pages/qualityCheck/view_qcjob_by_journal.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>approvalqcjob</from-outcome>
+			<to-view-id>/pages/qualityCheck/approval_job.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>manageUser</from-outcome>
+			<to-view-id>/pages/admin/manageUsers.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>returnmanageuser</from-outcome>
+			<to-view-id>/pages/admin/manageUsers.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>addUser</from-outcome>
+			<to-view-id>/pages/admin/add_user.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editUser</from-outcome>
+			<to-view-id>/pages/admin/edit_user.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>viewUserDetails</from-outcome>
+			<to-view-id>/pages/admin/view_userdetails.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>returnAdminuserProfile</from-outcome>
+			<to-view-id>/pages/admin/userProfile.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>userProfile</from-outcome>
+			<to-view-id>/pages/admin/userProfile.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editAdminUser</from-outcome>
+			<to-view-id>/pages/admin/edit_adminUser.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>subscriberadmindashboard</from-outcome>
+			<to-view-id>/pages/subscriber/subscriber_admin_dashboard.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>subscriberuserdashboard</from-outcome>
+			<to-view-id>/pages/subscriber/subscriber_admin_dashboard.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>addSubscriberUserByAdmin</from-outcome>
+			<to-view-id>/pages/subscriber/add_subscriber_user_bysuperadmin.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editSubscriberUserByAdmin</from-outcome>
+			<to-view-id>/pages/subscriber/edit_subscriber_user_bysuperadmin.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>subscriberProfile</from-outcome>
+			<to-view-id>/pages/subscriber/subscriber_profile.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>returnsubscriberProfile</from-outcome>
+			<to-view-id>/pages/subscriber/subscriber_profile.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editSubscriberProfile</from-outcome>
+			<to-view-id>/pages/subscriber/edit_subscriber.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>manageSubscriber</from-outcome>
+			<to-view-id>/pages/subscriber/manage_subscriber.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>returnmanageSubscriber</from-outcome>
+			<to-view-id>/pages/subscriber/manage_subscriber.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>addSubscriber</from-outcome>
+			<to-view-id>/pages/subscriber/add_subscriber.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editSubscriber</from-outcome>
+			<to-view-id>/pages/subscriber/edit_subscriber_byadmin.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>viewSubscriberDetails</from-outcome>
+			<to-view-id>/pages/subscriber/view_subscriber_details.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>manageSubscriberUser</from-outcome>
+			<to-view-id>/pages/subscriber/manage_sbscriber_user.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>returnmanageSubscriberUser</from-outcome>
+			<to-view-id>/pages/subscriber/manage_sbscriber_user.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>addSubscriberUser</from-outcome>
+			<to-view-id>/pages/subscriber/add_subscriber_user.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editSubscriberUser</from-outcome>
+			<to-view-id>/pages/subscriber/edit_subscriber_user.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>viewSubscriberUserDetails</from-outcome>
+			<to-view-id>/pages/subscriber/view_subscriber_user_details.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>viewSubscriberUserDetailsByAdmin</from-outcome>
+			<to-view-id>/pages/subscriber/view_subscriber_user_details_byadmin.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>viewSubscriberUserDetails</from-outcome>
+			<to-view-id>/pages/subscriber/view_subscriber_user_details.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>manageQc</from-outcome>
+			<to-view-id>/pages/qualityCheck/manageQC.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>logout</from-outcome>
+			<to-view-id>/login.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>forgotpwd</from-outcome>
+			<to-view-id>/pages/forgotpwd.xhtml</to-view-id>
+			<redirect include-view-params="false" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>resetpwd</from-outcome>
+			<to-view-id>/pages/reset_password.xhtml</to-view-id>
+			<redirect include-view-params="false" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>gallery</from-outcome>
+			<to-view-id>/pages/de/gallery.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>cropImage</from-outcome>
+			<to-view-id>/pages/de/crop_image.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>childImage</from-outcome>
+			<to-view-id>/pages/de/child_images.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>returnchildImage</from-outcome>
+			<to-view-id>/pages/de/child_images.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>manageRegion</from-outcome>
+			<to-view-id>/pages/region/manage_region.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>viewRegion</from-outcome>
+			<to-view-id>/pages/region/view_region.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>returnManageRegion</from-outcome>
+			<to-view-id>/pages/region/manage_region.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editRegion</from-outcome>
+			<to-view-id>/pages/region/add_region.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>addRegion</from-outcome>
+			<to-view-id>/pages/region/add_region.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>viewPublication</from-outcome>
+			<to-view-id>/pages/publication/view_publication.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>returnManagePublication</from-outcome>
+			<to-view-id>/pages/publication/manage_publication.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>managePublication</from-outcome>
+			<to-view-id>/pages/publication/manage_publication.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editPublication</from-outcome>
+			<to-view-id>/pages/publication/edit_publication.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>addPublication</from-outcome>
+			<to-view-id>/pages/publication/add_publication.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>manageSubscriberUserDetailsByAdmin</from-outcome>
+			<to-view-id>/pages/subscriber/manage_sbscriber_user_bysuperadmin.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>returnManageSubscriberUserDetailsByAdmin</from-outcome>
+			<to-view-id>/pages/subscriber/manage_sbscriber_user_bysuperadmin.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>setting</from-outcome>
+			<to-view-id>/pages/setting/setting.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>managereports</from-outcome>
+			<to-view-id>/pages/reports/subscriber_calendar_view.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>jasperSubscriberCalendarView</from-outcome>
+			<to-view-id>/pages/OutPutReports/jasper_subscriber_calendar_view.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>searchReportView</from-outcome>
+			<to-view-id>/pages/reports/subscriber_search_view.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>advertiserReportView</from-outcome>
+			<to-view-id>/pages/reports/subscriber_advertiser_view.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>journalReportView</from-outcome>
+			<to-view-id>/pages/reports/subscriber_journal_view.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>jasperSubscriberAdvertiserView</from-outcome>
+			<to-view-id>/pages/OutPutReports/jasper_subscriber_advertiser_view.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>jasperSubscriberJournalView</from-outcome>
+			<to-view-id>/pages/OutPutReports/jasper_subscriber_journal_view.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>jasperSubscriberListView</from-outcome>
+			<to-view-id>/pages/OutPutReports/jasper_subscriber_list_view.xhtml</to-view-id>
+			<redirect include-view-params="true" />
+		</navigation-case>
+
+	</navigation-rule>
+</faces-config>

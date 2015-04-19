@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta charset="utf-8" />
+	<title>Fracts-Profile</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon" type="text/css"
+		href="#{request.contextPath}/assets/img/favicon.png" />
+	<!-- END META SECTION -->
+	<!-- BEGIN MANDATORY STYLE -->
+	<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.min.css"
+		rel="stylesheet" />
+	<link href="#" rel="stylesheet" id="theme-color" />
+	<!-- END  MANDATORY STYLE -->
+</h:head>
+<f:metadata>
+	<f:viewParam name="msgLabel" value="#{userBean.msgLabel}" />
+	<f:event type="preRenderView" listener="#{userBean.loadMessage}" />
+	<f:viewParam name="SubscriberId" value="#{userBean.id}" />
+	<f:event type="preRenderView"
+		listener="#{userBean.loadSubscriberInfo}" />
+</f:metadata>
+<h:body data-page="tables">
+	<ui:include src="/pages/header_subscriber.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/subscriberUserMenu.xhtml" />
+		<p:messages id="messages"  showSummary="false" showDetail="true" autoUpdate="true" closable="true" severity="info,fatal"/>
+		<h:inputHidden value="#{userBean.id}" />
+		<div id="main-content">
+			<div class="page-title">
+				<i class="icon-custom-left"></i>
+				<h3>Profile</h3>
+			</div>
+		<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<h:form id="AddUserForm">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-6 col-sm-12 col-xs-12 table-responsive">
+										<div class="tab_border">
+										<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{not empty userBean.companyName}">Company Name</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{not empty userBean.companyName}">
+													<h:outputText 
+														value="#{userBean.companyName}">
+													</h:outputText>
+												</t:div>
+										<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{not empty userBean.companyLocation}" >Company Location</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{not empty userBean.companyLocation}" >
+													<h:outputText 
+														value="#{userBean.companyLocation}">
+													</h:outputText>
+												</t:div>
+												<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{not empty userBean.firstName}">Admin First Name </t:div>
+										<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{not empty userBean.firstName}"><h:outputText
+														value="#{userBean.firstName}">
+													</h:outputText> </t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{not empty userBean.lastName}" >Admin Last Name</t:div>
+												<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{not empty userBean.lastName}">
+													<h:outputText value="#{userBean.lastName}">
+													</h:outputText>
+												</t:div>
+										<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{not empty userBean.email}">Admin Email </t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{not empty userBean.email}">
+													<h:outputText 
+														value="#{userBean.email}">
+													</h:outputText>
+												</t:div>
+													<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{not empty userBean.phoneNo}">Phone Number</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{not empty userBean.phoneNo}">
+													<h:outputText value="#{userBean.phoneNo}">
+													</h:outputText>
+												</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" style="width: 40% !important;" rendered="#{not empty userBean.notes}">Notes</t:div>
+											<t:div styleClass="col-md-6 col-sm-6 p-0 p-t-10" rendered="#{not empty userBean.notes}" style="width: 40% !important;">
+													<h:outputText  
+														value="#{userBean.notes}">
+													</h:outputText>
+												</t:div>
+											<div class="col-md-12 col-xs-12 p-0 p-t-20 p-b-10 f_l">
+											<h:commandButton 
+												class="btn btn-primary"
+												action="#{userBean.loadEditSubscriber}" value="Edit">
+											</h:commandButton>
+											&nbsp;
+											<h:outputLink value="subscriber_change_password.xhtml"
+												class="btn btn-primary">Change Password</h:outputLink>
+										</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- BEGIN MANDATORY SCRIPTS -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+		<script
+		src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<!-- END MANDATORY SCRIPTS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/bootstrap-switch/bootstrap-switch.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script> -->
+	<!-- END  PAGE LEVEL SCRIPTS -->
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+</h:body>
+
+</html>

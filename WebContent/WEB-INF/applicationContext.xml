@@ -1,0 +1,110 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.springframework.org/schema/tx 
+http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+<context:component-scan base-package="com.obs.brs"/>
+
+ 	<context:component-scan base-package="com.obs.brs.service"/>
+	
+	<!-- Service Declaration -->
+	<bean id="MessageService" class="com.obs.brs.messages.MessagesService"/>
+	<bean id="UserService" class="com.obs.brs.service.UserService">
+		<property name="userDAO" ref="UserDAO" />
+	</bean>
+	<bean id="SettingsService" class="com.obs.brs.service.SettingsService">
+		<property name="settingsDAO" ref="SettingsDAO" />
+	</bean>
+	<bean id="ParentImageService" class="com.obs.brs.service.ParentImageService">
+		<property name="parentImageDAO" ref="ParentImageDAO" />
+	</bean>
+	<bean id="ChildImageService" class="com.obs.brs.service.ChildImageService">
+		<property name="childImageDAO" ref="ChildImageDAO" />
+	</bean>
+	<bean id="DeService" class="com.obs.brs.service.DeService">
+		<property name="deServiceDAO" ref="DeServiceDAO" />
+	</bean>
+	<bean id="DeletedImageService" class="com.obs.brs.service.DeletedImageService">
+		<property name="deletedImageDAO" ref="DeletedImageDAO" />
+	</bean>
+	<!-- DAO Declaration -->
+	<bean id="UserDAO" class="com.obs.brs.dao.UserDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+ 	<bean id="SettingsDAO" class="com.obs.brs.dao.SettingsDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ParentImageDAO" class="com.obs.brs.dao.ParentImageDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="ChildImageDAO" class="com.obs.brs.dao.ChildImageDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="DeServiceDAO" class="com.obs.brs.dao.DeServiceDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean id="DeletedImageDAO" class="com.obs.brs.dao.DeletedImageDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	
+<!-- Data Source Declaration -->
+	<bean id="DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />	
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/bi_reporting_system" />	
+		<property name="user" value="root" />	
+	    	<!--<property name="password" value="root" />-->
+		<property name="password" value="fracts123" />
+		<property name="maxPoolSize" value="10" />
+		<property name="maxStatements" value="0" />
+		<property name="minPoolSize" value="5" />
+	</bean>
+	
+	<!-- Session Factory Declaration -->
+	<bean id="SessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="DataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.obs.brs.model.User</value>
+				<value>com.obs.brs.model.UserType</value>
+				<value>com.obs.brs.model.Settings</value>
+				<value>com.obs.brs.model.ParentImage</value>
+				<value>com.obs.brs.model.ChildImage</value>
+				<value>com.obs.brs.model.DataEntry</value> 
+				<value>com.obs.brs.model.Subscriber</value>
+				<value>com.obs.brs.model.SubscriberUser</value>
+				<value>com.obs.brs.model.Country</value>
+				<value>com.obs.brs.model.Region</value>
+				<value>com.obs.brs.model.Publication</value>
+				<value>com.obs.brs.model.DeJob</value>
+				<value>com.obs.brs.model.DeCompany</value>
+				<value>com.obs.brs.model.SubscriberPublication</value> 
+				<value>com.obs.brs.model.States</value>
+				<value>com.obs.brs.model.DeletedImage</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+            <prop key="hibernate.hbm2ddl.auto">update</prop>
+            <prop key="hibernate.id.new_generator_mappings">true</prop>
+            <prop key="hibernate.format_sql">false</prop>
+            <prop key="use_sql_comments">true</prop>
+			<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+			<prop key="hibernate.show_sql">false</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- Enable the configuration of transactional behavior based on annotations -->
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+	<!-- Transaction Manager is defined -->
+    <bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+       <property name="sessionFactory" ref="SessionFactory"/>
+    </bean>
+</beans>

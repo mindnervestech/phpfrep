@@ -1,0 +1,160 @@
+@charset "utf-8";
+/* CSS Document */
+
+.data_image {
+height: auto;
+float: left;
+max-width: 100%; }
+
+.data_image img {
+max-width: 100%;
+}
+
+.data_image img {
+	padding:5px;
+	border: 2px solid #ccc;
+	margin:5px;
+
+}
+.f_l {
+	float:left;
+}
+
+.tab_border {
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	width:100%;
+	padding:10px;
+	float:left;
+}
+
+.assign_border {
+	border: 1px solid #ddd;
+		width:100%;
+	padding:10px;
+	float:left;
+}
+
+.top_border {
+	border-top: 1px solid #ddd;
+}
+
+.box_border {
+	border: 1px solid #ddd;
+	width:100%;
+	padding:10px;
+	float:left;
+}
+
+.g_border {
+	border: 1px solid #ddd;
+	float:left;
+		
+}
+
+.tab-content {
+	padding: 0px;
+}
+
+.p-b-5 {padding-bottom:5px !important;}
+
+.total_border {
+	border: 1px solid #ddd;
+	float:left;	
+	background-color: #FAFAFA;
+}
+
+.b_l { 
+	border-left: 1px solid #ddd;
+}
+
+.radio_b ul li{
+	float:left;
+	display:inline;
+}
+
+
+.skin-section .list li {
+	padding-bottom:3px;
+	padding-right:10px;	
+}
+
+.border_gray {
+	border: 1px solid #ddd;
+	padding:10px;
+}
+
+.table_border {
+		border: 1px solid #ddd;
+}
+
+.inner_table { border:1px solid #ccc; }
+
+.search_box { float:left; width:50%; padding:5px 0px 0px 0px; }
+.manage_search_button { float:left; padding:5px 1px 0px 0px; margin: 5px 0px; }
+.manage_button { float:left; padding:5px 1px 0px 0px; }
+
+/*-----pandian css starts here-----*/
+.trans_wrap {
+	font-size:11px;
+}
+.trans_wrap .btn {
+    font-size: 11px;
+}
+.trans_wrap .text {
+    font-size: 11px;
+}
+.ui-autocomplete {
+    width: 100%;
+}
+.ui-autocomplete-input.ui-inputfield.ui-widget.ui-state-default.ui-corner-all {
+    width: 100%;
+}
+.bord {
+    border-bottom: 4px dotted #000;
+    margin-bottom: 12px;
+    padding-bottom: 18px !important;
+}
+.ui-radiobutton .ui-radiobutton-box {
+    border-radius: 10px;
+    height: 10px;
+    line-height: 16px;
+    width: 10px;
+}
+.ui-radiobutton {
+	width:9px;
+}
+.ui-selectoneradio.ui-widget label  {
+	margin-right:8px;
+}
+.ui-radiobutton-box.ui-widget.ui-corner-all.ui-state-default.ui-state-active .ui-icon-bullet {
+    background-position: -84px -148px;
+}
+.last_input1.p-0 {
+    position: absolute;
+    right: 5px;
+    width: 30px;
+}
+.last_input1 input {
+    height: 25px;
+    width: 100%;
+}
+.last_input2.p-0 {
+    position: absolute;
+    right: 43px;
+    width: 30px;
+}
+.last_input2 input {
+    width: 100%;
+	height: 25px;
+}
+.last_input3.p-0 {
+    position: absolute;
+    right: -25px;
+    width: 30px;
+}
+.last_input3 input {
+    width: 100%;
+	height: 25px;
+}

@@ -1,0 +1,187 @@
+<html class="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<!-- BEGIN META SECTION -->
+	<meta charset="utf-8" />
+	<title>Fracts - Login</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon" href="assets/img/favicon.png" />
+	<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<link href="#{request.contextPath}/assets/css/animate-custom.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.min.css"
+		rel="stylesheet" />
+	<link href="#" rel="stylesheet" id="theme-color" />
+	<style>
+.ui-widget {
+	font-family: inherit !important;
+}
+
+.form-control::-moz-placeholder {
+	opacity: 0.77 !important;
+}
+</style>
+</h:head>
+<h:body class="login fade-in" data-page="login">
+	<div class="container" id="login-block">
+		<div class="row">
+			<div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+				<div class="login-box clearfix animated flipInY">
+					<div class="page-icon animated bounceInDown">
+						<img class="rotate-icon"
+							src="#{request.contextPath}/assets/img/account/user-icon.png"
+							alt="Key icon" />
+					</div>
+					<div class="login-logo">
+						<a href="#?login-theme-3"> <img
+							src="#{request.contextPath}/assets/img/logo.png"
+							alt="Company Logo" />
+						</a>
+					</div>
+					<hr />
+					<div class="login-form">
+						<p:messages id="msg" closable="true" showDetail="true"
+							showSummary="false" showIcon="false" />
+						<h:form id="login_form">
+							<p:inputText id="input-username" value="#{userBean.email}"
+								styleClass="input-field form-control user"
+								placeholder="Username" required="true"
+								requiredMessage="Please enter the username">
+							</p:inputText>
+							<p:password id="input-password" value="#{userBean.password}"
+								styleClass="input-field form-control password"
+								placeholder="Password" required="true"
+								requiredMessage="Please enter the password">
+							</p:password>
+							<h:commandButton id="Login" value="LOGIN" style="color: #0090D9;"
+								action="#{userBean.login}" ajax="false"
+								styleClass="btn btn-login">
+							</h:commandButton>
+						</h:form>
+						<div class="login-links">
+							<h:outputLink
+								value="#{request.contextPath}/pages/forgotpwd.xhtml">Forgot password?</h:outputLink>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+		//script for remember me
+		//load cookie value
+		if (name = getCookie("login_form:input-username"))
+			document.getElementById("login_form:input-username").value = name;
+		if (pwd = getCookie("login_form:input-password"))
+			document.getElementById("login_form:input-password").value = pwd;
+		if (name != null) {
+			document.getElementById("login_form:remember_me").checked = true;
+		}
+
+		//save login details to cookie if remember_me checks
+		function savecookie() {
+			var remember_me = document.getElementById("login_form:remember_me").checked;
+			var uname = document.getElementById("login_form:input-username").value;
+			var pwd = document.getElementById("login_form:input-password").value;
+
+			if (remember_me == true) {
+				if (uname != "") {
+					if (pwd != "") {
+						var today = new Date();
+						var expiry = new Date(today.getTime() + 30 * 24 * 3600
+								* 1000); // plus 30 days
+						document.cookie = 'login_form:input-username' + "="
+								+ escape(uname) + "; path=/; expires="
+								+ expiry.toGMTString();
+						document.cookie = 'login_form:input-password' + "="
+								+ escape(pwd) + "; path=/; expires="
+								+ expiry.toGMTString();
+					}
+				}
+			} else {
+				if (uname != "") {
+					if (pwd != "") {
+						var today = new Date();
+						var expiry = new Date(today.getTime() + 10);
+						document.cookie = 'login_form:input-username' + "="
+								+ escape(uname) + "; path=/; expires="
+								+ expiry.toGMTString();
+						document.cookie = 'login_form:input-password' + "="
+								+ escape(pwd) + "; path=/; expires="
+								+ expiry.toGMTString();
+					}
+				}
+			}
+		}
+
+		//get cookie value from name value pare
+		function getCookie(name) {
+			var re = new RegExp(name + "=([^;]+)");
+			var value = re.exec(document.cookie);
+			return (value != null) ? unescape(value[1]) : null;
+		}
+	</script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/backstretch/backstretch.min.js"></script>
+	<script src="#{request.contextPath}/assets/js/account.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/datetimepicker/jquery.datetimepicker.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+	<script src="#{request.contextPath}/assets/plugins/pickadate/picker.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/pickadate/picker.date.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/pickadate/picker.time.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-switch/bootstrap-switch.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script> -->
+	<script src="#{request.contextPath}/assets/js/form.js"></script>
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+
+</h:body>
+</html>
+

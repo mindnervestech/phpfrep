@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta charset="utf-8" />
+	<title>Fracts</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon" href="assets/img/favicon.png" />
+	<!-- END META SECTION -->
+	<!-- BEGIN MANDATORY STYLE -->
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/my_style.css"
+		rel="stylesheet" />
+	<link href="#" rel="stylesheet" id="theme-color" />
+	<!-- END  MANDATORY STYLE -->
+	<!-- BEGIN PAGE LEVEL STYLE -->
+	<link
+		href="#{request.contextPath}/assets/plugins/datetimepicker/jquery.datetimepicker.css"
+		rel="stylesheet" />
+	<link
+		href="#{request.contextPath}/assets/plugins/pickadate/themes/default.css"
+		rel="stylesheet" />
+	<link
+		href="#{request.contextPath}/assets/plugins/pickadate/themes/default.date.css"
+		rel="stylesheet" />
+	<link
+		href="#{request.contextPath}/assets/plugins/pickadate/themes/default.time.css"
+		rel="stylesheet" />
+	<!-- END PAGE LEVEL STYLE -->
+	<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+</h:head>
+<f:metadata>
+	<f:viewParam name="deId" value="#{deBean.id}" />
+	<f:event type="preRenderView" listener="#{deBean.loadDeInfo}" />
+</f:metadata>
+<h:body data-page="forms">
+	<ui:include src="/pages/header_admin.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/userMenu.xhtml" />
+		<p:messages closable="true" showDetail="true" showSummary="false" />
+		<div id="main-content">
+			<div class="page-title">
+				<i class="icon-custom-left"></i>
+				<h3>
+					<strong>Form Page-1</strong>
+				</h3>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<button type="button" class="btn btn-default">Prev</button>
+							<button type="button" class="btn btn-default">Next</button>
+							<p>
+								<strong>Ad ID:</strong>3 <strong>Jonrnal:</strong>New <strong>Section
+									Date of Publication:</strong><strong> 00-00-00</strong>
+							</p>
+						</div>
+						<h:form id="dataEntryForm">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-6 f_l">
+										<div class="data_image m-b-20">
+											<img
+												src="#{request.contextPath}/assets/img/image_data/news_paper_front-page.gif" />
+										</div>
+									</div>
+									<div class="col-md-6 f_l">
+										<div class="col-md-12 col-xs-12 p-0 p-b-10 f_l">
+											<div class="col-md-8 col-xs-6 p-0">
+												<div class="controls">
+													<input type="text" placeholder="Company"
+														class="form-control" />
+												</div>
+											</div>
+											<!--col-md-4-->
+											<div class="col-md-4 col-xs-4 p-l-10">
+												<button type="button" class="btn btn-info btn-rounded">Search</button>
+											</div>
+										</div>
+										<!--col-md-12-->
+										<div class="col-md-12 col-xs-12 p-0 p-b-10 f_l">
+											<ul id="myTab2" class="nav nav-tabs nav-dark">
+												<li class=""><a href="#tab2_1" data-toggle="tab"><i
+														class="glyphicon glyphicon-search"></i> Search Approve</a></li>
+												<li class="active"><a href="#tab2_2" data-toggle="tab"><i
+														class="glyphicon glyphicon-plus"></i> Add Company</a></li>
+
+											</ul>
+											<div id="myTabContent" class="tab-content">
+												<div class="tab-pane fade" id="tab2_1">
+													<div class="tab_border">
+														<div class="col-md-3 col-sm-6 p-0 p-t-10">Search</div>
+														<div class="col-md-6 col-sm-6 p-0 p-b-5 ">
+															<input type="text" placeholder="Company"
+																class="form-control" />
+														</div>
+													</div>
+												</div>
+												<div class="tab-pane fade active in" id="tab2_2">
+													<div class="tab_border">
+														<div class="col-md-6 col-sm-6 p-0 p-t-10">Company
+															Name</div>
+														<div class="col-md-6 col-sm-6 p-0 p-b-5 ">
+															<h:inputText styleClass="form-control"
+																value="#{deBean.companyName}" placeholder="Company"
+																requiredMessage="Please enter your Company Name"
+																validatorMessage="Special characters are not allowed in company name.">
+																<f:validateRegex pattern="^[a-zA-Z0-9' ']*$" />
+															</h:inputText>
+														</div>
+													</div>
+													<div class="col-md-6 col-sm-6 p-0 p-t-10">Address
+														line</div>
+													<div class="col-md-6 col-sm-6 p-0 p-t-10">
+														<h:inputText styleClass="form-control"
+															value="#{deBean.address}"
+															requiredMessage="Please enter your Address">
+														</h:inputText>
+													</div>
+													<div class="col-md-6 col-sm-6 p-0 p-t-10">City</div>
+													<div class="col-md-6 col-sm-6 p-0 p-t-10">
+														<h:inputText styleClass="form-control"
+															value="#{deBean.city}"
+															requiredMessage="Please enter your City"
+															validatorMessage="Special characters are not allowed in city.">
+															<f:validateRegex pattern="^[a-zA-Z0-9' ']*$" />
+														</h:inputText>
+													</div>
+													<div class="col-md-6 col-sm-6 p-0 p-t-10">State</div>
+													<div class="col-md-6 col-sm-6 p-0 p-t-10">
+														<h:inputText styleClass="form-control"
+															value="#{deBean.state}"
+															requiredMessage="Please enter your State"
+															validatorMessage="Special characters are not allowed in state.">
+															<f:validateRegex pattern="^[a-zA-Z0-9' ']*$" />
+														</h:inputText>
+													</div>
+													<div class="col-md-6 col-sm-6 p-0 p-t-10">ZipCode</div>
+													<div class="col-md-6 col-sm-6 p-0 p-t-10">
+														<h:inputText styleClass="form-control"
+															value="#{deBean.pincode}" id="zipCode" label="zipCode"
+															requiredMessage="Please Enter Zip Code!"
+															validatorMessage="Zip code must be between 4 and 10 digits"
+															converterMessage="Zip code must be numeric"
+															onkeyup="javascript:mask('dataEntryForm:zipCode', '00000', event);">
+															<f:validateLength minimum="4" maximum="10"></f:validateLength>
+															<f:converter converterId="javax.faces.Integer"></f:converter>
+														</h:inputText>
+													</div>
+													<div class="col-md-6 col-sm-6 p-0 p-t-10">Country</div>
+													<div class="col-md-6 col-sm-6 p-0 p-t-10">
+														<h:inputText styleClass="form-control"
+															value="#{deBean.country}"
+															requiredMessage="Please enter your Country"
+															validatorMessage="Special characters are not allowed in country">
+															<f:validateRegex pattern="^[a-zA-Z0-9' ']*$" />
+														</h:inputText>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 p-0 p-b-10 f_l">
+											<div class="col-md-4 col-sm-4 col-xs-12 p-0 p-t-10">Add
+												Headline</div>
+											<div class="col-md-8 col-sm-8 col-xs-12 p-0 p-b-5">
+												<p:inputTextarea styleClass="form-control"
+													value="#{deBean.adHeadLine}" />
+											</div>
+										</div>
+										<div class="total_border m-b-10">
+											<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 p-0 p-r-10 ">
+												<div class="col-md-12 col-sm-12 p-0 p-b-5">
+													<h:inputText styleClass="form-control"
+														value="#{deBean.jobListing}">
+													</h:inputText>
+												</div>
+												<div class="col-md-12 col-sm-12 p-0"
+													style="text-align: center;">Job in Listing</div>
+											</div>
+											<div
+												class="col-lg-9 col-md-9 col-sm-9 col-xs-12 p-0 p-l-10 b_l">
+												<div class="">
+													<div class="col-md-4 col-sm-4 p-0 p-b-10">Advertiser
+														Type</div>
+
+													<div class="skin-section">
+														<div class="radio_b">
+															<ul class="list col-md-12 p-0">
+																<li><h:selectOneRadio
+																		value="#{deBean.advertiserType}"
+																		layout="lineDirection">
+																		<f:selectItem itemLabel="Industry" itemValue="0" />
+																		<f:selectItem itemLabel="Government" itemValue="1" />
+																		<f:selectItem itemLabel="Academic" itemValue="2" />
+																		<f:selectItem itemLabel="Private/Other" itemValue="3" />
+																	</h:selectOneRadio></li>
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 p-0 p-b-10 f_l">
+											<div class="col-md-4 col-sm-4 col-xs-12 p-0 p-t-10">Ad
+												Type</div>
+											<div class="col-md-8 col-sm-8 col-xs-12 p-0 p-t-10">
+												<div class="skin-section">
+													<div class="radio_b">
+														<ul class="list col-md-12 p-0">
+															<li><h:selectOneRadio value="#{deBean.adType}"
+																	layout="lineDirection">
+																	<f:selectItem itemLabel="display" itemValue="0" />
+																	<f:selectItem itemLabel="line" itemValue="1" />
+																	<f:selectItem itemLabel="insert" itemValue="2" />
+																</h:selectOneRadio></li>
+														</ul>
+
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 p-0 p-b-10 f_l">
+											<div class="col-md-4 col-sm-4 col-xs-12 p-0 p-t-10">Ad
+												Orientation</div>
+											<div class="col-md-8 col-sm-8 col-xs-12 p-0 p-t-10">
+												<div class="skin-section">
+													<div class="radio_b">
+														<ul class="list col-md-12 p-0">
+															<li><h:selectOneRadio
+																	value="#{deBean.adOrientation}" layout="lineDirection">
+																	<f:selectItem itemLabel="vertical" itemValue="0" />
+																	<f:selectItem itemLabel="horizontal" itemValue="1" />
+																	<f:selectItem itemLabel="renctangle" itemValue="2" />
+																	<f:selectItem itemLabel="FP" itemValue="3" />
+																	<f:selectItem itemLabel="DPs" itemValue="4" />
+																	<f:selectItem itemLabel="fold-out" itemValue="5" />
+																	<f:selectItem itemLabel="insert" itemValue="6" />
+																</h:selectOneRadio></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 p-0 p-b-10 f_l">
+											<div class="col-md-4 col-sm-4 col-xs-12 p-0 p-t-10">Ad
+												Size</div>
+											<div class="col-md-8 col-sm-8 col-xs-12 p-0 p-t-10">
+												<div class="skin-section">
+													<div class="radio_b">
+														<ul class="list col-md-12 p-0">
+															<li><h:selectOneRadio value="#{deBean.adSize}"
+																	layout="lineDirection">
+																	<f:selectItem itemLabel="0.25" itemValue="0" />
+																	<f:selectItem itemLabel="0.33" itemValue="1" />
+																	<f:selectItem itemLabel="0.50" itemValue="2" />
+																	<f:selectItem itemLabel="1.0" itemValue="3" />
+																	<f:selectItem itemLabel="2.0" itemValue="4" />
+																	<f:selectItem itemLabel="other" itemValue="5" />
+																</h:selectOneRadio></li>
+															<li class="p-0"><h:inputText
+																	styleClass="form-control" value="#{deBean.others}">
+																</h:inputText></li>
+														</ul>
+													</div>
+
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 p-t-20 p-b-10 f_l"
+											style="background-color: #eee;">
+											<div class="col-md-3 col-xs-12 p-0 p-t-10 ">Currency
+												Range</div>
+											<div class="col-md-3 col-xs-12 p-0 ">
+												<h:selectOneMenu class="form-control" required="true"
+													value="#{deBean.currency}"
+													style="width: 50px; height:30px; ">
+													<f:selectItem itemLabel="Select" itemValue="0" />
+													<f:selectItem itemLabel="US" itemValue="1" />
+												</h:selectOneMenu>
+											</div>
+											<div class="col-md-3 col-xs-12 p-0 p-r-5 p-l-5 p-b-10">
+												<h:inputText class="form-control col-lg-1"
+													value="#{deBean.startCurrencyRange}">
+												</h:inputText>
+											</div>
+											<div class="col-md-3 col-xs-12 p-0 p-r-5 p-l-5">
+												<h:inputText class="form-control col-lg-1"
+													value="#{deBean.endCurrencyRange}">
+												</h:inputText>
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 p-0 p-t-20 p-b-10 f_l">
+											<h:commandButton class="btn btn-default"
+												action="#{deBean.updateAndExitDe}" value="Prev">
+											</h:commandButton>
+											&nbsp;
+											<h:commandButton class="btn btn-primary"
+												action="#{deBean.saveAndExitDe}" value="Save"
+												rendered="#{deBean.id == 0}" />
+											&nbsp;
+											<h:commandButton styleClass="btn btn-default"
+												action="#{deBean.saveAndNextDe}" value="Next"
+												rendered="#{deBean.id == 0}" />
+											&nbsp;
+											<h:commandButton rendered="#{deBean.id > 0}"
+												styleClass="btn btn-primary"
+												action="#{deBean.updateAndExitDe}" value="Update">
+											</h:commandButton>
+											&nbsp;
+											<h:outputLink value="manage_dataentry_users.xhtml"
+												class="btn btn-default">Cancel</h:outputLink>
+										</div>
+
+										<div class="col-md-12 col-xs-12 p-0 p-t-20 p-b-10 f_l">
+											<p:inputTextarea styleClass="form-control"
+												value="#{deBean.ocrText}" />
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- BEGIN MANDATORY SCRIPTS -->
+	<script src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<!-- END MANDATORY SCRIPTS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script
+		src="#{request.contextPath}/assets/plugins/datetimepicker/jquery.datetimepicker.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+	<script src="#{request.contextPath}/assets/plugins/pickadate/picker.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/pickadate/picker.date.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/pickadate/picker.time.js"></script>
+	<script src="#{request.contextPath}/assets/plugins/icheck/custom.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/bootstrap-switch/bootstrap-switch.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script> -->
+	<script src="#{request.contextPath}/assets/js/form.js"></script>
+	<!-- END  PAGE LEVEL SCRIPTS -->
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+		<script src="#{request.contextPath}/assets/js/customValidation.js"></script>
+</h:body>
+</html>

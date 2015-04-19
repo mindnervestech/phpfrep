@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta charset="utf-8" />
+	<title>Fracts-Manage Region</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon" type="text/css"
+		href="#{request.contextPath}/assets/img/favicon.png" />
+	<!-- END META SECTION -->
+	<!-- BEGIN MANDATORY STYLE -->
+	<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/my_style.css"
+		rel="stylesheet" />
+	<link href="#" rel="stylesheet" id="theme-color" />
+	<!-- END  MANDATORY STYLE -->
+	<style>
+.ui-button-text-only .ui-button-text {
+	padding: 0 !important;
+}
+
+.table>thead>tr>th,.table>tbody>tr>th,.table>tfoot>tr>th,.table>thead>tr>td,.table>tbody>tr>td,.table>tfoot>tr>td
+	{
+	padding: 10px !important;
+}
+
+.table thead .icheckbox_flat,.table thead
+	.icheckbox_flat-red,.table thead .icheckbox_flat-green,.table thead
+	.icheckbox_flat-blue,.table thead .icheckbox_flat-aero,.table thead
+	.icheckbox_flat-grey,.table thead .icheckbox_flat-orange,.table thead
+	.icheckbox_flat-yellow,.table thead .icheckbox_flat-pink,.icheckbox_flat-purple,.table thead .iradio_flat,.iradio_flat-red,.table thead .iradio_flat-green,.table thead .iradio_flat-blue,.table
+	thead .iradio_flat-aero,.table thead .iradio_flat-grey,.table thead
+	.iradio_flat-orange,.table thead .iradio_flat-yellow,.table thead
+	.iradio_flat-pink,.table thead .iradio_flat-purple {
+	margin-left: 20px !important;
+}
+
+.table tbody .icheckbox_flat,.table tbody .icheckbox_flat-red,.table tbody .icheckbox_flat-green,.table tbody .icheckbox_flat-blue,.table tbody .icheckbox_flat-aero,.table tbody .icheckbox_flat-grey,.table tbody .icheckbox_flat-orange,.table tbody .icheckbox_flat-yellow,.table tbody .icheckbox_flat-pink,.icheckbox_flat-purple,.table tbody .iradio_flat,.iradio_flat-red,.table tbody .iradio_flat-green,.table tbody .iradio_flat-blue,.table tbody .iradio_flat-aero,.table tbody .iradio_flat-grey,.table tbody .iradio_flat-orange,.table tbody .iradio_flat-yellow,.table tbody .iradio_flat-pink,.table tbody .iradio_flat-purple
+	{
+	margin-left: -2px !important;
+}
+
+.btn {
+	padding: 7px 19px !important;
+}
+
+#main-content .table a {
+	color: black;
+}
+</style>
+</h:head>
+<f:metadata>
+	<f:event type="preRenderView" listener="#{reportsBean.loadJournalInfo}" />
+</f:metadata>
+<h:body data-page="tables">
+	<ui:include src="/pages/header_subscriber.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/subscriberUserMenu.xhtml" />
+		<div id="main-content">
+			<div class="page-title">
+				<i class="icon-custom-left"></i>
+				<h3>Report</h3>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading"></div>
+						<h:form id="emp_stafflist" enctype="multipart/form-data">
+							<h:inputHidden id="activeFilter" value="#{userBean.statusFilter}" />
+							<p:messages closable="true" showDetail="true" showSummary="false" />
+
+							<div class="col-md-12 p-0">
+								<div style="float: left; margin-left: 30px;">
+									<h2>Journal View List</h2>
+								</div>
+								<div class="manage_button"
+									style="float: right; margin-right: 10px;">
+									<h:commandLink styleClass="btn btn-success fileinput-button"
+										title="Generate"
+										action="#{reportsBean.createCalendarViewReportDetails}">
+										<i class="glyphicon glyphicon-file"></i>
+										<f:param name="page_name" value="journal" />
+										<span>Generate Report</span>
+									</h:commandLink>
+								</div>
+							</div>
+							<div style="float: right"
+								class="col-md-2 col-sm-6 p-1 p-t-10  sub_lab">Do not
+								display Image</div>
+							<div style="float: right" class="p-0  p-t-10">
+								<div class="btn-group bootstrap-select form-control but_pad">
+									<p:selectBooleanCheckbox value="#{reportsBean.displayImage}">
+										<p:ajax update="dt_orgList" />
+									</p:selectBooleanCheckbox>
+								</div>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+
+										<h:outputLabel value="No record found"
+											rendered="#{empty reportsBean.targetList}" />
+										<p:dataTable value="#{reportsBean.targetList}"
+											columnClasses="no-bd" id="dt_orgList" rowClasses="no-bd-y"
+											rendered="#{not empty reportsBean.targetList}"
+											style="color:balck;font-size:9px" var="o"
+											styleClass="table table-striped table-hover" border="0"
+											width="711" rows="#{userBean.rowsPerPage}"
+											sortMode="multiple">
+											<!-- NAME Field -->
+											<p:column headerClass="no-bd" sortBy="#{o.jobId}">
+												<f:facet name="header">
+													<h:outputText value="Ad Number" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.jobId}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<!-- Role Field -->
+											<p:column headerClass="no-bd" sortBy="#{o.publication}">
+												<f:facet name="header">
+													<h:outputText value="Pub Name" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.publication}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<!-- Status Field -->
+											<p:column headerClass="no-bd" sortBy="#{o.section}">
+												<f:facet name="header">
+													<h:outputText value="Pub Section" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.section}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<!-- Email Field -->
+											<p:column headerClass="no-bd" sortBy="#{o.page}">
+												<f:facet name="header">
+													<h:outputText value="Pub Page" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.page}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.issueDate}">
+												<f:facet name="header">
+													<h:outputText value="Pub Issue Date" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.issueDate}" converter="DateTimeConverter">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.companyName}">
+												<f:facet name="header">
+													<h:outputText value="Advert Name" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.companyName}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.city}">
+												<f:facet name="header">
+													<h:outputText value="City Advert" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.city}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.state}">
+												<f:facet name="header">
+													<h:outputText value="State Advert" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.state}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.country}">
+												<f:facet name="header">
+													<h:outputText value="Country Advert" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.country}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.adSize}">
+												<f:facet name="header">
+													<h:outputText value="Article Size" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.adSize}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.adOrientation}">
+												<f:facet name="header">
+													<h:outputText value="Article Format" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.adOrientation}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd"
+												rendered="#{reportsBean.displayImage == 'false'}">
+												<f:facet name="header">
+													<h:outputText value="Ad Image" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}">
+													<h:graphicImage value="#{o.thumbnailImageName}" width="60"
+														height="60">
+													</h:graphicImage>
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd"
+												rendered="#{reportsBean.displayImage == 'false'}">
+												<f:facet name="header">
+													<h:outputText value="Page Image" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}">
+													<h:graphicImage value="#{o.parentImageName}" width="60"
+														height="60">
+													</h:graphicImage>
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.companyType}">
+												<f:facet name="header">
+													<h:outputText value="Company Type" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.companyType}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.adType}">
+												<f:facet name="header">
+													<h:outputText value="Article Type" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.adType}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.placementType}">
+												<f:facet name="header">
+													<h:outputText value="Placmt Type" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.placementType}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd"
+												sortBy="#{o.marketOrsectorType}">
+												<f:facet name="header">
+													<h:outputText value="Sector Type" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.marketOrsectorType}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+											<p:column headerClass="no-bd" sortBy="#{o.jobTitle}">
+												<f:facet name="header">
+													<h:outputText value="Job Title" />
+												</f:facet>
+												<p:commandLink
+													action="#{reportsBean.createSearchViewReportDetails}"
+													value="#{o.jobTitle}">
+													<f:param name="companyName" value="#{o.companyId}" />
+													<f:param name="publicationSection" value="#{o.sectionId}" />
+													<f:param name="publicationPage" value="#{o.page}" />
+													<f:param name="adSize" value="#{o.adSize} " />
+													<f:param name="adOrientation" value="#{o.adOrientation}" />
+													<f:param name="adType" value="#{o.adType}" />
+													<f:param name="state" value="#{o.state}" />
+													<f:param name="country" value="#{o.country}" />
+													<f:param name="publicationTitle" value="#{o.publicationId}" />
+												</p:commandLink>
+											</p:column>
+
+										</p:dataTable>
+										<t:dataScroller id="scroll_1" for="dt_orgList" fastStep="10"
+											pageCountVar="pageCount" pageIndexVar="pageIndex"
+											paginator="true" paginatorMaxPages="3"
+											paginatorActiveColumnStyle="font-weight:bold;"
+											immediate="true" actionListener="#{userBean.scrollerAction}"
+											styleClass="pagination pagination-right"
+											renderFacetsIfSinglePage="false">
+											<f:facet name="first">
+												<t:outputText value="&#171;" />
+											</f:facet>
+											<f:facet name="last">
+												<t:outputText value="&#187;" />
+											</f:facet>
+											<f:facet name="previous">
+												<t:outputText value="&#60;" />
+											</f:facet>
+											<f:facet name="next">
+												<t:outputText value="&#62;" />
+											</f:facet>
+										</t:dataScroller>
+										<label class="p-5 pull-right"> <h:selectOneMenu
+												styleClass="form-control"
+												value="#{userBean.changeRowsPerPage}" id="changeRowsPerPage"
+												valueChangeListener="#{userBean.localeChanged}"
+												onchange="this.form.submit()">
+												<f:selectItem itemLabel="15" itemValue="15" />
+												<f:selectItem itemLabel="30" itemValue="30" />
+												<f:selectItem itemLabel="45" itemValue="45" />
+											</h:selectOneMenu>
+										</label>
+									</div>
+								</div>
+
+							</div>
+
+
+
+						</h:form>
+
+						<!--// container-inner -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<!--<script
+		src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<!-- END MANDATORY SCRIPTS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/bootstrap-switch/bootstrap-switch.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script> -->
+	<!-- END  PAGE LEVEL SCRIPTS -->
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+</h:body>
+
+</html>
