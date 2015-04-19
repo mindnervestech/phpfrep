@@ -131,8 +131,8 @@
     </target>
               	
               	<target name="clean-deployment">
-              	       <delete dir="${tomcat.home}/work"/>
-              	    	<delete dir="${tomcat.home}/logs"/>
+              	        <!--delete dir="${tomcat.home}/work"/>
+              	    	<delete dir="${tomcat.home}/logs"/-->
               	    	<delete dir="${tomcatDeployDir}/fracts_reports"/>
               	    	<delete file="${tomcatDeployDir}/fracts_reports.war"/>
               	    </target>          	
