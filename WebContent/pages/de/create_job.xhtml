@@ -183,13 +183,13 @@ input[type="radio"],input[type="checkbox"] {
 										<t:div styleClass="data_image m-b-20"
 											rendered="#{deBean.childImageId ==0}">
 											<img
-												src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImageId}/#{deBean.parentImageName}"
+												src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImageId}/#{deBean.parentImageName}"
 												class="img-responsive" alt="#{deBean.parentImageName}" />
 										</t:div>
 										<t:div styleClass="data_image m-b-20"
 											rendered="#{deBean.childImageId!=0}">
 											<a href="#" title="#{deBean.childImageName}"><img
-												src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}"
+												src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}"
 												class="img-responsive" /> </a>
 										</t:div>
 									</div>
@@ -443,7 +443,7 @@ input[type="radio"],input[type="checkbox"] {
 																style="position: absolute; right: 0; padding: 0; top: 0;">
 																<t:div styleClass="data_image m-b-20">
 																	<img
-																		src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImageId}/#{deBean.parentImageName}"
+																		src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImageId}/#{deBean.parentImageName}"
 																		class="img-responsive" alt="" />
 																</t:div>
 															</div>

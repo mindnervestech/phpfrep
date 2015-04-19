@@ -294,7 +294,7 @@ h3{
 																				update=":dlgform:basicDialog">
 																				<img
 																					style="height: 100px; float: left; margin: 5px;"
-																					src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['parentImagePath']}#{o.parentImage.id}/#{o.parentImage.imageName}"
+																					src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{o.parentImage.id}/#{o.parentImage.imageName}"
 																					class="img-responsive"
 																					alt="#{deBean.parentImageName}" />
 																				<f:param name="parentImg"
@@ -306,7 +306,7 @@ h3{
 																				rendered="#{not empty o.childImage.imageName}"
 																				update=":dlgform:basicDialogImg">
 																				<img style="width: 100px; height: 65px;"
-																					src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['childImagePath']}#{o.parentImage.id}/#{o.childImage.id}/#{o.childImage.imageName}"
+																					src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{o.parentImage.id}/#{o.childImage.id}/#{o.childImage.imageName}"
 																					class="img-responsive"
 																					alt="#{deBean.parentImageName}" />
 																				<f:param name="parentImg"
@@ -522,7 +522,7 @@ h3{
 																			oncomplete="PF('dlg1').show();"
 																			update=":dlgform:basicDialogImg">
 																			<img
-																				src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['childImagePath']}#{o.parentImage.id}/#{o.childImage.id}/#{o.childImage.imageName}"
+																				src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{o.parentImage.id}/#{o.childImage.id}/#{o.childImage.imageName}"
 																				class="img-responsive" />
 																			<f:param name="parentImg"
 																				value="#{deBean.parentImageId}" />
