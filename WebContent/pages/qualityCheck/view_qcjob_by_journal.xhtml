@@ -277,7 +277,7 @@ h3{
 														id="dt_orgList" sortMode="multiple"
 														rendered="#{not empty deBean.qcJobListBySeachCriteria}"
 														var="o" styleClass="table table-striped table-hover"
-														border="0" width="711" rows="#{deBean.rowsPerPage}">
+														border="0" width="711" rows="#{deBean.rowsPerPage}" binding="#{table}">
 														<h:column headerClass="no-bd" style="width:40px">
 															<div class="div_checkbox">
 																<h:selectBooleanCheckbox styleClass="uniform"
@@ -287,32 +287,20 @@ h3{
 														<h:column headerClass="no-bd">
 															<td style="width: 200px;"><t:div
 																	styleClass="col-md-12 col-sm-12" style="padding:0px">
-																	<div id="frc_img">
+																	<div id="frc_img" onclick="goto(#{table.rowIndex + 1})">
 																		<t:div rendered="#{not empty o.parentImage.imageName}">
-																			<p:commandLink action="#{deBean.callParentImage}"
-																				oncomplete="PF('dlg').show();"
-																				update=":dlgform:basicDialog">
+																			<p:commandLink>
 																				<img
 																					style="height: 100px; float: left; margin: 5px;"
-																					src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{o.parentImage.id}/#{o.parentImage.imageName}"
+																					src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['parentImagePath']}#{o.parentImage.id}/#{o.parentImage.imageName}"
 																					class="img-responsive"
 																					alt="#{deBean.parentImageName}" />
-																				<f:param name="parentImg"
-																					value="#{o.parentImage.id}" />
-																				<f:param name="jobId" value="#{o.id}" />
 																			</p:commandLink>
-																			<p:commandLink action="#{deBean.callChildImage}"
-																				oncomplete="PF('dlg1').show();"
-																				rendered="#{not empty o.childImage.imageName}"
-																				update=":dlgform:basicDialogImg">
+																			<p:commandLink>
 																				<img style="width: 100px; height: 65px;"
-																					src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{o.parentImage.id}/#{o.childImage.id}/#{o.childImage.imageName}"
+																					src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['childImagePath']}#{o.parentImage.id}/#{o.childImage.id}/#{o.childImage.imageName}"
 																					class="img-responsive"
 																					alt="#{deBean.parentImageName}" />
-																				<f:param name="parentImg"
-																					value="#{o.parentImage.id}" />
-																				<f:param name="childImg" value="#{o.childImage.id}" />
-																				<f:param name="jobId" value="#{o.id}" />
 																			</p:commandLink>
 																		</t:div>
 																	</div>
@@ -518,17 +506,10 @@ h3{
 															<div class=" f_l" style="width:550px" >
 																<t:div styleClass="col-md-12">
 																	<t:div styleClass="data_image m-b-20">
-																		<p:commandLink action="#{deBean.callChildImage}"
-																			oncomplete="PF('dlg1').show();"
-																			update=":dlgform:basicDialogImg">
+																		<p:commandLink>
 																			<img
-																				src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{o.parentImage.id}/#{o.childImage.id}/#{o.childImage.imageName}"
+																				src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['childImagePath']}#{o.parentImage.id}/#{o.childImage.id}/#{o.childImage.imageName}"
 																				class="img-responsive" />
-																			<f:param name="parentImg"
-																				value="#{deBean.parentImageId}" />
-																			<f:param name="jobId" value="#{deBean.deJobid}" />
-																			<f:param name="childImg"
-																				value="#{deBean.childImageId}" />
 																		</p:commandLink>
 																	</t:div>
 																</t:div>
@@ -624,102 +605,26 @@ h3{
 																			value="#{o.ocrText}" />
 																	</div>
 																</div>
-																
 															</div>
 														</div>
 													</div>
 												</div></li>
-												
-												
 										</c:forEach>
 									</ul>
 									<Button class=" btn btn-primary f_l" style="color:white" id="slider-prev"></Button>
 									<Button class=" btn btn-primary" id="slider-next" style="float:right;color:white"></Button>
-									
 									</h:form>
 								</div>
 							</div>
 						</div>
 					</div>
-
-					<h:form id="dlgform">
-						<h:inputHidden value="#{deBean.id}" />
-						<div id="main-content">
-							<div class="page-title">
-								<i class="icon-custom-left"></i>
-							</div>
-							<div class="row">
-								<p:dialog id="basicDialog" widgetVar="dlg" draggable="true"
-									resizable="false"
-									header="Job ID:&nbsp;#{deBean.deJobid}&nbsp;&nbsp; #{deBean.parentImageName}">
-									<div class="col-md-12 f_l "
-										style="height: 500px; scroll: overflow;">
-										<div class="row m-0" style="width: 607px;">
-
-											<div class="col-md-12 col-xs-12 p-0 p-t-10 f_l">
-												<t:div styleClass="col-md-12">
-													<t:div styleClass="data_image m-b-20">
-														<img
-															src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.id}/#{deBean.parentImageName}"
-															class="img-responsive" alt="#{deBean.parentImageName}" />
-													</t:div>
-												</t:div>
-												<h:outputLink onclick="dlg.hide()" class="btn btn-default">Cancel</h:outputLink>
-											</div>
-										</div>
-									</div>
-								</p:dialog>
-								<p:dialog id="basicDialogImg" widgetVar="dlg1" draggable="true"
-									resizable="false"
-									header="Job ID:&nbsp;#{deBean.deJobid}&nbsp;&nbsp; #{deBean.childImageName}">
-									<div class="col-md-12 f_l "
-										style="height: 500px; scroll: overflow;">
-										<div class="row m-0" style="width: 607px;">
-
-											<div class="col-md-12 col-xs-12 p-0 p-t-10 f_l">
-												<t:div styleClass="col-md-12">
-													<t:div styleClass="data_image m-b-20">
-														<img
-															src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.id}/#{deBean.childImageId}/#{deBean.childImageName}"
-															class="img-responsive" alt="#{deBean.parentImageName}" />
-													</t:div>
-												</t:div>
-												<h:outputLink onclick="dlg1.hide()" class="btn btn-default">Cancel</h:outputLink>
-											</div>
-										</div>
-									</div>
-								</p:dialog>
-							</div>
-						</div>
-
-					</h:form>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<script type="text/javascript">
-	
-	
-		function checkboxCheckedDelete() {
-			var checkedValue = false;
-			var inputElements = document.getElementsByTagName('input');
-			for (var i = 0; inputElements[i]; ++i) {
-				if (inputElements[i].className === "uniform")
-					if (inputElements[i].checked) {
-						checkedValue = true;
-						break;
-					}
-			}
-			if (checkedValue) {
-				if (confirm('Are you sure, you want to delete the Data Entry?'))
-					return true;
-				else
-					return false;
-			} else {
-				alert("Please Select Any Data Entry");
-			}
-		}
+		
 		
 	</script>
 	<script
@@ -751,6 +656,7 @@ h3{
 		src="#{request.contextPath}/assets/plugins/jquery.bxslider.min.js"></script>
 
 	<script>
+	var slider;
 		$(document).ready(function() {
 			
 			$("#myTab2 li").click(function() {
@@ -761,7 +667,7 @@ h3{
 				} 
 			});
 			
-			var slider = $('.bxslider').bxSlider({
+			slider = $('.bxslider').bxSlider({
 					pager: false,
 				   slideWidth: 1155,
 				   nextSelector: '#slider-next',
@@ -770,6 +676,31 @@ h3{
 				   prevText: 'Prev'
 				});
 		});
+		
+		function goto(row){
+			$('.nav-tabs a[href="#tab1_2"]').tab('show');
+			slider.goToSlide(row-1);
+		}
+	
+		function checkboxCheckedDelete() {
+			var checkedValue = false;
+			var inputElements = document.getElementsByTagName('input');
+			for (var i = 0; inputElements[i]; ++i) {
+				if (inputElements[i].className === "uniform")
+					if (inputElements[i].checked) {
+						checkedValue = true;
+						break;
+					}
+			}
+			if (checkedValue) {
+				if (confirm('Are you sure, you want to delete the Data Entry?'))
+					return true;
+				else
+					return false;
+			} else {
+				alert("Please Select Any Data Entry");
+			}
+		}
 	</script>
 	<script src="#{request.contextPath}/assets/js/application.js"></script>
 	<script
