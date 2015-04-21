@@ -2522,6 +2522,10 @@ public class DeManagedBean implements Serializable{
 		DateFormat dateFormat = new SimpleDateFormat (DATE_FORMAT);	
 		dataEntryuserList = new ArrayList<DataEntry>();
 		this.issueDatePubSearch = (String) sessionManager.getSessionAttribute(sessionManager.ISSUEDATE);
+		if(this.issueDatePubSearch == null && this.publicationId != ""){
+			dataEntryuserList.addAll(getDeService().geAllQcJob());
+			return dataEntryuserList;
+		}
 		if(this.issueDatePubSearch != null){
 			this.issueDatePubSearch = this.issueDatePubSearch;
 		}else{

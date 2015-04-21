@@ -250,6 +250,8 @@ public interface IDeService {
 	 * @return
 	 */
 	public List<DataEntry> getIssueDateByPublication(String publicationId);
+
+	List<DataEntry> geAllQcJob();
 	
 
 }

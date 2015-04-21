@@ -366,6 +366,12 @@ public class DeServiceDAO implements IDeServiceDAO {
 		  appendQuote = "'";
 	  }
 	  String  SQL = "From DataEntry as m " +""+" where m.deCompany != null and m.isDeleted=0 AND m.parentImage.publicationTitle = "+publicationId+" "+appendDate+issueDatePubSearch+appendQuote;
+	  return getSessionFactory().getCurrentSession().createQuery(SQL).list();
+	 }
+	 
+	 @Override
+	 public List<DataEntry> geAllQcJob() {
+	  String  SQL = "From DataEntry as m " +""+" where m.deCompany != null and m.isDeleted=0";
 	  //System.out.println("SQL"+SQL);
 	  return getSessionFactory().getCurrentSession().createQuery(SQL).list();
 	 }

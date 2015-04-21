@@ -340,6 +340,15 @@ public class DeService implements IDeService{
 	}
 	  /*
      * (non-Javadoc)
+     * @see com.obs.brs.service.IDeService#geQcJobBySeach(java.lang.String)
+     */
+	@Override
+	public List<DataEntry> geAllQcJob() {
+		// TODO Auto-generated method stub
+		return getDeServiceDAO().geAllQcJob();
+	}
+	  /*
+     * (non-Javadoc)
      * @see com.obs.brs.service.IDeService#getIssueDateByPublication(java.lang.String)
      */
 	@Override

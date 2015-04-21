@@ -245,4 +245,6 @@ public interface IDeServiceDAO {
 
 	List<DataEntry> getIssueDateByPublication(String publicationId);
 
+	List<DataEntry> geAllQcJob();
+
 }
