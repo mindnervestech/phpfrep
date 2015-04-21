@@ -43,8 +43,9 @@ var $sidebar_toggle = $('.sidebar-toggle');
 var $sidebar_submenu = $('.submenu');
 
 function manageSidebar() {
+	$html.removeClass().addClass('sidebar-thin');
 
-    /* We change sidebar type on resize event */
+    /* We change sidebar type on resize event 
     $(window).bind('enterBreakpoint1200', function () {
         $html.removeClass().addClass('sidebar-medium');
         $('.sidebar-nav li.current').addClass('active');
@@ -127,7 +128,7 @@ function manageSidebar() {
                 updateOnContentResize: true
             }
         });
-    }
+    }*/
 }
 
 /* Toggle submenu open */

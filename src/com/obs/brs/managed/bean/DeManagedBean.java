@@ -111,6 +111,8 @@ public class DeManagedBean implements Serializable{
 	private long id;
 	private long companyId;
 	private String companyName;
+	private String companyURL;
+	private String department;
 	private String address;
 	private String city;
 	private String state;
@@ -209,6 +211,7 @@ public class DeManagedBean implements Serializable{
 	private String width;
 	private String jobDensity;
 	private String otherAdvertisertype;
+	private String landingPageURL;
 	private String sectionspecialRegional;
 	private String sectionspecialTopic;
 	private String sectionother;
@@ -367,6 +370,12 @@ public class DeManagedBean implements Serializable{
 	}
 	public void setOtherAdvertisertype(String otherAdvertisertype) {
 		this.otherAdvertisertype = otherAdvertisertype;
+	}
+	public String getLandingPageURL() {
+		return landingPageURL;
+	}
+	public void setLandingPageURL(String landingPageURL) {
+		this.landingPageURL = landingPageURL;
 	}
 	public String getJobDensity() {
 		return jobDensity;
@@ -830,6 +839,34 @@ public class DeManagedBean implements Serializable{
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
+	
+	/**
+	 * @return the companyName
+	 */
+	public String getCompanyURL() {
+		return companyURL;
+	}
+
+	/**
+	 * @param companyName the companyName to set
+	 */
+	public void setCompanyURL(String companyURL) {
+		this.companyURL = companyURL;
+	}
+	
+	/**
+	 * @return the address1
+	 */
+	public String getDepartment() {
+		return department;
+	}
+
+	/**
+	 * @param address1 the address1 to set
+	 */
+	public void setDepartment(String department) {
+		this.department = department;
+	}
 
 	/**
 	 * @return the address1
@@ -1271,6 +1308,7 @@ public class DeManagedBean implements Serializable{
 		this.jobDensity = dataEntry.getJobDensity();
 		this.searchValueAdvertisertype = dataEntry.getSearchValueAdvertisertype();
 		this.otherAdvertisertype = dataEntry.getOtherAdvertisertype();
+		this.landingPageURL = dataEntry.getLandingPageURL();
 		this.addColumn = dataEntry.getAddColumn();
 	}
 
@@ -1292,6 +1330,7 @@ public class DeManagedBean implements Serializable{
 		dataEntry.setJobDensity(this.jobDensity);
 		dataEntry.setSearchValueAdvertisertype(this.searchValueAdvertisertype);
 		dataEntry.setOtherAdvertisertype(this.otherAdvertisertype);
+		dataEntry.setLandingPageURL(this.landingPageURL);
 		dataEntry.setAddColumn(this.addColumn);
 		return dataEntry;
 	}
@@ -1319,6 +1358,8 @@ public class DeManagedBean implements Serializable{
 		deCompany.setState(this.state);
 		deCompany.setCountry(this.country);
 		deCompany.setPincode(this.pincode);
+		deCompany.setDepartment(this.department);
+		deCompany.setCompanyURL(this.companyURL);
 		return deCompany;
 	}
 
@@ -1982,8 +2023,8 @@ public class DeManagedBean implements Serializable{
 					BufferedImage image = ImageIO.read(cropFile);
 					int height = image.getHeight();
 					int width = image.getWidth();				
-					String heightCM=decimalFormat.format(((double)height/96)*2.54);
-					String widthCM=decimalFormat.format(((double)width/96)*2.54);					
+					String heightCM=decimalFormat.format(((double)height/96)*2.54*0.9575);
+					String widthCM=decimalFormat.format(((double)width/96)*2.54*0.9575);					
 					childImage.setImageHeight(String.valueOf(heightCM));
 					childImage.setImageWidth(String.valueOf(widthCM));
 					Long imgId = getChildImageService().addChildImage(childImage);
@@ -2110,8 +2151,8 @@ public class DeManagedBean implements Serializable{
 								BufferedImage image = ImageIO.read(files[i]);
 								int height = image.getHeight();
 								int width = image.getWidth();
-								String heightCM=decimalFormat.format(((double)height/96)*2.54);
-								String widthCM=decimalFormat.format(((double)width/96)*2.54);								
+								String heightCM=decimalFormat.format(((double)height/96)*2.54*0.9575);
+								String widthCM=decimalFormat.format(((double)width/96)*2.54*0.9575);								
 								parentImage.setImageHeight(String.valueOf(heightCM));
 								parentImage.setImageWidth(String.valueOf(widthCM));
 								Long imgId = getParentImageService().addParentImage(parentImage);

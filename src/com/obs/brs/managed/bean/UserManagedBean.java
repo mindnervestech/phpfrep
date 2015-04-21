@@ -112,7 +112,7 @@ implements Serializable
 	private static final String MANAGE_SETTING = "setting";
 	private static final String MANAGE_REPORTS = "managereports";
 	private static final String SEARCHREPORTVIEW = "searchReportView";
-	private static final String MANAGE_QCJOB = "manageqcjob";
+	private static final String MANAGE_QCJOB = "view_qcjob_by_journal";
 	List<User> userList;
 	List<Subscriber> subscriberList;
 	List<Region> regionList;
@@ -1257,6 +1257,7 @@ implements Serializable
 		this.sessionManager.removeSessionAttributeInSession("login_subscriber_user");
 		this.sessionManager.removeSessionAttributeInSession("edit_user");
 		this.sessionManager.removeSessionAttributeInSession("brs.menu");
+		this.sessionManager.removeSession();
 		return "home";
 	}
 

@@ -31,6 +31,7 @@ public class DataEntry implements Serializable{
 	private ChildImage childImage;
 	private String jobListing;
 	private String advertiserType; 
+	private String landingPageURL;
 	private String adType; 
 	private String adOrientation;
 	private String adSize;
@@ -220,6 +221,20 @@ public class DataEntry implements Serializable{
 	 */
 	public void setAdvertiserType(String advertiserType) {
 		this.advertiserType = advertiserType;
+	}
+	
+	/**
+	 * @return the landingPageURL
+	 */
+	@Column(name="DC_PAGE_URL", nullable = true)
+	public String getLandingPageURL() {
+		return landingPageURL;
+	}
+	/**
+	 * @param landingPageURL the landingPageURL to set
+	 */
+	public void setLandingPageURL(String landingPageURL) {
+		this.landingPageURL = landingPageURL;
 	}
 
 	/**
