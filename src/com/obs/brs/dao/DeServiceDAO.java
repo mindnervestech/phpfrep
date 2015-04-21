@@ -345,8 +345,14 @@ public class DeServiceDAO implements IDeServiceDAO {
 	   
 	  } 
 	  
+	  if(publicationId != null && publicationId != "" && !publicationId.equals("") ){
+		  appendPublicationID = "AND m.parentImage.publicationTitle = "+publicationId;
+		  appendQuote = "'";
+	  }
+	  
 	  if(status > 0){
 		  appendStatus = " AND m.isApproved ="+" "+status;
+		  appendQuote = "";
 	  }
 	
 	  if(!issueDatePubSearch.equals("") && !issueDatePubSearch.equals(null)){
@@ -354,11 +360,7 @@ public class DeServiceDAO implements IDeServiceDAO {
 		  appendQuote = "'";
 	  }
 	  
-	  if(publicationId != null && publicationId != "" && !publicationId.equals("") ){
-		  appendPublicationID = "AND m.parentImage.publicationTitle = "+publicationId;
-		  appendQuote = "'";
-	  }
-	  
+	 
 	  
 	  String  SQL = "From DataEntry as m " +""+" where m.deCompany != null and m.isDeleted=0 "+appendPublicationID+appendStatus+appendDate+issueDatePubSearch+appendQuote+""+appendStr;
 	  System.out.println("SQL"+SQL);
