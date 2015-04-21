@@ -209,28 +209,7 @@ h3{
 										<t:saveState value="#{deBean.publicationId}" />
 										<t:saveState value="#{deBean.jobStatus}" />
 										<div class="col-md-12 p-0">
-											<div class="col-md-6 p-10">
-												<div class="manage_button">
-													<p:inputText value="#{deBean.searchValue}"
-														placeholder="Search Text" styleClass="form-control" />
-												</div>
-
-												<div class="manage_button">
-													<p:commandButton styleClass="btn btn-default" value="Go!"
-														ajax="true" update="@all">
-													</p:commandButton>
-												</div>
-												<div class="manage_button">
-													<p:commandButton styleClass="btn btn-warning" ajax="true"
-														update="@form" value="Reset">
-														<f:setPropertyActionListener
-															target="#{deBean.searchValue}" value="" />
-														<f:setPropertyActionListener
-															target="#{deBean.issueDateSerach}" value="" />
-													</p:commandButton>
-												</div>
-											</div>
-											<div class="col-md-5 p-10">
+											<div class="col-md-12 p-10">
 												<div class="manage_button">
 													<h:commandLink
 														onclick="if(checkboxCheckedDelete())return true; else return false;"
@@ -262,6 +241,17 @@ h3{
 														<f:selectItems value="#{deBean.issueDateByPublication}" />
 													</p:selectOneMenu>
 												</div>
+												<div class="manage_button">
+													<p:selectOneMenu value="#{deBean.publicationId}"
+														id="publicationId" style="width: 140px;"
+														valueChangeListener="#{deBean.sendQcJournalView}"
+														onchange="this.form.submit()">
+														<f:selectItem itemLabel="All" itemValue="all" />
+														<f:selectItems value="#{deBean.qcJobListBySeachCriteriaNew}" var="foo" itemLabel="#{foo[0]}" itemValue="#{foo[4]}"/>
+													</p:selectOneMenu>
+												</div>
+												
+												
 
 											</div>
 										</div>

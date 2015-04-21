@@ -1337,7 +1337,7 @@ implements Serializable
 			redirectLink = "setting";
 			break;
 		case 9: 
-			redirectLink = "manageqcjob";
+			redirectLink = "view_qcjob_by_journal";
 			break;
 		}
 		return redirectLink;

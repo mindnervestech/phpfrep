@@ -2546,6 +2546,13 @@ public class DeManagedBean implements Serializable{
 		
 	}
 	
+	public List getQcJournalView(){
+		List qcjobByJournal = new ArrayList();
+		qcjobByJournal = getDeService().getDeJobByQC();
+		return qcjobByJournal;
+		
+	}
+	
 	public String loadQcJournalView(){
 		this.publicationId = facesUtils.getRequestParameterMap("publicationId");
 		sessionManager.setUserInSession(SessionManager.PUBLICATIONID,this.publicationId);
@@ -2566,6 +2573,18 @@ public class DeManagedBean implements Serializable{
 			issueDateString.add(DateStr);
 		}
 		return issueDateString;
+	}
+	
+	public void sendQcJournalView(ValueChangeEvent event)	
+	{ 
+		this.publicationId =((String) event.getNewValue());
+		if(this.publicationId.equals("all"))
+		{
+			sessionManager.setUserInSession(SessionManager.PUBLICATIONID, "");
+		}else{
+			sessionManager.setUserInSession(SessionManager.PUBLICATIONID, this.publicationId);
+		}
+		
 	}
 
 	public void sendIssueDate(ValueChangeEvent event)	

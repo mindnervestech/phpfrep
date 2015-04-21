@@ -335,6 +335,7 @@ public class DeServiceDAO implements IDeServiceDAO {
 	  String appendDate = "";
 	  String appendQuote = "";
 	  String appendStatus = "";
+	  String appendPublicationID = "";
 	  if(StringUtils.isNotBlank(searchValue)){
 	   appendStr  = appendStr+"m.parentImage.imageName LIKE '%"+searchValue+"%'";
 	   appendStr  = appendStr+" OR m.parentImage.publicationTitle.publicationTitle LIKE '%"+searchValue+"%'";
@@ -352,8 +353,15 @@ public class DeServiceDAO implements IDeServiceDAO {
 		  appendDate = "AND m.parentImage.issueDate = '";
 		  appendQuote = "'";
 	  }
-	  String  SQL = "From DataEntry as m " +""+" where m.deCompany != null and m.isDeleted=0 AND m.parentImage.publicationTitle = "+publicationId+appendStatus+" "+appendDate+issueDatePubSearch+appendQuote+""+appendStr;
-	  //System.out.println("SQL"+SQL);
+	  
+	  if(publicationId != null && publicationId != "" && !publicationId.equals("") ){
+		  appendPublicationID = "AND m.parentImage.publicationTitle = "+publicationId;
+		  appendQuote = "'";
+	  }
+	  
+	  
+	  String  SQL = "From DataEntry as m " +""+" where m.deCompany != null and m.isDeleted=0 "+appendPublicationID+appendStatus+appendDate+issueDatePubSearch+appendQuote+""+appendStr;
+	  System.out.println("SQL"+SQL);
 	  return getSessionFactory().getCurrentSession().createQuery(SQL).list();
 	 } 
 
@@ -361,11 +369,15 @@ public class DeServiceDAO implements IDeServiceDAO {
 	 public List<DataEntry> geQcJobBySeach(String publicationId, String issueDatePubSearch) {
 	  String appendDate = "";
 	  String appendQuote = "";
+	  String appendPublicationId = "";
 	  if(!issueDatePubSearch.equals("") && !issueDatePubSearch.equals(null)){
 		  appendDate = "AND m.parentImage.issueDate = '";
 		  appendQuote = "'";
 	  }
-	  String  SQL = "From DataEntry as m " +""+" where m.deCompany != null and m.isDeleted=0 AND m.parentImage.publicationTitle = "+publicationId+" "+appendDate+issueDatePubSearch+appendQuote;
+	  if(publicationId != null && publicationId != "" && !publicationId.equals("") ){
+		  appendPublicationId = "AND m.parentImage.publicationTitle = "+publicationId;
+	  }
+	  String  SQL = "From DataEntry as m " +""+" where m.deCompany != null and m.isDeleted=0 "+appendPublicationId+appendDate+issueDatePubSearch+appendQuote;
 	  return getSessionFactory().getCurrentSession().createQuery(SQL).list();
 	 }
 	 
