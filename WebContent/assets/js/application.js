@@ -82,7 +82,7 @@ function manageSidebar() {
         destroySideScroll();
     });
 
-    /* We change sidebar type on click event */
+     We change sidebar type on click event 
     $(document).on("click", "#menu-large", function () {
         $html.removeClass('sidebar-medium').removeClass('sidebar-hidden').removeClass('sidebar-thin').addClass('sidebar-large');
         $sidebar_toggle.attr('id', 'menu-medium');
