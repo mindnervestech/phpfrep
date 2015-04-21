@@ -258,7 +258,7 @@ padding: 15px;
 																	</div>
 																</div>
 																<img style="max-height: 280px;"
-																	src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{val.id}/#{val.imageName}"
+																	src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['parentImagePath']}#{val.id}/#{val.imageName}"
 																	class="img-responsive" alt="" />
 															</div>
 
@@ -271,8 +271,10 @@ padding: 15px;
 														</h:commandLink>
 															</h5>
 														</div>
-														<br /> <br /> <small class="text-muted pull-left"
-															style="margin-top: -36px;"> <p:commandLink
+														<br /> <br /> 
+														<small class="text-muted pull-left"
+															style="margin-top: -36px;width:75%;"> 
+															<p:commandLink
 																action="#{deBean.callPublication}"
 																rendered="#{empty val.publicationTitle}" ajax="true"
 																oncomplete="PF('dlg').show();" id="add"
@@ -281,10 +283,6 @@ padding: 15px;
 																<i class="fa fa-plus"></i>
 																<p:tooltip for="add" showEffect="fade" value="Add Tag" />
 															</p:commandLink>
-															
-																<h:outputText value="Child Images: #{fn:length(deBean.getChildImageListCount(val.id))}" style="margin-left: 30%;" />
-															
-															
 															 <p:commandLink action="#{deBean.callPublication}"
 																rendered="#{not empty val.publicationTitle}" ajax="true"
 																oncomplete="PF('dlg').show();" id="edit"
@@ -293,13 +291,17 @@ padding: 15px;
 																<f:param name="parentImg" value="#{val.id}" />
 																<p:tooltip for="edit" showEffect="fade" value="Edit Tag" />
 															</p:commandLink>
-														</small> <small class="text-muted pull-right"
+															<h:outputText value="Child Images: #{fn:length(deBean.getChildImageListCount(val.id))}" style="margin-left: 30%;" />
+															
+														</small> 
+														<small class="text-muted pull-right"
 															style="margin-top: -36px;"><h:commandLink
 																action="#{deBean.callCrop}" id="crop">
 																<f:param name="img" value="#{val.id}" />
 																<i class="fa fa-crop p-r-10" style="font-size: 14px;"></i>
 																<p:tooltip for="crop" showEffect="fade" value="Crop" />
-															</h:commandLink> </small>
+															</h:commandLink> 
+														</small>
 													</div>
 												</div>
 											</div>
