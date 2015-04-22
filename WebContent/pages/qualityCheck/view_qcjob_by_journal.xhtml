@@ -232,6 +232,17 @@ h3{
 
 													</p:selectOneMenu>
 												</div>
+												
+												<div class="manage_button">
+													<p:selectOneMenu value="#{deBean.publicationId}"
+														id="publicationId" 
+														valueChangeListener="#{deBean.sendQcJournalView}"
+														onchange="this.form.submit()">
+														<f:selectItem itemLabel="All" itemValue="all" />
+														<f:selectItems value="#{deBean.qcJobListBySeachCriteriaNew}" var="foo" itemLabel="#{foo[0]}" itemValue="#{foo[4]}"/>
+													</p:selectOneMenu>
+												</div>
+												
 												<div class="manage_button">
 													<p:selectOneMenu value="#{deBean.issueDatePubSearch}"
 														id="issueDatePubSearch" style="width: 140px;"
@@ -241,15 +252,7 @@ h3{
 														<f:selectItems value="#{deBean.issueDateByPublication}" />
 													</p:selectOneMenu>
 												</div>
-												<div class="manage_button">
-													<p:selectOneMenu value="#{deBean.publicationId}"
-														id="publicationId" style="width: 140px;"
-														valueChangeListener="#{deBean.sendQcJournalView}"
-														onchange="this.form.submit()">
-														<f:selectItem itemLabel="All" itemValue="all" />
-														<f:selectItems value="#{deBean.qcJobListBySeachCriteriaNew}" var="foo" itemLabel="#{foo[0]}" itemValue="#{foo[4]}"/>
-													</p:selectOneMenu>
-												</div>
+												
 												
 												
 
@@ -308,6 +311,7 @@ h3{
 																			<td>Section</td>
 																			<td>Issue Date</td>
 																			<td>Created By</td>
+																			<td>Job Page URL</td>
 																		</tr>
 																	</thead>
 																	<tbody class="no-bd-y">
@@ -321,6 +325,7 @@ h3{
 																					value="#{o.parentImage.issueDate}"></h:outputText></td>
 																			<td><h:outputText
 																					value="#{o.created_by.firstName}"></h:outputText></td>
+																			<td><h:outputText value="#{o.landingPageURL}"></h:outputText></td>
 																		</tr>
 																	</tbody>
 																</table>
@@ -399,16 +404,6 @@ h3{
 																		style="color: #333333; margin: 0px 0px 5px 0px; float: left; width: 100%; text-align: center;"></i>
 
 																	<f:param name="qcJobId" value="#{o.id}" />
-																</h:commandLink> <h:commandLink rendered="#{deBean.isApproved == '0'}"
-																	action="#{deBean.qcApprovedJobByList}">
-																	<i class="fa fa-check" title="Approve"
-																		style="margin: 0px 0px 5px 0px; color: #333333; float: left; width: 100%; text-align: center;"></i>
-																	<f:param name="baseId" value="#{o.id}" />
-																</h:commandLink> <h:commandLink rendered="#{deBean.isApproved == '0'}"
-																	action="#{deBean.qcRejectJobByList}">
-																	<i class="fa fa-times" title="Reject"
-																		style="margin: 0px 0px 5px 0px; color: #333333; float: left; width: 100%; text-align: center;"></i>
-																	<f:param name="baseId" value="#{o.id}" />
 																</h:commandLink></td>
 														</h:column>
 													</t:dataTable>

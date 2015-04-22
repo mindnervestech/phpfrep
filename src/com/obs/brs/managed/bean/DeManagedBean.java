@@ -2565,7 +2565,9 @@ public class DeManagedBean implements Serializable{
 		List issueDateByPublication = new ArrayList();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		this.publicationId = (String) sessionManager.getSessionAttribute(SessionManager.PUBLICATIONID);
-		issueDateByPublication = getDeService().getIssueDateByPublication(this.publicationId);
+		if(this.publicationId != null && this.publicationId !="" && !this.publicationId.equals("") ){
+			issueDateByPublication = getDeService().getIssueDateByPublication(this.publicationId);
+		}
 		List issueDateString  = new ArrayList();
 		for(int i=0;i<issueDateByPublication.size();i++){
 			//Date[] obj=(Date[])issueDateByPublication.get(i);
