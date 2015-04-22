@@ -11,7 +11,7 @@
 			 <nav id="sidebar" style="position: fixed;">
             <div id="main-menu">
                 <ul class="sidebar-nav">
-						<li class="p-t-20"></li>
+						<!-- <li class="p-t-20"></li> -->
 						<li id="menu2"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{settingsBean.checkVisible(2) || userBean.loginUser.userType.userType=='Super Admin'}">
@@ -35,8 +35,10 @@
 							</h:commandLink></li>
 						<li id="menu4"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{settingsBean.checkVisible(4)}">
-								<i class="glyph-icon flaticon-frontend"></i><span class="sidebar-text">Transcription</span>
+								rendered="#{settingsBean.checkVisible(4)}" id="transcription">
+								<i class="glyph-icon flaticon-frontend"></i>
+								<!-- <p:tooltip for="transcription" showEffect="fade" value="Transcription" style="padding:10px;" /> -->
+								<span class="sidebar-text">Transcription</span>
 								<f:param name="menuId" value="4" />
 							</h:commandLink></li>
 								<li id="menu5"><h:commandLink
