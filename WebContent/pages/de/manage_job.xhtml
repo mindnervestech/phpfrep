@@ -140,9 +140,9 @@ margin:6px;
 	<ui:include src="/pages/header_admin.xhtml" />
 	<div id="wrapper">
 		<ui:include src="/pages/userMenu.xhtml" />
-		<p:messages id="messages" showSummary="false" autoUpdate="true"
+		<!-- <p:messages id="messages" showSummary="false" autoUpdate="true"
 			closable="true" showDetail="true" 
-			severity="info,fatal" />
+			severity="info,fatal" /> -->
 		<div id="main-content">
 			<div class="page-title">
 				<i class="icon-custom-left"></i>
@@ -155,7 +155,7 @@ margin:6px;
 						<h:form id="emp_stafflist" enctype="multipart/form-data">
 							<h:inputHidden id="activeFilter" value="#{userBean.statusFilter}" />
 							<p:messages closable="true" showDetail="true" showSummary="false" />
-							<div class="col-md-12 p-0 p-b-30" style="margin-top:-3%;">
+							<div class="col-md-12 p-0 p-b-30">
 								<div class="col-md-6 p-10">
 									<!-- <div class="manage_button">
 										<p:inputText value="#{deBean.searchValue}"

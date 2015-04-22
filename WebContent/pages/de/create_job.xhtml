@@ -128,9 +128,8 @@ input[type="radio"],input[type="checkbox"] {
 							<div class="panel-heading">
 								<div class="col-lg-12 p-b-10">
 									<div class="col-lg-3">
-										<t:div rendered="#{deBean.checkPreVal!=true}"
-											style="width:200px;">
-											<h:commandButton styleClass="btn btn-default" value="Prev"
+										<t:div rendered="#{deBean.checkPreVal!=true}" style="float:left;">
+											<h:commandButton styleClass="btn btn-default" value="Prev" 
 												update="@all">
 												<f:ajax execute="@form" render="dataEntryForm"
 													listener="#{deBean.changePreVal}" />
@@ -152,8 +151,7 @@ input[type="radio"],input[type="checkbox"] {
 												<f:param name="baseId" value="#{deBean.deDataId}" />
 											</h:commandButton>
 										</t:div>
-										<t:div rendered="#{deBean.checkVal==true}"
-											style="float:left;margin-left:30px;">
+										<t:div rendered="#{deBean.checkVal==true}">
 											<h:commandButton styleClass="btn btn-default" value="Next"
 												disabled="true" />
 										</t:div>
@@ -225,8 +223,8 @@ input[type="radio"],input[type="checkbox"] {
 																<p:commandLink ajax="true"
 																	oncomplete="PF('addCompany').show();" id="edit">
 																	<i class="fa fa-plus"></i>
-																	<p:tooltip for="edit" showEffect="fade"
-																		value="Edit Tag" />
+																	<!-- <p:tooltip for="edit" showEffect="fade"
+																		value="Edit Tag" /> -->
 																</p:commandLink>
 															</div>
 														</div>
@@ -471,7 +469,6 @@ input[type="radio"],input[type="checkbox"] {
 																		<f:selectItem itemLabel="$" itemValue="1" />
 																		<f:selectItem itemLabel="£" itemValue="2" />
 																		<f:selectItem itemLabel="€" itemValue="3" />
-
 																	</h:selectOneMenu>
 																</div>
 																<div class="col-md-3 col-xs-12 p-0 p-r-5 p-l-5 p-b-10">
@@ -584,8 +581,7 @@ input[type="radio"],input[type="checkbox"] {
 						</p:inputText>
 					</div>
 
-					<div class="row m-0  m-5" style="font-weight: bold;">Department 
-						line</div>
+					<div class="row m-0  m-5" style="font-weight: bold;">Department</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.department}"
 							placeholder="department "
