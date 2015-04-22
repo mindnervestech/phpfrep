@@ -126,6 +126,10 @@ padding: 0;
 margin:0;
 }
 
+h3{
+	margin-top: 0px;
+}
+
 .pagination{
 float: right;
 margin:6px;
@@ -151,11 +155,10 @@ margin:6px;
 			<div class="row">
 				<div class="col-md-12">
 					<div class="panel panel-default">
-						<div class="panel-heading"></div>
 						<h:form id="emp_stafflist" enctype="multipart/form-data">
 							<h:inputHidden id="activeFilter" value="#{userBean.statusFilter}" />
 							<p:messages closable="true" showDetail="true" showSummary="false" />
-							<div class="col-md-12 p-0 p-b-30">
+							<div class="col-md-12 p-0 p-b-30"  style="display:none">
 								<div class="col-md-6 p-10">
 									<!-- <div class="manage_button">
 										<p:inputText value="#{deBean.searchValue}"
@@ -271,14 +274,10 @@ margin:6px;
 											</h:column>
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
-													<h:outputText value="Status" />
+													<h:outputText value="Progress" />
 												</f:facet>
-												<h:outputText styleClass="text-left color-success no-bd-y" style="color:blue;"
-													value="Edit" rendered="#{deBean.jobStatus==0}"/>
-														<h:outputText styleClass="text-left color-success no-bd-y" style="color:green;"
-													value="Approved" rendered="#{deBean.jobStatus==1}"/>
-														<h:outputText styleClass="text-left color-success no-bd-y" style="color:red;"
-													value="Rejected" rendered="#{deBean.jobStatus==2}"/>
+												<h:outputText styleClass="text-left color-success no-bd-y" 
+													value="#{(deBean.getStatus(o.id))}"/>
 											</h:column>
 											<h:column headerClass="no-bd">
 												<f:facet name="header">

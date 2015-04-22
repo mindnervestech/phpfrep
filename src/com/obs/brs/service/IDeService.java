@@ -252,6 +252,7 @@ public interface IDeService {
 	public List<DataEntry> getIssueDateByPublication(String publicationId);
 
 	List<DataEntry> geAllQcJob();
-	
+
+	public String getStatusOfChildImageCompletion(long string);
 
 }

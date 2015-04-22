@@ -395,6 +395,21 @@ public class DeServiceDAO implements IDeServiceDAO {
 		String 	SQL = "From DataEntry as m where m.isDeleted=0 and m.deJobid='"+jobid+"' ORDER BY m.id ASC";
 		return getSessionFactory().getCurrentSession().createQuery(SQL).list();
 	}
+	
+	@Override
+	public String getStatusOfChildImageCompletion(long jobid) {
+		String 	SQL = "From DataEntry as m where m.isDeleted=0 and m.isDeleted=0 and m.deJobid='"+jobid+"'";
+		List<DataEntry> dataEntries = getSessionFactory().getCurrentSession().createQuery(SQL).list();
+		long compleated = 0;
+		for(DataEntry data : dataEntries){
+			if(data.getDeCompany() != null){
+				compleated++;
+			}
+		}
+		String status =  compleated+"/"+dataEntries.size()+"";
+		return status;
+	}
+	
 
 
 }

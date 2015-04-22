@@ -247,4 +247,6 @@ public interface IDeServiceDAO {
 
 	List<DataEntry> geAllQcJob();
 
+	String getStatusOfChildImageCompletion(long jobid);
+
 }

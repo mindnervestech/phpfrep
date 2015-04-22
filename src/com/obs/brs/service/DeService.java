@@ -365,6 +365,12 @@ public class DeService implements IDeService{
 		// TODO Auto-generated method stub
 		return getDeServiceDAO().getImagesByJobid(jobid);
 	}
+	
+	@Override
+	public String getStatusOfChildImageCompletion(long jobid) {
+		// TODO Auto-generated method stub
+		return getDeServiceDAO().getStatusOfChildImageCompletion(jobid);
+	}
 
 
 

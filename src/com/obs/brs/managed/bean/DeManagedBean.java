@@ -2511,6 +2511,20 @@ public class DeManagedBean implements Serializable{
 		Collections.reverse(deJobList);
 		return deJobList;
 	}
+	
+	public String getStatus(int id) {
+		//Object sessionObj = sessionManager.getSessionAttribute(SessionManager.CROPIMAGE);
+	
+		String status="";
+		status = getDeService().getStatusOfChildImageCompletion(id);
+		if(status == null){
+			status = 0+"";
+		}
+		
+		return status;
+	}
+	
+	
 	public List<DataEntry> getQcJobListBySeachCriteria() {
 		User user = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 		this.publicationId = (String) sessionManager.getSessionAttribute(SessionManager.PUBLICATIONID);
@@ -2537,6 +2551,9 @@ public class DeManagedBean implements Serializable{
 				dataEntryuserList.addAll(getDeService().geQcJobBySeachCriteria(this.jobStatus,this.searchValue,this.publicationId,this.issueDatePubSearch));
 		}
 		Collections.reverse(dataEntryuserList);
+		for(DataEntry dataEntry: dataEntryuserList){
+			checkedQc.put(dataEntry.getId(),Boolean.FALSE);
+		}
 		return dataEntryuserList;
 	}
 	public List getQcJobListBySeachCriteriaNew(){
