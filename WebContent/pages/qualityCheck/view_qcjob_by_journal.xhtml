@@ -644,6 +644,10 @@ h3{
 	var slider;
 		$(document).ready(function() {
 			
+			$(".sidebar-nav > li").removeClass();
+			
+			$("#menu9").addClass("current active");
+			
 			$("#myTab2 li").click(function() {
 			    if (!$(this).hasClass("active")) {
 					setTimeout(function() {

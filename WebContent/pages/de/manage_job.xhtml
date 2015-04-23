@@ -330,6 +330,12 @@ margin:6px;
 	</div>
 
 	<script type="text/javascript">
+	
+		$(document).ready(function() {
+			$(".sidebar-nav > li").removeClass();
+			$("#menu4").addClass("current active");
+		});
+		
 		function checkboxChecked() {
 			var checkedValue = false;
 			var inputElements = document.getElementsByTagName('input');

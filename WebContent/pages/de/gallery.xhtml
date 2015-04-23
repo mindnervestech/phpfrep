@@ -170,7 +170,7 @@ padding: 15px;
 						closable="true" showDetail="true" showIcon="false"
 						severity="info,fatal" />
 					<div class="row media-manager">
-						<ul class="media-header">
+						<ul class="media-header" style="margin-right: 0px;">
 							<li><p:commandLink styleClass="c-dark" ajax="true"
 									action="#{deBean.allImage}" update="div_photo_list">All</p:commandLink></li>
 							<li><a href="#"><i class="glyphicon glyphicon-camera"></i>
@@ -181,7 +181,7 @@ padding: 15px;
 									<i class="fa fa-cloud-download c-white"></i> Upload Files</h:commandLink></li>
 						</ul>
 						<div class="margin-bottom-30"></div>
-						<div class="col-sm-11">
+						<div class="col-sm-12">
 							<div class="row">
 								<h:outputLabel style="margin-left:100px" value="No Image found"
 									rendered="#{empty deBean.parentImageList}" />
@@ -631,6 +631,12 @@ padding: 15px;
 				return false;
 
 		}
+		
+		
+	    $(document).ready(function() {
+			$(".sidebar-nav > li").removeClass();
+			$("#menu6").addClass("current active");
+		});
 	</script>
 	<!-- BEGIN MANDATORY SCRIPTS -->
 	<script
