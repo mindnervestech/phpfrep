@@ -295,7 +295,9 @@ padding: 15px;
 															
 														</small> 
 														<small class="text-muted pull-right"
-															style="margin-top: -36px;"><h:commandLink
+															style="margin-top: -36px;">
+															<h:commandLink
+																rendered="#{not empty val.publicationTitle}"
 																action="#{deBean.callCrop}" id="crop">
 																<f:param name="img" value="#{val.id}" />
 																<i class="fa fa-crop p-r-10" style="font-size: 14px;"></i>

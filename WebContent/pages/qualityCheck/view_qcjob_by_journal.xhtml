@@ -449,6 +449,8 @@ h3{
 							<div class="tab-panev fade" id="tab1_2">
 								<div class="tab_border p-0">
 									<h:form id="emp_staffsinglelist" enctype="multipart/form-data">
+									<Button class=" btn btn-primary f_l" style="color:white" id="slider-prev"></Button>
+									<Button class=" btn btn-primary" id="slider-next" style="float:right;color:white"></Button>
 									<ul class="bxslider">
 										<c:forEach var="o" items="#{deBean.qcJobListBySeachCriteria}">
 											<li><p:ajaxStatus
@@ -596,8 +598,6 @@ h3{
 												</div></li>
 										</c:forEach>
 									</ul>
-									<Button class=" btn btn-primary f_l" style="color:white" id="slider-prev"></Button>
-									<Button class=" btn btn-primary" id="slider-next" style="float:right;color:white"></Button>
 									</h:form>
 								</div>
 							</div>
