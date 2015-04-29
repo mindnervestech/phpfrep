@@ -148,12 +148,12 @@ public class DeManagedBean implements Serializable{
 	List<ChildImage> childImageList = new ArrayList<ChildImage>();
 	List<DataEntry> childImagesDataList = new ArrayList<DataEntry>();
 	//For cropping 
-	private int cropWidth;
-	private int cropHeight;
-	private int cropX1;
-	private int cropX2;
-	private int cropY1;
-	private int cropY2;
+	private float cropWidth;
+	private float cropHeight;
+	private float cropX1;
+	private float cropX2;
+	private float cropY1;
+	private float cropY2;
 	private String croppedImageName;
 	private ParentImage parentImage;
 	private String msgLabel;
@@ -671,73 +671,73 @@ public class DeManagedBean implements Serializable{
 	/**
 	 * @return the cropWidth
 	 */
-	public int getCropWidth() {
+	public float getCropWidth() {
 		return cropWidth;
 	}
 	/**
 	 * @param cropWidth the cropWidth to set
 	 */
-	public void setCropWidth(int cropWidth) {
+	public void setCropWidth(float cropWidth) {
 		this.cropWidth = cropWidth;
 	}
 	/**
 	 * @return the cropHeight
 	 */
-	public int getCropHeight() {
+	public float getCropHeight() {
 		return cropHeight;
 	}
 	/**
 	 * @param cropHeight the cropHeight to set
 	 */
-	public void setCropHeight(int cropHeight) {
+	public void setCropHeight(float cropHeight) {
 		this.cropHeight = cropHeight;
 	}
 	/**
 	 * @return the cropX1
 	 */
-	public int getCropX1() {
+	public float getCropX1() {
 		return cropX1;
 	}
 	/**
 	 * @param cropX1 the cropX1 to set
 	 */
-	public void setCropX1(int cropX1) {
+	public void setCropX1(float cropX1) {
 		this.cropX1 = cropX1;
 	}
 	/**
 	 * @return the cropX2
 	 */
-	public int getCropX2() {
+	public float getCropX2() {
 		return cropX2;
 	}
 	/**
 	 * @param cropX2 the cropX2 to set
 	 */
-	public void setCropX2(int cropX2) {
+	public void setCropX2(float cropX2) {
 		this.cropX2 = cropX2;
 	}
 	/**
 	 * @return the cropY1
 	 */
-	public int getCropY1() {
+	public float getCropY1() {
 		return cropY1;
 	}
 	/**
 	 * @param cropY1 the cropY1 to set
 	 */
-	public void setCropY1(int cropY1) {
+	public void setCropY1(float cropY1) {
 		this.cropY1 = cropY1;
 	}
 	/**
 	 * @return the cropY2
 	 */
-	public int getCropY2() {
+	public float getCropY2() {
 		return cropY2;
 	}
 	/**
 	 * @param cropY2 the cropY2 to set
 	 */
-	public void setCropY2(int cropY2) {
+	public void setCropY2(float cropY2) {
 		this.cropY2 = cropY2;
 	}
 	/**
@@ -1935,8 +1935,14 @@ public class DeManagedBean implements Serializable{
 				Image orig = ImageIO.read(f);
 
 				int transparency = ((BufferedImage) orig).getColorModel().getTransparency();
-				BufferedImage bi = new BufferedImage(getCropWidth(), getCropHeight(), transparency);
-				bi.createGraphics().drawImage(orig, 0, 0, getCropWidth(), getCropHeight(), getCropX1(), getCropY1(),getCropX2(), getCropY2(), null);
+				BufferedImage bi = new BufferedImage(Math.round(getCropWidth()), Math.round(getCropHeight()), transparency);
+				bi.createGraphics().drawImage(orig, 0, 0, 
+						Math.round(getCropWidth()), 
+						Math.round(getCropHeight()), 
+						Math.round(getCropX1()), 
+						Math.round(getCropY1()),
+								Math.round(getCropX2()), 
+										Math.round(getCropY2()), null);
 
 				//save cropped area as new image file
 				new File(imageBasePath+CommonProperties.getTempPath()+currentUser.getId()).mkdirs();

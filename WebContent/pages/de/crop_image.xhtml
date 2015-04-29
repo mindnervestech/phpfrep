@@ -27,58 +27,11 @@
 		jQuery(function($) {
 
 			var jcrop_api;
-			
-			var img =$('.target'); // Get my img elem
-			var pic_real_width, pic_real_height;
-			$("<img/>").attr("src", $(img).attr("src")).load(function() {
-		        pic_real_width = this.width;   // Note: $(this).width() will not
-		        pic_real_height = this.height; // work for in memory images.
-		        console.log("pic_real_height"+pic_real_height);
-		        $('.target').Jcrop({
-		            onChange: showCoords,
-		            onSelect: showCoords,
-		     		trueSize: [pic_real_width, pic_real_height] 
-	       		 }, function() {
-					jcrop_api = this;
-				});
-		        
-	    	});
-			
-		
-	
-			$('#coords').on('change','input',
-				function(e) {
-					console.log("ON CHANGE");
-					var x1 = $('.x1').val(), x2 = $('.x2').val(), y1 = $(
-							'.y1').val(), y2 = $('.y2').val();
-					jcrop_api.setSelect([ x1, y1, x2, y2 ]);
-				});
-
-			
-		}); 
-		function showCoords(c) {
-			
-			$('.x1').val(c.x);
-			$('.y1').val(c.y);
-			$('.x2').val(c.x2);
-			$('.y2').val(c.y2);
-			$('.w').val(c.w);
-			$('.h').val(c.h);
-			
-			console.log(" :: SHOW CHORDS ::"+$('.x1').val());
-			
-			console.log(" :: SHOW CHORDS ::"+$('.y1').val());
-		};
-		
-		// Simple event handler, called from onChange and onSelect
-		// event handlers, as per the Jcrop invocation above
-		
-		/* jQuery(function($) {
-				var jcrop_api;
 
 			$('.target').Jcrop({
 				onChange : showCoords,
-				onSelect : showCoords
+				onSelect : showCoords,
+				boxWidth :700
 			}, function() {
 				jcrop_api = this;
 			});
@@ -161,6 +114,7 @@
 									<div class="media-manager">
 										<t:div styleClass="data_image m-b-20" id="imgcrp_div">
 											<h:graphicImage id="imgcrp"
+											    style="max-width:700px" 
 												value="#{global['baseURL']}#{global['imageContextPath']}#{global['tempPath']}#{deBean.croppedImageName}" />
 										</t:div>
 									</div>
@@ -206,7 +160,7 @@
 									<div class="col-md-8 f_l">
 										<div class="data_image m-b-20" id="testWrap">
 											<h:graphicImage alt="crop image" id="target"
-												styleClass="target" style="max-width:700px"
+												styleClass="target"
 												value="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImage.id}/#{deBean.parentImage.imageName}" />
 										</div>
 										<!--data_image-->
