@@ -129,6 +129,22 @@
     <servlet-name>UploadServlet</servlet-name>
     <url-pattern>/uploadservlet</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+        <servlet-name>RestApplication</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>com.obs.brs.controller.RestApplication</param-value>
+        </init-param>
+       
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RestApplication</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+    
+    
   <context-param>
     <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
     <param-value>true</param-value>
