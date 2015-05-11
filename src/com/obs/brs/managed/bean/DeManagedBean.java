@@ -30,7 +30,7 @@ import javax.imageio.ImageIO;
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.custom.datascroller.ScrollerActionEvent;
 import org.primefaces.context.RequestContext;
-
+import org.primefaces.event.SelectEvent;
 
 import com.obs.brs.messages.IMessagesService;
 import com.obs.brs.model.ChildImage;
@@ -43,7 +43,7 @@ import com.obs.brs.model.ParentImage;
 import com.obs.brs.model.Publication;
 import com.obs.brs.model.States;
 import com.obs.brs.model.User;
-import com.obs.brs.ocr.Ocr;
+import com.obs.brs.service.DeService;
 import com.obs.brs.service.IChildImageService;
 import com.obs.brs.service.IDeService;
 import com.obs.brs.service.IDeletedImageService;
@@ -147,6 +147,7 @@ public class DeManagedBean implements Serializable{
 	List<ParentImage> parentImageList = new ArrayList<ParentImage>();
 	List<ChildImage> childImageList = new ArrayList<ChildImage>();
 	List<DataEntry> childImagesDataList = new ArrayList<DataEntry>();
+	String filterParentImage;
 	//For cropping 
 	private float cropWidth;
 	private float cropHeight;
@@ -251,6 +252,12 @@ public class DeManagedBean implements Serializable{
 	}
 	public String getJobStatusGot() {
 		return jobStatusGot;
+	}
+	public void setFilterParentImage(String filterParentImage) {
+		this.filterParentImage = filterParentImage;
+	}
+	public String getFilterParentImage() {
+		return filterParentImage;
 	}
 	public void setJobStatusGot(String jobStatusGot) {
 		this.jobStatusGot = jobStatusGot;
@@ -1581,6 +1588,11 @@ public class DeManagedBean implements Serializable{
 						/*if(dataEntry != null){
 							this.ocrText = dataEntry.getOcrText();
 						}*/
+						Object childImageSessionObj = sessionManager.getSessionAttribute(SessionManager.CHILDIMAGEID);
+						int childImageIdSession   = childImageSessionObj!=null?((Integer)childImageSessionObj).intValue():0; // get job id
+						if(childImageIdSession > 0){
+							dataEntry = deService.getDataEntryByChildImageId(childImageIdSession);
+						}
 						if(dataEntry != null && !dataEntry.getIsDeleted()){
 							if(dataEntry != null){
 								this.childImageId=dataEntry.getChildImage()!=null?dataEntry.getChildImage().getId():0L;
@@ -1642,6 +1654,7 @@ public class DeManagedBean implements Serializable{
 	 */
 	public String loadAddOrEditDe(){
 		String flag=null;
+		sessionManager.removeSessionAttributeInSession(SessionManager.CHILDIMAGEID);
 		String val = facesUtils.getRequestParameterMap("deJobId");
 		int deJobId = Integer.valueOf(val!=null?val:"0");
 		if(deJobId >0){
@@ -1825,6 +1838,21 @@ public class DeManagedBean implements Serializable{
 			sessionManager.setSessionAttributeInSession(SessionManager.CROPIMAGE, imageId);
 		return CROP_IMAGE;
 	}
+	
+	/**
+	 * redirect crop image 
+	 * @return
+	 */
+	public void doneParentImage(){
+		String val = facesUtils.getRequestParameterMap("parentImg");
+		int imageId = Integer.valueOf(val!=null?val:"0");
+		if(imageId >0){
+			ParentImage parentImage = getParentImageService().getParentImageById(imageId);
+			parentImage.setStatus(1);
+			getParentImageService().updateParentImage(parentImage);
+			getParentImageList();
+		}
+	}
 
 	/**
 	 * redirect crop image 
@@ -1856,6 +1884,21 @@ public class DeManagedBean implements Serializable{
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Get Parent Image List 
+	 * 
+	 * @return List - ParentImage 
+	 */
+	public void filterParentImages() {
+		parentImageList = new ArrayList<ParentImage>();
+		System.out.println(":::::::: "+filterParentImage);
+		parentImageList.addAll(getParentImageService().getParentImage());
+		for(ParentImage image : parentImageList){
+			image.childImageList.addAll(getChildImageService().getChildImagesByParent(image.getId()));
+		}
+		Collections.reverse(parentImageList);
+	}
 
 	/**
 	 * Get Parent Image List 
@@ -1865,6 +1908,9 @@ public class DeManagedBean implements Serializable{
 	public List<ParentImage> getParentImageList() {
 		parentImageList = new ArrayList<ParentImage>();
 		parentImageList.addAll(getParentImageService().getParentImage());
+		for(ParentImage image : parentImageList){
+			image.childImageList.addAll(getChildImageService().getChildImagesByParent(image.getId()));
+		}
 		Collections.reverse(parentImageList);
 		return parentImageList;
 	}
@@ -2623,6 +2669,35 @@ public class DeManagedBean implements Serializable{
 		}
 		
 	}
+	
+	/**
+	 * redirect add or edit company users 
+	 * @return
+	 */
+	public String loadAddOrEditDeChild(){
+		String flag=null;
+		int jobid = Integer.valueOf( facesUtils.getRequestParameterMap("jobid")!=null? facesUtils.getRequestParameterMap("jobid"):"0");
+		int deJobId = (int) deService.getDeJobByParentImageId(Integer.valueOf(facesUtils.getRequestParameterMap("deJobId")!=null?facesUtils.getRequestParameterMap("deJobId"):"0")).getId();
+		if(deJobId >0 ){
+			sessionManager.setSessionAttributeInSession(SessionManager.EDITUSER, deJobId);
+			flag=saveAndExitDeData();
+		}
+		else
+			sessionManager.removeSessionAttributeInSession(SessionManager.EDITUSER);
+		if(jobid >0 ){
+			sessionManager.setSessionAttributeInSession(SessionManager.CHILDIMAGEID, jobid);
+			flag=saveAndExitDeData();
+		}
+		else
+			sessionManager.removeSessionAttributeInSession(SessionManager.CHILDIMAGEID);
+		
+		if(deJobId >0 && flag==null){
+			return DATAENTRY;
+		}
+		return null;
+	}
+	
+	
 	public void changeNextVal()
 	{
 		FacesUtils facesUtils = new FacesUtils();
@@ -3634,16 +3709,6 @@ public class DeManagedBean implements Serializable{
 		catch(Exception e){
 			e.printStackTrace();
 		}
-	}
-	/**
-	 * load all galary page image
-	 */
-	public void allImage(){
-		if(parentImageList !=null && parentImageList.size()>0 )
-		{
-			imagePerPage=parentImageList.size();
-		}
-		sessionManager.setSessionAttributeInSession(SessionManager.IMAGEPERPAGE, imagePerPage);
 	}
 	/** 
 	 * 	deleteParticularDeData 

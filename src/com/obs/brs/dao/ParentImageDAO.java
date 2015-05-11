@@ -72,7 +72,7 @@ public class ParentImageDAO implements IParentImageDAO{
 	 */
 	@Override
 	public List<ParentImage> getParentImage() {
-		List<ParentImage> list = getSessionFactory().getCurrentSession().createQuery("from ParentImage").list();
+		List<ParentImage> list = getSessionFactory().getCurrentSession().createQuery("from ParentImage where status = '0'").list();
 		return list;
 	}
 

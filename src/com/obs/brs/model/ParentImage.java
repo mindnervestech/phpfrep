@@ -1,6 +1,8 @@
 package com.obs.brs.model;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -46,6 +49,9 @@ public class ParentImage implements Serializable{
 	private String imageHeight;
 	private String imageWidth;
 
+	@Transient
+	public List<ChildImage> childImageList = new ArrayList<>();
+	
 	/**
 	 * @return the id
 	 */
@@ -278,5 +284,9 @@ public class ParentImage implements Serializable{
 		this.imageWidth = imageWidth;
 	}
 	
+	@Transient
+	public List<ChildImage> getChildImageList() {
+		return childImageList;
+	}
 	
 }

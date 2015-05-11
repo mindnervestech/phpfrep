@@ -30,6 +30,7 @@ public class SessionManager implements Serializable{
 	public static final String PUBLICATIONID 		= "publicationId";
 	public static final String JOBSTATUS 			= "jobStatusGot";
 	public static final String ISSUEDATE 			= "issueDate";
+	public static String CHILDIMAGEID 			= "child_image_id";
 	
 	public static SessionManager getMyInstatnce(){
 		if(sessionManager == null){
