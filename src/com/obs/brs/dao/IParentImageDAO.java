@@ -43,4 +43,6 @@ public interface IParentImageDAO {
 	 * 
 	 */
 	public List<ParentImage> getParentImage();
+
+	List<ParentImage> getParentImageByFilter(String filter);
 }

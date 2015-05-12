@@ -147,7 +147,7 @@ public class DeManagedBean implements Serializable{
 	List<ParentImage> parentImageList = new ArrayList<ParentImage>();
 	List<ChildImage> childImageList = new ArrayList<ChildImage>();
 	List<DataEntry> childImagesDataList = new ArrayList<DataEntry>();
-	String filterParentImage;
+	String filterParentImage = "0";
 	//For cropping 
 	private float cropWidth;
 	private float cropHeight;
@@ -1892,12 +1892,13 @@ public class DeManagedBean implements Serializable{
 	 */
 	public void filterParentImages() {
 		parentImageList = new ArrayList<ParentImage>();
-		System.out.println(":::::::: "+filterParentImage);
-		parentImageList.addAll(getParentImageService().getParentImage());
-		for(ParentImage image : parentImageList){
-			image.childImageList.addAll(getChildImageService().getChildImagesByParent(image.getId()));
+		if(filterParentImage != null){
+			parentImageList.addAll(getParentImageService().getParentImageByFilter(filterParentImage));
+			for(ParentImage image : parentImageList){
+				image.childImageList.addAll(getChildImageService().getChildImagesByParent(image.getId()));
+			}
+			Collections.reverse(parentImageList);
 		}
-		Collections.reverse(parentImageList);
 	}
 
 	/**
@@ -1907,11 +1908,21 @@ public class DeManagedBean implements Serializable{
 	 */
 	public List<ParentImage> getParentImageList() {
 		parentImageList = new ArrayList<ParentImage>();
-		parentImageList.addAll(getParentImageService().getParentImage());
-		for(ParentImage image : parentImageList){
-			image.childImageList.addAll(getChildImageService().getChildImagesByParent(image.getId()));
+		if(filterParentImage != null){
+			parentImageList.addAll(getParentImageService().getParentImageByFilter(filterParentImage));
+			for(ParentImage image : parentImageList){
+				image.childImageList.addAll(getChildImageService().getChildImagesByParent(image.getId()));
+				for(ChildImage childImage : getChildImageService().getChildImagesByParent(image.getId())){
+					DataEntry entry = deService.getDataEntryByChildImageId(childImage.getId());
+					if(entry != null)
+					if(entry.getDeCompany() == null){
+						image.ableToDone = false;
+						break;
+					}
+				}
+			}
+			Collections.reverse(parentImageList);
 		}
-		Collections.reverse(parentImageList);
 		return parentImageList;
 	}
 
@@ -1927,6 +1938,26 @@ public class DeManagedBean implements Serializable{
 		return childImageList;
 	}
 
+	/**
+	 * Get Child Image List 
+	 * 
+	 * @return List - ChildImage 
+	 */
+	
+	public String isCompleatedChild(String id) {
+		int childImgId = Integer.valueOf(id!=null?id:"0");
+		if(childImgId > 0){
+			DataEntry dataEntry = deService.getDataEntryByChildImageId(childImgId);
+			if(dataEntry != null)
+				if(dataEntry.getDeCompany() != null){
+					return "complete";
+				} else {
+					return "incomplete";
+				}
+		}
+		return null;
+	}
+	
 	/**
 	 * Get Child Image List 
 	 * 
@@ -2119,8 +2150,8 @@ public class DeManagedBean implements Serializable{
 						deletedImage.setIsChild(false);
 						Long flag=getDeletedImageService().addDeletedImage(deletedImage);
 						if(flag>0){
-							parentImage.setId(Long.valueOf(imgId));
-							getParentImageService().deleteParentImage(parentImage);
+							parentImage.setStatus(3);
+							getParentImageService().updateParentImage(parentImage);
 							messageService.messageInformation(null, "Image deleted Successfully.");
 						}
 						else{
@@ -2141,7 +2172,7 @@ public class DeManagedBean implements Serializable{
 	 */
 	public void deleteChildImage(){
 		currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
-		String imgId = facesUtils.getRequestParameterMap("imgId");
+		String imgId = facesUtils.getRequestParameterMap("childImgId");
 		if(imgId!=null){
 			ChildImage childImage = getChildImageService().getChildImageById(Long.valueOf(imgId));
 			/*File image=new File(imageBasePath+CommonProperties.getChildImagePath()+childImage.getParentImage().getId()+"/"+imgId+"/"+childImage.getImageName());
@@ -2158,6 +2189,7 @@ public class DeManagedBean implements Serializable{
 					Long flag=getDeletedImageService().addDeletedImage(deletedImage);
 					if(flag>0){
 						getChildImageService().deleteChildImage(childImage);
+						getParentImageList();
 						messageService.messageInformation(null, "Image deleted Successfully.");
 					}
 					else{

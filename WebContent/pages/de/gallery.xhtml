@@ -169,6 +169,27 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
   	width: 65px;
 	padding: 2px 10px;
 }
+
+.thumbnail{
+	 margin-bottom: 0px;
+}
+.panel {
+	margin-bottom: 5px;
+}
+.media-manager .panel-body {
+  padding: 7px;
+}
+#childImg {
+    border-radius: 5px;
+    width: 100px;
+    height: 100px; 
+}
+.complete{
+	border: 2px solid #8AC007;
+}
+.incomplete{
+	border: 2px solid #D9534F;
+}
 </style>
 </h:head>
 <f:metadata>
@@ -202,11 +223,11 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 						<ul class="media-header" style="margin-right: 0px;">
 							<li class="pull-right"><p:selectOneMenu
 									value="#{deBean.filterParentImage}"
-									style="width: 140px;" update="@form"
-									valueChangeListener="#{deBean.filterParentImages}">
+									style="width: 140px;">
 									<f:selectItem itemLabel="All" itemValue="0" />
-									<f:selectItem itemLabel="Deleated" itemValue="1" />
-									<f:selectItem itemLabel="Done" itemValue="2" />
+									<f:selectItem itemLabel="Done" itemValue="1" />
+									<f:selectItem itemLabel="Deleted" itemValue="2" />
+									<p:ajax listener="#{deBean.filterParentImages()}" event="change" update="@form"/>
 								</p:selectOneMenu></li>
 						</ul>
 
@@ -233,26 +254,23 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 													<div class="col-xs-12 col-sm-12 col-md-12">
 														<div class="panel panel-default">
 															<div class="panel-body"
-																style="max-height: 365px; min-height: 290px;">
+																style="height: 224px;">
 																<div class="thmb">
 																	<div class="thmb-prev">
 																		<div class="thumbnail"
-																			style="max-height: 280px; min-height: 260px;">
-																			<div class="col-md-3">
-																				<h:commandLink action="#{deBean.callChildPage}">
-																					<img style="max-height: 220px;"
+																			style="height: 210px;">
+																			<div class="col-md-2">
+																				<h:commandLink action="#{deBean.callChildPage}" id="parentImg">
+																					<img style="height: 190px; width:145px" 
 																						src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{val.id}/#{val.imageName}"
 																						class="img-responsive m-10" alt="" />
 																					<f:param name="img" value="#{val.id}" />
+																					<p:tooltip for="parentImg" showEffect="fade"
+																						value="#{val.imageName}" />
 																				</h:commandLink>
-																				<div
-																					style="width: 228px; height: 28px; word-wrap: break-word; margin-left: 10px;">
-																					<h5 class="media-title">#{val.imageName}</h5>
-																				</div>
-			
 																			</div>
 			
-																			<div class="col-md-8">
+																			<div class="col-md-9">
 																				<div class="p-0 f_l">
 																					<div class="row m-5 f_l">
 																						<div style="font-weight: bold; float: left">Issue
@@ -340,17 +358,30 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																				<div class="col-md-12" style="height: 100px;">
 																					<ui:repeat var="child"
 																						value="#{val.childImageList}">
-																						<div class="p-5"
-																							style="height: 100px; width: 100px; float: left;">
+																						<div class="p-5 thumbnail"
+																							style="float: left;">
 																							<p:commandLink id="loadAndEdit"
 																								action="#{deBean.loadAddOrEditDeChild}">
 																								<f:param name="deJobId"
 																									value="#{child.parentImage.id}" />
 																								<f:param name="jobid" value="#{child.id}" />
-																								<img
-																									style="display: block; width: 100%; height: 100%;"
+																								<img  id="childImg"
+																									class="#{deBean.isCompleatedChild(child.id)}"
+																									style="display: block;"
 																									src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{child.parentImage.id}/#{child.id}/#{child.imageName}" />
 																							</p:commandLink>
+																							<div class="overlay"
+																								style="height: 18%; margin: 6px; height: 15%;">
+																								<div class="thumbnail-actions" style="  margin-top: -9px;">
+																									<small class="text-muted pull-center"><p:commandLink
+																											action="#{deBean.deleteChildImage}"
+																											update="@form" ajax="true" style="color:#fff;  padding-left: 30px;"
+																											onstart="if(confirmDelete())return true; else return false;">
+																											<f:param name="childImgId" value="#{child.id}" />
+																											Delete
+																									</p:commandLink></small>
+																								</div>
+																							</div>
 																						</div>
 																					</ui:repeat>
 																				</div>
@@ -371,7 +402,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																					<f:param name="parentImg" value="#{val.id}" />
 																				</p:commandLink>
 																				<p:commandLink action="#{deBean.doneParentImage()}"
-																					rendered="#{not empty val.childImageList}"
+																					rendered="#{val.ableToDone}"
 																					update="@form" ajax="true">
 																					<button class="btn btn-warning" style="margin: 10px;">Done</button>
 																					<f:param name="parentImg" value="#{val.id}" />
@@ -382,9 +413,18 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																					<f:param name="img" value="#{val.id}" />
 																					<button class="btn btn-warning" style="margin: 10px;">Crop</button>
 																				</p:commandLink>
-																				<p:commandLink
-																					action="#{deBean.deleteParentImage}" update="@all"
+																				<h:commandLink
+																							action="#{deBean.deleteParentImage}" update="@form" ajax="true"
+																							style="color:#fff;"
+																							onclick="if(confirmDelete())return true; else return false;">
+																							<f:param name="imgId" value="#{val.id}" />
+																						<button class="btn btn-warning" style="margin: 10px;">Delete</button>
+																				</h:commandLink>
+																				<!-- <p:commandLink
+																					rendered="#{empty val.childImageList}"
+																					action="#{deBean.deleteParentImage()}"
 																					style="color:#fff;"
+																					update="@form" ajax="true"
 																					onclick="if(confirmDelete())return true; else return false;">
 																					<button class="btn btn-warning" style="margin: 10px;">Delete</button>
 																					<f:param name="imgId" value="#{val.id}" />

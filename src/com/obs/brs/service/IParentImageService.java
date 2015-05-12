@@ -43,4 +43,6 @@ public interface IParentImageService {
 	 * 
 	 */
 	public List<ParentImage> getParentImage();
+
+	List<ParentImage> getParentImageByFilter(String filter);
 }

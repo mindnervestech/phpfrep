@@ -52,6 +52,9 @@ public class ParentImage implements Serializable{
 	@Transient
 	public List<ChildImage> childImageList = new ArrayList<>();
 	
+	@Transient
+	public Boolean ableToDone = true;
+	
 	/**
 	 * @return the id
 	 */
@@ -287,6 +290,12 @@ public class ParentImage implements Serializable{
 	@Transient
 	public List<ChildImage> getChildImageList() {
 		return childImageList;
+	}
+	
+	@Transient
+	public Boolean getAbleToDone() {
+		return this.ableToDone;
+		
 	}
 	
 }
