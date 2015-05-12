@@ -26,7 +26,7 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.imageio.ImageIO;
-
+import com.obs.brs.ocr.Ocr;
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.custom.datascroller.ScrollerActionEvent;
 import org.primefaces.context.RequestContext;
