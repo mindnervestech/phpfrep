@@ -7,6 +7,8 @@ body {font-family: 'Open Sans', verdana, arial;font-weight: 300; margin-top: 40p
 #main-content {width: 100%;padding:10px 20px;background-color: #DFE5E9;}
 #sidebar{background-color: #2B2E33;}
 
+.f_l {float:left;}
+
 /****  Margin  ****/
 .m-auto {margin:auto;}
 .m-0 {margin:0 !important;}
