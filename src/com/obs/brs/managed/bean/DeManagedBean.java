@@ -1911,13 +1911,13 @@ public class DeManagedBean implements Serializable{
 		if(filterParentImage != null){
 			parentImageList.addAll(getParentImageService().getParentImageByFilter(filterParentImage));
 			for(ParentImage image : parentImageList){
-				image.childImageList.addAll(getChildImageService().getChildImagesByParent(image.getId()));
 				List<ChildImage> childImages = getChildImageService().getChildImagesByParent(image.getId());
+				image.childImageList.addAll(childImages);
 				if(childImages.size() == 0){
 					image.ableToDone = false;
-					break;
+					continue;
 				}
-				image.childImageList.addAll(childImages);
+				
 				for(ChildImage childImage : childImages){
 					DataEntry entry = deService.getDataEntryByChildImageId(childImage.getId());
 					if(entry != null)
