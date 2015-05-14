@@ -1954,12 +1954,15 @@ public class DeManagedBean implements Serializable{
 		int childImgId = Integer.valueOf(id!=null?id:"0");
 		if(childImgId > 0){
 			DataEntry dataEntry = deService.getDataEntryByChildImageId(childImgId);
-			if(dataEntry != null)
+			if(dataEntry != null){
 				if(dataEntry.getDeCompany() != null){
 					return "complete";
 				} else {
 					return "incomplete";
 				}
+			} else {
+				return "incomplete";
+			}
 		}
 		return null;
 	}
