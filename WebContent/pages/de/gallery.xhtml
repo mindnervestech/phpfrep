@@ -226,7 +226,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 									style="width: 140px;">
 									<f:selectItem itemLabel="All" itemValue="0" />
 									<f:selectItem itemLabel="Done" itemValue="1" />
-									<f:selectItem itemLabel="Deleted" itemValue="2" />
+									<f:selectItem itemLabel="UnDone" itemValue="2" />
 									<p:ajax listener="#{deBean.filterParentImages()}" event="change" update="@form"/>
 								</p:selectOneMenu></li>
 						</ul>
@@ -413,13 +413,13 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																					<f:param name="img" value="#{val.id}" />
 																					<button class="btn btn-warning" style="margin: 10px;">Crop</button>
 																				</p:commandLink>
-																				<h:commandLink
+																				<p:commandLink
 																							action="#{deBean.deleteParentImage}" update="@form" ajax="true"
 																							style="color:#fff;"
-																							onclick="if(confirmDelete())return true; else return false;">
+																							onstart="if(confirmDelete())return true; else return false;">
 																							<f:param name="imgId" value="#{val.id}" />
 																						<button class="btn btn-warning" style="margin: 10px;">Delete</button>
-																				</h:commandLink>
+																				</p:commandLink>
 																				<!-- <p:commandLink
 																					rendered="#{empty val.childImageList}"
 																					action="#{deBean.deleteParentImage()}"

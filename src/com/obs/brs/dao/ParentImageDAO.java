@@ -64,7 +64,7 @@ public class ParentImageDAO implements IParentImageDAO{
 		List list = getSessionFactory().getCurrentSession()
 				.createQuery("from ParentImage where id=?")
 		        .setParameter(0,id).list();
-		return list!=null?(ParentImage)list.get(0):null;	
+		return list!=null?(list.size()!=0?(ParentImage)list.get(0):null):null;	
 	}
 
 	/* (non-Javadoc)
@@ -80,12 +80,10 @@ public class ParentImageDAO implements IParentImageDAO{
 	public List<ParentImage> getParentImageByFilter(String val) {
 		String sqlQuery = "from ParentImage";
 		int filter = Integer.parseInt(val);
-		if(filter == 0){
-			sqlQuery = sqlQuery + " where status = '0'";
-		} else if(filter == 1){
+		if(filter == 1){
 			sqlQuery = sqlQuery + " where status = '1'";
 		} else if(filter == 2){
-			sqlQuery = sqlQuery + " where status = '2'";
+			sqlQuery = sqlQuery + " where status = '0'";
 		}
 		List<ParentImage> list = getSessionFactory().getCurrentSession().createQuery(sqlQuery).list();
 		return list;

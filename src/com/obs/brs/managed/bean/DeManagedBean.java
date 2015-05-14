@@ -1912,7 +1912,13 @@ public class DeManagedBean implements Serializable{
 			parentImageList.addAll(getParentImageService().getParentImageByFilter(filterParentImage));
 			for(ParentImage image : parentImageList){
 				image.childImageList.addAll(getChildImageService().getChildImagesByParent(image.getId()));
-				for(ChildImage childImage : getChildImageService().getChildImagesByParent(image.getId())){
+				List<ChildImage> childImages = getChildImageService().getChildImagesByParent(image.getId());
+				if(childImages.size() == 0){
+					image.ableToDone = false;
+					break;
+				}
+				image.childImageList.addAll(childImages);
+				for(ChildImage childImage : childImages){
 					DataEntry entry = deService.getDataEntryByChildImageId(childImage.getId());
 					if(entry != null)
 					if(entry.getDeCompany() == null){
@@ -2132,37 +2138,34 @@ public class DeManagedBean implements Serializable{
 	public void deleteParentImage(){
 		currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 		String imgId = facesUtils.getRequestParameterMap("imgId");
-
 		if(imgId!=null){
 			ParentImage parentImage = getParentImageService().getParentImageById(Long.valueOf(imgId));
-			DeJob deJob = 	deService.getDeJobByParentImageId(parentImage.getId());
-			List<ChildImage> child = getChildImageService().getChildImagesByParent(Long.valueOf(imgId));
-			if(child ==null || child.size() == 0 ){
-				if(deJob==null){
-					/*File image=new File(imageBasePath+CommonProperties.getParentImagePath()+imgId+"/"+parentImage.getImageName());
-					boolean flag = image.delete();*/
-					if(parentImage!=null){
-						DeletedImage deletedImage=new DeletedImage();
-						deletedImage.setImageId(parentImage.getId());
-						deletedImage.setImageName(parentImage.getImageName());
-						deletedImage.setDeleted_by(currentUser.getId());
-						deletedImage.setDeleted_On(new Date());
-						deletedImage.setIsChild(false);
-						Long flag=getDeletedImageService().addDeletedImage(deletedImage);
-						if(flag>0){
-							parentImage.setStatus(3);
-							getParentImageService().updateParentImage(parentImage);
-							messageService.messageInformation(null, "Image deleted Successfully.");
-						}
-						else{
-							messageService.messageFatal(null, "Image can not be deleted.");
+			if(parentImage!=null){
+				DeJob deJob = 	deService.getDeJobByParentImageId(parentImage.getId());
+				List<ChildImage> child = getChildImageService().getChildImagesByParent(Long.valueOf(imgId));
+				DeletedImage deletedImage=new DeletedImage();
+				deletedImage.setImageId(parentImage.getId());
+				deletedImage.setImageName(parentImage.getImageName());
+				deletedImage.setDeleted_by(currentUser.getId());
+				deletedImage.setDeleted_On(new Date());
+				deletedImage.setIsChild(false);
+				Long flag=getDeletedImageService().addDeletedImage(deletedImage);
+				if(flag>0){
+					if(child != null || child.size() != 0 ){
+						for(ChildImage chImage : child){
+							deleteChildImageByID(chImage.getId());
 						}
 					}
-				} else {
-					messageService.messageFatal(null, "Image can not be deleted. Image added in Publication");
+					getParentImageService().deleteParentImage(parentImage);
+					if(deJob != null){
+						deService.deleteDeJob(deJob);
+					}
+
+					messageService.messageInformation(null, "Image deleted Successfully.");
 				}
-			}else{
-				messageService.messageFatal(null, "Image can not be deleted. Image have a Child image");
+				else{
+					messageService.messageFatal(null, "Image can not be deleted.");
+				}
 			}
 		}
 	}
@@ -2174,32 +2177,34 @@ public class DeManagedBean implements Serializable{
 		currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 		String imgId = facesUtils.getRequestParameterMap("childImgId");
 		if(imgId!=null){
-			ChildImage childImage = getChildImageService().getChildImageById(Long.valueOf(imgId));
-			/*File image=new File(imageBasePath+CommonProperties.getChildImagePath()+childImage.getParentImage().getId()+"/"+imgId+"/"+childImage.getImageName());
-			boolean flag = image.delete();*/
-			if(childImage!=null){
-				DataEntry dataEntry=deService.getDataEntryByChildImageId(childImage.getId());
-				if(dataEntry==null){
-					DeletedImage deletedImage=new DeletedImage();
-					deletedImage.setImageId(childImage.getId());
-					deletedImage.setImageName(childImage.getImageName());
-					deletedImage.setDeleted_by(currentUser.getId());
-					deletedImage.setDeleted_On(new Date());
-					deletedImage.setIsChild(true);
-					Long flag=getDeletedImageService().addDeletedImage(deletedImage);
-					if(flag>0){
-						getChildImageService().deleteChildImage(childImage);
-						getParentImageList();
-						messageService.messageInformation(null, "Image deleted Successfully.");
-					}
-					else{
-						messageService.messageFatal(null, "Image can not be deleted.");
-					}
-				} else {
-					messageService.messageFatal(null, "Image can not be deleted. Image added in Publication.");
-				}
+			if(deleteChildImageByID(Long.valueOf(imgId))){
+				messageService.messageInformation(null, "Image deleted Successfully.");
+			} else {
+				messageService.messageInformation(null, "Image can not be deleted.");
 			}
 		}
+	}
+
+	private boolean deleteChildImageByID(Long imgId) {
+		ChildImage childImage = getChildImageService().getChildImageById(imgId);
+		if(childImage!=null){
+			DataEntry dataEntry=deService.getDataEntryByChildImageId(imgId);
+			DeletedImage deletedImage=new DeletedImage();
+			deletedImage.setImageId(childImage.getId());
+			deletedImage.setImageName(childImage.getImageName());
+			deletedImage.setDeleted_by(currentUser.getId());
+			deletedImage.setDeleted_On(new Date());
+			deletedImage.setIsChild(true);
+			Long flag=getDeletedImageService().addDeletedImage(deletedImage);
+			if(flag>0){
+				if(dataEntry != null){
+					deService.deleteDataEntry(dataEntry);
+				}
+				getChildImageService().deleteChildImage(childImage);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
