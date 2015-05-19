@@ -244,6 +244,13 @@ margin:6px;
 																	<h:outputText styleClass="text-left color-success no-bd-y"
 																		value="#{o.id}" />
 																</h:column>
+																<h:column headerClass="no-bd">
+												<f:facet name="header">
+													<h:outputText value="Parent Image Name" />
+												</f:facet>
+												<h:outputText styleClass="text-left color-success no-bd-y"
+													value="#{o.parentImage.imageName}" />
+											</h:column>
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
 													<h:outputText value="Publication" />
@@ -264,6 +271,20 @@ margin:6px;
 												</f:facet>
 												<h:outputText styleClass="text-left color-success no-bd-y"
 													value="#{o.parentImage.issueDate}" />
+											</h:column>
+											<h:column headerClass="no-bd">
+												<f:facet name="header">
+													<h:outputText value="Page" />
+												</f:facet>
+												<h:outputText styleClass="text-left color-success no-bd-y"
+													value="#{o.parentImage.page}" />
+											</h:column>
+											<h:column headerClass="no-bd">
+												<f:facet name="header">
+													<h:outputText value="Section" />
+												</f:facet>
+												<h:outputText styleClass="text-left color-success no-bd-y"
+													value="#{o.parentImage.section.publicationTitle}" />
 											</h:column>
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
