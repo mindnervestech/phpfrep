@@ -141,7 +141,7 @@ public class DeManagedBean implements Serializable{
 	//search & filters
 	private String searchValue ="";
 	private String searchIssueDate = "";	
-
+	boolean order = true ;
 	List<DataEntry> dataEntryuserList;
 	User currentUser;
 	List<DeJob> deJobList;
