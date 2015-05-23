@@ -134,6 +134,13 @@ h3{
 float: right;
 margin:6px;
 }
+
+.colhead {
+	color: black !important;
+	text-decoration: none;
+	font-family: 'Open Sans', verdana, arial;
+	font-size: 14px;
+}
 </style>
 </h:head>
 <f:metadata>
@@ -233,69 +240,70 @@ margin:6px;
 												<t:div styleClass="data_image m-b-20" style ="max-width:50px;max-hieght:35px"
 											rendered="#{deBean.childImageId ==0}">
 											<img style="width: 50px;"
-												src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{o.parentImage.id}/#{o.parentImage.imageName}"
+												src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['parentImagePath']}#{o.parentImage.id}/#{o.parentImage.imageName}"
 												class="img-responsive" alt="#{deBean.parentImageName}" />
 											</t:div>
 											</h:column> -->
 													<h:column headerClass="no-bd">
-																	<f:facet name="header">
-																		<h:outputText value="Job ID" />
+																	<f:facet name="header"><p:commandLink action="#{deBean.sortDeJobList('id')}" ajax="true"
+											update="@form" styleClass="colhead">Job ID</p:commandLink>
 																	</f:facet>
 																	<h:outputText styleClass="text-left color-success no-bd-y"
 																		value="#{o.id}" />
 																</h:column>
 																<h:column headerClass="no-bd">
 												<f:facet name="header">
-													<h:outputText value="Parent Image Name" />
+												<p:commandLink action="#{deBean.sortDeJobList('imageName')}" ajax="true"
+											update="@form" styleClass="colhead">Parent Image Name</p:commandLink>
 												</f:facet>
 												<h:outputText styleClass="text-left color-success no-bd-y"
 													value="#{o.parentImage.imageName}" />
 											</h:column>
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
-													<h:outputText value="Publication" />
+												<p:commandLink action="#{deBean.sortDeJobList('publication')}" ajax="true"
+											update="@form" styleClass="colhead">Publication</p:commandLink>
 												</f:facet>
 												<h:outputText styleClass="text-left color-success no-bd-y"
 													value="#{o.parentImage.publicationTitle.publicationTitle}" />
 											</h:column>
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
-													<h:outputText value="Section" />
+												<p:commandLink action="#{deBean.sortDeJobList('section')}" ajax="true"
+											update="@form" styleClass="colhead">Section</p:commandLink>
 												</f:facet>
 												<h:outputText styleClass="text-left color-success no-bd-y"
 													value="#{o.parentImage.section.publicationTitle}" />
 											</h:column>
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
-													<h:outputText value="Issue Date" />
+													<p:commandLink action="#{deBean.sortDeJobList('date')}" ajax="true"
+											update="@form" styleClass="colhead">Issue Date</p:commandLink>
 												</f:facet>
 												<h:outputText styleClass="text-left color-success no-bd-y"
 													value="#{o.parentImage.issueDate}" />
 											</h:column>
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
-													<h:outputText value="Page" />
+												
+													<p:commandLink action="#{deBean.sortDeJobList('page')}" ajax="true"
+											update="@form" styleClass="colhead">Page</p:commandLink>
 												</f:facet>
 												<h:outputText styleClass="text-left color-success no-bd-y"
 													value="#{o.parentImage.page}" />
 											</h:column>
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
-													<h:outputText value="Section" />
-												</f:facet>
-												<h:outputText styleClass="text-left color-success no-bd-y"
-													value="#{o.parentImage.section.publicationTitle}" />
-											</h:column>
-											<h:column headerClass="no-bd">
-												<f:facet name="header">
-													<h:outputText value="Created By" />
+													<p:commandLink action="#{deBean.sortDeJobList('createdBy')}" ajax="true"
+											update="@form" styleClass="colhead">Created By</p:commandLink>
 												</f:facet>
 											<h:outputText styleClass="text-left color-success no-bd-y"
 													value="#{o.created_by.firstName}"/>
 											</h:column>
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
-													<h:outputText value="Progress" />
+												<p:commandLink action="#{deBean.sortDeJobList('progress')}" ajax="true"
+											update="@form" styleClass="colhead">Progress</p:commandLink>
 												</f:facet>
 												<h:outputText styleClass="text-left color-success no-bd-y" 
 													value="#{(deBean.getStatus(o.id))}"/>

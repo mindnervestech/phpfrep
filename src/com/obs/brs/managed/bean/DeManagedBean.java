@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2586,21 +2587,23 @@ public class DeManagedBean implements Serializable{
 	 * @return List - CompanyUser List
 	 */
 	public List<DeJob> getDeJobListBySeachCriteria() {
-		deJobList = new ArrayList<DeJob>();
-		String DATE_FORMAT = "yyyy-MM-dd";
-		DateFormat dateFormat = new SimpleDateFormat (DATE_FORMAT);	
-		if(this.searchValue != null && !this.searchValue.isEmpty()){
-			this.searchText = this.searchValue;
-		}else if(this.issueDateSerach != null){
-			this.searchText = dateFormat.format(this.issueDateSerach);
-		}
+		if(deJobList == null){
+			deJobList = new ArrayList<DeJob>();
+			String DATE_FORMAT = "yyyy-MM-dd";
+			DateFormat dateFormat = new SimpleDateFormat (DATE_FORMAT);	
+			if(this.searchValue != null && !this.searchValue.isEmpty()){
+				this.searchText = this.searchValue;
+			}else if(this.issueDateSerach != null){
+				this.searchText = dateFormat.format(this.issueDateSerach);
+			}
 
-		if(this.searchValue.isEmpty() && this.issueDateSerach == null){
-			deJobList.addAll(getDeService().getDeJobBySeachCriteria());
-		}else{
-			deJobList.addAll(getDeService().getDeJobBySeachCriteria(this.searchText));	
+			if(this.searchValue.isEmpty() && this.issueDateSerach == null){
+				deJobList.addAll(getDeService().getDeJobBySeachCriteria());
+			}else{
+				deJobList.addAll(getDeService().getDeJobBySeachCriteria(this.searchText));	
+			}
+			Collections.reverse(deJobList);
 		}
-		Collections.reverse(deJobList);
 		return deJobList;
 	}
 	
@@ -4204,4 +4207,62 @@ public class DeManagedBean implements Serializable{
 		return null;
 
 	}
+
+	public void sortDeJobList(final String sortOn) {
+
+		List<DeJob> jobs = deJobList;
+		if(order){
+			order = false;
+			Collections.sort(jobs, new Comparator<DeJob>() {
+				public int compare(DeJob o1, DeJob o2) {
+					switch(sortOn){
+					case "id":
+						return o1.getId()<o2.getId()?-1:1;
+					case "imageName":
+						return o1.getParentImage().getImageName().toLowerCase().compareTo(o2.getParentImage().getImageName().toLowerCase());
+					case "publication":
+						return o1.getParentImage().getPublicationTitle().getPublicationTitle().compareTo(o2.getParentImage().getPublicationTitle().getPublicationTitle());
+					case "section":
+						return o1.getParentImage().getSection().getPublicationTitle().compareTo(o2.getParentImage().getSection().getPublicationTitle());
+					case "date":
+						return o1.getParentImage().getIssueDate().compareTo(o2.getParentImage().getIssueDate());
+					case "page":
+						return Integer.parseInt(o1.getParentImage().getPage())>Integer.parseInt(o2.getParentImage().getPage())?-1:1;
+					case "createdBy":
+						return o1.getParentImage().getCreatedBy().getFirstName().compareTo(o2.getParentImage().getCreatedBy().getFirstName());
+					case "progress":
+						return getStatus((int) o1.getId()).compareTo( getStatus((int) o2.getId()));
+					}
+					return 0;
+				}
+			});
+		} else {
+			order = true;
+			Collections.sort(jobs, new Comparator<DeJob>() {
+				public int compare(DeJob o1, DeJob o2) {
+					switch(sortOn){
+					case "id":
+						return o2.getId()<o1.getId()?-1:1;
+					case "imageName":
+						return o2.getParentImage().getImageName().toLowerCase().compareTo(o1.getParentImage().getImageName().toLowerCase());
+					case "publication":
+						return o2.getParentImage().getPublicationTitle().getPublicationTitle().compareTo(o1.getParentImage().getPublicationTitle().getPublicationTitle());
+					case "section":
+						return o2.getParentImage().getSection().getPublicationTitle().compareTo(o1.getParentImage().getSection().getPublicationTitle());
+					case "date":
+						return o2.getParentImage().getIssueDate().compareTo(o1.getParentImage().getIssueDate());
+					case "page":
+						return Integer.parseInt(o2.getParentImage().getPage())>Integer.parseInt(o1.getParentImage().getPage())?-1:1;
+					case "createdBy":
+						return o2.getParentImage().getCreatedBy().getFirstName().compareTo(o1.getParentImage().getCreatedBy().getFirstName());
+					case "progress":
+						return getStatus((int) o2.getId()).compareTo( getStatus((int) o1.getId()));
+					}
+					return 0;
+				}
+			});
+		}
+	}
+
+
 }

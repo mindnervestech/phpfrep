@@ -407,7 +407,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																				</p:commandLink>
 																				<p:commandLink action="#{deBean.callPublication()}"
 																					rendered="#{not empty val.publicationTitle}"
-																					ajax="true" oncomplete="PF('dlg').show();" 
+																					ajax="true" oncomplete="PF('dlg').show();validationPage();" 
 																					update=":dlgform:basicDialog">
 																					<button class="btn btn-warning" style="margin: 10px;">Edit</button>
 																					<f:param name="parentImg" value="#{val.id}" />
@@ -744,23 +744,11 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 												<div class="col-md-6 col-sm-6 p-0 p-t-10 "
 													style="width: 17% !important;">Page *</div>
 												<div class="col-md-6 col-sm-6 p-0">
-													<h:selectOneMenu class="form-control"
-														hideNoSelectionOption="false" required="true"
-														id="txt_page" value="#{deBean.page}"
+												<p:inputText styleClass="form-control"
+													id="txt_page" value="#{deBean.page}"
 														requiredMessage="Value is required" placeholder="Page"
-														validatorMessage="Please Check your Page number">
-														<f:selectItem itemLabel="1" itemValue="1" />
-														<f:selectItem itemLabel="2" itemValue="2" />
-														<f:selectItem itemLabel="3" itemValue="3" />
-														<f:selectItem itemLabel="4" itemValue="4" />
-														<f:selectItem itemLabel="5" itemValue="5" />
-														<f:selectItem itemLabel="6" itemValue="6" />
-														<f:selectItem itemLabel="7" itemValue="7" />
-														<f:selectItem itemLabel="8" itemValue="8" />
-														<f:selectItem itemLabel="9" itemValue="9" />
-														<f:selectItem itemLabel="10" itemValue="10" />
-														<f:validateLongRange minimum="0" />
-													</h:selectOneMenu>
+														validatorMessage="Please Check your Page number" required="true">
+												</p:inputText>
 
 												</div>
 											</div>
@@ -972,10 +960,24 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 
 		}
 		
+		function validationPage(){
+			$('#dlgform\\:txt_page').keyup(function() {
+			    $('span.error-keyup-1').hide();
+			    var inputVal = $(this).val();
+			    var numericReg = /^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/;
+			    var romanNum1 = /^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/;
+			    var romanNum2 = /^M{0,4}(cm|cd|d?c{0,3})(xc|xl|l?x{0,3})(iv|iv|v?i{0,3})$/;
+			    if(!(numericReg.test(inputVal) || romanNum1.test(inputVal) || romanNum2.test(inputVal) )) {
+			        $(this).after('<span class="error error-keyup-1">Numeric characters only.</span>');
+			    }
+			});
+		}
+		
 		
 	    $(document).ready(function() {
 			$(".sidebar-nav > li").removeClass();
 			$("#menu6").addClass("current active");
+			
 		});
 	</script>
 	<!-- BEGIN MANDATORY SCRIPTS -->
