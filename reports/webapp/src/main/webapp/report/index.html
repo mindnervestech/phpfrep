@@ -1,0 +1,225 @@
+<html>
+<head>
+<link rel="stylesheet" href="/webapp/report/app/vendors/bootstrap/css/bootstrap.min.css"/>
+<link type="text/css" rel="stylesheet" href="/webapp/report/app/vendors/DataTables/media/css/dataTables.bootstrap.css"/>    
+<link type="text/css" rel="stylesheet" href="/webapp/report/app/vendors/DataTables/extensions/TableTools/css/dataTables.tableTools.min.css"/>
+<link type="text/css" rel="stylesheet" href="/webapp/report/vendor/angular-schema-form/schema-form-datetimepicker/strap.min.css"/>
+<link rel="stylesheet" type="text/css" href="/webapp/report/vendor/pivottable/dist/pivot.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css">
+
+    
+<script src="/webapp/report/app/js/libs/jquery-1.10.2.min.js"></script>
+<script src="/webapp/report/app/js/libs/angular.js"></script>
+<script src="/webapp/report/app/vendors/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="/webapp/report/app/vendors/DataTables/media/js/jquery.dataTables.js"></script>
+<script src="/webapp/report/app/vendors/DataTables/media/js/dataTables.bootstrap.js"></script>
+<script src="/webapp/report/app/vendors/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/webapp/report/app/vendors/DataTables/extensions/Pagination/input.js"></script>
+<script src="/webapp/report/app/vendors/DataTables/extensions/ColumnFilter/jquery.dataTables.columnFilter.js"></script>
+
+<!-- <script src="/template/madmin/app/vendors/angular-datatables/dist/angular-datatables.js"></script>
+<script src="/template/madmin/app/vendors/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.min.js"></script>
+<script src="/template/madmin/app/vendors/angular-datatables/dist/plugins/colreorder/angular-datatables.colreorder.min.js"></script>
+<script src="/template/madmin/app/vendors/angular-datatables/dist/plugins/columnfilter/angular-datatables.columnfilter.min.js"></script>
+<script src="/template/madmin/app/vendors/angular-datatables/dist/plugins/colvis/angular-datatables.colvis.min.js"></script>
+<script src="/template/madmin/app/vendors/angular-datatables/dist/plugins/fixedcolumns/angular-datatables.fixedcolumns.min.js"></script>
+<script src="/template/madmin/app/vendors/angular-datatables/dist/plugins/fixedheader/angular-datatables.fixedheader.min.js"></script>
+<script src="/template/madmin/app/vendors/angular-datatables/dist/plugins/scroller/angular-datatables.scroller.min.js"></script>
+<script src="/template/madmin/app/vendors/angular-datatables/dist/plugins/tabletools/angular-datatables.tabletools.min.js"></script>
+ -->
+<script type="text/javascript" src="/webapp/report/vendor/export/tableExport.js"></script>
+<script type="text/javascript" src="/webapp/report/vendor/export/jquery.base64.js"></script>
+<script type="text/javascript" src="/webapp/report/vendor/export/html2canvas.js"></script>
+<script type="text/javascript" src="/webapp/report/vendor/jspdf/libs/sprintf.js"></script>
+<script type="text/javascript" src="/webapp/report/vendor/jspdf/jspdf.js"></script>
+<script type="text/javascript" src="/webapp/report/vendor/jspdf/libs/base64.js"></script>
+
+<script type="text/javascript" src="/webapp/report/vendor/libs/mustache.js"></script>
+
+<script type="text/javascript" src="/webapp/report/app/js/libs/angular-sanitize.min.js"></script>
+<script src='/webapp/report/vendor/angular-strap/dist/angular-strap.min.js'></script>
+<script src='/webapp/report/vendor/angular-strap/dist/angular-strap.tpl.min.js'></script>
+
+<script type="text/javascript" src="/webapp/report/vendor/tv4/tv4.js"></script>
+<script type="text/javascript" src="/webapp/report/vendor/objectpath/lib/ObjectPath.js"></script>
+
+<script type="text/javascript" src="/webapp/report/vendor/angular-schema-form/dist/schema-form.js"></script>
+<script type="text/javascript" src="/webapp/report/vendor/angular-schema-form/dist/bootstrap-decorator.js"></script>
+<script type="text/javascript" src="/webapp/report/vendor/angular-schema-form/angular-schema-form-dynamic-select/angular-schema-form-dynamic-select.js"></script>
+<script type="text/javascript" src="/webapp/report/vendor/angular-schema-form/schema-form-datetimepicker/schema-form-date-time-picker.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+
+<script type="text/javascript" src="/webapp/report/vendor/pivottable/dist/pivot.js"></script>
+<script type="text/javascript" src="/webapp/report/vendor/pivottable/dist/gchart_renderers.js"></script>
+<script type="text/javascript" src="/webapp/report/vendor/pivottable/dist/d3_renderers.js"></script>
+<script type="text/javascript" src="/webapp/report/vendor/pivottable/dist/c3_renderers.js"></script>
+        
+<script src="/webapp/report/scripts/app.js"></script>
+
+<style type="text/css">
+.input-sm-cust, .strapselect-multiple button {
+  height: 23px;
+  padding: 0px 5px;
+  width:105px;
+  font-size: 11px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.labelHtmlClass {
+	font-size: 11px;
+}
+.schema-form-checkboxes, .strapselect-multiple {
+	margin-right: -25px;
+}
+
+.schema-form-checkboxes >.radio, .schema-form-checkboxes >.checkbox {
+  position: relative;
+  display: block;
+  min-height: 20px;
+  margin-top: -4px;
+  margin-bottom: 0px;
+  padding-right: 5px;
+  font-size: 12px;
+}
+
+.col-xs-1-5 {
+  width: 11.66666667%;
+  float: left;
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.table-condensed>thead>tr>th, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>tbody>tr>td, .table-condensed>tfoot>tr>td {
+  padding: 2px;
+  font-size: 13px;
+}
+
+li.active>a {
+	color: #F0AD4E !important;
+}
+
+</style>
+</head>
+
+
+<body ng-app="datatableApp" ng-controller="datatableCtrl">
+
+<!-- Tab Panel 1 Start -->
+
+<div  role="tabpanel">
+ <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" id="saved-report-tab"><a href="#saved-report" aria-controls="saved-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-list-alt"></span> Reports</a></li>
+    <li role="presentation" id="custom-search-tab"><a href="#custom-search" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-search"></span> Search</a></li>
+    
+  </ul>
+
+  <!--   -->
+  <div  class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="custom-search">
+		   <form >
+		    <div style="margin-bottom: -13px;" sf-schema="reportTemplate.jsonSchema" sf-form="reportTemplate.jsonForm" 
+		         sf-model="reportTemplate.model">
+		     </div>
+		    
+		    <button ng-show="showExcButton" class="btn btn-warning btn-xs" type="button"  ng-click="runReport()">
+		    	Execute
+		    </button>
+		  </form>
+    </div>
+    <!--  -->
+    <div role="tabpanel" class="tab-pane" id="saved-report">
+    	<table id="rpt_save-search"
+		class="table table-condensed table-hover table-striped table-bordered" 
+	 	>
+        <thead style="background-color: #f0ad4e;color: antiquewhite;">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        	<tr data-ng-repeat="rpt in reportMDs" >
+                <td>{{rpt.name}}</td>
+                <td>{{rpt.description}}</td>
+                <td>
+                  <a href="#" data-ng-click="showReport(rpt)">Show</a> &nbsp;
+                </td>
+            </tr>
+            
+        </tbody>
+ 
+        
+    </table>		
+    </div>
+    <!--  -->
+    <div role="tabpanel" class="tab-pane" id="ad-hoc-search">
+    			Need to develop
+    </div>
+    
+  </div>
+</div><!-- Tab Panel 1 End -->
+
+
+<!-- Tab Panel 2 start -->
+<div  ng-show="isAnyActiveReport"  role="tabpanel">
+	<!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#table-view" aria-controls="table-view" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-th-list"></span> Table View</a></li>
+    <li role="presentation"><a href="#pivot-view" aria-controls="pivot-view" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Pivot View</a></li>
+  </ul>
+  <div class="tab-content" style="padding: 10px;">
+    <div role="tabpanel" class="tab-pane active" id="table-view">
+			
+		<div class="btn-group pull-right">
+			<button class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown">
+			<i class="fa fa-bars"></i> Export</button>
+			<ul class="dropdown-menu " role="menu">
+				<li><a href="#" onclick="$('#rpt_table').tableExport({type:'excel',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/xls.png" width="24px"> XLS</a></li>
+				<li><a href="#" onclick="$('#rpt_table').tableExport({type:'doc',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/word.png" width="24px"> Word</a></li>
+				<li><a href="#" onclick="$('#rpt_table').tableExport({type:'pdf',pdfFontSize:'7',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/pdf.png" width="24px"> PDF</a></li>
+				<li><a href="#" onclick="$('#rpt_table').tableExport({type:'csv',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/csv.png" width="24px"> CSV</a></li>
+				<li><a href="#" onclick="$('#rpt_table').tableExport({type:'xml',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/xml.png" width="24px"> XML</a></li>
+				<li class="divider"></li>
+			</ul>
+		</div>
+	
+		<!-- DataTable Container -->
+		<table id="rpt_table"
+		class="table-condensed table table-hover table-striped table-bordered" 
+		 my-datatable aa-data="reportData" aa-columns="dtColumns" >
+	        <thead>
+	            <tr>
+	                <th generate-datatable ng-repeat="col in dtColumns" ng-bind="col.name"></th>
+	            </tr>
+	        </thead>
+	    </table>    
+    </div><!-- table-view end here -->
+    
+    <div role="tabpanel" class="tab-pane" id="pivot-view">
+    	<div id="pivot-table-output" style="margin: 10px;"></div>
+    </div>
+    
+    </div>
+  
+</div>
+
+<!-- Tab Panel 2 End -->
+
+</body>
+<script>
+$(document).ready(function(){
+	
+});
+</script>
+</html>
