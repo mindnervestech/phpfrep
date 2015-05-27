@@ -4,7 +4,7 @@
 	App.controller('datatableCtrl', function ($scope, $http) {
 		$scope.finishedHeader = false;
 		$scope.dtColumns = [];
-		
+		$scope.expanded = false;
 		function registerEvent() {
 			$('#rpt_table').on('click'," tbody a",function(e){
 				aPos = window.oTable.fnGetPosition($(this).parents('td')[0])
@@ -76,6 +76,7 @@
 			$scope.reportTemplate.jsonSchema = report.jsonSchema;
 			$scope.reportTemplate.model.id = report.id;
 			$scope.showExcButton = true;
+			$scope.currenttab = 'search';
 			$('#custom-search-tab a').click();
 		}
 		
@@ -92,21 +93,24 @@
 			$scope.isAnyActiveReport = false;
 			$http.get('/webapp/report/run',{params:{filter:$scope.reportTemplate.model}}).success(function(data){
 				console.log(data);
+				//$scope.finishedHeader = false;
 				$scope.reportData = data.data;
 				$scope.dtColumns = data.columns;
+				
+				
 				
 				$("#pivot-table-output").pivotUI(data.data, {
 					renderers: renderers,
 					derivedAttributes: {
-                        "year":       dateFormat("ISSUE_DATE", "%y", true),
-                        "month name": dateFormat("ISSUE_DATE", "%n", true),
+                        "Year":       dateFormat("Issue Date", "%y", true),
+                        "Month": dateFormat("Issue Date", "%n", true),
                     },
                     sorters: function(attr) {
-                        if(attr == "month name") {
+                        if(attr == "Month") {
                             return sortAs(["Jan","Feb","Mar","Apr", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]);
                         }
                     },
-                    hiddenAttributes: ["ISSUE_DATE"],
+                    hiddenAttributes: data.hiddenpivotcol//["DN_ID","ISSUE_DATE"],
 
 				});
 				$scope.isAnyActiveReport = true;
@@ -133,10 +137,20 @@
 			};
 			
 		    scope.$watch('finishedHeader', function(val) {
-		      if (val === true) {
-		        window.oTable = $(element).dataTable({
+		      if (val) {
+		    	if(window.oTable) {  
+		    		window.oTable.fnDestroy();
+		    		window.oTable = null;
+		    	}
+		    	
+		    	existingHead = $(element).find('thead');
+		    	existingHead.remove();
+		    	$(element).append($("#tableHeaderTmp").find('thead').clone());  
+		        
+		    	window.oTable = $(element).dataTable({
 		          sDom: '<"clear">TlfCrtip',
 		          pageLength: 200,
+		          //sScrollY: "500px",
 		          tableTools: {
 		        	  "sSwfPath": "/webapp/report/app/swf/copy_csv_xls_pdf.swf",
 			            
@@ -151,21 +165,13 @@
 		              ]
 		          },
 		          
-		          columns: decorateColumns(attrs.aaColumns) 	  
-		        });
-		        
-		        
-
-		        // watch for any changes to our data, rebuild the DataTable
-		        scope.$watch(attrs.aaData, function(value) {
-		          var val = value || null;
-		          if (val) {
-		        	  window.oTable.fnClearTable();
-		        	  window.oTable.fnAddData(scope.$eval(attrs.aaData));
-		          }
+		          columns: decorateColumns(attrs.aaColumns) ,
+		          data:scope.$eval(attrs.aaData)
 		        });
 		      }
 		    });
+
+		    
 		  }
 		  return {
 		    link: link
@@ -174,7 +180,7 @@
 		  .directive('generateDatatable', function() {
 		    function link(scope, element, attrs) {
 		      if (scope.$last) {
-		        scope.$parent.finishedHeader = true;
+		          scope.$parent.finishedHeader = Math.random();
 		      }
 		    }
 		    return {

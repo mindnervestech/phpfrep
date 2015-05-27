@@ -40,7 +40,7 @@ public class ReportMDService {
     	try {
 			JSONObject jsonObject = (JSONObject)new JSONParser().parse(filter);
 			Long id = Long.parseLong(jsonObject.get("id").toString());
-			Map<String,Object> mdResult = jt.queryForMap("Select query,columns from reportmd where id =" + id);//.query("Select query from reportmd where id = ?",new Object[]{id},);
+			Map<String,Object> mdResult = jt.queryForMap("Select query,columns,hiddenpivotcol from reportmd where id =" + id);//.query("Select query from reportmd where id = ?",new Object[]{id},);
 			String query = mdResult.get("query").toString();	
 			String[] namedParameters =  query.split(":");
 			Map<String, Object> parameters = new HashMap<String, Object>();
@@ -82,6 +82,9 @@ public class ReportMDService {
 			JSONArray columns = ((JSONArray)new JSONParser().parse(mdResult.get("columns").toString()));
 			resp.put("columns" , columns);
 			
+			JSONArray hiddenpivotcol = ((JSONArray)new JSONParser().parse(mdResult.get("hiddenpivotcol").toString()));
+			
+			resp.put("hiddenpivotcol",hiddenpivotcol);
 			return resp;
 		} catch (Exception e) {
 			e.printStackTrace();

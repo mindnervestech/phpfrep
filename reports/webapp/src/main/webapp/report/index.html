@@ -101,11 +101,15 @@
 }
 .table-condensed>thead>tr>th, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>tbody>tr>td, .table-condensed>tfoot>tr>td {
   padding: 2px;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 li.active>a {
 	color: #F0AD4E !important;
+}
+
+#rpt_table_wrapper {
+	font-size: 12px !important;
 }
 
 </style>
@@ -116,11 +120,11 @@ li.active>a {
 
 <!-- Tab Panel 1 Start -->
 
-<div  role="tabpanel">
+<div ng-hide="expanded" role="tabpanel">
  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" id="saved-report-tab"><a href="#saved-report" aria-controls="saved-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-list-alt"></span> Reports</a></li>
-    <li role="presentation" id="custom-search-tab"><a href="#custom-search" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-search"></span> Search</a></li>
-    
+    <li role="presentation" id="saved-report-tab" ng-click="currenttab = 'report'" ><a href="#saved-report" aria-controls="saved-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-list-alt"></span> Reports</a></li>
+    <li role="presentation" id="custom-search-tab" ng-click="currenttab = 'search'"><a href="#custom-search" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-search"></span> Search</a></li>
+  	  
   </ul>
 
   <!--   -->
@@ -172,11 +176,16 @@ li.active>a {
 
 
 <!-- Tab Panel 2 start -->
-<div  ng-show="isAnyActiveReport"  role="tabpanel">
+<div  ng-show="isAnyActiveReport && currenttab == 'search'"  role="tabpanel">
 	<!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#table-view" aria-controls="table-view" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-th-list"></span> Table View</a></li>
     <li role="presentation"><a href="#pivot-view" aria-controls="pivot-view" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Pivot View</a></li>
+    <a href="#" ng-click="expanded =! expanded" style="
+    margin-top: 10px;
+    margin-left: 10px;
+    position: absolute;"><span class="glyphicon" ng-class="expanded ? 'glyphicon-resize-small' : 'glyphicon-resize-full'"></span></a>
+    
   </ul>
   <div class="tab-content" style="padding: 10px;">
     <div role="tabpanel" class="tab-pane active" id="table-view">
@@ -198,11 +207,7 @@ li.active>a {
 		<table id="rpt_table"
 		class="table-condensed table table-hover table-striped table-bordered" 
 		 my-datatable aa-data="reportData" aa-columns="dtColumns" >
-	        <thead>
-	            <tr>
-	                <th generate-datatable ng-repeat="col in dtColumns" ng-bind="col.name"></th>
-	            </tr>
-	        </thead>
+	        
 	    </table>    
     </div><!-- table-view end here -->
     
@@ -214,6 +219,13 @@ li.active>a {
   
 </div>
 
+			<table ng-show="1 == 2" id="tableHeaderTmp">
+				<thead>
+	            <tr>
+	                <th generate-datatable ng-repeat="col in dtColumns" ng-bind="col.name"></th>
+	            </tr>
+	            </thead>
+	        </table>
 <!-- Tab Panel 2 End -->
 
 </body>
