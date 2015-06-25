@@ -61,7 +61,8 @@
 <script type="text/javascript" src="/webapp/report/vendor/pivottable/dist/gchart_renderers.js"></script>
 <script type="text/javascript" src="/webapp/report/vendor/pivottable/dist/d3_renderers.js"></script>
 <script type="text/javascript" src="/webapp/report/vendor/pivottable/dist/c3_renderers.js"></script>
-        
+<script type="text/javascript" src="/webapp/report/vendor/nrecopivot/nrecopivot.js"></script>
+<script src='/webapp/report/vendor/bootbox/bootbox.min.js'></script>
 <script src="/webapp/report/scripts/app.js"></script>
 
 <style type="text/css">
@@ -111,7 +112,12 @@ li.active>a {
 #rpt_table_wrapper {
 	font-size: 12px !important;
 }
-
+.pvtVal {
+	cursor: pointer;
+}
+.rowTotal {
+	cursor:pointer; 
+}
 </style>
 </head>
 
@@ -119,11 +125,13 @@ li.active>a {
 <body ng-app="datatableApp" ng-controller="datatableCtrl">
 
 <!-- Tab Panel 1 Start -->
-
+<div ng-show="backBtn" style="padding-top:10px;">
+	<button class="btn btn-warning btn-xs" style="float: right;" ng-click="back()">Back to report</button>
+</div>
 <div ng-hide="expanded" role="tabpanel">
  <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" id="saved-report-tab" ng-click="currenttab = 'report'" ><a href="#saved-report" aria-controls="saved-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-list-alt"></span> Reports</a></li>
-    <li role="presentation" id="custom-search-tab" ng-click="currenttab = 'search'"><a href="#custom-search" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-search"></span> Search</a></li>
+    <li role="presentation" id="custom-search-tab" ng-click="currenttab = 'search'"><a href="#custom-search" ng-click="backBtn=true" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-search"></span> Search</a></li>
   	  
   </ul>
 
@@ -135,7 +143,7 @@ li.active>a {
 		         sf-model="reportTemplate.model">
 		     </div>
 		    
-		    <button ng-show="showExcButton" class="btn btn-warning btn-xs" type="button"  ng-click="runReport()">
+		    <button ng-show="showExcButton" class="btn btn-warning btn-xs" type="button"  ng-click="runReport(1)">
 		    	Execute
 		    </button>
 		  </form>
@@ -149,7 +157,7 @@ li.active>a {
             <tr>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Action</th>
+                <th colspan=2>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -158,6 +166,9 @@ li.active>a {
                 <td>{{rpt.description}}</td>
                 <td>
                   <a href="#" data-ng-click="showReport(rpt)">Show</a> &nbsp;
+                </td>
+                <td ng-if="rpt.pivotConfig!=null || rpt.searchCriteria!=null">
+                  <a href="#" data-ng-click="deleteReport(rpt.id)">Delete</a> &nbsp;
                 </td>
             </tr>
             
@@ -181,6 +192,7 @@ li.active>a {
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#table-view" aria-controls="table-view" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-th-list"></span> Table View</a></li>
     <li role="presentation"><a href="#pivot-view" aria-controls="pivot-view" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Pivot View</a></li>
+    <li role="presentation"><a href="#detail-view" aria-controls="table-view" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-th-list"></span> Detail View</a></li>
     <a href="#" ng-click="expanded =! expanded" style="
     margin-top: 10px;
     margin-left: 10px;
@@ -191,6 +203,7 @@ li.active>a {
     <div role="tabpanel" class="tab-pane active" id="table-view">
 			
 		<div class="btn-group pull-right">
+			<button ng-if="!isSavedTemplateTable" class="btn btn-primary" ng-click="openTemplateModal(1)" style="margin-right: 2px;font-size: 12px;">Save as template</button>
 			<button class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown">
 			<i class="fa fa-bars"></i> Export</button>
 			<ul class="dropdown-menu " role="menu">
@@ -212,9 +225,32 @@ li.active>a {
     </div><!-- table-view end here -->
     
     <div role="tabpanel" class="tab-pane" id="pivot-view">
+    	<div>
+    		<input type="button" ng-if="!isSavedTemplate" name="save" class="btn btn-primary" ng-click="openTemplateModal(2)" style="margin-left: 88%;" value="Save as template">
+    	</div>
     	<div id="pivot-table-output" style="margin: 10px;"></div>
     </div>
     
+    <div role="tabpanel" class="tab-pane" id="detail-view">
+    	<div class="btn-group pull-right">
+			<button class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown">
+			<i class="fa fa-bars"></i> Export</button>
+			<ul class="dropdown-menu " role="menu">
+				<li><a href="#" onclick="$('#detail-view').tableExport({type:'excel',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/xls.png" width="24px"> XLS</a></li>
+				<li><a href="#" onclick="$('#detail-view').tableExport({type:'doc',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/word.png" width="24px"> Word</a></li>
+				<li><a href="#" onclick="$('#detail-view').tableExport({type:'pdf',pdfFontSize:'7',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/pdf.png" width="24px"> PDF</a></li>
+				<li><a href="#" onclick="$('#detail-view').tableExport({type:'csv',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/csv.png" width="24px"> CSV</a></li>
+				<li><a href="#" onclick="$('#detail-view').tableExport({type:'xml',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/xml.png" width="24px"> XML</a></li>
+				<li class="divider"></li>
+			</ul>
+		</div>
+    	<table id="detail_table"
+		class="table-condensed table table-hover table-striped table-bordered" 
+		 my-datatable1 aa-data="detailsData" aa-columns="detailColumns" >
+	        
+	    </table>
+    </div>
+    	
     </div>
   
 </div>
@@ -226,12 +262,56 @@ li.active>a {
 	            </tr>
 	            </thead>
 	        </table>
+	        <table ng-show="1 == 2" id="tableHeaderTmp1">
+				<thead>
+	            <tr>
+	                <th generate-datatable1 ng-repeat="col in detailColumns" ng-bind="col.name"></th>
+	            </tr>
+	            </thead>
+	        </table>
+	        
+	        
+	        
+	        
 <!-- Tab Panel 2 End -->
-
-</body>
-<script>
-$(document).ready(function(){
+	<div id="template-save-modal" class="modal fade">
+  		<div class="modal-dialog">
+    		<div class="modal-content">
+      			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        			<h4 class="modal-title">Save report</h4>
+      			</div>
+      			<div class="modal-body">
+        			<div style="width: 50%;margin: auto;text-align: center;">
+        				<input type="text" ng-model="templateName" style="border: none;border-bottom: 1px solid gray;width:90%;margin: 3% 5%;" placeholder="Report name"/>
+        				<span style="width: 100%;color:red;display: none;" id="template-error">Please provide report name.</span>
+        			</div>
+      			</div>
+      			<div class="modal-footer">
+        			<button type="button" class="btn btn-primary" ng-click="saveTemplate()">Save report</button>
+        			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      			</div>
+    		</div><!-- /.modal-content -->
+  		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 	
-});
-</script>
+	<div id="enlarge-image-modal" class="modal fade">
+  		<div class="modal-dialog" style="width:96%;margin:2%;">
+    		<div class="modal-content" >
+      			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        			<h4 class="modal-title">Image</h4>
+      			</div>
+      			<div class="modal-body">
+        			<div style="width: 100%;margin: auto;text-align: center;">
+        				<img id="img-enlarge" style="width:100%;" />
+        			</div>
+      			</div>
+      			<div class="modal-footer">
+        			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      			</div>
+    		</div><!-- /.modal-content -->
+  		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+</body>
 </html>
