@@ -1852,7 +1852,7 @@ public class DeManagedBean implements Serializable{
 			ParentImage parentImage = getParentImageService().getParentImageById(imageId);
 			parentImage.setStatus(1);
 			getParentImageService().updateParentImage(parentImage);
-			getParentImageList();
+			parentImageList = new ArrayList<ParentImage>();
 		}
 	}
 
@@ -2150,6 +2150,7 @@ public class DeManagedBean implements Serializable{
 	 * delete parent image from db and path
 	 */
 	public void deleteParentImage(){
+		parentImageList = new ArrayList<ParentImage>();
 		long start = System.currentTimeMillis();
 		currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 		String imgId = facesUtils.getRequestParameterMap("imgId");
@@ -2199,6 +2200,7 @@ public class DeManagedBean implements Serializable{
 				messageService.messageInformation(null, "Image can not be deleted.");
 			}
 		}
+		parentImageList = new ArrayList<ParentImage>();
 	}
 
 	private boolean deleteChildImageByID(Long imgId) {
