@@ -20,7 +20,7 @@ public class NotAfterTodayValidator implements Validator {
 
 	        if (date.after(today)) {
 	            String message = "Date may not be later than today.";
-	            throw new ValidatorException(new FacesMessage(message));
+	           // throw new ValidatorException(new FacesMessage(message));
 	        }
 		
 	}

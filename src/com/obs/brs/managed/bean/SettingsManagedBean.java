@@ -604,7 +604,7 @@ public class SettingsManagedBean implements Serializable{
 			 return settingsService.roleHasPermission(menuValue,user.getUserType().getId());
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return false;
 	}
