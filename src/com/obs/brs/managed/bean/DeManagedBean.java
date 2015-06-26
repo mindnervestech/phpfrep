@@ -1908,6 +1908,7 @@ public class DeManagedBean implements Serializable{
 	 * @return List - ParentImage 
 	 */
 	public List<ParentImage> getParentImageList() {
+		long start = System.currentTimeMillis();
 		parentImageList = new ArrayList<ParentImage>();
 		if(filterParentImage != null){
 			parentImageList.addAll(getParentImageService().getParentImageByFilter(filterParentImage));
@@ -1930,6 +1931,7 @@ public class DeManagedBean implements Serializable{
 			}
 			Collections.reverse(parentImageList);
 		}
+		System.out.println("getParentImage" + (System.currentTimeMillis() - start)/1000l);
 		return parentImageList;
 	}
 
@@ -2140,6 +2142,7 @@ public class DeManagedBean implements Serializable{
 	 * delete parent image from db and path
 	 */
 	public void deleteParentImage(){
+		long start = System.currentTimeMillis();
 		currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 		String imgId = facesUtils.getRequestParameterMap("imgId");
 		if(imgId!=null){
@@ -2172,6 +2175,7 @@ public class DeManagedBean implements Serializable{
 				}
 			}
 		}
+		System.out.println("deleteParentImage" + (System.currentTimeMillis() - start)/1000l);
 	}
 
 	/**
