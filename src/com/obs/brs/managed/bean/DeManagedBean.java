@@ -1845,6 +1845,7 @@ public class DeManagedBean implements Serializable{
 	 * @return
 	 */
 	public void doneParentImage(){
+		System.out.println("doneParentImage");
 		String val = facesUtils.getRequestParameterMap("parentImg");
 		int imageId = Integer.valueOf(val!=null?val:"0");
 		if(imageId >0){
@@ -1907,7 +1908,7 @@ public class DeManagedBean implements Serializable{
 	 * 
 	 * @return List - ParentImage 
 	 */
-	public List<ParentImage> getParentImageList() {
+	private List<ParentImage> buildParentImageList() {
 		long start = System.currentTimeMillis();
 		parentImageList = new ArrayList<ParentImage>();
 		if(filterParentImage != null){
@@ -1931,7 +1932,14 @@ public class DeManagedBean implements Serializable{
 			}
 			Collections.reverse(parentImageList);
 		}
-		System.out.println("getParentImage" + (System.currentTimeMillis() - start)/1000l);
+		System.out.println("buildParentImage" + (System.currentTimeMillis() - start)/1000l);
+		return parentImageList;
+	}
+	
+	public List<ParentImage> getParentImageList() {
+		if(parentImageList == null ) {
+			parentImageList = buildParentImageList();
+		}
 		return parentImageList;
 	}
 
@@ -2483,6 +2491,7 @@ public class DeManagedBean implements Serializable{
 	public String callPublication(){
 		try
 		{
+			System.out.println("CallPublication");
 			User currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);	
 			FacesUtils facesUtils = new FacesUtils();
 			String val = facesUtils.getRequestParameterMap("parentImg");
@@ -3310,6 +3319,7 @@ public class DeManagedBean implements Serializable{
 	 */
 	public List<SelectItem> getAllPublicationFirstOff()
 	{
+		System.out.println("AllPubFirstOff");
 		List<Publication> publicationList = new ArrayList<Publication>();
 		List<SelectItem> publicationList1 = new ArrayList<SelectItem>();
 		try {
@@ -3340,6 +3350,7 @@ public class DeManagedBean implements Serializable{
 	 */
 	public List<SelectItem> getAllPublicationSecondOff()
 	{
+		System.out.println("AllPubSecondOff");
 		List<Publication> publicationList = new ArrayList<Publication>();
 		List<SelectItem> publicationList1 = new ArrayList<SelectItem>();
 		try {
@@ -3368,6 +3379,7 @@ public class DeManagedBean implements Serializable{
 	 */
 	public List<SelectItem> getAllSectionFirstOff()
 	{
+		System.out.println("AllSectionFirstOff");
 		List<Publication> publicationList = new ArrayList<Publication>();
 		List<SelectItem> sectionList = new ArrayList<SelectItem>();
 		try {
@@ -3396,6 +3408,7 @@ public class DeManagedBean implements Serializable{
 	 */
 	public List<SelectItem> getAllSectionSecondOff()
 	{
+		System.out.println("AllSectionSecondOff");
 		List<Publication> publicationList = new ArrayList<Publication>();
 		List<SelectItem> sectionList = new ArrayList<SelectItem>();
 		try {
