@@ -11,6 +11,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.obs.brs.model.User;
+import com.obs.brs.session.manager.SessionManager;
 import com.obs.brs.utils.CommonProperties;
 
 public class UploadServlet extends HttpServlet {
@@ -35,6 +37,8 @@ public class UploadServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, 
 			HttpServletResponse response)
 					throws ServletException, java.io.IOException {
+		SessionManager sessionManager 	= new SessionManager();
+		User currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 		// Check that we have a file upload request
 		isMultipart = ServletFileUpload.isMultipartContent(request);
 		response.setContentType("text/html");
@@ -54,7 +58,7 @@ public class UploadServlet extends HttpServlet {
 		// maximum file size to be uploaded.
 		//upload.setSizeMax( maxFileSize );
 		try{ 
-			String userId=request.getParameter("userId");
+			String userId= currentUser.getId() + ""; //request.getParameter("userId");
 			filePath = CommonProperties.getBasePath()+CommonProperties.getImageContextPath()+CommonProperties.getParentImageTempPath();
 			filePath=filePath+"/"+userId;
 			File file = new File(filePath);
