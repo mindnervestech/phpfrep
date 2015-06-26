@@ -1937,7 +1937,7 @@ public class DeManagedBean implements Serializable{
 	}
 	
 	public List<ParentImage> getParentImageList() {
-		if(parentImageList == null ) {
+		if(parentImageList == null || parentImageList.size() ==0) {
 			parentImageList = buildParentImageList();
 		}
 		return parentImageList;
