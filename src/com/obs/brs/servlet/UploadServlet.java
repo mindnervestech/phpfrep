@@ -37,8 +37,6 @@ public class UploadServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, 
 			HttpServletResponse response)
 					throws ServletException, java.io.IOException {
-		SessionManager sessionManager 	= new SessionManager();
-		User currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 		// Check that we have a file upload request
 		isMultipart = ServletFileUpload.isMultipartContent(request);
 		response.setContentType("text/html");
@@ -58,7 +56,7 @@ public class UploadServlet extends HttpServlet {
 		// maximum file size to be uploaded.
 		//upload.setSizeMax( maxFileSize );
 		try{ 
-			String userId= currentUser.getId() + ""; //request.getParameter("userId");
+			String userId=request.getParameter("userId");
 			filePath = CommonProperties.getBasePath()+CommonProperties.getImageContextPath()+CommonProperties.getParentImageTempPath();
 			filePath=filePath+"/"+userId;
 			File file = new File(filePath);

@@ -602,6 +602,14 @@ implements Serializable
 
 	public int getId()
 	{
+		if(id == 0) { // by any reason
+			currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
+			if(currentUser != null)
+			{
+				id = currentUser.getId();
+			}
+		}
+		System.out.println("current User" + id);
 		return this.id;
 	}
 
