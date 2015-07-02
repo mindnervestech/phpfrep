@@ -75,7 +75,7 @@
 		rel="stylesheet" />
 	<link href="#{request.contextPath}/assets/css/style.min.css"
 		rel="stylesheet" />
-	<link href="#" rel="stylesheet" id="theme-color" />
+	<link href="#{request.contextPath}/assets/css/colors/color-dark.css" rel="stylesheet" />
 	<!-- END  MANDATORY STYLE -->
 	<!-- BEGIN PAGE LEVEL STYLE -->
 	<link rel="stylesheet"
@@ -89,6 +89,11 @@
 	</f:metadata>
 	<f:loadBundle var="global"
 	basename="/com/obs/brs/properties/Application"></f:loadBundle>
+	<style>
+		.f-right {
+			float: right;
+		}
+	</style>
 </h:head>
 
 <h:body data-page="file_upload">
@@ -144,14 +149,18 @@
 									<h:commandLink update="imgcrp_div" ajax="true"
 										styleClass="btn btn-primary m-10" action="#{deBean.cropping}">
 										<f:param name="imgId" value="#{deBean.parentImage.id}" />
-										<i class="fa fa-crop p-r-10"></i>Crop</h:commandLink>
+										<i class="fa fa-crop p-r-10"></i>Make crop</h:commandLink>
 									<h:commandLink action="#{deBean.callChildPage}"
 										styleClass="btn btn-default m-10">
-										<f:param name="img" value="#{deBean.parentImage.id}" />Back</h:commandLink>
+										<f:param name="img" value="#{deBean.parentImage.id}" />Go to child images</h:commandLink>
 									<h:commandLink update="imgcrp_div" ajax="true"
 										styleClass="btn btn-primary m-10" action="#{deBean.takeFullImageAsChild}">
 										<f:param name="imgId" value="#{deBean.parentImage.id}" />
 										<i class="fa fa-crop p-r-10"></i>Take full image as child</h:commandLink>
+									<h:commandLink update="imgcrp_div" ajax="true"
+										styleClass="btn btn-primary m-10 f-right" action="#{userBean.redirctMenuLink}">
+										<f:param name="menuId" value="6" />
+										<i class="glyphicon glyphicon-arrow-left"></i></h:commandLink>
 								</ul>
 
 
