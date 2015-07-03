@@ -4020,13 +4020,22 @@ public class DeManagedBean implements Serializable{
 					}
 				}
 				if(dataEntry != null && deCompany != null ){
-					dataEntry = getAllAdDetails(dataEntry);
-					dataEntry.setIsDeleted(false);
-					dataEntry.setIsqualityCheck(true);
-					dataEntry.setDeCompany(deCompany);
-					dataEntry.setCreated_by(currentUser);
-					deService.updateDataEntry(dataEntry);
-					messageService.messageInformation(null, "Data Entry has been Updated successfully.");
+					System.out.println("start:"+dataEntry.getStartCurrencyRange());
+					if(this.startCurrencyRange==null ||this.startCurrencyRange.isEmpty()) {
+						messageService.messageFatal(null, "Start Currency Range is required");
+						return null; 
+					} else if(this.endCurrencyRange==null ||this.endCurrencyRange.isEmpty()) {
+						messageService.messageFatal(null, "End Currency Range is required");
+						return null; 
+					} else {
+						dataEntry = getAllAdDetails(dataEntry);
+						dataEntry.setIsDeleted(false);
+						dataEntry.setIsqualityCheck(true);
+						dataEntry.setDeCompany(deCompany);
+						dataEntry.setCreated_by(currentUser);
+						deService.updateDataEntry(dataEntry);
+						messageService.messageInformation(null, "Data Entry has been Updated successfully.");
+					}
 				}
 			}
 

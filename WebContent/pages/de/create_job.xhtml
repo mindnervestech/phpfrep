@@ -190,10 +190,17 @@ input[type="radio"],input[type="checkbox"] {
 												class="img-responsive" alt="#{deBean.parentImageName}" />
 										</t:div>
 										<t:div styleClass="data_image m-b-20"
-											rendered="#{deBean.childImageId!=0}">
-											<a href="#" title="#{deBean.childImageName}"><img
-												src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}"
-												class="img-responsive" /> </a>
+											rendered="#{deBean.childImageId!=0}" style="text-align:center;">
+											Click image to enlarge
+											<p:commandLink ajax="true"
+												oncomplete="PF('enlargeChildImage').show();">
+												<img
+													src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}"
+													class="img-responsive" />
+											</p:commandLink>
+											<!-- <a href="#" title="#{deBean.childImageName}"><img
+												src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}"
+												class="img-responsive" /> </a> -->
 										</t:div>
 									</div>
 									<div class="col-md-8 f_l">
@@ -460,7 +467,7 @@ input[type="radio"],input[type="checkbox"] {
 															<div class="col-md-9 col-xs-9 p-t-10 f_l"
 																style="background-color: #eee; margin-bottom: 20px;">
 																<div class="col-md-3 col-xs-12 p-0 p-t-10 p-b-10 "
-																	style="font-weight: bold;">Currency Range</div>
+																	style="font-weight: bold;">Currency Range <span style="color: red;">*</span></div>
 																<div class="col-md-3 col-xs-12 p-0 ">
 																	<h:selectOneMenu class="form-control" 
 																		hideNoSelectionOption="false"
@@ -475,17 +482,13 @@ input[type="radio"],input[type="checkbox"] {
 																	<h:inputText class="form-control col-lg-1"
 																		id="startCurrency" style="height:22px;"
 																		value="#{deBean.startCurrencyRange}">
-																		<f:validateDoubleRange minimum="0.0" />
 																	</h:inputText>
-																	<p:message for="startCurrency" display="text" />
 																</div>
 																<div class="col-md-3 col-xs-12 p-0 p-r-5 p-l-5">
 																	<h:inputText class="form-control col-lg-1"
 																		id="endCurrency" value="#{deBean.endCurrencyRange}"
 																		style="height:22px;">
-																		<f:validateDoubleRange minimum="0.0" />
 																	</h:inputText>
-																	<p:message for="endCurrency" display="text" />
 																</div>
 															</div>
 															<div class="col-md-9 col-sm-9 col-xs-9  p-b-10 f_l p-0">
@@ -498,6 +501,7 @@ input[type="radio"],input[type="checkbox"] {
 																</div>
 															</div>
 														</div>
+														All <span style="color: red;">*</span> marked fields are required. 
 													</div>
 												</div>
 												<div class="tab-pane fade" id="tab2_2">
@@ -521,7 +525,16 @@ input[type="radio"],input[type="checkbox"] {
 			</div>
 		</div>
 	</div>
-
+	<p:dialog id="imageDialog" draggable="true" resizable="false" header="Parent Image" modal="true"
+		widgetVar="enlargeChildImage" style="left:10%;width:80%;overflow-y:scroll;max-height:100% !important;top: 10px !important;">
+		<div class="media-manager">
+			<t:div styleClass="data_image m-b-20" id="imgcrp_div">
+				<h:graphicImage id="imgcrp"
+					style="width:700px;" 
+					value="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}" />
+			</t:div>
+		</div>
+	</p:dialog>
 	<p:dialog id="basicDialog" widgetVar="addCompany" draggable="true"
 		resizable="false" header="Add New Company">
 		<h:form>
