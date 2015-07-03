@@ -1340,6 +1340,23 @@ public class DeManagedBean implements Serializable{
 		dataEntry.setOtherAdvertisertype(this.otherAdvertisertype);
 		dataEntry.setLandingPageURL(this.landingPageURL);
 		dataEntry.setAddColumn(this.addColumn);
+		System.out.println("headLine:"+this.adHeadLine);
+		System.out.println("advertiserType:"+this.advertiserType);
+		System.out.println("adType:"+this.adType);
+		System.out.println("adOrientation:"+this.adOrientation);
+		System.out.println("adSize:"+this.adSize);
+		System.out.println("currency:"+this.currency);
+		System.out.println("startCurrencyRange:"+this.startCurrencyRange);
+		System.out.println("ocrText:"+this.ocrText);
+		System.out.println("adCategory:"+this.adCategory);
+		System.out.println("width:"+this.width);
+		System.out.println("others:"+this.others);
+		System.out.println("length:"+this.length);
+		System.out.println("jobDensity:"+this.jobDensity);
+		System.out.println("searchValueAdvertisertype:"+this.searchValueAdvertisertype);
+		System.out.println("otherAdvertisertype:"+this.otherAdvertisertype);
+		System.out.println("landingPageURL:"+this.landingPageURL);
+		System.out.println("addColumn:"+this.addColumn);
 		return dataEntry;
 	}
 
@@ -1368,6 +1385,14 @@ public class DeManagedBean implements Serializable{
 		deCompany.setPincode(this.pincode);
 		deCompany.setDepartment(this.department);
 		deCompany.setCompanyURL(this.companyURL);
+		System.out.println("companyName:"+this.companyName);
+		System.out.println("address:"+this.address);
+		System.out.println("city:"+this.city);
+		System.out.println("state:"+this.state);
+		System.out.println("country:"+this.country);
+		System.out.println("pincode:"+this.pincode);
+		System.out.println("department:"+this.department);
+		System.out.println("companyURL:"+this.companyURL);
 		return deCompany;
 	}
 
@@ -3900,6 +3925,7 @@ public class DeManagedBean implements Serializable{
 
 	public String saveAndExitDataAndCompany() 
 	{
+		System.out.println("in save and edit");
 		try
 		{
 			DeCompany deCompany  = null;
@@ -3962,9 +3988,9 @@ public class DeManagedBean implements Serializable{
 				}
 			}*/
 			
-			
 			FacesUtils facesUtils = new FacesUtils();
 			long deDataId = Long.valueOf(facesUtils.getRequestParameterMap("baseId"));
+			System.out.println("baseId:"+deDataId);
 			if(deDataId >0){
 				DataEntry dataEntry = deService.getDataEntryById(deDataId);
 				if(dataEntry != null && this.companyName != null && !this.companyName.isEmpty()){
@@ -3978,6 +4004,7 @@ public class DeManagedBean implements Serializable{
 					}
 					else{
 						messageService.messageFatal(null, "CompanyName already exist.");
+						System.out.println("CompanyName already exist");
 						return null;
 					}
 				}
@@ -3988,6 +4015,7 @@ public class DeManagedBean implements Serializable{
 						deCompany = deService.getDeCompanyById(this.companyId);	
 					} else {
 						messageService.messageFatal(null, "CompanyName is required");
+						System.out.println("CompanyName is required");
 						return null; 
 					}
 				}
