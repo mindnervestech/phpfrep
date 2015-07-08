@@ -222,6 +222,7 @@ public class DeManagedBean implements Serializable{
 	private String imageWidth;
 	private int changeRowsPerPage = 15;
 	private String advertiserName;
+	private String createdBy;
 	private String publicationId;
 	private String jobStatusGot;
 	private String issueDatePubSearch;
@@ -238,6 +239,14 @@ public class DeManagedBean implements Serializable{
 	
 	public int getJobGot() {
 		return jobGot;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 
 	public void setJobGot(int jobGot) {
@@ -1318,6 +1327,7 @@ public class DeManagedBean implements Serializable{
 		this.otherAdvertisertype = dataEntry.getOtherAdvertisertype();
 		this.landingPageURL = dataEntry.getLandingPageURL();
 		this.addColumn = dataEntry.getAddColumn();
+		this.createdBy = dataEntry.getCreated_by().getFirstName();
 	}
 
 	// getAll AdDetails who is currently in session 

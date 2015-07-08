@@ -103,9 +103,11 @@
 									&nbsp; &nbsp; &nbsp; &nbsp;
 									<h:outputText value="Page:" />
 									&nbsp;#{deBean.parentImage.page} <br />
+									<h:outputText value="Uploaded By:" />
+									&nbsp;#{deBean.parentImage.createdBy.firstName} <br />
 									<h:outputText value="Issue Date:" />
 									&nbsp;
-
+									
 									<h:outputText value="#{deBean.parentImage.issueDate}">
 										<f:convertDateTime pattern="MMM dd, yyyy" />
 									</h:outputText>

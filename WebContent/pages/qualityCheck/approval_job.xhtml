@@ -169,7 +169,8 @@ input[type="radio"],input[type="checkbox"] {
 												class="img-responsive" alt="#{deBean.parentImageName}" />
 										</t:div>
 										</t:div> -->
-										<t:div styleClass="col-md-12">
+										<t:div styleClass="col-md-12" style="text-align:right;">
+											Created by : #{deBean.createdBy}
 											<t:div styleClass="data_image m-b-20"
 												rendered="#{deBean.childImageId != 0}">
 												<p:commandLink action="#{deBean.callChildImage}"

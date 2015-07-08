@@ -3922,7 +3922,10 @@ implements Serializable
 					}
 					else
 					{
-						this.messageService.messageError(null, "Please enter first name and email address.");
+						if(this.firstName==null || this.firstName.isEmpty())
+							this.messageService.messageError(null, "Please enter first name.");
+						else if(this.email==null || this.email.isEmpty())
+							this.messageService.messageError(null, "Please enter email address.");
 						return null;
 					}
 				}

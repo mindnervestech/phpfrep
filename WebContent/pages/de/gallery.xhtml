@@ -528,20 +528,20 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 													<div class="col-xs-6 col-sm-4 col-md-3">
 														<div class="panel panel-default">
 															<div class="panel-body"
-																style="max-height: 365px; min-height: 365px;">
+																style="max-height: 385px; min-height: 385px;">
 																<div class="thmb">
 																	<div class="thmb-prev">
 																		<div class="thumbnail"
 																			style="max-height: 280px; min-height: 280px;">
 																			<div class="overlay"
-																				style="margin-top: 236px; height: 51%;">
+																				style="margin-top: 236px; height: 47%;">
 																				<div class="thumbnail-actions">
 																					<small class="text-muted pull-left"
-																						style="margin-top: -52px;"><h:outputText
+																						style="margin-top: -40px;"><h:outputText
 																							style="color:#fff;"
 																							value="#{val.publicationTitle.publicationTitle}">
 																						</h:outputText></small> <br /> <small class="text-muted pull-left"
-																						style="margin-top: -52px;">
+																						style="margin-top: -40px;">
 																						<div style="width: 147px !important">
 																							<h:outputText style="color:#fff;" value="Section:">
 																							</h:outputText>
@@ -554,34 +554,29 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																						</div>
 																						
 																					</small> &nbsp; <small class="text-muted pull-right"
-																						style="margin-top: -52px; margin-right: 10px;">
+																						style="margin-top: -40px; margin-right: 10px;">
 																						<h:outputText style="color:#fff;" value="Page:" />&nbsp;<h:outputText
 																							style="color:#fff;" value="#{val.page}">
 																						</h:outputText>
 																					</small> <br /> <br /> <small class="text-muted pull-left"
-																						style="margin-top: -52px;"> <h:outputText
+																						style="margin-top: -40px;"> <h:outputText
 																							style="color:#fff;" value="Issue Date:" />&nbsp;<h:outputText
 																							style="color:#fff;" value="#{val.issueDate}">
 																							<f:convertDateTime pattern="MMM dd, yyyy" />
 																						</h:outputText></small> <br /> <small class="text-muted pull-left"
-																						style="margin-top: -52px;"> <h:outputText
-																							style="color:#fff;" value="Upload By:" />&nbsp;<h:outputText
-																							value="#{val.createdBy.firstName}"
-																							style="color:#fff;">
-																						</h:outputText></small> <br /> <small class="text-muted pull-left"
-																						    style="margin-top: -52px;"><h:outputText
+																						    style="margin-top: -40px;"><h:outputText
 																							style="color:#fff;" value="On:" />&nbsp;<h:outputText
 																							style="color:#fff;" value="#{val.createdOn}">
 																							<f:convertDateTime pattern="MMM dd, yyyy" />
 																						</h:outputText></small> <br /> <small class="text-muted pull-left"
-																						style="margin-top: -52px;"> <h:commandLink
+																						style="margin-top: -40px;"> <h:commandLink
 																							action="#{deBean.callChildPage}" style="color:#fff;">
 																							<f:param name="img" value="#{val.id}" />
 																					        View
 																	</h:commandLink></small> 
 			
 																	<small class="text-muted pull-right"
-																						style="margin-top: -52px; margin-right: 10px;"><h:commandLink
+																						style="margin-top: -40px; margin-right: 10px;"><h:commandLink
 																							action="#{deBean.deleteParentImage}" update="@all"
 																							style="color:#fff;"
 																							onclick="if(confirmDelete())return true; else return false;">
@@ -603,10 +598,16 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																				<f:param name="img" value="#{val.id}" />#{val.imageName}
 																	</h:commandLink>
 																		</h5>
+																		<small class="text-muted pull-left"
+																						style="margin-top: 0px;"> <h:outputText
+																							style="" value="Upload By:" />&nbsp;<h:outputText
+																							value="#{val.createdBy.firstName}"
+																							style="">
+																						</h:outputText></small>
 																	</div>
 																	<br /> <br /> 
 																	<small class="text-muted pull-left"
-																		style="margin-top: -36px;width:75%;"> 
+																		style="margin-top: -12px;width:75%;"> 
 																		<p:commandLink
 																			action="#{deBean.callPublication}"
 																			rendered="#{empty val.publicationTitle}" ajax="true"
@@ -628,7 +629,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																		
 																	</small> 
 																	<small class="text-muted pull-right"
-																		style="margin-top: -36px;">
+																		style="margin-top: -12px;">
 																		<h:commandLink
 																			rendered="#{not empty val.publicationTitle}"
 																			action="#{deBean.callCrop}" id="crop">

@@ -557,7 +557,7 @@ input {
 																id="txt_email" validatorMessage="Invalid email format"
 																requiredMessage="Value is required">
 																<f:validateRegex
-																	pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+																	pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$|^$" />
 															</p:inputText>
 														</div></td>
 													<td style="width: 19%"><div
@@ -567,7 +567,7 @@ input {
 																styleClass="form-control"
 																requiredMessage="Value is required"
 																validatorMessage="Minimum 6 characters">
-																<f:validateLength minimum="6"></f:validateLength>
+																<f:validateRegex pattern="^.{6,}$|^$"></f:validateRegex>
 															</p:password>
 														</div></td>
 													<td style="width: 19%">

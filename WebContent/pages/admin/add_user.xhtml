@@ -202,11 +202,11 @@ input {
 													placeholder="Phone Number"
 													onkeyup="javascript:mask('AddUserForm:PhoneNo', '000-000-0000', event);"
 													validatorMessage="Invalid phone number.">
-													<f:validateRegex pattern="^[0-9_-]{12}$" />
+													<f:validateRegex pattern="^[0-9_-]{12}$|[0-9]*" />
 												</p:inputText>
 												<p:message for="PhoneNo" display="text" />
 											</div>
-											<div class="col-md-6 col-sm-6 p-0 p-t-10">Date Of Birth
+											<!-- <div class="col-md-6 col-sm-6 p-0 p-t-10">Date Of Birth
 												</div>
 											<div class="col-md-6 col-sm-6 p-0 p-b-10">
 												<p:calendar 
@@ -218,7 +218,7 @@ input {
 													<f:validator validatorId="notAfterToday" />
 												</p:calendar>
 												<p:message for="txt_dateofBirth" display="text" />
-											</div>
+											</div> -->
 											<div class="col-md-6 col-sm-6 p-0 p-t-10">Address</div>
 											<div class="col-md-6 col-sm-6 p-0 p-b-10">
 												<p:inputText styleClass="form-control" 

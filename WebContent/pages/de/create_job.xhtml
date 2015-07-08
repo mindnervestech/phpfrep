@@ -190,8 +190,8 @@ input[type="radio"],input[type="checkbox"] {
 												class="img-responsive" alt="#{deBean.parentImageName}" />
 										</t:div>
 										<t:div styleClass="data_image m-b-20"
-											rendered="#{deBean.childImageId!=0}" style="text-align:center;">
-											Click image to enlarge
+											rendered="#{deBean.childImageId!=0}">
+											<span style="width: 50%;display: block;float: left;">Click image to enlarge</span><span style="width: 50%;display: block;float: right;">Created by: #{deBean.createdBy}</span>
 											<p:commandLink ajax="true"
 												oncomplete="PF('enlargeChildImage').show();">
 												<img
