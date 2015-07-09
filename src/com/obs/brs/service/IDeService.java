@@ -231,13 +231,13 @@ public interface IDeService {
 	 * @param searchValue
 	 * @return
 	 */
-	public List<DataEntry> geQcJobBySeachCriteria(int status,String searchValue,String publicationId, String issueDatePubSearch);
+	public List<DataEntry> geQcJobBySeachCriteria(int status,String searchValue,String publicationId, String issueDatePubSearch,String createdBy);
 	/**
 	 * 
 	 * @param publicationId
 	 * @return
 	 */
-	public List<DataEntry> geQcJobBySeach(String publicationId, String issueDatePubSearch);
+	public List<DataEntry> geQcJobBySeach(String publicationId, String issueDatePubSearch,String createdBy);
 	/**
 	 * 
 	 * @param jobid
@@ -255,4 +255,5 @@ public interface IDeService {
 
 	public String getStatusOfChildImageCompletion(long string);
 
+	public List getAllDeo();
 }

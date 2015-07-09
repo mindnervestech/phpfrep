@@ -330,12 +330,13 @@ public class DeServiceDAO implements IDeServiceDAO {
 	 }
 
 	 @Override
-	 public List<DataEntry> geQcJobBySeachCriteria(int status,String searchValue,String publicationId,String issueDatePubSearch) {
+	 public List<DataEntry> geQcJobBySeachCriteria(int status,String searchValue,String publicationId,String issueDatePubSearch,String createdBy) {
 	  String appendStr = "";
 	  String appendDate = "";
 	  String appendQuote = "";
 	  String appendStatus = "";
 	  String appendPublicationID = "";
+	  String appendCreateBy = "";
 	  if(StringUtils.isNotBlank(searchValue)){
 	   appendStr  = appendStr+"m.parentImage.imageName LIKE '%"+searchValue+"%'";
 	   appendStr  = appendStr+" OR m.parentImage.publicationTitle.publicationTitle LIKE '%"+searchValue+"%'";
@@ -346,7 +347,7 @@ public class DeServiceDAO implements IDeServiceDAO {
 	  } 
 	  
 	  if(publicationId != null && publicationId != "" && !publicationId.equals("") ){
-		  appendPublicationID = "AND m.parentImage.publicationTitle = "+publicationId;
+		  appendPublicationID = " AND m.parentImage.publicationTitle = "+publicationId;
 		  appendQuote = "'";
 	  }
 	  
@@ -356,22 +357,25 @@ public class DeServiceDAO implements IDeServiceDAO {
 	  }
 	
 	  if(!issueDatePubSearch.equals("") && !issueDatePubSearch.equals(null)){
-		  appendDate = "AND m.parentImage.issueDate = '";
+		  appendDate = " AND m.parentImage.issueDate = '";
 		  appendQuote = "'";
 	  }
 	  
-	 
+	  if(createdBy!=null && !createdBy.isEmpty()) {
+		  appendCreateBy = " AND m.created_by.id = "+createdBy;
+	  }
 	  
-	  String  SQL = "From DataEntry as m " +""+" where m.deCompany != null and m.isDeleted=0 "+appendPublicationID+appendStatus+appendDate+issueDatePubSearch+appendQuote+""+appendStr;
-	  System.out.println("SQL"+SQL);
+	  String  SQL = "From DataEntry as m " +""+" where m.deCompany != null and m.isDeleted=0 "+appendCreateBy+appendPublicationID+appendStatus+appendDate+issueDatePubSearch+appendQuote+""+appendStr;
+	  System.out.println("SQL:"+SQL);
 	  return getSessionFactory().getCurrentSession().createQuery(SQL).list();
 	 } 
 
 	 @Override
-	 public List<DataEntry> geQcJobBySeach(String publicationId, String issueDatePubSearch) {
+	 public List<DataEntry> geQcJobBySeach(String publicationId, String issueDatePubSearch,String createdBy) {
 	  String appendDate = "";
 	  String appendQuote = "";
 	  String appendPublicationId = "";
+	  String appendCreatedBy = "";
 	  if(!issueDatePubSearch.equals("") && !issueDatePubSearch.equals(null)){
 		  appendDate = "AND m.parentImage.issueDate = '";
 		  appendQuote = "'";
@@ -379,7 +383,10 @@ public class DeServiceDAO implements IDeServiceDAO {
 	  if(publicationId != null && publicationId != "" && !publicationId.equals("") ){
 		  appendPublicationId = "AND m.parentImage.publicationTitle = "+publicationId;
 	  }
-	  String  SQL = "From DataEntry as m " +""+" where m.deCompany != null and m.isDeleted=0 "+appendPublicationId+appendDate+issueDatePubSearch+appendQuote;
+	  if(createdBy != null && !createdBy.isEmpty()) {
+		  appendCreatedBy = " AND m.created_by.id ="+createdBy+" ";
+	  }
+	  String  SQL = "From DataEntry as m " +""+" where m.deCompany != null and m.isDeleted=0 "+appendCreatedBy+appendPublicationId+appendDate+issueDatePubSearch+appendQuote;
 	  return getSessionFactory().getCurrentSession().createQuery(SQL).list();
 	 }
 	 
@@ -408,6 +415,12 @@ public class DeServiceDAO implements IDeServiceDAO {
 		}
 		String status =  compleated+"/"+dataEntries.size()+"";
 		return status;
+	}
+
+	@Override
+	public List getAllDeo() {
+		String SQL = "select DN_ID, DC_FIRSTNAME  FROM tbl_user da where DN_USER_TYPE=3 ";
+		return getSessionFactory().getCurrentSession().createSQLQuery(SQL).list();
 	}
 	
 

@@ -233,9 +233,9 @@ public interface IDeServiceDAO {
 	 * @param publicationStatus
 	 * @return
 	 */
-	public List<DataEntry> geQcJobBySeachCriteria(int status,String searchValue,String publicationId,String issueDatePubSearch);
+	public List<DataEntry> geQcJobBySeachCriteria(int status,String searchValue,String publicationId,String issueDatePubSearch,String CreatedBy);
 	
-	public List<DataEntry> geQcJobBySeach(String publicationId, String issueDatePubSearch);
+	public List<DataEntry> geQcJobBySeach(String publicationId, String issueDatePubSearch,String createdBy);
 	/**
 	 * 
 	 * @param parId
@@ -248,5 +248,7 @@ public interface IDeServiceDAO {
 	List<DataEntry> geAllQcJob();
 
 	String getStatusOfChildImageCompletion(long jobid);
+	
+	public List getAllDeo();
 
 }

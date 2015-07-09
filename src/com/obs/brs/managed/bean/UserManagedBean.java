@@ -1107,11 +1107,11 @@ implements Serializable
 		{
 			User user = (User)this.sessionManager.getSessionAttribute("login_user");
 			if (user != null) {
-				if (user.getPassword().equals(this.commonUtils.generateEncryptedPwd(this.password)))
+				if (user.getPassword().equals(this.password))
 				{
 					if (this.newPassword.equals(this.confirmPassword))
 					{
-						user.setPassword(this.commonUtils.generateEncryptedPwd(this.newPassword));
+						user.setPassword(this.newPassword);
 						this.userService.updateUser(user);
 
 						this.msgLabel = "Your Password has been Saved Successfully.";
@@ -1198,7 +1198,7 @@ implements Serializable
 				User user = this.userService.getUserByForgotPwdEncryption(this.forgotPwdEncryptVal);
 				if (user != null)
 				{
-					user.setPassword(this.commonUtils.generateEncryptedPwd(this.newPassword));
+					user.setPassword(this.newPassword);
 					this.userService.updateUser(user);
 					this.messageService.messageInformation(null, "Your new password has changed Successfully.");
 					return "returnhome";
@@ -1302,14 +1302,14 @@ implements Serializable
 	public User loginUser()
 	{
 		User user = null;
-		user = getUserService().loginUser(this.email, this.commonUtils.generateEncryptedPwd(this.password));
+		user = getUserService().loginUser(this.email, this.password);
 		return user;
 	}
 
 	public SubscriberUser loginSubscriberUser()
 	{
 		SubscriberUser subscriberUser = null;
-		subscriberUser = getUserService().loginSubscriberUser(this.email, this.commonUtils.generateEncryptedPwd(this.password));
+		subscriberUser = getUserService().loginSubscriberUser(this.email, this.password);
 		return subscriberUser;
 	}
 
@@ -1491,7 +1491,7 @@ implements Serializable
 							} else {
 								userTypeValue = "Quality Check";
 							}
-							String encrptPwd = this.commonUtils.generateEncryptedPwd(this.password);
+							String encrptPwd = this.password;
 							user.setPassword(encrptPwd);
 							user.setIsActive(Boolean.valueOf(true));
 							user.setCreated_by(this.currentUser.getId());
@@ -1657,7 +1657,7 @@ implements Serializable
 								subscriberUser.setFirstName(subscriberString[0]);
 								subscriberUser.setLastName(subscriberString[1]);
 								subscriberUser.setEmail(subscriberString[2]);
-								String encrptPwd = this.commonUtils.generateEncryptedPwd(subscriberString[3]);
+								String encrptPwd = subscriberString[3];
 								subscriberUser.setPassword(encrptPwd);
 								subscriberUser.setIsActive(Boolean.valueOf(true));
 								subscriberUser.setCreated_by(this.currentUser.getId());
@@ -1816,7 +1816,7 @@ implements Serializable
 								}
 								if ((addSubscriberUserString[3] != null) && (!addSubscriberUserString[3].isEmpty()))
 								{
-									String encrptPwd = this.commonUtils.generateEncryptedPwd(addSubscriberUserString[3]);
+									String encrptPwd = addSubscriberUserString[3];
 									subscriberUser.setPassword(encrptPwd);
 								}
 								subscriberUser.setIsActive(Boolean.valueOf(true));
@@ -1859,7 +1859,7 @@ implements Serializable
 								subscriberUser.setFirstName(addSubscriberUserString[0]);
 								subscriberUser.setLastName(addSubscriberUserString[1]);
 								subscriberUser.setEmail(addSubscriberUserString[2]);
-								String encrptPwd = this.commonUtils.generateEncryptedPwd(addSubscriberUserString[3]);
+								String encrptPwd = addSubscriberUserString[3];
 								subscriberUser.setPassword(encrptPwd);
 								subscriberUser.setIsActive(Boolean.valueOf(true));
 								subscriberUser.setCreated_by(this.currentUser.getId());
@@ -2539,7 +2539,7 @@ implements Serializable
 						{
 							subscriberUser = getAllsubscriberUserValues(subscriberUser);
 							subscriberUserType = "Subscriber User";
-							String encrptPwd = this.commonUtils.generateEncryptedPwd(this.password);
+							String encrptPwd = this.password;
 							subscriberUser.setPassword(encrptPwd);
 							subscriberUser.setIsActive(Boolean.valueOf(true));
 							subscriberUser.setCreated_by(currentUser.getSubscriber().getId());
@@ -2799,7 +2799,7 @@ implements Serializable
 				SubscriberUser subscriberUser = this.userService.getSubscriberUserByForgotPwdEncryption(this.forgotPwdEncryptVal);
 				if (subscriberUser != null)
 				{
-					subscriberUser.setPassword(this.commonUtils.generateEncryptedPwd(this.newPassword));
+					subscriberUser.setPassword(this.newPassword);
 					this.userService.updateSubscriberUser(subscriberUser);
 					this.messageService.messageInformation(null, "Your new password has changed Successfully.");
 					return "returnsubscriberhome";
@@ -3099,8 +3099,8 @@ implements Serializable
 					{
 						subscriberUser = getAllsubscriberUserValues(subscriberUser);
 						subscriberUserType = "Subscriber User";
-						String pwd = this.commonUtils.generatePwd(this.email);
-						String encrptPwd = this.commonUtils.generateEncryptedPwd(pwd);
+						String pwd = this.email;
+						String encrptPwd = pwd;
 						subscriberUser.setPassword(encrptPwd);
 						subscriberUser.setIsActive(Boolean.valueOf(true));
 						subscriberUser.setCreated_by(currentUser.getId());
@@ -3646,7 +3646,7 @@ implements Serializable
 				{
 					if (this.newPassword.equals(this.confirmPassword))
 					{
-						subscriberUser.setPassword(this.commonUtils.generateEncryptedPwd(this.newPassword));
+						subscriberUser.setPassword(this.newPassword);
 						this.userService.updateSubscriberUser(subscriberUser);
 
 						this.msgLabel = "Your Password has been Saved Successfully.";

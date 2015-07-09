@@ -226,6 +226,15 @@ public class DeManagedBean implements Serializable{
 	private String publicationId;
 	private String jobStatusGot;
 	private String issueDatePubSearch;
+	private String createdByDeo;
+	
+	public String getCreatedByDeo() {
+		return createdByDeo;
+	}
+
+	public void setCreatedByDeo(String createdByDeo) {
+		this.createdByDeo = createdByDeo;
+	}
 
 	public String getIssueDatePubSearch() {
 		return issueDatePubSearch;
@@ -1350,23 +1359,6 @@ public class DeManagedBean implements Serializable{
 		dataEntry.setOtherAdvertisertype(this.otherAdvertisertype);
 		dataEntry.setLandingPageURL(this.landingPageURL);
 		dataEntry.setAddColumn(this.addColumn);
-		System.out.println("headLine:"+this.adHeadLine);
-		System.out.println("advertiserType:"+this.advertiserType);
-		System.out.println("adType:"+this.adType);
-		System.out.println("adOrientation:"+this.adOrientation);
-		System.out.println("adSize:"+this.adSize);
-		System.out.println("currency:"+this.currency);
-		System.out.println("startCurrencyRange:"+this.startCurrencyRange);
-		System.out.println("ocrText:"+this.ocrText);
-		System.out.println("adCategory:"+this.adCategory);
-		System.out.println("width:"+this.width);
-		System.out.println("others:"+this.others);
-		System.out.println("length:"+this.length);
-		System.out.println("jobDensity:"+this.jobDensity);
-		System.out.println("searchValueAdvertisertype:"+this.searchValueAdvertisertype);
-		System.out.println("otherAdvertisertype:"+this.otherAdvertisertype);
-		System.out.println("landingPageURL:"+this.landingPageURL);
-		System.out.println("addColumn:"+this.addColumn);
 		return dataEntry;
 	}
 
@@ -1395,14 +1387,6 @@ public class DeManagedBean implements Serializable{
 		deCompany.setPincode(this.pincode);
 		deCompany.setDepartment(this.department);
 		deCompany.setCompanyURL(this.companyURL);
-		System.out.println("companyName:"+this.companyName);
-		System.out.println("address:"+this.address);
-		System.out.println("city:"+this.city);
-		System.out.println("state:"+this.state);
-		System.out.println("country:"+this.country);
-		System.out.println("pincode:"+this.pincode);
-		System.out.println("department:"+this.department);
-		System.out.println("companyURL:"+this.companyURL);
 		return deCompany;
 	}
 
@@ -2681,19 +2665,21 @@ public class DeManagedBean implements Serializable{
 		DateFormat dateFormat = new SimpleDateFormat (DATE_FORMAT);	
 		dataEntryuserList = new ArrayList<DataEntry>();
 		this.issueDatePubSearch = (String) sessionManager.getSessionAttribute(sessionManager.ISSUEDATE);
+		this.createdByDeo = (String) sessionManager.getSessionAttribute(sessionManager.CREATEDBYDEO);
 		if(this.issueDatePubSearch == null && this.publicationId != ""){
 			dataEntryuserList.addAll(getDeService().geAllQcJob());
 			return dataEntryuserList;
 		}
-		if(this.issueDatePubSearch != null){
-			this.issueDatePubSearch = this.issueDatePubSearch;
-		}else{
+		if(this.issueDatePubSearch == null){
 			this.issueDatePubSearch = "";
 		}
+		if(this.createdByDeo == null) {
+			this.createdByDeo = "";
+		}
 		if(this.jobStatus == 0 && this.searchValue.equals("")){
-			dataEntryuserList.addAll(getDeService().geQcJobBySeach(this.publicationId,this.issueDatePubSearch));
+			dataEntryuserList.addAll(getDeService().geQcJobBySeach(this.publicationId,this.issueDatePubSearch,this.createdByDeo));
 		}else if(this.jobStatus >= 0 ){
-				dataEntryuserList.addAll(getDeService().geQcJobBySeachCriteria(this.jobStatus,this.searchValue,this.publicationId,this.issueDatePubSearch));
+				dataEntryuserList.addAll(getDeService().geQcJobBySeachCriteria(this.jobStatus,this.searchValue,this.publicationId,this.issueDatePubSearch,this.createdByDeo));
 		}
 		Collections.reverse(dataEntryuserList);
 		for(DataEntry dataEntry: dataEntryuserList){
@@ -2706,6 +2692,11 @@ public class DeManagedBean implements Serializable{
 		qcjobByJournal = getDeService().getDeJobByQC();
 		return qcjobByJournal;
 		
+	}
+	
+	public List getAllDeo() {
+		List result = getDeService().getAllDeo();
+		return result;
 	}
 	
 	public List getQcJournalView(){
@@ -2759,6 +2750,19 @@ public class DeManagedBean implements Serializable{
 			sessionManager.setUserInSession(SessionManager.ISSUEDATE, "");
 		}else{
 			sessionManager.setUserInSession(SessionManager.ISSUEDATE, this.issueDatePubSearch);
+		}
+		
+	}
+	
+	public void sendCretedByDeo(ValueChangeEvent event)	
+	{ 
+		this.createdByDeo =((String) event.getNewValue());
+		System.out.println("createdBy:"+this.createdByDeo);
+		if(this.createdByDeo.equals("all"))
+		{
+			sessionManager.setUserInSession(SessionManager.CREATEDBYDEO, "");
+		}else{
+			sessionManager.setUserInSession(SessionManager.CREATEDBYDEO, this.createdByDeo);
 		}
 		
 	}

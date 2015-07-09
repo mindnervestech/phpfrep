@@ -31,6 +31,7 @@ public class SessionManager implements Serializable{
 	public static final String JOBSTATUS 			= "jobStatusGot";
 	public static final String ISSUEDATE 			= "issueDate";
 	public static String CHILDIMAGEID 			= "child_image_id";
+	public static final String CREATEDBYDEO = "createdByDeo";
 	
 	public static SessionManager getMyInstatnce(){
 		if(sessionManager == null){

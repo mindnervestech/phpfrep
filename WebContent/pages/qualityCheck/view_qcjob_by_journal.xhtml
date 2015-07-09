@@ -253,7 +253,15 @@ h3{
 													</p:selectOneMenu>
 												</div>
 												
-												
+												<div class="manage_button">
+													<p:selectOneMenu value="#{deBean.createdByDeo}"
+														id="deoSearch" style="width: 140px;"
+														valueChangeListener="#{deBean.sendCretedByDeo}"
+														onchange="this.form.submit()">
+														<f:selectItem itemLabel="All" itemValue="all" />
+														<f:selectItems value="#{deBean.allDeo}" var="foo" itemLabel="#{foo[1]}" itemValue="#{foo[0]}"/>
+													</p:selectOneMenu>
+												</div>
 												
 
 											</div>

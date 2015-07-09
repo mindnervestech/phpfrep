@@ -325,18 +325,18 @@ public class DeService implements IDeService{
      * @see com.obs.brs.service.IDeService#geQcJobBySeachCriteria(int, java.lang.String, java.lang.String)
      */
 	@Override
-	public List<DataEntry> geQcJobBySeachCriteria(int status,String searchValue,String publicationId,String issueDatePubSearch) {
+	public List<DataEntry> geQcJobBySeachCriteria(int status,String searchValue,String publicationId,String issueDatePubSearch,String createdBy) {
 		// TODO Auto-generated method stub
-		return getDeServiceDAO().geQcJobBySeachCriteria(status,searchValue,publicationId,issueDatePubSearch);
+		return getDeServiceDAO().geQcJobBySeachCriteria(status,searchValue,publicationId,issueDatePubSearch,createdBy);
 	}
 	  /*
      * (non-Javadoc)
      * @see com.obs.brs.service.IDeService#geQcJobBySeach(java.lang.String)
      */
 	@Override
-	public List<DataEntry> geQcJobBySeach(String publicationId, String issueDatePubSearch) {
+	public List<DataEntry> geQcJobBySeach(String publicationId, String issueDatePubSearch,String createdBy) {
 		// TODO Auto-generated method stub
-		return getDeServiceDAO().geQcJobBySeach(publicationId, issueDatePubSearch);
+		return getDeServiceDAO().geQcJobBySeach(publicationId, issueDatePubSearch,createdBy);
 	}
 	  /*
      * (non-Javadoc)
@@ -370,6 +370,10 @@ public class DeService implements IDeService{
 	public String getStatusOfChildImageCompletion(long jobid) {
 		// TODO Auto-generated method stub
 		return getDeServiceDAO().getStatusOfChildImageCompletion(jobid);
+	}
+	@Override
+	public List getAllDeo() {
+		return getDeServiceDAO().getAllDeo();
 	}
 
 
