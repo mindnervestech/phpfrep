@@ -68,7 +68,7 @@ label {
 	position: relative !important;
 }
 
-.zoom {
+zoom {
 	display: inline-block;
 }
 
