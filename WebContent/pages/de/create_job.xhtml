@@ -30,6 +30,8 @@
 	<link href="#{request.contextPath}/assets/css/my_style.css"
 		rel="stylesheet" />
 	<link href="#{request.contextPath}/assets/css/colors/color-dark.css" rel="stylesheet" />
+	
+	
 	<f:loadBundle var="global"
 		basename="/com/obs/brs/properties/Application"></f:loadBundle>
 	<script>
@@ -194,9 +196,9 @@ input[type="radio"],input[type="checkbox"] {
 											<span style="width: 50%;display: block;float: left;">Click image to enlarge</span><span style="width: 50%;display: block;float: right;">Created by: #{deBean.createdBy}</span>
 											<p:commandLink ajax="true"
 												oncomplete="PF('enlargeChildImage').show();">
-												<img
+												<div id="zoomable"> <img
 													src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}"
-													class="img-responsive" />
+													class="img-responsive" /> </div>
 											</p:commandLink>
 											<!-- <a href="#" title="#{deBean.childImageName}"><img
 												src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}"
@@ -531,7 +533,7 @@ input[type="radio"],input[type="checkbox"] {
 			<t:div styleClass="data_image m-b-20" id="imgcrp_div">
 				<h:graphicImage id="imgcrp"
 					style="width:700px;" 
-					value="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}" />
+					value="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}" />
 			</t:div>
 		</div>
 	</p:dialog>
@@ -659,5 +661,12 @@ input[type="radio"],input[type="checkbox"] {
 	<!-- END  PAGE LEVEL SCRIPTS -->
 	<script src="#{request.contextPath}/assets/js/application.js"></script>
 	<script src="#{request.contextPath}/assets/js/customValidation.js"></script>
+	
+	<script src="#{request.contextPath}/assets/js/jquery.zoom.min.js"></script>
+	<script>
+		$(document).ready(function(){
+		  $('#zoomable').zoom();
+		});
+	</script>
 </h:body>
 </html>
