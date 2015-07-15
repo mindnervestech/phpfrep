@@ -68,6 +68,10 @@ label {
 	position: relative !important;
 }
 
+zoom {
+	display: inline-block;
+}
+
 input[type="radio"],input[type="checkbox"] {
 	margin: 4px 4px 0;
 }
@@ -196,7 +200,7 @@ input[type="radio"],input[type="checkbox"] {
 											<span style="width: 50%;display: block;float: left;">Click image to enlarge</span><span style="width: 50%;display: block;float: right;">Created by: #{deBean.createdBy}</span>
 											<p:commandLink ajax="true"
 												oncomplete="PF('enlargeChildImage').show();">
-												<div id="zoomable"> <img
+												<div class="zoom" id="zoomable"> <img
 													src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}"
 													class="img-responsive" /> </div>
 											</p:commandLink>
