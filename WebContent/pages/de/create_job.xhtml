@@ -68,10 +68,6 @@ label {
 	position: relative !important;
 }
 
-.zoom {
-	display: inline-block;
-}
-
 input[type="radio"],input[type="checkbox"] {
 	margin: 4px 4px 0;
 }
@@ -84,8 +80,9 @@ input[type="radio"],input[type="checkbox"] {
 	padding: 3px 24px;
 }
 
-.bootstrap-select.btn-group:not(.input-group-btn), .bootstrap-select.btn-group[class*="span"] {
-	  margin-bottom: 0px;
+.bootstrap-select.btn-group:not (.input-group-btn ),.bootstrap-select.btn-group[class*="span"]
+	{
+	margin-bottom: 0px;
 }
 
 </style>
@@ -195,18 +192,58 @@ input[type="radio"],input[type="checkbox"] {
 												src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImageId}/#{deBean.parentImageName}"
 												class="img-responsive" alt="#{deBean.parentImageName}" />
 										</t:div>
-										<t:div styleClass="data_image m-b-20"
-											rendered="#{deBean.childImageId!=0}">
-											<span style="width: 50%;display: block;float: left;">Click image to enlarge</span><span style="width: 50%;display: block;float: right;">Created by: #{deBean.createdBy}</span>
-											<p:commandLink ajax="true"
+										<t:div styleClass="" rendered="#{deBean.childImageId!=0}">
+										<!-- 	<span style="width: 50%; display: block; float: left;">Click
+												image to enlarge</span> -->
+											<span style="width: 50%; display: block;">Created
+												by: #{deBean.createdBy}</span>
+											<!-- <p:commandLink ajax="true"
 												oncomplete="PF('enlargeChildImage').show();">
-												<div class="zoom" id="zoomable"> <img
+												<img
 													src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}"
-													class="img-responsive" /> </div>
-											</p:commandLink>
+													class="img-responsive" />
+											</p:commandLink> -->
 											<!-- <a href="#" title="#{deBean.childImageName}"><img
 												src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}"
 												class="img-responsive" /> </a> -->
+											<div class="thumbnail" style="float: left; padding: 0px;">
+												<div class="thumbnail-actions" style="margin-top: -8px;">
+															<span class="text-muted pull-center"
+																style="font-size: 14px; font-weight: bold; color: black;">
+																<p:commandLink ajax="true"
+																	oncomplete="PF('enlargeChildImage').show();">
+																<span style="  float: right;margin-top: -4%;" class="glyphicon glyphicon-plus"></span>
+															</p:commandLink>
+															</span>
+														</div>
+												<section>
+												<div id="panzoom1" style="text-align: center">
+													<img
+														src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}"
+														class="img-responsive" alt="" />
+													<div class="overlay" style="height: 25%;">
+														<!-- <div class="thumbnail-actions" style="margin-top: -8px;">
+															<span class="text-muted pull-center"
+																style="font-size: 14px; font-weight: bold; color: black;">
+																<p:commandLink ajax="true"
+																	oncomplete="PF('enlargeChildImage').show();">
+																Enlarge
+															</p:commandLink>
+															</span>
+														</div> -->
+													</div>
+												</div>
+												</section>
+												<section> <span class="buttons">
+													<button class="zoom-in1 btn btn-default ">Zoom In</button>
+													<button class="zoom-out1" style="display: none;">Zoom Out</button>
+													<button class="reset1 btn btn-default ">Reset</button> <!-- <input type="range"
+													class="zoom-range1"></input> -->
+
+												</span> </section>
+											</div>
+
+
 										</t:div>
 									</div>
 									<div class="col-md-8 f_l">
@@ -440,7 +477,8 @@ input[type="radio"],input[type="checkbox"] {
 																<div class="row m-0" style="width:200px;">
 																	<div class="p-0">
 																		<h:selectOneMenu value="#{deBean.adCategory}"
-																			class="form-control" id="txt_adCategory" style="  padding: 0px 12px !important;" >
+																			class="form-control" id="txt_adCategory"
+																			style="  padding: 0px 12px !important;">
 																			<f:selectItems
 																				value="#{deBean.noOfAdCategoryFirstOff}" var="c"
 																				itemLabel="#{c.publicationTitle}"
@@ -464,16 +502,47 @@ input[type="radio"],input[type="checkbox"] {
 															</div>
 															<div class="col-md-3"
 																style="position: absolute; right: 0; padding: 0; top: 0;">
-																<t:div styleClass="data_image m-b-20">
+																<div class="thumbnail"
+																	style="float: left; padding: 0px;">
+																	<div class="thumbnail-actions"
+																		style="margin-top: -8px;">
+																		<span class="text-muted pull-center"
+																			style="font-size: 14px; font-weight: bold; color: black;">
+																			<p:commandLink ajax="true"
+																				oncomplete="PF('enlargeChildImageDescImage').show();">
+																				<span class="glyphicon glyphicon-plus"
+																					style="float: right; margin-top: -4%; margin-right: 0%;"></span>
+																			</p:commandLink>
+																		</span>
+																	</div>
+																	<section>
+																	<div id="panzoom" style="text-align: center">
 																	<img
 																		src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImageId}/#{deBean.parentImageName}"
 																		class="img-responsive" alt="" />
-																</t:div>
+																		<!-- <div class="overlay" style="height: 18%; height: 15%;">
+																				<div class="thumbnail-actions" style="  margin-top: -8px;">
+																					<span class="text-muted pull-center" style="font-size:14px;font-weight:bold;color:black;">
+																					 <p:commandLink ajax="true" oncomplete="PF('enlargeChildImageDescImage').show();">
+																					  Enlarge
+																					 </p:commandLink></span>
+																				</div>
+																		    </div> -->
+																	</div>
+																	</section>
+																	<section> <span class="buttons">
+																		<button class="zoom-in btn btn-default ">Zoom In</button>
+																		<button class="zoom-out" style="display: none;">Zoom Out</button>
+																		<button class="reset btn btn-default ">Reset</button> <!-- <input
+																		type="range" class="zoom-range"></input>
+ -->
+																	</span> </section>
+																</div>
 															</div>
 															<div class="col-md-9 col-xs-9 p-t-10 f_l"
 																style="background-color: #eee; margin-bottom: 20px;">
 																<div class="col-md-3 col-xs-12 p-0 p-t-10 p-b-10 "
-																	style="font-weight: bold;">Currency Range <span style="color: red;">*</span></div>
+																	style="font-weight: bold;">Currency Range</div>
 																<div class="col-md-3 col-xs-12 p-0 ">
 																	<h:selectOneMenu class="form-control" 
 																		hideNoSelectionOption="false"
@@ -531,16 +600,34 @@ input[type="radio"],input[type="checkbox"] {
 			</div>
 		</div>
 	</div>
-	<p:dialog id="imageDialog" draggable="true" resizable="false" header="Parent Image" modal="true"
-		widgetVar="enlargeChildImage" style="left:10%;width:80%;overflow-y:scroll;max-height:100% !important;top: 10px !important;">
-		<div class="media-manager">
-			<t:div styleClass="data_image m-b-20" id="imgcrp_div">
-				<h:graphicImage id="imgcrp"
-					style="width:700px;" 
+	<p:dialog id="imageDialog" draggable="true" resizable="true"
+		header="Child Image" modal="true" widgetVar="enlargeChildImage"
+		style="width:100%;overflow-y:scroll;max-height:100% !important;background-color:#ffffff">
+		<div class="" style="min-width: 100%; min-height: 100%">
+			<t:div styleClass="data_image m-b-20" id="imgcrp_div"
+				style="min-width:100%;min-height:100%">
+				<h:graphicImage id="imgcrp" style="min-width:100%;min-height:100%"
 					value="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}" />
 			</t:div>
 		</div>
 	</p:dialog>
+	<p:dialog id="imageDialogDescImage" draggable="true" resizable="true"
+		header="Parent Image" modal="true" widgetVar="enlargeChildImageDescImage"
+		style="width:100%;overflow-y:scroll;max-height:100% !important;background-color:#ffffff">
+		<div class="" style="min-width: 100%; min-height: 100%">
+			<t:div styleClass="data_image m-b-20" id="imgcrp_divDescImage"
+				style="min-width:100%;min-height:100%">
+				<h:graphicImage id="imgcrpDescImage"
+					style="min-width:100%;min-height:100%"
+					value="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImageId}/#{deBean.parentImageName}" />
+
+			</t:div>
+		</div>
+	</p:dialog>
+
+
+
+
 	<p:dialog id="basicDialog" widgetVar="addCompany" draggable="true"
 		resizable="false" header="Add New Company">
 		<h:form>
@@ -665,12 +752,108 @@ input[type="radio"],input[type="checkbox"] {
 	<!-- END  PAGE LEVEL SCRIPTS -->
 	<script src="#{request.contextPath}/assets/js/application.js"></script>
 	<script src="#{request.contextPath}/assets/js/customValidation.js"></script>
-	
-	<script src="#{request.contextPath}/assets/js/jquery.zoom.min.js"></script>
-	<script>
-		$(document).ready(function(){
-		  $('#zoomable').zoom();
-		});
-	</script>
+	<script
+		src="http://filedb.experts-exchange.com/incoming/2013/06_w26/662697/jq.panzoom.js"></script>
 </h:body>
+<style>
+.ui-widget-overlay {
+	background: none !important;
+}
+
+section {
+	text-align: center;
+	margin: 12px;
+}
+
+a.panLeft {
+	position: fixed;
+	left: 0;
+	background: #eee;
+	color: #000;
+	font-weight: bold;
+	font-size: 50px;
+	padding: 0px;
+	text-align: center;
+	top: 40%;
+	float: left;
+	cursor: pointer;
+}
+
+a.panRight {
+	position: fixed;
+	right: 0;
+	background: #eee;
+	color: #000;
+	font-weight: bold;
+	font-size: 50px;
+	padding: 0px;
+	text-align: center;
+	top: 40%;
+	float: left;
+	cursor: pointer;
+}
+
+a.panLeft:hover,a.panRight:hover {
+	background: #ffeeee;
+}
+</style>
+<script>
+	$("#panzoom").panzoom({
+		$zoomIn : $(".zoom-in"),
+		$zoomOut : $(".zoom-out"),
+		$zoomRange : $(".zoom-range"),
+		$reset : $(".reset")
+	});
+
+	$('.left').click(function() {
+		$("#panzoom").panzoom("goTo", true);
+	});
+
+	$('.right').click(function() {
+		$("#panzoom").panzoom("resetPan", true);
+	});
+
+	$('.panLeft').click(function() {
+		$("#panzoom").panzoom("pan", -250, 0, {
+			relative : true,
+			animate : true
+		});
+	});
+
+	$('.panRight').click(function() {
+		$("#panzoom").panzoom("pan", 250, 0, {
+			relative : true,
+			animate : true
+		});
+	});
+	
+	$("#panzoom1").panzoom({
+		$zoomIn : $(".zoom-in1"),
+		$zoomOut : $(".zoom-out1"),
+		$zoomRange : $(".zoom-range1"),
+		$reset : $(".reset1")
+	});
+
+	$('.left').click(function() {
+		$("#panzoom1").panzoom("goTo", true);
+	});
+
+	$('.right').click(function() {
+		$("#panzoom1").panzoom("resetPan", true);
+	});
+
+	$('.panLeft').click(function() {
+		$("#panzoom1").panzoom("pan", -250, 0, {
+			relative : true,
+			animate : true
+		});
+	});
+
+	$('.panRight').click(function() {
+		$("#panzoom1").panzoom("pan", 250, 0, {
+			relative : true,
+			animate : true
+		});
+	});
+</script>
 </html>
