@@ -375,6 +375,10 @@ public class DeService implements IDeService{
 	public List getAllDeo() {
 		return getDeServiceDAO().getAllDeo();
 	}
+	@Override
+	public DataEntry getCurrentEntry(long baseId, long jobid) {
+		return getDeServiceDAO().getCurrentEntry(baseId, jobid);
+	}
 
 
 

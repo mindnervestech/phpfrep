@@ -190,6 +190,13 @@ public interface IDeService {
 	public DataEntry getPrevDataEntry(long baseId, long jobid);
 	/**
 	 * 
+	 * @param baseId
+	 * @param jobid
+	 * @return
+	 */
+	public DataEntry getCurrentEntry(long baseId, long jobid);
+	/**
+	 * 
 	 * @param deDataId
 	 * @return
 	 */

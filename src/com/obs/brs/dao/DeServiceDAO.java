@@ -422,6 +422,15 @@ public class DeServiceDAO implements IDeServiceDAO {
 		String SQL = "select DN_ID, DC_FIRSTNAME  FROM tbl_user da where DN_USER_TYPE=3 ";
 		return getSessionFactory().getCurrentSession().createSQLQuery(SQL).list();
 	}
+
+	@Override
+	public DataEntry getCurrentEntry(long baseId, long jobid) {
+		List <DataEntry> dataEntryList = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.isDeleted=0 and m.id ='"+baseId+"' and m.deJobid='"+jobid+"'"+"ORDER BY m.id ASC").list();
+		if (dataEntryList!=null && dataEntryList.size() > 0 ) {
+			return dataEntryList.get(0);
+		}
+		return null;
+	}
 	
 
 

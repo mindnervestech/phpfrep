@@ -130,6 +130,7 @@ public class DeManagedBean implements Serializable{
 	private String adSize;
 	private String others;
 	private short currency;
+	private String contactInfo;
 	private String startCurrencyRange;
 	private String endCurrencyRange;
 	private String ocrText;
@@ -1325,6 +1326,14 @@ public class DeManagedBean implements Serializable{
 		this.msgLabel = msgLabel;
 	}
 
+	public String getContactInfo() {
+		return contactInfo;
+	}
+
+	public void setContactInfo(String contactInfo) {
+		this.contactInfo = contactInfo;
+	}
+
 	/**
 	 * set All ad Details 
 	 * @return
@@ -1861,6 +1870,8 @@ public class DeManagedBean implements Serializable{
 		this.currency = 0;
 		this.startCurrencyRange = "";
 		this.endCurrencyRange ="";
+		this.contactInfo ="";
+		this.searchValueInCompanyName = "";
 		//this.ocrText = "";
 	}
 
@@ -2814,6 +2825,7 @@ public class DeManagedBean implements Serializable{
 	
 	public void changeNextVal()
 	{
+		clear();
 		FacesUtils facesUtils = new FacesUtils();
 		long baseId = Long.valueOf(facesUtils.getRequestParameterMap("baseId"));
 		long jobid = Long.valueOf(facesUtils.getRequestParameterMap("jobId"));
@@ -2861,11 +2873,67 @@ public class DeManagedBean implements Serializable{
 		} else{
 			this.checkVal=false;
 		}
-
+	}
+	
+	public String resetVal() {
+		clear();
+		FacesUtils facesUtils = new FacesUtils();
+		long baseId = Long.valueOf(facesUtils.getRequestParameterMap("baseId"));
+		long jobid = Long.valueOf(facesUtils.getRequestParameterMap("jobId"));
+		DataEntry childImage=deService.getCurrentEntry(baseId,jobid);
+		if(childImage!=null){
+			/*childImageList=childImageService.getChildImagesByParent(childImage.getParentImage().getId());
+			Collections.reverse(childImageList);*/
+			childImagesDataList=deService.getImagesByJobid(jobid);
+			//Collections.reverse(childImagesDataList);
+		}
+		if(childImage!=null && childImage.getChildImage() != null){
+			this.checkPreVal=false;
+			this.deDataId=childImage.getId();
+			this.childImageId=childImage.getChildImage().getId();
+			this.parentImageName=childImage.getParentImage().getImageName();
+			this.childImageName = childImage.getChildImage().getImageName();
+			setAllAdDetails(childImage);
+			if(this.ocrText==null || this.ocrText.isEmpty()){
+				try {
+					System.out.println("debean:changeNextVal:: loading this path: "+(imageBasePath+CommonProperties.getChildImagePath()+childImage.getParentImage().getId()+"/"+this.childImageId+"/"+this.childImageName));
+					File image=new File(imageBasePath+CommonProperties.getChildImagePath()+childImage.getParentImage().getId()+"/"+this.childImageId+"/"+this.childImageName);
+					ImageIO.scanForPlugins();
+					String result = new Ocr().doOCR(image);
+					System.out.println("debean:changeNextVal:: Data from Image:"+result);
+					if(result != null){
+						this.ocrText = result;
+					}
+				} catch (Exception e) {
+					System.err.println("deBean:loadDeInfo"+e.getMessage());
+					e.printStackTrace();
+				}
+			}
+			//setAllAdDetails(childImages);
+			if(childImage.getDeCompany() != null){
+				setAllDeCompanyDetails(childImage.getDeCompany());
+			}
+		}
+		if(childImage==null){
+			this.checkVal=true;
+		} else if(this.childImageId==childImagesDataList.get(childImagesDataList.size()-1).getChildImage().getId()){
+			this.checkVal=true;
+		} else{
+			this.checkVal=false;
+		}
+		if(childImage==null){
+			this.checkPreVal=true;
+		} else if(this.childImageId==childImagesDataList.get(0).getChildImage().getId()){
+			this.checkPreVal=true;
+		} else{
+			this.checkPreVal=false;
+		}
+		return null;
 	}
 
 	public void changePreVal()
 	{
+		clear();
 		FacesUtils facesUtils = new FacesUtils();
 		long baseId = Long.valueOf(facesUtils.getRequestParameterMap("baseId"));
 		long jobid = Long.valueOf(facesUtils.getRequestParameterMap("jobId"));
@@ -4033,12 +4101,14 @@ public class DeManagedBean implements Serializable{
 						deCompany.setIsDeleted(false);
 						deCompany.setCreated_by(currentUser);
 						deService.addDeCompany(deCompany);
+					} else {
+						deCompany = duplicate;
 					}
-					else{
+					/*else{
 						messageService.messageFatal(null, "CompanyName already exist.");
 						System.out.println("CompanyName already exist");
 						return null;
-					}
+					}*/
 				}
 				else{
 					if(this.searchValueInCompanyName != null && !this.searchValueInCompanyName.isEmpty()){
