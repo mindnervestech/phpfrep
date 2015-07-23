@@ -115,6 +115,7 @@ public class DeManagedBean implements Serializable{
 	private String companyURL;
 	private String department;
 	private String address;
+	private String address1;
 	private String city;
 	private String state;
 	private String country;
@@ -907,6 +908,21 @@ public class DeManagedBean implements Serializable{
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	
+	
+	/**
+	 * @return the address1
+	 */
+	public String getAddress1() {
+		return address1;
+	}
+
+	/**
+	 * @param address1 the address1 to set
+	 */
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
 
 	/**
 	 * @return the city
@@ -1387,6 +1403,7 @@ public class DeManagedBean implements Serializable{
 		deCompany.setPincode(this.pincode);
 		deCompany.setDepartment(this.department);
 		deCompany.setCompanyURL(this.companyURL);
+		deCompany.setAddress1(this.address1);
 		return deCompany;
 	}
 
@@ -2941,7 +2958,7 @@ public class DeManagedBean implements Serializable{
 		if(deCompanyList != null &&  deCompanyList.size() > 0){
 			for(int i = 0; deCompanyList.size()>i; i++) {
 				DeCompany deCompany = deCompanyList.get(i);
-				if(deCompany.getCompanyName().toLowerCase().startsWith(query)) {
+				if(deCompany.getCompanyName().toLowerCase().startsWith(query.toLowerCase())) {
 					results.add(deCompany.getCompanyName());
 				}
 			}
@@ -3884,6 +3901,7 @@ public class DeManagedBean implements Serializable{
 	 */
 	public String addNewCompany() 
 	{
+		
 		try
 		{
 			DeCompany deCompany  = null;
@@ -4333,6 +4351,5 @@ public class DeManagedBean implements Serializable{
 			});
 		}
 	}
-
 
 }

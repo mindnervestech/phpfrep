@@ -629,10 +629,10 @@ input[type="radio"],input[type="checkbox"] {
 
 
 	<p:dialog id="basicDialog" widgetVar="addCompany" draggable="true"
-		resizable="false" header="Add New Company">
-		<h:form>
+		resizable="false" header="Add New Company" style="  width: 70% !important;margin-left:13%;">
+		<h:form style="  width: 134% !important;   overflow: hidden;">
 			<div class="col-lg-12 p-0">
-				<div class="col-lg-3">
+				<div class="col-lg-6">
 					<div class="row m-0 m-5" style="font-weight: bold;">Company
 						Name</div>
 					<div class="row m-0">
@@ -641,15 +641,16 @@ input[type="radio"],input[type="checkbox"] {
 						</p:inputText>
 					</div>
 
-					<div class="row m-0  m-5" style="font-weight: bold;">Address
-						line</div>
+					<div class="row m-0 m-5" style="font-weight: bold;">Company
+						URL</div>
 					<div class="row m-0">
-						<p:inputText styleClass="form-control" value="#{deBean.address}"
-							placeholder="Address line"
-							requiredMessage="Please enter your Address">
+						<p:inputText styleClass="form-control"
+							value="#{deBean.companyURL}" placeholder="Company URL">
 						</p:inputText>
 					</div>
+					
 				</div>
+				
 				<div class="col-lg-3">
 					<div class="row m-0  m-5" style="font-weight: bold;">City</div>
 					<div class="row m-0">
@@ -659,15 +660,30 @@ input[type="radio"],input[type="checkbox"] {
 							<f:validateRegex pattern="^[a-zA-Z0-9' ']*$" />
 						</p:inputText>
 					</div>
-
-					<div class="row m-0  m-5" style="font-weight: bold;">State</div>
+					 <div class="row m-0  m-5" style="font-weight: bold;">State</div>
 					<div class="row m-0">
 						<p:autoComplete id="State" placeholder="State"
 							value="#{deBean.state}" completeMethod="#{deBean.stateDetails}"
 							effect="fade" />
 					</div>
 				</div>
-				<div class="col-lg-3">
+				
+				</div>
+				<div class="col-lg-12 p-0">
+				<div class="col-lg-6">
+					
+					<div class="row m-0  m-5" style="font-weight: bold;">Address
+						line 1</div>
+					<div class="row m-0">
+						<p:inputText styleClass="form-control" value="#{deBean.address}"
+							placeholder="Address line 1"
+							requiredMessage="Please enter your Address">
+						</p:inputText>
+					</div>
+					</div>
+
+					<div class="col-lg-3">
+					
 					<div class="row m-0  m-5" style="font-weight: bold;">ZipCode</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" placeholder="ZipCode"
@@ -677,39 +693,58 @@ input[type="radio"],input[type="checkbox"] {
 							onkeyup="javascript:mask('dataEntryForm:zipCode', '00000', event);">
 							<f:validateLength minimum="4" maximum="10"></f:validateLength>
 							<f:converter converterId="javax.faces.Integer"></f:converter>
+						</p:inputText>	
+					</div>
+					
+				</div>
+				
+				<div class="col-lg-6">
+					
+					<div class="row m-0  m-5" style="font-weight: bold;">Address
+						line 2</div>
+					<div class="row m-0">
+						<p:inputText styleClass="form-control" value="#{deBean.address1}"
+							placeholder="Address line 2"
+							requiredMessage="Please enter your Address">
 						</p:inputText>
 					</div>
+					</div>
+					<div class="col-lg-3">
+				    
 					<div class="row m-0  m-5" style="font-weight: bold;">Country</div>
 					<div class="row m-0">
 						<p:autoComplete id="Country" placeholder="Country"
 							value="#{deBean.country}"
 							completeMethod="#{deBean.countryDetails}" effect="fade" />
 					</div>
+					
 				</div>
-				<div class="col-lg-3">
-					<div class="row m-0 m-5" style="font-weight: bold;">Company
-						URL</div>
-					<div class="row m-0">
-						<p:inputText styleClass="form-control"
-							value="#{deBean.companyURL}" placeholder="Company URL">
-						</p:inputText>
-					</div>
-
+				
+				
+			</div>
+			
+			<div class="col-lg-12 p-0">
+				<div class="col-lg-6">
+				
 					<div class="row m-0  m-5" style="font-weight: bold;">Department</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.department}"
-							placeholder="department "
+							placeholder="Department "
 							requiredMessage="Please enter your department ">
 						</p:inputText>
 					</div>
 				</div>
+				<div class="col-lg-3" style="margin-top: 3%;">
+				<div class="row m-0  m-5" style="font-weight: bold;"></div>
+				<div class="row m-0">
 				<p:commandLink ajax="true" oncomplete="PF('addCompany').hide();"
 					id="edit"
 					styleClass="btn btn-primary col-md-offset-1 col-sm-offset-1 col-xs-offset-1 pull-right"
 					action="#{deBean.addNewCompany}" value="Save">
-
 				</p:commandLink>
-			</div>
+				</div>
+				</div>
+		   </div>
 		</h:form>
 	</p:dialog>
 	<!-- BEGIN MANDATORY SCRIPTS -->
@@ -756,6 +791,11 @@ input[type="radio"],input[type="checkbox"] {
 		src="http://filedb.experts-exchange.com/incoming/2013/06_w26/662697/jq.panzoom.js"></script>
 </h:body>
 <style>
+
+.ui-dialog-content{
+overflow: hidden !important;
+}
+
 .ui-widget-overlay {
 	background: none !important;
 }

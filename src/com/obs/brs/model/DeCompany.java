@@ -31,6 +31,7 @@ public class DeCompany implements Serializable{
 	private long id;
 	private String companyName;
 	private String address;
+	private String address1;
 	private String city;
 	private String state;
 	private String country;
@@ -93,13 +94,25 @@ public class DeCompany implements Serializable{
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
+	/**
+	 * @return the address1
+	 */
+	
 	/**
 	 * @return the city
 	 */
 	@Column(name="DC_CITY", nullable = true)
 	public String getCity() {
 		return city;
+	}
+	
+	@Column(name="DC_ADDRESS_LINE_2", nullable = true)
+	public String getAddress1() {
+		return address1;
+	}
+
+	public void setAddress1(String address1) {
+		this.address1 = address1;
 	}
 
 	/**
