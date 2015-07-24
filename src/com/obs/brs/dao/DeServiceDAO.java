@@ -139,6 +139,12 @@ public class DeServiceDAO implements IDeServiceDAO {
 	}
 
 	@Override
+	public List<DeCompany> getDeCompanyBySeachCriteria(String searchValue) {
+		String 	SQL = "From DeCompany as m where m.isDeleted=0 and m.companyName='"+searchValue+"'";
+		return getSessionFactory().getCurrentSession().createQuery(SQL).list();
+	}
+
+	@Override
 	public List<DeCompany> getDeCompanyBySeachCriteria(long userId,
 			String searchValue) {
 		String appendStr = "";

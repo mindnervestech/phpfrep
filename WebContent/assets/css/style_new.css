@@ -688,8 +688,8 @@ ul.list-unstyled{margin:0;padding:0;list-style:none}
 .nav.nav-tabs > li > a {background-color: #CFDAE0;color:#121212;}
 .nav.nav-tabs > li.active > a {background-color: white;color:#121212}
 .tab-content {background-color: #FFF;padding: 15px;}
-.nav.nav-tabs.nav-dark > li > a {background-color: #2B2E33;color:#dadada;}
-.nav.nav-tabs > li.active > a {background-color: white;color:#121212}
+.nav.nav-tabs.nav-dark > li > a {border-color: #eee #eee #ddd;background-color: white;color:#121212}
+.nav.nav-tabs > li.active > a {background-color: #2B2E33;color:#dadada;}
 .tab-content {background-color: #FFF;padding: 15px;}
 .nav-tabs.nav-dark .dropdown-menu {background-color: #2B2E33;}
 .nav.nav-tabs.nav-dark .dropdown-menu a {color: #dadada;}

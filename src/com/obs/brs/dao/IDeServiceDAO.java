@@ -88,6 +88,8 @@ public interface IDeServiceDAO {
 	 * 
 	 */
 	public List<DeCompany> getDeCompany();
+	
+	public List<DeCompany> getDeCompanyBySeachCriteria(String searchValue);
 	/**
 	 * 
 	 * @return

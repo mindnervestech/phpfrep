@@ -230,6 +230,114 @@ public class DeManagedBean implements Serializable{
 	private String issueDatePubSearch;
 	private String createdByDeo;
 	
+	private Long companyIdEd = null;
+	private String companyNameEd = "";
+	private String companyURLEd = "";
+	private String departmentEd = "";
+	private String addressEd = "";
+	private String address1Ed = "";
+	private String cityEd = "";
+	private String stateEd = "";
+	private String countryEd = "";
+	private String pincodeEd = "";
+	
+	
+	public String getCityEd() {
+		return cityEd;
+	}
+
+	public void setCityEd(String cityEd) {
+		this.cityEd = cityEd;
+	}
+
+	public Long getCompanyIdEd() {
+		return companyIdEd;
+	}
+
+	public void setCompanyIdEd(Long companyIdEd) {
+		this.companyIdEd = companyIdEd;
+	}
+
+	public String getCompanyNameEd() {
+		return companyNameEd;
+	}
+
+	public void setCompanyNameEd(String companyNameEd) {
+		this.companyNameEd = companyNameEd;
+	}
+
+	public String getCompanyURLEd() {
+		return companyURLEd;
+	}
+
+	public void setCompanyURLEd(String companyURLEd) {
+		this.companyURLEd = companyURLEd;
+	}
+
+	public String getDepartmentEd() {
+		return departmentEd;
+	}
+
+	public void setDepartmentEd(String departmentEd) {
+		this.departmentEd = departmentEd;
+	}
+
+	public String getAddressEd() {
+		return addressEd;
+	}
+
+	public void setAddressEd(String addressEd) {
+		this.addressEd = addressEd;
+	}
+
+	public String getAddress1Ed() {
+		return address1Ed;
+	}
+
+	public void setAddress1Ed(String address1Ed) {
+		this.address1Ed = address1Ed;
+	}
+
+	public String getStateEd() {
+		return stateEd;
+	}
+
+	public void setStateEd(String stateEd) {
+		this.stateEd = stateEd;
+	}
+
+	public String getCountryEd() {
+		return countryEd;
+	}
+
+	public void setCountryEd(String countryEd) {
+		this.countryEd = countryEd;
+	}
+
+	public String getPincodeEd() {
+		return pincodeEd;
+	}
+
+	public void setPincodeEd(String pincodeEd) {
+		this.pincodeEd = pincodeEd;
+	}
+
+	public Date getFormDate() {
+		return formDate;
+	}
+
+	public void setFormDate(Date formDate) {
+		this.formDate = formDate;
+	}
+
+	public Date getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;
+	}
+
 	public String getCreatedByDeo() {
 		return createdByDeo;
 	}
@@ -2110,6 +2218,45 @@ public class DeManagedBean implements Serializable{
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public String editCompany() {
+		System.out.println("Company Name :"+this.searchValueInCompanyName);
+		if(this.searchValueInCompanyName!=null && !this.searchValueInCompanyName.isEmpty()) {
+			List<DeCompany> companies = deService.getDeCompanyBySeachCriteria(this.searchValueInCompanyName);
+			if(companies.size()>0) {
+				this.companyIdEd = companies.get(0).getId();
+				this.companyNameEd = companies.get(0).getCompanyName();
+				this.companyURLEd = companies.get(0).getCompanyURL();
+				this.departmentEd = companies.get(0).getDepartment();
+				this.addressEd = companies.get(0).getAddress();
+				this.address1Ed = companies.get(0).getAddress1();
+				this.cityEd = companies.get(0).getCity();
+				this.stateEd = companies.get(0).getState();
+				this.countryEd = companies.get(0).getCountry();
+				this.pincodeEd = companies.get(0).getPincode();
+				RequestContext.getCurrentInstance().execute("PF('editCompany').show();setTop();");
+				return null;
+			} else {
+				messageService.messageError(null, "Company not found.");
+				return null;
+			}
+		}
+		messageService.messageError(null, "Please select company to edit.");
+		return null;
+	}
+	
+	public void clearEditCompany() {
+		this.companyIdEd = null;
+		this.companyNameEd = "";
+		this.companyURLEd = "";
+		this.departmentEd = "";
+		this.addressEd = "";
+		this.address1Ed = "";
+		this.cityEd = "";
+		this.stateEd = "";
+		this.countryEd = "";
+		this.pincodeEd = "";
 	}
 	
 	/**Added by Shashank
@@ -4022,7 +4169,31 @@ public class DeManagedBean implements Serializable{
 		return null;
 	}
 
-
+	public String updateCompany() {
+		DeCompany deCompany = deService.getDeCompanySeachByCompanyName(this.searchValueInCompanyName);
+		if(deCompany == null)
+			deCompany = new DeCompany();
+		
+		deCompany = setEditCompanyValue(deCompany);
+		deService.updateDeCompany(deCompany);
+		messageService.messageInformation(null, "Company updated successfully.");
+		return null;
+	}
+	
+	public DeCompany setEditCompanyValue(DeCompany company) {
+		company.setAddress(this.addressEd);
+		company.setAddress1(this.address1Ed);
+		company.setCity(this.cityEd);
+		company.setCompanyName(this.companyNameEd);
+		company.setCompanyURL(this.companyURLEd);
+		company.setCountry(this.countryEd);
+		company.setId(this.companyIdEd);
+		company.setDepartment(this.departmentEd);
+		company.setPincode(this.pincodeEd);
+		company.setState(this.stateEd);
+		return company;
+	}
+	
 	public String saveAndExitDataAndCompany() 
 	{
 		System.out.println("in save and edit");

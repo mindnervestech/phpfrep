@@ -133,6 +133,11 @@ public class DeService implements IDeService{
 	public List<DeCompany> getDeCompany() {
 		return getDeServiceDAO().getDeCompany();
 	}
+	
+	
+	public List<DeCompany> getDeCompanyBySeachCriteria(String searchValue) {
+		return getDeServiceDAO().getDeCompanyBySeachCriteria(searchValue);
+	}
     /*
      * (non-Javadoc)
      * @see com.obs.brs.service.IDeService#getDeCompanyBySeachCriteria(long)

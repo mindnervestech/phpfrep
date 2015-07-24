@@ -86,6 +86,8 @@ public interface IDeService {
 	 * 
 	 */
 	public List<DeCompany> getDeCompany();
+	
+	public List<DeCompany> getDeCompanyBySeachCriteria(String searchValue);
 	/**
 	 * 
 	 * @return

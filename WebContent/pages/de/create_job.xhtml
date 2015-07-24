@@ -301,6 +301,9 @@ input[type="radio"],input[type="checkbox"] {
 																	<!-- <p:tooltip for="edit" showEffect="fade"
 																		value="Edit Tag" /> -->
 																</p:commandLink>
+																<h:commandLink update="imgcrp_div" ajax="true"
+																 	action="#{deBean.editCompany}" style="margin-left:5px;">
+																	<i class="fa fa-edit"></i></h:commandLink>
 															</div>
 														</div>
 														<div class="col-md-12 p-0 ">
@@ -781,6 +784,126 @@ input[type="radio"],input[type="checkbox"] {
 		   </div>
 		</h:form>
 	</p:dialog>
+	
+	<p:dialog id="editCompDialog" widgetVar="editCompany" draggable="true"
+		resizable="false" header="Edit Company" style="  width: 70% !important;margin-left:13%;">
+		<h:form style="  width: 134% !important;   overflow: hidden;">
+			<div class="col-lg-12 p-0">
+				<div class="col-lg-6">
+					<div class="row m-0 m-5" style="font-weight: bold;">Company
+						Name</div>
+					<div class="row m-0">
+						<p:inputText styleClass="form-control"
+							value="#{deBean.companyNameEd}" placeholder="Company Name">
+						</p:inputText>
+					</div>
+
+					<div class="row m-0 m-5" style="font-weight: bold;">Company
+						URL</div>
+					<div class="row m-0">
+						<p:inputText styleClass="form-control"
+							value="#{deBean.companyURLEd}" placeholder="Company URL">
+						</p:inputText>
+					</div>
+					
+				</div>
+				
+				<div class="col-lg-3">
+					<div class="row m-0  m-5" style="font-weight: bold;">City</div>
+					<div class="row m-0">
+						<p:inputText styleClass="form-control" value="#{deBean.cityEd}"
+							placeholder="City"
+							validatorMessage="Special characters are not allowed in city.">
+							<f:validateRegex pattern="^[a-zA-Z0-9' ']*$" />
+						</p:inputText>
+					</div>
+					 <div class="row m-0  m-5" style="font-weight: bold;">State</div>
+					<div class="row m-0">
+						<p:autoComplete id="State" placeholder="State"
+							value="#{deBean.stateEd}" completeMethod="#{deBean.stateDetails}"
+							effect="fade" />
+					</div>
+				</div>
+				
+				</div>
+				<div class="col-lg-12 p-0">
+				<div class="col-lg-6">
+					
+					<div class="row m-0  m-5" style="font-weight: bold;">Address
+						line 1</div>
+					<div class="row m-0">
+						<p:inputText styleClass="form-control" value="#{deBean.addressEd}"
+							placeholder="Address line 1"
+							requiredMessage="Please enter your Address">
+						</p:inputText>
+					</div>
+					</div>
+
+					<div class="col-lg-3">
+					
+					<div class="row m-0  m-5" style="font-weight: bold;">ZipCode</div>
+					<div class="row m-0">
+						<p:inputText styleClass="form-control" placeholder="ZipCode"
+							value="#{deBean.pincodeEd}" id="zipCode" label="zipCode"
+							validatorMessage="Zip code must be between 4 and 10 digits"
+							converterMessage="Zip code must be numeric"
+							onkeyup="javascript:mask('dataEntryForm:zipCode', '00000', event);">
+							<f:validateLength minimum="4" maximum="10"></f:validateLength>
+							<f:converter converterId="javax.faces.Integer"></f:converter>
+						</p:inputText>	
+					</div>
+					
+				</div>
+				
+				<div class="col-lg-6">
+					
+					<div class="row m-0  m-5" style="font-weight: bold;">Address
+						line 2</div>
+					<div class="row m-0">
+						<p:inputText styleClass="form-control" value="#{deBean.address1Ed}"
+							placeholder="Address line 2"
+							requiredMessage="Please enter your Address">
+						</p:inputText>
+					</div>
+					</div>
+					<div class="col-lg-3">
+				    
+					<div class="row m-0  m-5" style="font-weight: bold;">Country</div>
+					<div class="row m-0">
+						<p:autoComplete id="Country" placeholder="Country"
+							value="#{deBean.countryEd}"
+							completeMethod="#{deBean.countryDetails}" effect="fade" />
+					</div>
+					
+				</div>
+				
+				
+			</div>
+			
+			<div class="col-lg-12 p-0">
+				<div class="col-lg-6">
+				
+					<div class="row m-0  m-5" style="font-weight: bold;">Department</div>
+					<div class="row m-0">
+						<p:inputText styleClass="form-control" value="#{deBean.departmentEd}"
+							placeholder="Department "
+							requiredMessage="Please enter your department ">
+						</p:inputText>
+					</div>
+				</div>
+				<div class="col-lg-3" style="margin-top: 3%;">
+				<div class="row m-0  m-5" style="font-weight: bold;"></div>
+				<div class="row m-0">
+				<p:commandLink ajax="true" oncomplete="PF('editCompany').hide();"
+					id="editComp"
+					styleClass="btn btn-primary col-md-offset-1 col-sm-offset-1 col-xs-offset-1 pull-right"
+					action="#{deBean.updateCompany}" value="Update">
+				</p:commandLink>
+				</div>
+				</div>
+		   </div>
+		</h:form>
+	</p:dialog>
 	<!-- BEGIN MANDATORY SCRIPTS -->
 	<script
 		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
@@ -934,6 +1057,9 @@ a.panLeft:hover,a.panRight:hover {
 	}
 	function setParentPopupHeight() {
 		$("#imageDialogDescImage").css("width","33.3%");
+	}
+	function setTop() {
+		$("#editCompDialog").css("top","125px");
 	}
 </script>
 </html>
