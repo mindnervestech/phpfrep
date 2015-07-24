@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 
 import com.obs.brs.model.Country;
 import com.obs.brs.model.DataEntry;
+import com.obs.brs.model.DeCompany;
 import com.obs.brs.model.ParentImage;
 import com.obs.brs.model.Publication;
 import com.obs.brs.model.Region;
@@ -1170,6 +1171,15 @@ public class UserDAO implements IUserDAO {
 	public Publication getPublicationByPublicationTitle(String publicationTitle) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<DeCompany> getAllCompanyData() {
+		// TODO Auto-generated method stub
+		String SQL = "select c.companyName,c.companyURL,c.city,c.pincode,c.state,c.country,c.address,c.address1,c.department from DeCompany as c";
+		List list = getSessionFactory().getCurrentSession().createQuery(SQL).list();
+		System.out.println("returning data: "+list.size());
+		return list;
 	}	
 
 }

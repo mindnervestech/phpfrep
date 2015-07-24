@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta charset="utf-8" />
+	<title>Fracts-Manage Users</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon" type="text/css"
+		href="#{request.contextPath}/assets/img/favicon.png" />
+	<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+
+	<link href="#{request.contextPath}/assets/css/style.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/colors/color-dark.css" rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/my_style.css"
+		rel="stylesheet" />
+		<link href="http://handsontable.com/bower_components/handsontable/dist/handsontable.full.css"
+		rel="stylesheet" />
+		<link href="http://docs.handsontable.com/0.16.0/styles/samples.css"
+		rel="stylesheet" />
+		<script src="http://handsontable.com/bower_components/handsontable/dist/handsontable.full.js"></script>
+	
+	
+	<style>
+.table>thead>tr>th,.table>tbody>tr>th,.table>tfoot>tr>th,.table>thead>tr>td,.table>tbody>tr>td,.table>tfoot>tr>td
+	{
+	padding: 10px !important;
+}
+
+.table thead .icheckbox_flat,.table thead
+	.icheckbox_flat-red,.table thead .icheckbox_flat-green,.table thead
+	.icheckbox_flat-blue,.table thead .icheckbox_flat-aero,.table thead
+	.icheckbox_flat-grey,.table thead .icheckbox_flat-orange,.table thead
+	.icheckbox_flat-yellow,.table thead .icheckbox_flat-pink,.icheckbox_flat-purple,.table thead .iradio_flat,.iradio_flat-red,.table thead .iradio_flat-green,.table thead .iradio_flat-blue,.table
+	thead .iradio_flat-aero,.table thead .iradio_flat-grey,.table thead
+	.iradio_flat-orange,.table thead .iradio_flat-yellow,.table thead
+	.iradio_flat-pink,.table thead .iradio_flat-purple {
+	margin-left: 20px !important;
+}
+
+.table tbody .icheckbox_flat,.table tbody .icheckbox_flat-red,.table tbody .icheckbox_flat-green,.table tbody .icheckbox_flat-blue,.table tbody .icheckbox_flat-aero,.table tbody .icheckbox_flat-grey,.table tbody .icheckbox_flat-orange,.table tbody .icheckbox_flat-yellow,.table tbody .icheckbox_flat-pink,.icheckbox_flat-purple,.table tbody .iradio_flat,.iradio_flat-red,.table tbody .iradio_flat-green,.table tbody .iradio_flat-blue,.table tbody .iradio_flat-aero,.table tbody .iradio_flat-grey,.table tbody .iradio_flat-orange,.table tbody .iradio_flat-yellow,.table tbody .iradio_flat-pink,.table tbody .iradio_flat-purple
+	{
+	margin-left: -2px !important;
+}
+
+.ui-button-text-only .ui-button-text {
+	padding: 0 !important;
+}
+
+.bootstrap-select.btn-group .dropdown-menu {
+	min-width: 95% !important;
+}
+
+.bootstrap-select>.btn {
+	width: 95% !important;
+}
+
+.bootstrap-select:not ([class*="span"] ):not ([class*="col-"] ):not ([class*="form-control"]
+	):not (.input-group-btn ) {
+	min-width: 151px !important;
+}
+
+.btn {
+	padding: 7px 19px !important;
+}
+.ui-selectonemenu {
+height: 37px;
+margin-left: 10px;
+}
+.ui-selectonemenu .ui-selectonemenu-trigger {
+width: 24px;
+background: transparent;
+border: none;
+height: 35px;
+padding: 3px;
+}
+.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield {
+background: none;
+font-weight: 600 !important;
+padding: 5px 0px 0px 11px;
+}
+
+.pagination a{
+-moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #FFFFFF;
+    border-color: #DDDDDD;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    float: left;
+    line-height: 18px;
+    padding: 4px 12px;
+    text-decoration: none;
+}
+.pagination td{
+padding: 0;
+margin:0;
+}
+
+.pagination{
+float: right;
+margin:6px;
+}
+</style>
+</h:head>
+
+<h:body data-page="tables">
+	<ui:include src="/pages/header_admin.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/userMenu.xhtml" />
+		<!-- BEGIN MAIN SIDEBAR -->
+		<div id="main-content" style="overflow:scroll;">
+			<div class="page-title">
+				<i class="icon-custom-left"></i>
+				<h3>Manage Company</h3>
+			</div>
+			<div class="row">
+				<div class="panel panel-default">
+					<div class="panel panel-default">
+					<h2>Company List </h2>
+						<div class="panel-heading" ></div>
+						<f:event listener="#{userBean.getAllCompanies}" type="preRenderView" />
+						<input id="search_field" type="search" placeholder="Search"/>
+						<div id="exampleGrid" class="dataTable"></div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+
+	<script type="text/javascript">
+		function checkboxChecked() {
+			var checkedValue = false;
+			var inputElements = document.getElementsByTagName('input');
+			for ( var i = 0; inputElements[i]; ++i) {
+				if (inputElements[i].className === "uniform")
+					if (inputElements[i].checked) {
+						checkedValue = true;
+						break;
+					}
+			}
+			if (checkedValue) {
+					return true;
+			} else {
+				alert("Please Select Any User");
+			}
+		}
+		
+		/* var myData = (#{userBean.getCompList()});
+		          $("#exampleGrid").handsontable({
+		              data: myData,
+		              startRows: 5,
+		              startCols: 5,
+		              minSpareCols: 1,
+		              //always keep at least 1 spare row at the right
+		              minSpareRows: 1,
+		              //always keep at least 1 spare row at the bottom,
+		              rowHeaders: true,
+		              colHeaders: true,
+		              contextMenu: false,
+		              
+		          });
+		 */
+		 
+		 var
+		    data =#{userBean.getCompList()},
+		    example = document.getElementById('exampleGrid'),
+		    searchFiled = document.getElementById('search_field'),
+		    hot;
+		  
+		  hot = new Handsontable(example, {
+		    data: data,
+		    colHeaders: true,
+		    search: true,
+		    columns: [
+                      { title: "COMPANY NAME", type: "text",readOnly: true },
+                      { title: "COMPANY URL", type: "text",readOnly: true },
+                      { title: "CITY", type: "text",readOnly: true },
+                      { title: "PINCODE", type: "text",readOnly: true },
+                      { title: "STATE", type: "text",readOnly: true },
+                      { title: "COUNTRY", type: "text",readOnly: true },
+                      { title: "ADDRESS LINE 1", type: "text",readOnly: true },
+                      { title: "ADDRESS LINE 2", type: "text",readOnly: true }
+                    
+                      ]
+		  });
+		  
+		  function onlyExactMatch(queryStr, value) {
+		    return queryStr.toString() === value.toString();
+		  }
+		  
+		  Handsontable.Dom.addEvent(searchFiled, 'keyup', function (event) {
+		    var queryResult = hot.search.query(this.value);
+		  
+		    console.log(queryResult);
+		    hot.render();
+		  });
+		  
+		  
+		  function bindDumpButton() {
+		      if (typeof Handsontable === "undefined") {
+		        return;
+		      }
+		  
+		      Handsontable.Dom.addEvent(document.body, 'click', function (e) {
+		  
+		        var element = e.target || e.srcElement;
+		  
+		        
+		      });
+		    }
+		  bindDumpButton();
+
+		
+		 
+		
+	</script>
+	<script type="text/javascript">
+		function checkboxCheckedDelete() {
+			var checkedValue = false;
+			var inputElements = document.getElementsByTagName('input');
+			for ( var i = 0; inputElements[i]; ++i) {
+				if (inputElements[i].className === "uniform")
+					if (inputElements[i].checked) {
+						checkedValue = true;
+						break;
+					}
+			}
+			if (checkedValue) {
+				if (confirm('Are you sure, you want to delete the User?'))
+					return true;
+				else
+					return false;
+			} else {
+				alert("Please Select Any User");
+			}
+		}
+	</script>
+	<!-- BEGIN MANDATORY SCRIPTS -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+<!-- 	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-switch/bootstrap-switch.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script> -->
+	<!-- END  PAGE LEVEL SCRIPTS -->
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+	
+	
+</h:body>
+
+</html>

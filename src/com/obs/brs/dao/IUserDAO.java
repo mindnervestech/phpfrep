@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.obs.brs.model.Country;
 import com.obs.brs.model.DataEntry;
+import com.obs.brs.model.DeCompany;
 import com.obs.brs.model.Publication;
 import com.obs.brs.model.Region;
 import com.obs.brs.model.States;
@@ -428,6 +429,8 @@ public interface IUserDAO {
 	 * @return
 	 */
 	public List<User> getUserListById(int id);
+
+	public List<DeCompany> getAllCompanyData();
 
 	/**
 	 * 

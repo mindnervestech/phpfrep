@@ -82,6 +82,7 @@ public class SettingsManagedBean implements Serializable{
 		private static final String IMAGEUPLOAD				= "imageUpload";
 		private static final String PARENTIMAGE			    = "parentImage";
 		private static final String QCJOB 			        = "qcjob";
+		private static final String MANAGE_COMPANY           = "manage_company";
 		
 	/**
 	 * 
@@ -636,6 +637,10 @@ public class SettingsManagedBean implements Serializable{
 			break;
 		case 9:
 			redirectLink = QCJOB;
+			break;
+			
+		case 12:
+			redirectLink = MANAGE_COMPANY;
 			break;
 		default:
 			break;

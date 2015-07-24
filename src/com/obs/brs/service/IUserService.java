@@ -93,6 +93,9 @@ public interface IUserService {
 	 * 
 	 */
 	public List<User> getUserBySeachCriteria(int userId);
+	public List<DeCompany> getAllCompanyData();
+	
+	
 
 	/**
 	 * Get User List by search value and status

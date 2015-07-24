@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.obs.brs.dao.IUserDAO;
 import com.obs.brs.model.Country;
+import com.obs.brs.model.DeCompany;
 import com.obs.brs.model.Publication;
 import com.obs.brs.model.Region;
 import com.obs.brs.model.States;
@@ -778,5 +779,11 @@ public class UserService implements IUserService {
 	public Publication getPublicationByPublicationTitle(String publicationTitle) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<DeCompany> getAllCompanyData() {
+		// TODO Auto-generated method stub
+		return getUserDAO().getAllCompanyData();
 	}
 }

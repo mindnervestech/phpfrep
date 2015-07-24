@@ -1,8 +1,11 @@
 package com.obs.brs.managed.bean;
 
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
+import com.google.gson.Gson;
 import com.obs.brs.email.EmailManager;
 import com.obs.brs.messages.IMessagesService;
 import com.obs.brs.model.Country;
+import com.obs.brs.model.DeCompany;
 import com.obs.brs.model.Publication;
 import com.obs.brs.model.Region;
 import com.obs.brs.model.Subscriber;
@@ -113,6 +116,7 @@ implements Serializable
 	private static final String MANAGE_REPORTS = "managereports";
 	private static final String SEARCHREPORTVIEW = "searchReportView";
 	private static final String MANAGE_QCJOB = "view_qcjob_by_journal";
+	private static final String MANAGE_COMPANY = "manage_company";
 	List<User> userList;
 	List<Subscriber> subscriberList;
 	List<Region> regionList;
@@ -179,6 +183,7 @@ implements Serializable
 	private List<String[]> deleteSubscriberUserList = new ArrayList();
 	private List<String[]> editSubscriberUserList = new ArrayList();
 	private List<String[]> editMoreSubscriberUserList = new ArrayList();
+	private  List<DeCompany> allCompnayList = new ArrayList<DeCompany>();
 	private int rowIndex = -1;
 	private Date curdate = new Date();
 	private int subscriberUserIdByAdmin;
@@ -188,7 +193,7 @@ implements Serializable
 	User currentUser;
 	private Boolean isPopup=false;
 
-
+     private  String compList;
 	public Date getCurdate()
 	{
 		return this.curdate;
@@ -1313,8 +1318,10 @@ implements Serializable
 		return subscriberUser;
 	}
 
-	public String redirctMenuLink()
-	{
+	public String redirctMenuLink(){
+	 
+		
+		
 		String redirectLink = null;
 		FacesUtils facesUtils = new FacesUtils();
 		String menuIdStr = facesUtils.getRequestParameterMap("menuId");
@@ -1347,8 +1354,19 @@ implements Serializable
 		case 9: 
 			redirectLink = "view_qcjob_by_journal";
 			break;
+		case 12: 
+			redirectLink = "manage_company";
+			break;
 		}
 		return redirectLink;
+	}
+
+	public List<DeCompany> getAllCompnayList() {
+		return this.allCompnayList;
+	}
+
+	public void setAllCompnayList(List<DeCompany> allCompnayList) {
+		this.allCompnayList = allCompnayList;
 	}
 
 	public String getActiveMenu()
@@ -2078,6 +2096,26 @@ implements Serializable
 		}
 		Collections.reverse(this.subscriberList);
 		return this.subscriberList;
+	}
+
+	
+	public void  getAllCompanies(){
+		Gson gson = new Gson();
+		gson.toJson(this.allCompnayList.addAll(getUserService().getAllCompanyData()));
+		compList = gson.toJson(this.allCompnayList.addAll(getUserService().getAllCompanyData()));
+		compList = gson.toJson(this.allCompnayList);
+		System.out.println("compList: "+compList);
+		//System.out.println("userListBySeachCriteria");
+	}
+	
+	public String getCompList() {
+		System.out.println("compList"+compList);
+		return this.compList;
+	}
+
+	public void setCompList(String compList) {
+		System.out.println("set compList"+compList);
+		this.compList = compList;
 	}
 
 	public List<SubscriberUser> getSubscriberUserListBySeachCriteria()
