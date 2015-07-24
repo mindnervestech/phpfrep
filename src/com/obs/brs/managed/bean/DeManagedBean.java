@@ -322,21 +322,6 @@ public class DeManagedBean implements Serializable{
 		this.pincodeEd = pincodeEd;
 	}
 
-	public Date getFormDate() {
-		return formDate;
-	}
-
-	public void setFormDate(Date formDate) {
-		this.formDate = formDate;
-	}
-
-	public Date getToDate() {
-		return toDate;
-	}
-
-	public void setToDate(Date toDate) {
-		this.toDate = toDate;
-	}
 
 	public String getCreatedByDeo() {
 		return createdByDeo;
