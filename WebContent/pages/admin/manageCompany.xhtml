@@ -118,6 +118,11 @@ margin:0;
 float: right;
 margin:6px;
 }
+
+td{
+font-size: 10px;
+}
+
 </style>
 </h:head>
 
@@ -126,19 +131,19 @@ margin:6px;
 	<div id="wrapper">
 		<ui:include src="/pages/userMenu.xhtml" />
 		<!-- BEGIN MAIN SIDEBAR -->
-		<div id="main-content" style="overflow:scroll;">
+		<div id="main-content">
 			<div class="page-title">
 				<i class="icon-custom-left"></i>
 				<h3>Manage Company</h3>
 			</div>
 			<div class="row">
 				<div class="panel panel-default">
-					<div class="panel panel-default">
+					<div >
 					<h2>Company List </h2>
 						<div class="panel-heading" ></div>
 						<f:event listener="#{userBean.getAllCompanies}" type="preRenderView" />
 						<input id="search_field" type="search" placeholder="Search"/>
-						<div id="exampleGrid" class="dataTable"></div>
+						<div id="exampleGrid" class="dataTable" ></div>
 					</div>
 
 				</div>
@@ -202,8 +207,8 @@ margin:6px;
                       { title: "COUNTRY", type: "text",readOnly: true },
                       { title: "ADDRESS LINE 1", type: "text",readOnly: true },
                       { title: "ADDRESS LINE 2", type: "text",readOnly: true }
-                    
-                      ]
+                      ],
+                      colWidths: [190, 140, 60, 80, 80, 80, 190,190]
 		  });
 		  
 		  function onlyExactMatch(queryStr, value) {

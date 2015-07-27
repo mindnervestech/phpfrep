@@ -62,13 +62,13 @@
 								<f:param name="menuId" value="8" />
 							</h:commandLink></li>
 							
-							<!-- <li id="menu12"><h:commandLink
+						 <li id="menu12"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								>
+								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
 								<i class="fa fa-group" style="margin-left:-4px;"></i>
 								<span class="sidebar-text">Manage Company </span>
 								<f:param name="menuId" value="12" />
-							</h:commandLink></li> -->
+							</h:commandLink></li> 
 							
 							<li id="menu9"><h:commandLink
 								action="#{userBean.redirctMenuLink}"

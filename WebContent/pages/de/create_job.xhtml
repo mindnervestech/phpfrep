@@ -288,8 +288,8 @@ input[type="radio"],input[type="checkbox"] {
 															<div class="col-md-4 col-sm-5 p-0 p-b-5 "
 																style="font-weight: bold;">Search By Company Name</div>
 															<div class="col-md-6 col-sm-6 col-xs-6 p-0 p-b-5 ">
-																<p:autoComplete id="acSimple" editable="false"
-																	placeholder="Search by Company"
+																<p:autoComplete id="acSimple"  editable="false"
+																	placeholder="Search by Company" forceSelection="true"
 																	value="#{deBean.searchValueInCompanyName}"
 																	style="height:32px;"
 																	completeMethod="#{deBean.companyDetails}" effect="fade" />
@@ -638,7 +638,7 @@ input[type="radio"],input[type="checkbox"] {
 		</div>
 	</div>
 	<p:dialog id="imageDialog" draggable="true" resizable="true" position="left top"
-		header="Child Image" modal="true" widgetVar="enlargeChildImage"
+		header="Child Image" modal="false" widgetVar="enlargeChildImage"
 		style="width:30%; overflow:scroll;background-color:#ffffff">
 		<div class="" style="width:100%;min-width: 100%; min-height: 100%">
 			<t:div styleClass="data_image m-b-20" id="imgcrp_div"
@@ -649,7 +649,7 @@ input[type="radio"],input[type="checkbox"] {
 		</div>
 	</p:dialog>
 	<p:dialog id="imageDialogDescImage" draggable="true" resizable="true" position="left top"
-		header="Parent Image" modal="true" widgetVar="enlargeChildImageDescImage"
+		header="Parent Image" modal="false" widgetVar="enlargeChildImageDescImage"
 		style="width:70%;overflow-y:scroll;">
 		<div class="" style="min-width: 100%; min-height: 100%">
 			<t:div styleClass="data_image m-b-20" id="imgcrp_divDescImage"
@@ -699,7 +699,7 @@ input[type="radio"],input[type="checkbox"] {
 					</div>
 					 <div class="row m-0  m-5" style="font-weight: bold;">State</div>
 					<div class="row m-0">
-						<p:autoComplete id="State" placeholder="State"
+						<p:autoComplete id="State" forceSelection="true" placeholder="State"
 							value="#{deBean.state}" completeMethod="#{deBean.stateDetails}"
 							effect="fade" />
 					</div>
@@ -735,10 +735,14 @@ input[type="radio"],input[type="checkbox"] {
 					
 				</div>
 				
-				<div class="col-lg-4">
+				
 					
-					<div class="row m-0  m-5" style="font-weight: bold;">Address
-						line 2</div>
+				
+				
+			</div>
+			<div class="col-lg-12 p-0">
+			<div class="col-lg-4">
+					<div class="row m-0  m-5" style="font-weight: bold;">Address line 2</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.address1}"
 							placeholder="Address line 2"
@@ -746,18 +750,17 @@ input[type="radio"],input[type="checkbox"] {
 						</p:inputText>
 					</div>
 					</div>
+					
 					<div class="col-lg-2">
 				    
 					<div class="row m-0  m-5" style="font-weight: bold;">Country</div>
 					<div class="row m-0">
 						<p:autoComplete id="Country" placeholder="Country"
 							value="#{deBean.country}"
-							completeMethod="#{deBean.countryDetails}" effect="fade" />
+							completeMethod="#{deBean.countryDetails}" forceSelection="true" effect="fade" />
 					</div>
 					
 				</div>
-				
-				
 			</div>
 			
 			<div class="col-lg-12 p-0">
@@ -819,7 +822,7 @@ input[type="radio"],input[type="checkbox"] {
 					</div>
 					 <div class="row m-0  m-5" style="font-weight: bold;">State</div>
 					<div class="row m-0">
-						<p:autoComplete id="State" placeholder="State"
+						<p:autoComplete id="State" forceSelection="true" placeholder="State"
 							value="#{deBean.stateEd}" completeMethod="#{deBean.stateDetails}"
 							effect="fade" />
 					</div>
@@ -855,31 +858,29 @@ input[type="radio"],input[type="checkbox"] {
 					
 				</div>
 				
-				<div class="col-lg-4">
-					
-					<div class="row m-0  m-5" style="font-weight: bold;">Address
-						line 2</div>
+			</div>
+				<div class="col-lg-12 p-0">
+			<div class="col-lg-4">
+					<div class="row m-0  m-5" style="font-weight: bold;">Address line 2</div>
 					<div class="row m-0">
-						<p:inputText styleClass="form-control" value="#{deBean.address1Ed}"
+						<p:inputText styleClass="form-control" value="#{deBean.address1}"
 							placeholder="Address line 2"
 							requiredMessage="Please enter your Address">
 						</p:inputText>
 					</div>
 					</div>
+					
 					<div class="col-lg-2">
 				    
 					<div class="row m-0  m-5" style="font-weight: bold;">Country</div>
 					<div class="row m-0">
 						<p:autoComplete id="Country" placeholder="Country"
-							value="#{deBean.countryEd}"
-							completeMethod="#{deBean.countryDetails}" effect="fade" />
+							value="#{deBean.country}"
+							completeMethod="#{deBean.countryDetails}" forceSelection="true"  effect="fade" />
 					</div>
 					
 				</div>
-				
-				
 			</div>
-			
 			<div class="col-lg-12 p-0">
 				<div class="col-lg-4">
 				

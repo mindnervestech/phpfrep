@@ -39,6 +39,7 @@ public class Settings implements Serializable{
 	private Boolean imageUpload;
 	private Boolean parentImage;
 	private Boolean qcjob;
+	private Boolean manage_company;
 
 	private int created_by;
 	private int deleted_by;
@@ -223,6 +224,16 @@ public class Settings implements Serializable{
 	 */
 	public void setDeleted_On(Date deleted_On) {
 		this.deleted_On = deleted_On;
+	}
+	
+	
+	@Column(name="DD_MANAGE_COMPANY", nullable = true)
+	public Boolean getManage_company() {
+		return manage_company;
+	}
+	
+	public void setManage_company(Boolean manage_company) {
+		this.manage_company = manage_company;
 	}
 
 	
