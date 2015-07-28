@@ -105,6 +105,15 @@ input[type="radio"],input[type="checkbox"] {
 	width: 100%;
   	padding-right: 25px;
 }
+
+.nav.nav-tabs > li.active > a {
+background-color: #DFE5E9 !important;
+color:black !important;}
+
+.ui-dialog.ui-widget-content .ui-dialog-content {
+    width: 197% !important;
+}
+
 </style>
 	<f:loadBundle var="global"
 		basename="/com/obs/brs/properties/Application"></f:loadBundle>
@@ -210,8 +219,8 @@ input[type="radio"],input[type="checkbox"] {
 							<h:inputHidden value="#{deBean.companyId}" />
 							<div class="panel-body">
 								<div class="row">
-									<div class="col-md-4 f_l">
-										<t:div styleClass="data_image m-b-20"
+									<div class="col-md-6 f_l" style="padding:0;">
+										<t:div 
 											rendered="#{deBean.childImageId ==0}">
 											<img
 												src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImageId}/#{deBean.parentImageName}"
@@ -264,14 +273,11 @@ input[type="radio"],input[type="checkbox"] {
 													<button class="zoom-out1" style="display: none;">Zoom Out</button>
 													<button class="reset1 btn btn-default ">Reset</button> <!-- <input type="range"
 													class="zoom-range1"></input> -->
-
 												</span> </section>
 											</div>
-
-
 										</t:div>
 									</div>
-									<div class="col-md-8 f_l">
+									<div class="col-md-6 f_l" >
 										<!--col-md-12-->
 										<div class="col-md-12 col-xs-12 p-0 p-b-10 f_l">
 											<ul id="myTab2" class="nav nav-tabs nav-dark">
@@ -287,6 +293,9 @@ input[type="radio"],input[type="checkbox"] {
 														<div class="col-md-12 p-0 ">
 															<div class="col-md-4 col-sm-5 p-0 p-b-5 "
 																style="font-weight: bold;">Search By Company Name</div>
+														
+														</div>
+														<div class="col-md-12 p-0 ">
 															<div class="col-md-6 col-sm-6 col-xs-6 p-0 p-b-5 ">
 																<p:autoComplete id="acSimple"  editable="false"
 																	placeholder="Search by Company" forceSelection="true"
@@ -294,7 +303,7 @@ input[type="radio"],input[type="checkbox"] {
 																	style="height:32px;"
 																	completeMethod="#{deBean.companyDetails}" effect="fade" />
 															</div>
-															<div class="col-md-1 col-sm-1 col-xs-1 " style="margin-top:7px">
+															<div class="col-md-2 col-sm-1 col-xs-1 " style="margin-top:7px">
 																<p:commandLink ajax="true"
 																	oncomplete="PF('addCompany').show();" id="edit">
 																	<i class="fa fa-plus"></i>
@@ -334,19 +343,18 @@ input[type="radio"],input[type="checkbox"] {
 																	</t:div>
 																</div>
 															</div>
-															<div class="f_l" style="margin: 0px 5px;">
-																<div class="">
-																	<div class="row m-0 m-5" style="font-weight: bold;">
-																		Width in cm</div>
-																	<div class="row m-0">
-																		<p:inputText styleClass="form-control" style="height:22px;  width: 75px;"  id="img_width"
-																			 value="#{deBean.width}"
-																			placeholder="Width" readonly="true"
-																			validatorMessage="Invalid Image width">
-																			<f:validateDoubleRange minimum="0.0" />
-																		</p:inputText>
-																		<p:message for="img_width" display="text" />
-																	</div>
+															
+																<div class="f_l" style="margin: 0px 5px;">
+																<div class="row m-0  m-5" style="font-weight: bold;">Ad
+																	Type</div>
+																<div class="row m-0">
+																	<h:selectOneMenu value="#{deBean.adType}"
+																		class="btn btn-default form-control bootselect"
+																		style="  padding: 0px 11.5px !important;margin-bottom:10px;">
+																		<f:selectItem itemLabel="Display" itemValue="Display" />
+																		<f:selectItem itemLabel="Line" itemValue="Line" />
+																		<f:selectItem itemLabel="Insert" itemValue="Insert" />
+																	</h:selectOneMenu>
 																</div>
 															</div>
 															<div class="f_l" style="margin: 0px 5px;">
@@ -373,34 +381,6 @@ input[type="radio"],input[type="checkbox"] {
 																		</h:inputText>
 																	</t:div>
 
-																</div>
-															</div>
-															<div class="f_l" style="margin: 0px 5px;">
-																<div class="p-0">
-																	<div class="row m-0 m-5" style="font-weight: bold;">
-																		Length in cm</div>
-																	<div class="row m-0">
-																		<p:inputText styleClass="form-control"  id="img_height"
-																			style="height:22px; width: 75px;" readonly="true"	 value="#{deBean.length}"
-																			placeholder="Length"
-																			validatorMessage="Invalid Image Length">
-																			<f:validateDoubleRange minimum="0.0" />
-																		</p:inputText>
-																		<p:message for="img_height" display="text" />
-																	</div>
-																</div>
-															</div>
-															<div class="f_l" style="margin: 0px 5px;">
-																<div class="row m-0  m-5" style="font-weight: bold;">Ad
-																	Type</div>
-																<div class="row m-0">
-																	<h:selectOneMenu value="#{deBean.adType}"
-																		class="btn btn-default form-control bootselect"
-																		style="  padding: 0px 11.5px !important;margin-bottom:10px;">
-																		<f:selectItem itemLabel="Display" itemValue="Display" />
-																		<f:selectItem itemLabel="Line" itemValue="Line" />
-																		<f:selectItem itemLabel="Insert" itemValue="Insert" />
-																	</h:selectOneMenu>
 																</div>
 															</div>
 															<div class="f_l" style="margin: 0px 5px;">
@@ -431,6 +411,35 @@ input[type="radio"],input[type="checkbox"] {
 
 																</div>
 															</div>
+													
+															<div class="f_l" style="margin: 0px 5px;">
+																<div class="row m-0 m-5" style="font-weight: bold;">
+																	Ad Orientation</div>
+																<div class="row m-0">
+																	<h:selectOneMenu class="btn btn-default form-control bootselect"
+																		style="  padding: 0px 3px !important;margin-bottom:10px;"
+																		value="#{deBean.adOrientation}"
+																		hideNoSelectionOption="false">
+																		<f:selectItem itemLabel="Select" itemValue="" />
+																		<f:selectItem itemLabel="vertical"
+																			itemValue="vertical" />
+																		<f:selectItem itemLabel="horizontal"
+																			itemValue="horizontal" />
+																		<f:selectItem itemLabel="island"
+																			itemValue="island" />
+																		<f:selectItem itemLabel="FP" itemValue="FP" />
+																		<f:selectItem itemLabel="DPS" itemValue="DPS" />
+																		<f:selectItem itemLabel="fold-out"
+																			itemValue="fold-out" />
+																		<f:selectItem itemLabel="insert" itemValue="insert" />
+																	</h:selectOneMenu>
+																</div>
+															</div>
+															   
+												</div>
+									 
+									 <div class = "col-md-12 p-0">
+									 
 															
 															<div class="f_l" style="margin: 0px 5px;">
 																<div class="row m-0  m-5" style="font-weight: bold;">Landing Page URL : </div>
@@ -453,31 +462,6 @@ input[type="radio"],input[type="checkbox"] {
 																				itemValue="#{c.id}" />
 																		</h:selectOneMenu>
 																	</div>
-																</div>
-															</div>
-															<div class="f_l" style="margin: 0px 5px;">
-																<div class="row m-0 m-5" style="font-weight: bold;">
-																	Ad Orientation</div>
-																<div class="row m-0">
-																	<h:selectOneMenu class="btn btn-default form-control bootselect"
-																		style="  padding: 0px 3px !important;margin-bottom:10px;"
-																		value="#{deBean.adOrientation}"
-																		hideNoSelectionOption="false">
-																		<f:selectItem itemLabel="Select" itemValue="" />
-																		<f:selectItem itemLabel="vertical"
-																			itemValue="vertical" />
-																		<f:selectItem itemLabel="horizontal"
-																			itemValue="horizontal" />
-																		<f:selectItem itemLabel="island"
-																			itemValue="island" />
-																		<f:selectItem itemLabel="FP" itemValue="FP" />
-																		<f:selectItem itemLabel="DPS" itemValue="DPS" />
-																		<f:selectItem itemLabel="fold-out"
-																			itemValue="fold-out" />
-																		<f:selectItem itemLabel="insert" itemValue="insert" />
-																	</h:selectOneMenu>
-
-
 																</div>
 															</div>
 															<div class="f_l" style="margin: 0px 5px;">
@@ -507,7 +491,10 @@ input[type="radio"],input[type="checkbox"] {
 
 																	</div>
 															</div>
-															<div class="f_l" style="margin: 0px 5px;">
+									 
+									 </div>
+														<div class="col-md-12 p-0">
+								<div class="f_l" style="margin: 0px 5px;">
 																<div class="row m-0  m-5" style="font-weight: bold;">Ad
 																	Category</div>
 																<div class="row m-0" style="width:200px;">
@@ -524,10 +511,46 @@ input[type="radio"],input[type="checkbox"] {
 																	</div>
 																</div>
 															</div>
+														 <div class="f_l" style="margin: 0px 5px;">
+																<div class="">
+																	<div class="row m-0 m-5" style="font-weight: bold;">
+																		Width in cm</div>
+																	<div class="row m-0">
+																		<p:inputText styleClass="form-control" style="height:22px;  width: 75px;"  id="img_width"
+																			 value="#{deBean.width}"
+																			placeholder="Width" readonly="true"
+																			validatorMessage="Invalid Image width">
+																			<f:validateDoubleRange minimum="0.0" />
+																		</p:inputText>
+																		<p:message for="img_width" display="text" />
+																	</div>
+																</div>
+															</div>
+								            <div class="f_l" style="margin: 0px 5px;">
+																<div class="p-0">
+																	<div class="row m-0 m-5" style="font-weight: bold;">
+																		Length in cm</div>
+																	<div class="row m-0">
+																		<p:inputText styleClass="form-control"  id="img_height"
+																			style="height:22px; width: 75px;" readonly="true"	 value="#{deBean.length}"
+																			placeholder="Length"
+																			validatorMessage="Invalid Image Length">
+																			<f:validateDoubleRange minimum="0.0" />
+																		</p:inputText>
+																		<p:message for="img_height" display="text" />
+																	</div>
+																</div>
+															</div>
+															
+															
+															
 														</div>
-														<div class="col-md-12">
-															<div class="col-md-9 col-sm-9 col-xs-9  p-b-10 f_l p-0">
-																<div class="row m-0 p-b-10" style="font-weight: bold;">Ad
+														
+															<div class = "col-md-12 p-0">
+															
+															<div class="col-md-6 col-sm-3 col-xs-3  p-b-3 f_l p-0">
+																<div class="col-md-12 col-sm-3 col-xs-3  p-b-3 f_l p-0">
+																<div class="row m-0 p-b-3" style="font-weight: bold;">Ad
 																	Headline</div>
 																<div class="row m-0">
 																	<p:inputTextarea styleClass="form-control"
@@ -536,8 +559,49 @@ input[type="radio"],input[type="checkbox"] {
 																		value="#{deBean.adHeadLine}" />
 																</div>
 															</div>
-															<div class="col-md-3"
-																style="position: absolute; right: 0; padding: 0; top: 0;">
+															<div class="col-md-12 col-xs-3 p-t-3 f_l"
+																style="background-color: #eee; margin-top: 3%;margin-left:2%; ">
+																<div class="row m-0 p-b-3 "
+																	style="font-weight: bold;">Currency Range</div>
+																<div class="col-md-3 col-xs-3 p-0 ">
+																	<h:selectOneMenu class="form-control" 
+																		hideNoSelectionOption="false"
+																		value="#{deBean.currency}" style="height:20px;  padding: 0px 12px !important;">
+																		<!-- <f:selectItem itemLabel="Select" itemValue="" /> -->
+																		<f:selectItem itemLabel="$" itemValue="1" />
+																		<f:selectItem itemLabel="£" itemValue="2" />
+																		<f:selectItem itemLabel="€" itemValue="3" />
+																	</h:selectOneMenu>
+																</div>
+																<div class="col-md-3 col-xs-3 p-0 p-r-3 p-l-3 p-b-3">
+																	<h:inputText class="form-control col-lg-1"
+																		id="startCurrency" style="height:22px;"
+																		value="#{deBean.startCurrencyRange}">
+																	</h:inputText>
+																</div>
+																<div class="col-md-3 col-xs-3 p-0 p-r-3 p-l-3">
+																	<h:inputText class="form-control col-lg-1"
+																		id="endCurrency" value="#{deBean.endCurrencyRange}"
+																		style="height:22px;">
+																	</h:inputText>
+																</div>
+															</div>
+															
+															<div class="col-md-12 col-sm-3 col-xs-3  p-b-3 f_l p-0">
+																<div class="row m-0 p-b-3" style="font-weight: bold;">Contact Info</div>
+																<div class="row m-0">
+																	<p:inputTextarea styleClass="form-control"
+																		style="margin: 0px; height: 146px; padding-top: 4px;"
+																		autoResize="false"
+																		placeholder="Name/Department/Phone/Email"
+																		value="#{deBean.contactInfo}" />
+																</div>
+															</div>
+															
+															</div>
+															<div class = "col-md-6" style="    padding: 0;">
+																<div class="col-md-12"
+																style="">
 																<div class="thumbnail"
 																	style="float: left; padding: 0px;">
 																	<div class="thumbnail-actions"
@@ -575,42 +639,7 @@ input[type="radio"],input[type="checkbox"] {
 																	</span> </section>
 																</div>
 															</div>
-															<div class="col-md-9 col-xs-9 p-t-10 f_l"
-																style="background-color: #eee; margin-bottom: 20px;">
-																<div class="col-md-3 col-xs-12 p-0 p-t-10 p-b-10 "
-																	style="font-weight: bold;">Currency Range</div>
-																<div class="col-md-3 col-xs-12 p-0 ">
-																	<h:selectOneMenu class="form-control" 
-																		hideNoSelectionOption="false"
-																		value="#{deBean.currency}" style="height:20px;  padding: 0px 12px !important;">
-																		<!-- <f:selectItem itemLabel="Select" itemValue="" /> -->
-																		<f:selectItem itemLabel="$" itemValue="1" />
-																		<f:selectItem itemLabel="£" itemValue="2" />
-																		<f:selectItem itemLabel="€" itemValue="3" />
-																	</h:selectOneMenu>
-																</div>
-																<div class="col-md-3 col-xs-12 p-0 p-r-5 p-l-5 p-b-10">
-																	<h:inputText class="form-control col-lg-1"
-																		id="startCurrency" style="height:22px;"
-																		value="#{deBean.startCurrencyRange}">
-																	</h:inputText>
-																</div>
-																<div class="col-md-3 col-xs-12 p-0 p-r-5 p-l-5">
-																	<h:inputText class="form-control col-lg-1"
-																		id="endCurrency" value="#{deBean.endCurrencyRange}"
-																		style="height:22px;">
-																	</h:inputText>
-																</div>
-															</div>
-															<div class="col-md-9 col-sm-9 col-xs-9  p-b-10 f_l p-0">
-																<div class="row m-0 p-b-10" style="font-weight: bold;">Contact Info</div>
-																<div class="row m-0">
-																	<p:inputTextarea styleClass="form-control"
-																		style="margin: 0px; height: 50px; padding-top: 4px;"
-																		autoResize="false"
-																		placeholder="Name/Department/Phone/Email"
-																		value="#{deBean.contactInfo}" />
-																</div>
+															
 															</div>
 														</div>
 														All <span style="color: red;">*</span> marked fields are required. 
@@ -640,41 +669,57 @@ input[type="radio"],input[type="checkbox"] {
 	<p:dialog id="imageDialog" draggable="true" resizable="true" position="left top"
 		header="Child Image" modal="false" widgetVar="enlargeChildImage"
 		style="width:30%; overflow:scroll;background-color:#ffffff">
+		<span class="buttons">
+				<button class="zoom-in4 btn btn-default ">Zoom In</button>
+				<button class="zoom-out4" style="display: none;">Zoom Out</button>
+				<button class="reset4 btn btn-default ">Reset</button> 
+				<!-- <input type="range" class="zoom-range"></input>-->
+				 </span> 
 		<div class="" style="width:100%;min-width: 100%; min-height: 100%">
 			<t:div styleClass="data_image m-b-20" id="imgcrp_div"
 				style="width:100%;min-width:100%;min-height:100%">
+					<div id="panzoom4" style="text-align: center">
 				<h:graphicImage id="imgcrp" style="width:100%;min-width:100%;min-height:100%"
 					value="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}" />
+			</div>
+			
 			</t:div>
 		</div>
 	</p:dialog>
 	<p:dialog id="imageDialogDescImage" draggable="true" resizable="true" position="left top"
 		header="Parent Image" modal="false" widgetVar="enlargeChildImageDescImage"
 		style="width:70%;overflow-y:scroll;">
+		<span class="buttons">
+				<button class="zoom-in5 btn btn-default ">Zoom In</button>
+				<button class="zoom-out5" style="display: none;">Zoom Out</button>
+				<button class="reset5 btn btn-default ">Reset</button> 
+				<!-- <input type="range" class="zoom-range"></input>-->
+				 </span> 
 		<div class="" style="min-width: 100%; min-height: 100%">
 			<t:div styleClass="data_image m-b-20" id="imgcrp_divDescImage"
 				style="min-width:100%;min-height:100%">
+				<div id="panzoom5" style="text-align: center">
 				<h:graphicImage id="imgcrpDescImage"
 					style="min-width:100%;min-height:100%;height:90%;"
-					value="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImageId}/#{deBean.parentImageName}" />
-
+					value="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImageId}/#{deBean.parentImageName}" />
+				</div>
 			</t:div>
-		</div>
+		</div>	
 	</p:dialog>
 
 
 
 
 	<p:dialog id="basicDialog" widgetVar="addCompany" draggable="true"
-		resizable="false" header="Add New Company" style="  width: 70% !important;margin-left:13%;">
-		<h:form style="  width: 134% !important;   overflow: hidden;">
+		resizable="false" header="Add New Company" style=" width: 70% !important;margin-left:20%; margin-right:20%;">
+		<h:form style="  overflow: hidden;">
 			<div class="col-lg-12 p-0">
 				<div class="col-lg-4">
 					<div class="row m-0 m-5" style="font-weight: bold;">Company
 						Name</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control"
-							value="#{deBean.companyName}" placeholder="Company Name">
+							value="#{deBean.companyName}">
 						</p:inputText>
 					</div>
 
@@ -682,7 +727,7 @@ input[type="radio"],input[type="checkbox"] {
 						URL</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control"
-							value="#{deBean.companyURL}" placeholder="Company URL">
+							value="#{deBean.companyURL}">
 						</p:inputText>
 					</div>
 					
@@ -692,14 +737,14 @@ input[type="radio"],input[type="checkbox"] {
 					<div class="row m-0  m-5" style="font-weight: bold;">City</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.city}"
-							placeholder="City"
+							
 							validatorMessage="Special characters are not allowed in city.">
 							<f:validateRegex pattern="^[a-zA-Z0-9' ']*$" />
 						</p:inputText>
 					</div>
 					 <div class="row m-0  m-5" style="font-weight: bold;">State</div>
 					<div class="row m-0">
-						<p:autoComplete id="State" forceSelection="true" placeholder="State"
+						<p:autoComplete id="State" forceSelection="true" 
 							value="#{deBean.state}" completeMethod="#{deBean.stateDetails}"
 							effect="fade" />
 					</div>
@@ -713,7 +758,7 @@ input[type="radio"],input[type="checkbox"] {
 						line 1</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.address}"
-							placeholder="Address line 1"
+							
 							requiredMessage="Please enter your Address">
 						</p:inputText>
 					</div>
@@ -723,7 +768,7 @@ input[type="radio"],input[type="checkbox"] {
 					
 					<div class="row m-0  m-5" style="font-weight: bold;">ZipCode</div>
 					<div class="row m-0">
-						<p:inputText styleClass="form-control" placeholder="ZipCode"
+						<p:inputText styleClass="form-control" 
 							value="#{deBean.pincode}" id="zipCode" label="zipCode"
 							validatorMessage="Zip code must be between 4 and 10 digits"
 							converterMessage="Zip code must be numeric"
@@ -732,20 +777,14 @@ input[type="radio"],input[type="checkbox"] {
 							<f:converter converterId="javax.faces.Integer"></f:converter>
 						</p:inputText>	
 					</div>
-					
 				</div>
-				
-				
-					
-				
-				
 			</div>
 			<div class="col-lg-12 p-0">
 			<div class="col-lg-4">
 					<div class="row m-0  m-5" style="font-weight: bold;">Address line 2</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.address1}"
-							placeholder="Address line 2"
+							
 							requiredMessage="Please enter your Address">
 						</p:inputText>
 					</div>
@@ -755,7 +794,7 @@ input[type="radio"],input[type="checkbox"] {
 				    
 					<div class="row m-0  m-5" style="font-weight: bold;">Country</div>
 					<div class="row m-0">
-						<p:autoComplete id="Country" placeholder="Country"
+						<p:autoComplete id="Country" 
 							value="#{deBean.country}"
 							completeMethod="#{deBean.countryDetails}" forceSelection="true" effect="fade" />
 					</div>
@@ -769,7 +808,6 @@ input[type="radio"],input[type="checkbox"] {
 					<div class="row m-0  m-5" style="font-weight: bold;">Department</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.department}"
-							placeholder="Department "
 							requiredMessage="Please enter your department ">
 						</p:inputText>
 					</div>
@@ -785,19 +823,23 @@ input[type="radio"],input[type="checkbox"] {
 				</div>
 				</div>
 		   </div>
+		   <div class="col-lg-12 p-0">
+		   <div class="row m-0  m-5" style="font-size:11px;">Department" field:  ( ! ) Only specify a "Department" name when you intend to create a unique advertiser entity under the same institution</div>
+		   </div>
+		   
 		</h:form>
 	</p:dialog>
 	
 	<p:dialog id="editCompDialog" widgetVar="editCompany" draggable="true"
-		resizable="false" header="Edit Company" style="  width: 70% !important;margin-left:13%;">
-		<h:form style="  width: 134% !important;   overflow: hidden;">
+		resizable="false" header="Edit Company" style="  width: 70% !important;margin-left:20%; margin-right:20%;">
+		<h:form style=" overflow: hidden;">
 			<div class="col-lg-12 p-0">
 				<div class="col-lg-4">
 					<div class="row m-0 m-5" style="font-weight: bold;">Company
 						Name</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control"
-							value="#{deBean.companyNameEd}" placeholder="Company Name">
+							value="#{deBean.companyNameEd}">
 						</p:inputText>
 					</div>
 
@@ -805,7 +847,7 @@ input[type="radio"],input[type="checkbox"] {
 						URL</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control"
-							value="#{deBean.companyURLEd}" placeholder="Company URL">
+							value="#{deBean.companyURLEd}" >
 						</p:inputText>
 					</div>
 					
@@ -815,14 +857,14 @@ input[type="radio"],input[type="checkbox"] {
 					<div class="row m-0  m-5" style="font-weight: bold;">City</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.cityEd}"
-							placeholder="City"
+							
 							validatorMessage="Special characters are not allowed in city.">
 							<f:validateRegex pattern="^[a-zA-Z0-9' ']*$" />
 						</p:inputText>
 					</div>
 					 <div class="row m-0  m-5" style="font-weight: bold;">State</div>
 					<div class="row m-0">
-						<p:autoComplete id="State" forceSelection="true" placeholder="State"
+						<p:autoComplete id="State" forceSelection="true" 
 							value="#{deBean.stateEd}" completeMethod="#{deBean.stateDetails}"
 							effect="fade" />
 					</div>
@@ -836,7 +878,7 @@ input[type="radio"],input[type="checkbox"] {
 						line 1</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.addressEd}"
-							placeholder="Address line 1"
+							
 							requiredMessage="Please enter your Address">
 						</p:inputText>
 					</div>
@@ -846,7 +888,7 @@ input[type="radio"],input[type="checkbox"] {
 					
 					<div class="row m-0  m-5" style="font-weight: bold;">ZipCode</div>
 					<div class="row m-0">
-						<p:inputText styleClass="form-control" placeholder="ZipCode"
+						<p:inputText styleClass="form-control" 
 							value="#{deBean.pincodeEd}" id="zipCode" label="zipCode"
 							validatorMessage="Zip code must be between 4 and 10 digits"
 							converterMessage="Zip code must be numeric"
@@ -864,7 +906,7 @@ input[type="radio"],input[type="checkbox"] {
 					<div class="row m-0  m-5" style="font-weight: bold;">Address line 2</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.address1}"
-							placeholder="Address line 2"
+							
 							requiredMessage="Please enter your Address">
 						</p:inputText>
 					</div>
@@ -874,7 +916,7 @@ input[type="radio"],input[type="checkbox"] {
 				    
 					<div class="row m-0  m-5" style="font-weight: bold;">Country</div>
 					<div class="row m-0">
-						<p:autoComplete id="Country" placeholder="Country"
+						<p:autoComplete id="Country"
 							value="#{deBean.country}"
 							completeMethod="#{deBean.countryDetails}" forceSelection="true"  effect="fade" />
 					</div>
@@ -887,7 +929,7 @@ input[type="radio"],input[type="checkbox"] {
 					<div class="row m-0  m-5" style="font-weight: bold;">Department</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.departmentEd}"
-							placeholder="Department "
+						
 							requiredMessage="Please enter your department ">
 						</p:inputText>
 					</div>
@@ -902,6 +944,10 @@ input[type="radio"],input[type="checkbox"] {
 				</p:commandLink>
 				</div>
 				</div>
+		   </div>
+		   
+		   <div class="col-lg-12 p-0">
+		   <div class="row m-0  m-5" style="font-size:11px;">Department" field:  ( ! ) Only specify a "Department" name when you intend to create a unique advertiser entity under the same institution</div>
 		   </div>
 		</h:form>
 	</p:dialog>
@@ -1053,11 +1099,79 @@ a.panLeft:hover,a.panRight:hover {
 			animate : true
 		});
 	});
+	
+	
+	$("#panzoom4").panzoom({
+		$zoomIn : $(".zoom-in4"),
+		$zoomOut : $(".zoom-out4"),
+		$zoomRange : $(".zoom-range4"),
+		$reset : $(".reset4")
+	});
+
+	$('.left').click(function() {
+		$("#panzoom4").panzoom("goTo", true);
+	});
+
+	$('.right').click(function() {
+		$("#panzoom4").panzoom("resetPan", true);
+	});
+
+	$('.panLeft').click(function() {
+		$("#panzoom4").panzoom("pan", -250, 0, {
+			relative : true,
+			animate : true
+		});
+	});
+
+	$('.panRight').click(function() {
+		$("#panzoom4").panzoom("pan", 250, 0, {
+			relative : true,
+			animate : true
+		});
+	});
+	
+	
+	
+	$("#panzoom5").panzoom({
+		$zoomIn : $(".zoom-in5"),
+		$zoomOut : $(".zoom-out5"),
+		$zoomRange : $(".zoom-range5"),
+		$reset : $(".reset5")
+	});
+
+	$('.left').click(function() {
+		$("#panzoom5").panzoom("goTo", true);
+	});
+
+	$('.right').click(function() {
+		$("#panzoom5").panzoom("resetPan", true);
+	});
+
+	$('.panLeft').click(function() {
+		$("#panzoom5").panzoom("pan", -250, 0, {
+			relative : true,
+			animate : true
+		});
+	});
+
+	$('.panRight').click(function() {
+		$("#panzoom5").panzoom("pan", 250, 0, {
+			relative : true,
+			animate : true
+		});
+	});
+	
+	
+	
+	
+	
 	function setHeight() {
 		$("#imageDialog").css("width","33.3%");
+		$("#imageDialog").css("height","90.3%");
 	}
 	function setParentPopupHeight() {
 		$("#imageDialogDescImage").css("width","33.3%");
+		$("#imageDialogDescImage").css("height","90.3%");
 	}
 	function setTop() {
 		$("#editCompDialog").css("top","125px");
