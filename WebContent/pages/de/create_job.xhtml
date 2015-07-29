@@ -113,7 +113,10 @@ color:black !important;}
 .ui-dialog.ui-widget-content .ui-dialog-content {
     width: 197% !important;
 }
-
+::-webkit-scrollbar {
+    width: 6px  !important;
+    height: 1px  !important;
+}
 </style>
 	<f:loadBundle var="global"
 		basename="/com/obs/brs/properties/Application"></f:loadBundle>
@@ -250,6 +253,12 @@ color:black !important;}
 															</p:commandLink>
 															</span>
 														</div>
+														<section> <span class="buttons">
+													<button class="zoom-in1 btn btn-default ">Zoom In</button>
+													<button class="zoom-out1" style="display: none;">Zoom Out</button>
+													<button class="reset1 btn btn-default ">Reset</button> <!-- <input type="range"
+													class="zoom-range1"></input> -->
+												</span> </section>
 												<section>
 												<div id="panzoom1" style="text-align: center">
 													<img
@@ -268,12 +277,7 @@ color:black !important;}
 													</div>
 												</div>
 												</section>
-												<section> <span class="buttons">
-													<button class="zoom-in1 btn btn-default ">Zoom In</button>
-													<button class="zoom-out1" style="display: none;">Zoom Out</button>
-													<button class="reset1 btn btn-default ">Reset</button> <!-- <input type="range"
-													class="zoom-range1"></input> -->
-												</span> </section>
+												
 											</div>
 										</t:div>
 									</div>
@@ -296,7 +300,7 @@ color:black !important;}
 														
 														</div>
 														<div class="col-md-12 p-0 ">
-															<div class="col-md-6 col-sm-6 col-xs-6 p-0 p-b-5 ">
+															<div class="col-md-10 col-sm-6 col-xs-6 p-0 p-b-5 ">
 																<p:autoComplete id="acSimple"  editable="false"
 																	placeholder="Search by Company" forceSelection="true"
 																	value="#{deBean.searchValueInCompanyName}"
@@ -615,6 +619,13 @@ color:black !important;}
 																			</p:commandLink>
 																		</span>
 																	</div>
+																	<section> <span class="buttons">
+																		<button class="zoom-in btn btn-default ">Zoom In</button>
+																		<button class="zoom-out" style="display: none;">Zoom Out</button>
+																		<button class="reset btn btn-default ">Reset</button> <!-- <input
+																		type="range" class="zoom-range"></input>
+ -->
+																	</span> </section>
 																	<section>
 																	<div id="panzoom" style="text-align: center">
 																	<img
@@ -630,13 +641,7 @@ color:black !important;}
 																		    </div> -->
 																	</div>
 																	</section>
-																	<section> <span class="buttons">
-																		<button class="zoom-in btn btn-default ">Zoom In</button>
-																		<button class="zoom-out" style="display: none;">Zoom Out</button>
-																		<button class="reset btn btn-default ">Reset</button> <!-- <input
-																		type="range" class="zoom-range"></input>
- -->
-																	</span> </section>
+																	
 																</div>
 															</div>
 															
@@ -1166,11 +1171,11 @@ a.panLeft:hover,a.panRight:hover {
 	
 	
 	function setHeight() {
-		$("#imageDialog").css("width","33.3%");
+		$("#imageDialog").css("width","50.3%");
 		$("#imageDialog").css("height","90.3%");
 	}
 	function setParentPopupHeight() {
-		$("#imageDialogDescImage").css("width","33.3%");
+		$("#imageDialogDescImage").css("width","50.3%");
 		$("#imageDialogDescImage").css("height","90.3%");
 	}
 	function setTop() {
