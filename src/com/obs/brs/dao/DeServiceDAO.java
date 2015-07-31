@@ -293,6 +293,17 @@ public class DeServiceDAO implements IDeServiceDAO {
 	}
 
 	@Override
+	public DeCompany getDeCompanySeachByCompanyNameSaveId(long searchValue) {
+		List <DeCompany> deCompanyList = getSessionFactory().getCurrentSession().createQuery("From DeCompany as m where m.isDeleted=0 and  m.id='"+searchValue+"'").list();
+		if (deCompanyList.size() > 0 ) {
+			return deCompanyList.get(0);
+		}
+		return null;
+	}
+
+	
+	
+	@Override
 	public DeCompany getDeCompanyNameByCompanyNameWithId(long id,
 			String companyName) {
 		List<DeCompany> deCompanyList = getSessionFactory().getCurrentSession().createQuery("from DeCompany where companyName=? and isDeleted=0  and id!="+id).setParameter(0, companyName).list();
@@ -437,7 +448,22 @@ public class DeServiceDAO implements IDeServiceDAO {
 		}
 		return null;
 	}
-	
 
+	@Override
+	public List<DeCompany> getDeCompanySeachByCompanyNameId(long searchValue) {
+		// TODO Auto-generated method stub
+		
+		String 	SQL = "From DeCompany as m where m.isDeleted=0 and m.id='"+searchValue+"'";
+		
+		return getSessionFactory().getCurrentSession().createQuery(SQL).list();
+	}
+
+	@Override
+	public List<DeCompany> getDeCompanyBySeachCriteriaId(long searchValue) {
+		// TODO Auto-generated method stub
+	
+		String 	SQL = "From DeCompany as m where m.isDeleted=0 and m.id='"+searchValue+"'";
+		return getSessionFactory().getCurrentSession().createQuery(SQL).list();
+	}
 
 }

@@ -32,9 +32,7 @@
 		rel="stylesheet" />
 		<link href="http://docs.handsontable.com/0.16.0/styles/samples.css"
 		rel="stylesheet" />
-		<script src="http://handsontable.com/bower_components/handsontable/dist/handsontable.full.js"></script>
-	
-	
+		
 	<style>
 .table>thead>tr>th,.table>tbody>tr>th,.table>tfoot>tr>th,.table>thead>tr>td,.table>tbody>tr>td,.table>tfoot>tr>td
 	{
@@ -142,23 +140,22 @@ font-size: 10px;
 					<h2>Company List </h2>
 						<div class="panel-heading" ></div>
 						<f:event listener="#{userBean.getAllCompanies}" type="preRenderView" />
-						 <input id="search_field" type="search" placeholder="Search"/>
-						<div id="exampleGrid" class="dataTable" ></div> -
+						<!--  <input id="search_field" type="search" placeholder="Search"/>
+						<div id="exampleGrid" class="dataTable" ></div> - -->
 						<!-- Search: <input id="searchgrid" type="text" /> -->
+						Search: <input id="searchgrid" type="text" style="width: 28%;margin-bottom: 1%;"/>
  
-
+						<div id="exampleGrid"></div>
+						<div id="gridpage" class="pagination"></div> 
 					</div>
-
 				</div>
 			</div>
-
 		</div>
 	</div>
 
 
-
 	<script type="text/javascript">
-		function checkboxChecked() {
+	function checkboxChecked() {
 			var checkedValue = false;
 			var inputElements = document.getElementsByTagName('input');
 			for ( var i = 0; inputElements[i]; ++i) {
@@ -175,24 +172,9 @@ font-size: 10px;
 			}
 		}
 		
-		/* var myData = (#{userBean.getCompList()});
-		          $("#exampleGrid").handsontable({
-		              data: myData,
-		              startRows: 5,
-		              startCols: 5,
-		              minSpareCols: 1,
-		              //always keep at least 1 spare row at the right
-		              minSpareRows: 1,
-		              //always keep at least 1 spare row at the bottom,
-		              rowHeaders: true,
-		              colHeaders: true,
-		              contextMenu: false,
-		              
-		          });
-		 */
-		 
-		 var
-		    data =#{userBean.getCompList()},
+	  var companies =   #{userBean.getCompList()}
+	 
+	/* 	  var data =#{userBean.getCompList()},
 		    example = document.getElementById('exampleGrid'),
 		    searchFiled = document.getElementById('search_field'),
 		    hot;
@@ -239,12 +221,21 @@ font-size: 10px;
 		      });
 		    }
 		  
-		  bindDumpButton(); 
+		  bindDumpButton();  */
 
-		
-		 
-		
-	</script>
+		  </script>
+		  <style>
+.pagination {
+        padding: 2px 0;
+        margin: 2px;
+    }
+.pagination a {
+            border: 1px solid grey;    
+            padding: 2px 5px;
+        } 
+</style>
+ 
+
 	<script type="text/javascript">
 		function checkboxCheckedDelete() {
 			var checkedValue = false;
@@ -265,6 +256,8 @@ font-size: 10px;
 				alert("Please Select Any User");
 			}
 		}
+		
+		
 	</script>
 	<!-- BEGIN MANDATORY SCRIPTS -->
 	<script
@@ -302,7 +295,10 @@ font-size: 10px;
 		src="#{request.contextPath}/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script> -->
 	<!-- END  PAGE LEVEL SCRIPTS -->
 	<script src="#{request.contextPath}/assets/js/application.js"></script>
-	
+     <script src="http://handsontable.com/bower_components/handsontable/dist/handsontable.full.js"></script>
+
+	 <script src="#{request.contextPath}/assets/js/demoTest.js"></script>	
+  
 	
 </h:body>
 

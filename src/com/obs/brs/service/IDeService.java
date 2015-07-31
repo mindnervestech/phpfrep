@@ -209,12 +209,19 @@ public interface IDeService {
 	 * @return
 	 */
 	public DeCompany getDeCompanySeachByCompanyName(String searchValue);
+	public DeCompany getDeCompanySeachByCompanyNameId(long searchValue);
+	
+	
+	
+	
 	/**
 	 * 
 	 * @param id
 	 * @param companyName
 	 * @return
 	 */
+	
+	
 	public DeCompany getDeCompanyNameByCompanyNameWithId(long id,
 			String companyName);
 	/**
@@ -265,4 +272,6 @@ public interface IDeService {
 	public String getStatusOfChildImageCompletion(long string);
 
 	public List getAllDeo();
+
+	public List<DeCompany> getDeCompanyBySeachCriteriaId(long parseLong);
 }

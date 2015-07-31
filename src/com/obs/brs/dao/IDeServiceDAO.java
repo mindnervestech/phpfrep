@@ -211,6 +211,9 @@ public interface IDeServiceDAO {
 	 * @return
 	 */
 	public DeCompany getDeCompanySeachByCompanyName(String searchValue);
+
+	public DeCompany getDeCompanySeachByCompanyNameSaveId(long searchValue);
+	
 	/**
 	 * 
 	 * @param id
@@ -259,5 +262,9 @@ public interface IDeServiceDAO {
 	String getStatusOfChildImageCompletion(long jobid);
 	
 	public List getAllDeo();
+
+	public List<DeCompany> getDeCompanySeachByCompanyNameId(long searchValue);
+
+	List<DeCompany> getDeCompanyBySeachCriteriaId(long searchValue);
 
 }

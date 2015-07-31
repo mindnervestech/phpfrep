@@ -296,6 +296,22 @@ public class DeService implements IDeService{
      * @see com.obs.brs.service.IDeService#getDeCompanyNameByCompanyNameWithId(long, java.lang.String)
      */
 	@Override
+	public DeCompany getDeCompanySeachByCompanyNameId(long searchValue) {
+		return getDeServiceDAO().getDeCompanySeachByCompanyNameSaveId(searchValue);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+    /*
+     * (non-Javadoc)
+     * @see com.obs.brs.service.IDeService#getDeCompanyNameByCompanyNameWithId(long, java.lang.String)
+     */
+	@Override
 	public DeCompany getDeCompanyNameByCompanyNameWithId(long id,
 			String companyName) {
 		return getDeServiceDAO().getDeCompanyNameByCompanyNameWithId(id,companyName);
@@ -383,6 +399,11 @@ public class DeService implements IDeService{
 	@Override
 	public DataEntry getCurrentEntry(long baseId, long jobid) {
 		return getDeServiceDAO().getCurrentEntry(baseId, jobid);
+	}
+	@Override
+	public List<DeCompany> getDeCompanyBySeachCriteriaId(long searchValue) {
+		// TODO Auto-generated method stub
+		return getDeServiceDAO().getDeCompanySeachByCompanyNameId(searchValue);
 	}
 
 

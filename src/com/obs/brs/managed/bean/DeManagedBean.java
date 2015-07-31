@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -13,8 +14,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -240,7 +243,7 @@ public class DeManagedBean implements Serializable{
 	private String stateEd = "";
 	private String countryEd = "";
 	private String pincodeEd = "";
-	
+	private  HashMap hm = new HashMap<>() ;
 	
 	public String getCityEd() {
 		return cityEd;
@@ -2208,7 +2211,25 @@ public class DeManagedBean implements Serializable{
 	public String editCompany() {
 		System.out.println("Company Name :"+this.searchValueInCompanyName);
 		if(this.searchValueInCompanyName!=null && !this.searchValueInCompanyName.isEmpty()) {
-			List<DeCompany> companies = deService.getDeCompanyBySeachCriteria(this.searchValueInCompanyName);
+			
+			List<DeCompany> companies = null; 
+			//Store entry (Key/Value)of HashMap in set
+	        Set mapSet = (Set) hm.entrySet();
+	        //Create iterator on Set 
+	        Iterator mapIterator = mapSet.iterator();
+	        System.out.println("Display the key/value of HashMap.");
+	        while (mapIterator.hasNext()) {
+	                Map.Entry mapEntry = (Map.Entry) mapIterator.next();
+	                // getKey Method of HashMap access a key of map
+	                //getValue method returns corresponding key's value
+	                if(this.searchValueInCompanyName.equalsIgnoreCase(mapEntry.getValue().toString()) || this.searchValueInCompanyName.equals(mapEntry.getValue().toString()) ){
+	                 companies = deService.getDeCompanyBySeachCriteriaId(Long.parseLong(mapEntry.getKey().toString()));
+	                }
+	                System.out.println("Key : " + mapEntry.getKey() + "= Value : " + mapEntry.getValue());
+	        }
+			
+			
+			
 			if(companies.size()>0) {
 				this.companyIdEd = companies.get(0).getId();
 				this.companyNameEd = companies.get(0).getCompanyName();
@@ -3153,6 +3174,29 @@ public class DeManagedBean implements Serializable{
 	 * @return
 	 */
 	public List<String> companyDetails(String query) {
+		
+		List<String> results = new ArrayList<String>();
+		 hm = new HashMap();
+
+		deCompanyList = deService.getDeCompany();
+		if(deCompanyList != null &&  deCompanyList.size() > 0){
+			for(int i = 0; deCompanyList.size()>i; i++) {
+				DeCompany deCompany = deCompanyList.get(i);
+				if(deCompany.getCompanyName().toLowerCase().startsWith(query.toLowerCase())) {
+					results.add(deCompany.getCompanyName());
+				    hm.put(deCompany.getId(),deCompany.getCompanyName());
+
+				}
+			}
+		}
+		
+		//public List<String>	getcompaniesId(String query);
+		return results;
+	}
+
+	
+public List<String> getcompaniesId(String query) {
+		
 		List<String> results = new ArrayList<String>();
 		deCompanyList = deService.getDeCompany();
 		if(deCompanyList != null &&  deCompanyList.size() > 0){
@@ -4268,7 +4312,24 @@ public class DeManagedBean implements Serializable{
 				}
 				else{
 					if(this.searchValueInCompanyName != null && !this.searchValueInCompanyName.isEmpty()){
-						deCompany = deService.getDeCompanySeachByCompanyName(this.searchValueInCompanyName);	
+						
+						//Store entry (Key/Value)of HashMap in set
+				        Set mapSet = (Set) hm.entrySet();
+				        //Create iterator on Set 
+				        Iterator mapIterator = mapSet.iterator();
+				        System.out.println("Display the key/value of HashMap.");
+				        while (mapIterator.hasNext()) {
+				                Map.Entry mapEntry = (Map.Entry) mapIterator.next();
+				                // getKey Method of HashMap access a key of map
+				                //getValue method returns corresponding key's value
+				                if(this.searchValueInCompanyName.equalsIgnoreCase(mapEntry.getValue().toString()) || this.searchValueInCompanyName.equals(mapEntry.getValue().toString()) ){
+				                 deCompany = deService.getDeCompanySeachByCompanyNameId(Long.parseLong(mapEntry.getKey().toString()));	
+				                }
+				                System.out.println("Key : " + mapEntry.getKey() + "= Value : " + mapEntry.getValue());
+				        }
+						
+						
+						
 					}else if(this.companyId > 0){
 						deCompany = deService.getDeCompanyById(this.companyId);	
 					} else {
