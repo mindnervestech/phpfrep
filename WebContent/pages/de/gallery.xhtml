@@ -867,7 +867,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 										<div class="row m-0" style="width: 607px;">
 											<div class="col-md-2 col-sm-6 p-0 p-t-10"
 												style="width: 17% !important;">Section *</div>
-											<div class="col-md-5 col-sm-5 p-0">
+											<div class="col-md-2 col-sm-5 p-0">
 												<div class="skin-section">
 													<div class="radio_b">
 														<ul class="list col-md-12 p-0">
@@ -903,31 +903,31 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 												</div>
 											</div>
 											<t:div styleClass="col-md-6 col-sm-6 p-0"
-												id="txt_sectionspecialRegional">
+												id="txt_sectionspecialRegional" style="float: right;margin-right: 80px;width: 15% !important;">
 												<p:inputText styleClass="form-control"
 													value="#{deBean.sectionspecialRegional}"
 													rendered="#{deBean.sectionNextValue.equals('973')}"
-													style="margin-left:146px !important;width:134px;"
+													style="width:134px;"
 													placeholder="Section Special Regional">
 												</p:inputText>
 											</t:div>
 											<t:div styleClass="col-md-6 col-sm-6 p-0"
-												id="txt_sectionspecialTopic">
-												<p:inputText styleClass="form-control"
+												id="txt_sectionspecialTopic" style="float: right;margin-right: 80px;width: 15% !important;margin-top: 4%;">
+												 <p:inputText styleClass="form-control"
 													rendered="#{deBean.sectionNextValue.equals('1032')}"
 													value="#{deBean.sectionspecialTopic}"
-													style="margin-left:146px !important;width:134px;"
+													style="width:134px;"
 													placeholder="Section Special Topic">
-												</p:inputText>
+												</p:inputText> 
 											</t:div>
 											<t:div styleClass="col-md-6 col-sm-6 p-0"
 												id="txt_sectionother">
-												<p:inputText styleClass="form-control"
+												 <p:inputText styleClass="form-control"
 													rendered="#{deBean.section.equals('1033')}"
 													value="#{deBean.sectionother}"
 													style="margin-left:146px !important;width:134px;"
 													placeholder="Section Other">
-												</p:inputText>
+												</p:inputText> 
 											</t:div>
 										</div>
 										

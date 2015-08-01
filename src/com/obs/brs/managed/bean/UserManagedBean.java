@@ -1104,6 +1104,7 @@ implements Serializable
 		this.pincode = user.getPincode();
 		this.phoneNo = user.getPhoneNo();
 		this.dateofBirth = user.getDateofBirth();
+		this.password = user.getPassword();
 	}
 
 	public String changePassword()
@@ -1157,6 +1158,8 @@ implements Serializable
 		user.setState(this.state);
 		user.setCountry(this.country);
 		user.setDateofBirth(this.dateofBirth);
+	
+		user.setPassword(this.password);
 		return user;
 	}
 

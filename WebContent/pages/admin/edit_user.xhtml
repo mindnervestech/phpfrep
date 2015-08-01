@@ -160,6 +160,18 @@ input {
 												</p:inputText>
 												<p:message for="txt_email" display="text" />
 											</div>
+											
+											<div class="col-md-6 col-sm-6 p-0 p-t-10">Password *</div>
+											<div class="col-md-6 col-sm-6 p-0 p-b-10">
+												<p:inputText value="#{userBean.password}" id="txt_password" 
+													styleClass="form-control" placeholder="Password"  
+													validatorMessage="Invalid passwor" 
+													requiredMessage="Value is required">
+												</p:inputText>
+												<p:message for="txt_password" display="text" />
+											</div>
+											
+											
 											<t:div id="show">
 											<p:commandLink onclick="showField()"   value="More fields" style="margin-left:357px;"></p:commandLink>
 											</t:div>
