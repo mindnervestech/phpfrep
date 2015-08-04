@@ -1176,7 +1176,7 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public List<DeCompany> getAllCompanyData() {
 		// TODO Auto-generated method stub
-		String SQL = "select c.companyName,c.companyURL,c.city,c.pincode,c.state,c.country,c.address,c.address1,c.department from DeCompany as c";
+		String SQL = "select c.companyName,c.companyURL,c.city,c.pincode,c.state,c.country,c.address,c.address1,c.department from DeCompany  as c  ORDER BY c.companyName ASC";
 		List list = getSessionFactory().getCurrentSession().createQuery(SQL).list();
 		System.out.println("returning data: "+list.size());
 		return list;

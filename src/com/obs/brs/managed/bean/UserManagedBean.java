@@ -2105,19 +2105,18 @@ implements Serializable
 	public void  getAllCompanies(){
 		Gson gson = new Gson();
 		gson.toJson(this.allCompnayList.addAll(getUserService().getAllCompanyData()));
-		compList = gson.toJson(this.allCompnayList.addAll(getUserService().getAllCompanyData()));
+		//compList = gson.toJson(this.allCompnayList.addAll(getUserService().getAllCompanyData()));
 		compList = gson.toJson(this.allCompnayList);
-		System.out.println("compList: "+compList);
-		//System.out.println("userListBySeachCriteria");
+		
 	}
 	
 	public String getCompList() {
-		System.out.println("compList"+compList);
+	
 		return this.compList;
 	}
 
 	public void setCompList(String compList) {
-		System.out.println("set compList"+compList);
+		
 		this.compList = compList;
 	}
 

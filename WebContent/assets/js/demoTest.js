@@ -4,7 +4,7 @@ console.log(companies);
 var myData = companies ;
  
  
-var noOfRowstoShow = 100; //set the maximum number of rows that should be displayed per page.
+var noOfRowstoShow = 100000; //set the maximum number of rows that should be displayed per page.
  
 $("#exampleGrid").handsontable({
     startRows: 5,
