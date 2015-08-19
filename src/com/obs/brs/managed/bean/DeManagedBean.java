@@ -2819,6 +2819,31 @@ public class DeManagedBean implements Serializable{
 			}
 			Collections.reverse(deJobList);
 		}
+		
+		return deJobList;
+	}
+	
+	
+	public List<DeJob> gettestDeJobListBySeachCriteria() {
+		
+		if(deJobList != null){
+			deJobList = new ArrayList<DeJob>();
+			String DATE_FORMAT = "yyyy-MM-dd";
+			DateFormat dateFormat = new SimpleDateFormat (DATE_FORMAT);	
+			if(this.searchValue != null && !this.searchValue.isEmpty()){
+				this.searchText = this.searchValue;
+			}else if(this.issueDateSerach != null){
+				this.searchText = dateFormat.format(this.issueDateSerach);
+			}
+
+			if(this.searchValue.isEmpty() && this.issueDateSerach == null){
+				deJobList.addAll(getDeService().getDeJobBySeachCriteria());
+			}else{
+				deJobList.addAll(getDeService().getDeJobBySeachCriteria(this.searchText));	
+			}
+			
+			Collections.reverse(deJobList);
+		}
 		return deJobList;
 	}
 	

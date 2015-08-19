@@ -199,10 +199,17 @@ public class DeServiceDAO implements IDeServiceDAO {
 		String appendStr = "";
 		String statusAppendStr = "";
 		if(StringUtils.isNotBlank(searchValue)){
-			appendStr  = appendStr+" m.parentImage.imageName LIKE '%"+searchValue+"%'";
-			appendStr  = appendStr+" OR m.parentImage.publicationTitle.publicationTitle LIKE '%"+searchValue+"%'";
-			appendStr  = appendStr+" OR m.parentImage.section.publicationTitle LIKE '%"+searchValue+"%'";
-			appendStr  = appendStr+" OR m.parentImage.issueDate = '"+searchValue+"'";
+			
+			String regex = "[0-9]+"; 
+			if(searchValue.matches(regex)){
+				System.out.println(searchValue);
+				appendStr  = appendStr+" m.id LIKE '%"+Long.parseLong(searchValue.trim())+"%'";
+			}else{
+				appendStr  = appendStr+" m.parentImage.imageName LIKE '%"+searchValue+"%'";
+				appendStr  = appendStr+" OR m.parentImage.publicationTitle.publicationTitle LIKE '%"+searchValue+"%'";
+				appendStr  = appendStr+" OR m.parentImage.section.publicationTitle LIKE '%"+searchValue+"%'";
+				appendStr  = appendStr+" OR m.parentImage.issueDate = '"+searchValue+"'";
+			}
 			appendStr  = "AND ( "+appendStr+" )";
 		}
 		/*if(StringUtils.isNotBlank(issueDateString)){

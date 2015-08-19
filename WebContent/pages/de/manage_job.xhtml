@@ -165,23 +165,23 @@ margin:6px;
 						<h:form id="emp_stafflist" enctype="multipart/form-data">
 							<h:inputHidden id="activeFilter" value="#{userBean.statusFilter}" />
 							<p:messages closable="true" showDetail="true" showSummary="false" />
-							<div class="col-md-12 p-0 p-b-30"  style="display:none">
+							<div class="col-md-12 p-0 p-b-30"  >
 								<div class="col-md-6 p-10">
-									<!-- <div class="manage_button">
+									 <div class="manage_button" style="width:56%">
 										<p:inputText value="#{deBean.searchValue}"
-											styleClass="form-control" placeholder="Search by Record Number" />
-									</div> -->
-										<!-- <div class="manage_button">
+											styleClass="form-control" placeholder="Search by Job Id, Image name, Publication, Section" />
+									</div> 
+										 <!-- <div class="manage_button">
 										<p:calendar value="#{deBean.issueDateSerach}" navigator="true" 
-											converter="DateTimeConverter" yearRange="1970" placeholder="Search Date"
+											converter="DateTimeConverter"  placeholder="Search Date"
 											pattern="MM/dd/yyyy" />
-									</div> -->
-									<!-- <div class="manage_button">
+									</div>   -->
+									 <div class="manage_button" style="margin-left:1%">
 										<p:commandButton styleClass="btn btn-default" value="Go!"
-											ajax="true" update="@all">
+											ajax="true" update="@all" action="#{deBean.gettestDeJobListBySeachCriteria}">
 										</p:commandButton>
-									</div> -->
-									<!-- <div class="manage_button">
+									</div> 
+								 <div class="manage_button" style="display:none;">
 										<p:commandButton styleClass="btn btn-warning" ajax="true"
 											update="@all" value="Reset">
 											<f:setPropertyActionListener target="#{deBean.searchValue}"
@@ -189,10 +189,10 @@ margin:6px;
 												<f:setPropertyActionListener target="#{deBean.issueDateSerach}"
 												value="" />
 										</p:commandButton>
-									</div> -->
+									</div> 
 								</div>
-								<div class="col-md-5 p-10">
-								<div class="manage_button">
+								 <div class="col-md-5 p-10" style="display:none;">
+								 <div class="manage_button">
 									<h:commandLink
 										onclick="if(checkboxCheckedDelete())return true; else return false;"
 										action="#{deBean.deleteDeJob}" styleClass="btn btn-danger delete"
@@ -200,7 +200,7 @@ margin:6px;
 										<i class="glyphicon glyphicon-trash"></i>
 										<span>Delete</span>
 									</h:commandLink>
-								</div>
+								</div> 
 									&nbsp;&nbsp;
 								<div class="manage_button">									
 									<p:selectOneMenu value="#{deBean.jobStatus}" style="width: 140px;"
@@ -215,6 +215,7 @@ margin:6px;
 								</div>
 							</div>
 							<div class="panel-body">
+							
 								<div class="row">
 									<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
 										<h:outputLabel value="No record found"
@@ -246,7 +247,7 @@ margin:6px;
 											</h:column> -->
 													<h:column headerClass="no-bd">
 																	<f:facet name="header"><p:commandLink action="#{deBean.sortDeJobList('id')}" ajax="true"
-											update="@form" styleClass="colhead">Job ID</p:commandLink>
+											update="@form" styleClass="colhead">Job ID <i class="fa fa-fw fa-sort"></i></p:commandLink>
 																	</f:facet>
 																	<h:outputText styleClass="text-left color-success no-bd-y"
 																		value="#{o.id}" />
@@ -254,7 +255,7 @@ margin:6px;
 																<h:column headerClass="no-bd">
 												<f:facet name="header">
 												<p:commandLink action="#{deBean.sortDeJobList('imageName')}" ajax="true"
-											update="@form" styleClass="colhead">Parent Image Name</p:commandLink>
+											update="@form" styleClass="colhead">Parent Image Name <i class="fa fa-fw fa-sort"></i></p:commandLink>
 												</f:facet>
 												<h:outputText styleClass="text-left color-success no-bd-y"
 													value="#{o.parentImage.imageName}" />
@@ -262,7 +263,7 @@ margin:6px;
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
 												<p:commandLink action="#{deBean.sortDeJobList('publication')}" ajax="true"
-											update="@form" styleClass="colhead">Publication</p:commandLink>
+											update="@form" styleClass="colhead">Publication <i class="fa fa-fw fa-sort"></i></p:commandLink>
 												</f:facet>
 												<h:outputText styleClass="text-left color-success no-bd-y"
 													value="#{o.parentImage.publicationTitle.publicationTitle}" />
@@ -270,7 +271,7 @@ margin:6px;
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
 												<p:commandLink action="#{deBean.sortDeJobList('section')}" ajax="true"
-											update="@form" styleClass="colhead">Section</p:commandLink>
+											update="@form" styleClass="colhead">Section <i class="fa fa-fw fa-sort"></i> </p:commandLink>
 												</f:facet>
 												<h:outputText styleClass="text-left color-success no-bd-y"
 													value="#{o.parentImage.section.publicationTitle}" />
@@ -278,32 +279,28 @@ margin:6px;
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
 													<p:commandLink action="#{deBean.sortDeJobList('date')}" ajax="true"
-											update="@form" styleClass="colhead">Issue Date</p:commandLink>
+											update="@form" styleClass="colhead">Issue Date <i class="fa fa-fw fa-sort"></i></p:commandLink>
 												</f:facet>
 												<h:outputText styleClass="text-left color-success no-bd-y"
 													value="#{o.parentImage.issueDate}" />
 											</h:column>
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
-												
-													<p:commandLink action="#{deBean.sortDeJobList('page')}" ajax="true"
-											update="@form" styleClass="colhead">Page</p:commandLink>
+												Page 
 												</f:facet>
 												<h:outputText styleClass="text-left color-success no-bd-y"
 													value="#{o.parentImage.page}" />
 											</h:column>
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
-													<p:commandLink action="#{deBean.sortDeJobList('createdBy')}" ajax="true"
-											update="@form" styleClass="colhead">Created By</p:commandLink>
+													Created By
 												</f:facet>
 											<h:outputText styleClass="text-left color-success no-bd-y"
 													value="#{o.created_by.firstName}"/>
 											</h:column>
 											<h:column headerClass="no-bd">
 												<f:facet name="header">
-												<p:commandLink action="#{deBean.sortDeJobList('progress')}" ajax="true"
-											update="@form" styleClass="colhead">Progress</p:commandLink>
+												Progress
 												</f:facet>
 												<h:outputText styleClass="text-left color-success no-bd-y" 
 													value="#{(deBean.getStatus(o.id))}"/>
