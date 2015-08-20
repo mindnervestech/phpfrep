@@ -33,8 +33,17 @@
   <context-param>
     <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    <param-value>client</param-value>
+    <param-value>server</param-value>
   </context-param>
+  <context-param>
+<param-name>com.sun.faces.numberOfViewsInSession</param-name>
+<param-value>3</param-value>
+</context-param>
+
+<context-param>
+<param-name>com.sun.faces.numberOfLogicalViews</param-name>
+<param-value>10</param-value>
+</context-param>
   <context-param>
     <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
     <param-value>6Ld7pMESAAAAAHd1VihJkqPUXAJVwU3Cghc8fzrq</param-value>

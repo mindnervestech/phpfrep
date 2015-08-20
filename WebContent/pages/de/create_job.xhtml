@@ -371,10 +371,10 @@ color:black !important;}
 																					class="btn btn-default form-control bootselect" id="adSize"
 																					style="  padding: 0px 7px !important;margin-bottom:10px;">
 																					<f:selectItem itemLabel=" 0.12" itemValue=" 0.12" />
-																					<f:selectItem itemLabel= "0.66" itemValue="0.66" />
 																					<f:selectItem itemLabel="0.25" itemValue="0.25" />
 																					<f:selectItem itemLabel="0.33" itemValue="0.33" />
 																					<f:selectItem itemLabel="0.50" itemValue="0.50" />
+																					<f:selectItem itemLabel= "0.66" itemValue="0.66" />
 																					<f:selectItem itemLabel="1.0" itemValue="1.0" />
 																					<f:selectItem itemLabel="2.0" itemValue="2.0" />
 																					<f:selectItem itemLabel="Other" itemValue="Other" />
@@ -708,7 +708,7 @@ color:black !important;}
 				<div id="panzoom5" style="text-align: center">
 				<h:graphicImage id="imgcrpDescImage"
 					style="min-width:100%;min-height:100%;height:90%;"
-					value="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImageId}/#{deBean.parentImageName}" />
+					value="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.parentImageId}/#{deBean.parentImageName}" />
 				</div>
 			</t:div>
 		</div>	
@@ -718,7 +718,7 @@ color:black !important;}
 
 
 	<p:dialog id="basicDialog" widgetVar="addCompany" draggable="true"
-		resizable="false" header="Add New Company" style=" width: 70% !important;margin-left:20%; margin-right:20%;">
+		resizable="false" header="Add New Company" style=" width: 70% !important;margin-left:49%; margin-right:2%;">
 		<h:form style="  overflow: hidden;">
 			<div class="col-lg-12 p-0">
 				<div class="col-lg-4">
@@ -812,10 +812,10 @@ color:black !important;}
 			<div class="col-lg-12 p-0">
 				<div class="col-lg-4">
 				
-					<div class="row m-0  m-5" style="font-weight: bold;">Department</div>
+					<div class="row m-0  m-5" style="font-weight: bold;">Company Line 2</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.department}"
-							requiredMessage="Please enter your department ">
+							requiredMessage="Please enter your Company Line 2 ">
 						</p:inputText>
 					</div>
 				</div>
@@ -838,7 +838,7 @@ color:black !important;}
 	</p:dialog>
 	
 	<p:dialog id="editCompDialog" widgetVar="editCompany" draggable="true"
-		resizable="false" header="Edit Company" style="  width: 70% !important;margin-left:20%; margin-right:20%;">
+		resizable="false" header="Edit Company" style="  width: 70% !important;margin-left:49%; margin-right:2%;">
 		<h:form style=" overflow: hidden;">
 			<div class="col-lg-12 p-0">
 				<div class="col-lg-4">
@@ -933,11 +933,11 @@ color:black !important;}
 			<div class="col-lg-12 p-0">
 				<div class="col-lg-4">
 				
-					<div class="row m-0  m-5" style="font-weight: bold;">Department</div>
+					<div class="row m-0  m-5" style="font-weight: bold;">Company Line 2</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.departmentEd}"
 						
-							requiredMessage="Please enter your department ">
+							requiredMessage="Please enter your Company Line 2 ">
 						</p:inputText>
 					</div>
 				</div>
