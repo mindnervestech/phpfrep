@@ -39,18 +39,23 @@
 <param-name>com.sun.faces.numberOfViewsInSession</param-name>
 <param-value>5</param-value>
 </context-param>
+
 <context-param>
 <param-name>org.apache.myfaces.NUMBER_OF_VIEWS_IN_SESSION</param-name>
 <param-value>5</param-value>
-<description>
-<context-param>
+</context-param>
+
+
 <context-param>
 <param-name>org.apache.myfaces.COMPRESS_STATE_IN_SESSION</param-name>
 <param-value>false</param-value>
 </context-param>
+
+<context-param>
 <param-name>com.sun.faces.numberOfLogicalViews</param-name>
 <param-value>10</param-value>
 </context-param>
+  
   <context-param>
     <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
     <param-value>6Ld7pMESAAAAAHd1VihJkqPUXAJVwU3Cghc8fzrq</param-value>
@@ -120,10 +125,11 @@
     <param-value>false</param-value>
   </context-param>
  
-  <context-param>
+<context-param>
 <param-name>facelets.DEVELOPMENT</param-name>
 <param-value>false</param-value>
 </context-param>
+
 <context-param>
 <param-name>org.richfaces.LoadStyleStrategy</param-name>
 <param-value>ALL</param-value>
@@ -134,14 +140,17 @@
 <param-value>false</param-value>
 </context-param>
 
+
 <context-param>
 <param-name>facelets.REFRESH_PERIOD</param-name>
 <param-value>-1</param-value>
 </context-param>
+
 <context-param>
 <param-name>com.sun.faces.responseBufferSize</param-name>
 <param-value>500000</param-value>
 </context-param>
+
 <context-param>
 <param-name>org.apache.myfaces.SERIALIZE_STATE_IN_SESSION</param-name>
 <param-value>false</param-value>
