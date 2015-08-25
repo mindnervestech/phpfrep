@@ -309,20 +309,19 @@ color:black !important;}
 																	var="selectedCompany1" 
 																	itemLabel="#{selectedCompany1.companyName}" 
 																	itemValue="#{selectedCompany1}" converter="#{companyConverter}">
-																		 <h:outputText value="#{selectedCompany1.companyName}" />
-																	   <p:ajax event="itemSelect"
-                                                                                   listener="#{deBean.getCompany}" 
-                                                                                   update = "@all" />  
+																	    
+																		 <!-- <h:outputText value="#{selectedCompany1.companyName}" /> -->
+																	   <p:ajax event="itemSelect" update = "abc" />  
 																
 																	</p:autoComplete>
-																
+																 <h:panelGroup  id="abc">
 																	<div class="row">
 															
 															<div class = "col-lg-4">
 															<div class="col-lg-12" style="font-weight: bold;">Company
 															Name</div>
 													<div class="col-lg-12">
-														   <h:outputText value="#{deBean.companyNameEd}" />
+														   <h:outputText  value="#{deBean.selectedCompany.companyName}" />
 													</div>
 													</div>
 													<div class = "col-lg-4">
@@ -330,7 +329,7 @@ color:black !important;}
 													URL</div>
 												<div class="col-lg-12">
 													
-													<h:outputText value="#{deBean.companyURLEd}" />
+													<h:outputText value="#{deBean.selectedCompany.companyURL}" />
 													
 												</div>
 					
@@ -341,7 +340,7 @@ color:black !important;}
 											<div class="col-lg-12" style="font-weight: bold;">Company Line 2</div>
 												<div class="col-lg-12">
 						
-													<h:outputText value="#{deBean.departmentEd}" />
+													<h:outputText value="#{deBean.selectedCompany.department}" />
 						
 											</div>
 										</div>
@@ -352,46 +351,19 @@ color:black !important;}
 			<div class="col-lg-12">
 					<div class="col-md-12" style="font-weight: bold;">Address</div>
 					<div class="col-md-12">
-						<h:outputText value="#{deBean.addressEd}"/> &nbsp;&nbsp;
-						<h:outputText value="#{deBean.address1Ed}"/>&nbsp;&nbsp;
-						<h:outputText value="#{deBean.cityEd}"/>&nbsp;&nbsp;
-						<h:outputText value="#{deBean.stateEd}"/>&nbsp;&nbsp;
-						<h:outputText value="#{deBean.countryEd}"/>&nbsp;&nbsp;
+						<h:outputText value="#{deBean.selectedCompany.address}"/> &nbsp;&nbsp;
+						<h:outputText value="#{deBean.selectedCompany.address1}"/>&nbsp;&nbsp;
+						<h:outputText value="#{deBean.selectedCompany.city}"/>&nbsp;&nbsp;
+						<h:outputText value="#{deBean.selectedCompany.state}"/>&nbsp;&nbsp;
+						<h:outputText value="#{deBean.selectedCompany.country}"/>&nbsp;&nbsp;
 					</div>
 					</div>
 					
-					<!-- <div class="col-lg-4">
-					<div class="col-md-12" style="font-weight: bold;">Address line 2</div>
-					<div class="col-md-12">
-						<h:outputText value="#{deBean.address1Ed}"/>
-					</div>
-					</div> -->
+					
 					
 			</div>
-			<!-- 
-			<div class="row">
-			<div class = "col-md-4">
-					<div class="col-md-12" style="font-weight: bold;">City</div>
-					<div class="col-md-12">
-						<h:outputText value="#{deBean.cityEd}"/>
-					</div>
-				</div>
-					<div class = "col-md-4">
-					 <div class="col-md-12" style="font-weight: bold;">State</div>
-					<div class="col-md-12">
-							<h:outputText value="#{deBean.stateEd}"/>
-					</div>
-					</div>
-					
-					<div class="col-md-4">
-				    
-					<div class="col-md-12" style="font-weight: bold;">Country</div>
-					<div class="col-md-12">
-							<h:outputText value="#{deBean.countryEd}"/>
-					</div>
-					
-				</div>
-				</div> -->
+			</h:panelGroup >
+			
 				</div>
 															
 															
@@ -1036,7 +1008,7 @@ color:black !important;}
 				<p:commandLink ajax="true" oncomplete="PF('editCompany').hide();"
 					id="editComp"
 					styleClass="btn btn-primary col-md-offset-1 col-sm-offset-1 col-xs-offset-1 pull-right"
-					action="#{deBean.updateCompany}" value="Update">
+					action="#{deBean.updateCompany}" value="Update" update = "@all">
 				</p:commandLink>
 				</div>
 				</div>

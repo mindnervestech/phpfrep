@@ -1478,6 +1478,7 @@ public class DeManagedBean implements Serializable{
 		this.landingPageURL = dataEntry.getLandingPageURL();
 		this.addColumn = dataEntry.getAddColumn();
 		this.createdBy = dataEntry.getCreated_by().getFirstName();
+		this.selectedCompany = dataEntry.getDeCompany();
 	}
 
 	// getAll AdDetails who is currently in session 
@@ -2276,7 +2277,7 @@ public class DeManagedBean implements Serializable{
 	}
 	
 	
-	
+/*	
 	public String getCompany() {
 		System.out.println("Company Name :"+this.selectedCompany + "Id "+this.selectedCompany.getId());
 		if(this.selectedCompany!=null ) {
@@ -2286,13 +2287,13 @@ public class DeManagedBean implements Serializable{
 	        Set mapSet = (Set) hm.entrySet();
 	        //Create iterator on Set 
 	        Iterator mapIterator = mapSet.iterator();
-	      /*  while (mapIterator.hasNext()) {
+	        while (mapIterator.hasNext()) {
 	                Map.Entry mapEntry = (Map.Entry) mapIterator.next();
 	                //getValue method returns corresponding key's value
 	                if(this.searchValueInCompanyName.equalsIgnoreCase(mapEntry.getValue().toString()) || this.searchValueInCompanyName.equals(mapEntry.getValue().toString()) ){
 	                 companies = deService.getDeCompanyBySeachCriteriaId(Long.parseLong(mapEntry.getKey().toString()));
 	                }
-	         }*/
+	         }
 	      
 	        companies = deService.getDeCompanyBySeachCriteriaId(selectedCompany.getId());
 	        
@@ -2321,7 +2322,7 @@ public class DeManagedBean implements Serializable{
 		}
 		messageService.messageError(null, "Please select company to edit.");
 		return null;
-	}
+	}*/
 	
 	
 	public void clearEditCompany() {
@@ -4273,7 +4274,7 @@ public List<String> getcompaniesId(String query) {
 										//System.out.println("test data save: "+deService.addDeCompany(deCompany));
 										saveNewCmpId = deService.addDeCompany(deCompany);
 										if(saveNewCmpId != 0){
-											getCompany();
+											selectedCompany = deCompany;
 										}
 										
 										messageService.messageInformation(null, "Company added successfully.");
@@ -4308,18 +4309,7 @@ public List<String> getcompaniesId(String query) {
 		
 		deCompany = setEditCompanyValue(deCompany);
 		deService.updateDeCompany(deCompany);
-		
-		this.companyIdEd = deCompany.getId();
-		this.companyNameEd = deCompany.getCompanyName();
-		this.companyURLEd = deCompany.getCompanyURL();
-		this.departmentEd = deCompany.getDepartment();
-		this.addressEd = deCompany.getAddress();
-		this.address1Ed = deCompany.getAddress1();
-		this.cityEd = deCompany.getCity();
-		this.stateEd = deCompany.getState();
-		this.countryEd = deCompany.getCountry();
-		this.pincodeEd = deCompany.getPincode();
-		
+		selectedCompany = deCompany;
 		messageService.messageInformation(null, "Company updated successfully.");
 		return null;
 	}
@@ -4448,7 +4438,8 @@ public List<String> getcompaniesId(String query) {
 						
 						
 					}else if(this.companyId > 0){
-						deCompany = deService.getDeCompanyById(this.companyId);	
+						deCompany = deService.getDeCompanyById(this.companyId);
+						selectedCompany = deCompany;
 					} else {
 						messageService.messageFatal(null, "CompanyName is required");
 						System.out.println("CompanyName is required");
