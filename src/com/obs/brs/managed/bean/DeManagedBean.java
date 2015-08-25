@@ -244,6 +244,7 @@ public class DeManagedBean implements Serializable{
 	private String countryEd = "";
 	private String pincodeEd = "";
 	private  HashMap hm = new HashMap<>() ;
+	private long saveNewCmpId;
 	
 	public String getCityEd() {
 		return cityEd;
@@ -2228,7 +2229,9 @@ public class DeManagedBean implements Serializable{
 	                System.out.println("Key : " + mapEntry.getKey() + "= Value : " + mapEntry.getValue());
 	        }
 			
-			
+			if(companies == null || companies.isEmpty()){
+				 companies = deService.getDeCompanyBySeachCriteriaId(saveNewCmpId);
+			}
 			
 			if(companies.size()>0) {
 				this.companyIdEd = companies.get(0).getId();
@@ -2251,6 +2254,52 @@ public class DeManagedBean implements Serializable{
 		messageService.messageError(null, "Please select company to edit.");
 		return null;
 	}
+	
+	
+	
+	public String getCompany() {
+		System.out.println("Company Name :"+this.searchValueInCompanyName);
+		if(this.searchValueInCompanyName!=null && !this.searchValueInCompanyName.isEmpty()) {
+			
+			List<DeCompany> companies = null; 
+			//Store entry (Key/Value)of HashMap in set
+	        Set mapSet = (Set) hm.entrySet();
+	        //Create iterator on Set 
+	        Iterator mapIterator = mapSet.iterator();
+	        while (mapIterator.hasNext()) {
+	                Map.Entry mapEntry = (Map.Entry) mapIterator.next();
+	                //getValue method returns corresponding key's value
+	                if(this.searchValueInCompanyName.equalsIgnoreCase(mapEntry.getValue().toString()) || this.searchValueInCompanyName.equals(mapEntry.getValue().toString()) ){
+	                 companies = deService.getDeCompanyBySeachCriteriaId(Long.parseLong(mapEntry.getKey().toString()));
+	                }
+	         }
+			
+	    	 if(companies == null || companies.isEmpty() ){
+            	 companies = deService.getDeCompanyBySeachCriteriaId(saveNewCmpId);
+               }
+
+			if(companies.size()>0) {
+				this.companyIdEd = companies.get(0).getId();
+				this.companyNameEd = companies.get(0).getCompanyName();
+				this.companyURLEd = companies.get(0).getCompanyURL();
+				this.departmentEd = companies.get(0).getDepartment();
+				this.addressEd = companies.get(0).getAddress();
+				this.address1Ed = companies.get(0).getAddress1();
+				this.cityEd = companies.get(0).getCity();
+				this.stateEd = companies.get(0).getState();
+				this.countryEd = companies.get(0).getCountry();
+				this.pincodeEd = companies.get(0).getPincode();
+				//RequestContext.getCurrentInstance().execute("PF('editCompany').show();setTop();");
+				return null;
+			} else {
+				messageService.messageError(null, "Company not found.");
+				return null;
+			}
+		}
+		messageService.messageError(null, "Please select company to edit.");
+		return null;
+	}
+	
 	
 	public void clearEditCompany() {
 		this.companyIdEd = null;
@@ -2542,8 +2591,8 @@ public class DeManagedBean implements Serializable{
 				if( ((this.publicationTitle == null ||  this.publicationTitle.isEmpty())) 
 						|| ((this.section == null || this.section.isEmpty()) && (this.sectionNextValue == null || this.sectionNextValue.isEmpty())) 
 						|| this.page==null || this.page.isEmpty()
-						|| (this.issueDay == 0 && this.issueDayNext ==0 &&  this.issueDayNextThird ==0 && this.issueDayNextFour ==0 )
-						|| (this.issueMonth == 0 && this.issueMonthNext ==0)
+						|| (this.issueDay == 0 && this.issueDayNext == 0 &&  this.issueDayNextThird == 0 && this.issueDayNextFour == 0 )
+						|| (this.issueMonth == 0 && this.issueMonthNext == 0)
 						|| this.issueYear  == 0){
 					messageService.messageFatal(null, "You must fill all required feilds");
 				} else {
@@ -2693,7 +2742,13 @@ public class DeManagedBean implements Serializable{
 	public String callPublication(){
 		try
 		{
-			System.out.println("CallPublication");
+			
+			this.section ="";
+			this.sectionNextValue="";
+			this.sectionother="";
+			this.sectionspecialRegional="";
+			this.sectionspecialTopic="";
+			
 			User currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);	
 			FacesUtils facesUtils = new FacesUtils();
 			String val = facesUtils.getRequestParameterMap("parentImg");
@@ -2743,7 +2798,6 @@ public class DeManagedBean implements Serializable{
 							this.issueMonth=0;
 							this. issueMonthNext=0;
 							this.issueYear=0;
-
 
 						}
 						if(parentImage.getSection().getId()>0){
@@ -4173,6 +4227,9 @@ public List<String> getcompaniesId(String query) {
 		
 		try
 		{
+			System.out.println("add new company : "+this.companyName);
+		    this.setSearchValueInCompanyName(this.companyName);
+			
 			DeCompany deCompany  = null;
 			currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 			if(currentUser != null)
@@ -4190,7 +4247,13 @@ public List<String> getcompaniesId(String query) {
 										deCompany = getAllDeCompanyDetails(deCompany);
 										deCompany.setIsDeleted(false);
 										deCompany.setCreated_by(currentUser);
-										deService.addDeCompany(deCompany);
+										//deService.addDeCompany(deCompany);
+										//System.out.println("test data save: "+deService.addDeCompany(deCompany));
+										saveNewCmpId = deService.addDeCompany(deCompany);
+										if(saveNewCmpId != 0){
+											getCompany();
+										}
+										
 										messageService.messageInformation(null, "Company added successfully.");
 									} else {
 										messageService.messageFatal(null, "CompanyName already exist.");
@@ -4347,7 +4410,7 @@ public List<String> getcompaniesId(String query) {
 				                Map.Entry mapEntry = (Map.Entry) mapIterator.next();
 				                // getKey Method of HashMap access a key of map
 				                //getValue method returns corresponding key's value
-				                if(this.searchValueInCompanyName.equalsIgnoreCase(mapEntry.getValue().toString()) || this.searchValueInCompanyName.equals(mapEntry.getValue().toString()) ){
+				                if(this.searchValueInCompanyName.equalsIgnoreCase(mapEntry.getValue().toString()) ){
 				                 deCompany = deService.getDeCompanySeachByCompanyNameId(Long.parseLong(mapEntry.getKey().toString()));	
 				                }
 				                System.out.println("Key : " + mapEntry.getKey() + "= Value : " + mapEntry.getValue());
@@ -4377,6 +4440,7 @@ public List<String> getcompaniesId(String query) {
 						dataEntry.setIsqualityCheck(true);
 						dataEntry.setDeCompany(deCompany);
 						dataEntry.setCreated_by(currentUser);
+						dataEntry.setOcrText(this.ocrText);
 						deService.updateDataEntry(dataEntry);
 						messageService.messageInformation(null, "Data Entry has been Updated successfully.");
 					//}
