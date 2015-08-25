@@ -303,44 +303,96 @@ color:black !important;}
 															<div class="col-md-10 col-sm-6 col-xs-6 p-0 p-b-5 ">
 																<p:autoComplete id="acSimple"  editable="false"
 																	placeholder="Search by Company" forceSelection="true"
-																	value="#{deBean.searchValueInCompanyName}"
+																	value="#{deBean.selectedCompany}"
 																	style="height:32px;"
-																	completeMethod="#{deBean.companyDetails}"   effect="fade"  >
-																	
-																	 <p:ajax event="itemSelect"
-                                                                                   listener="#{deBean.getCompany}" update = "@all" />
+																	completeMethod="#{deBean.companyDetails}"   effect="fade" 
+																	var="selectedCompany1" 
+																	itemLabel="#{selectedCompany1.companyName}" 
+																	itemValue="#{selectedCompany1}" converter="#{companyConverter}">
+																		 <h:outputText value="#{selectedCompany1.companyName}" />
+																	   <p:ajax event="itemSelect"
+                                                                                   listener="#{deBean.getCompany}" 
+                                                                                   update = "@all" />  
+																
 																	</p:autoComplete>
-																	<div class="col-lg-12">
+																
+																	<div class="row">
 															
 															<div class = "col-lg-4">
 															<div class="col-lg-12" style="font-weight: bold;">Company
 															Name</div>
 													<div class="col-lg-12">
-														<p:inputText styleClass="form-control"
-														value="#{deBean.companyNameEd}">
-														</p:inputText>
+														   <h:outputText value="#{deBean.companyNameEd}" />
 													</div>
 													</div>
 													<div class = "col-lg-4">
-												<div class="col-lg-12" style="font-weight: bold;margin-top: 12%;">Company
+												<div class="col-lg-12" style="font-weight: bold;margin-top: 0%;">Company
 													URL</div>
 												<div class="col-lg-12">
-													<p:inputText styleClass="form-control"
-													value="#{deBean.companyURLEd}" >
-													</p:inputText>
+													
+													<h:outputText value="#{deBean.companyURLEd}" />
+													
 												</div>
-												</div>
-					<div class="col-lg-4">
+					
+											</div>
+										
+										<div class="col-lg-4">
 				
-					<div class="col-lg-12" style="font-weight: bold;">Company Line 2</div>
-					<div class="col-lg-12">
-						<p:inputText styleClass="form-control" value="#{deBean.department}"
-							requiredMessage="Please enter your Company Line 2 ">
-						</p:inputText>
+											<div class="col-lg-12" style="font-weight: bold;">Company Line 2</div>
+												<div class="col-lg-12">
+						
+													<h:outputText value="#{deBean.departmentEd}" />
+						
+											</div>
+										</div>
+										
+										</div>
+										
+										<div class="row">
+			<div class="col-lg-12">
+					<div class="col-md-12" style="font-weight: bold;">Address</div>
+					<div class="col-md-12">
+						<h:outputText value="#{deBean.addressEd}"/> &nbsp;&nbsp;
+						<h:outputText value="#{deBean.address1Ed}"/>&nbsp;&nbsp;
+						<h:outputText value="#{deBean.cityEd}"/>&nbsp;&nbsp;
+						<h:outputText value="#{deBean.stateEd}"/>&nbsp;&nbsp;
+						<h:outputText value="#{deBean.countryEd}"/>&nbsp;&nbsp;
+					</div>
+					</div>
+					
+					<!-- <div class="col-lg-4">
+					<div class="col-md-12" style="font-weight: bold;">Address line 2</div>
+					<div class="col-md-12">
+						<h:outputText value="#{deBean.address1Ed}"/>
+					</div>
+					</div> -->
+					
+			</div>
+			<!-- 
+			<div class="row">
+			<div class = "col-md-4">
+					<div class="col-md-12" style="font-weight: bold;">City</div>
+					<div class="col-md-12">
+						<h:outputText value="#{deBean.cityEd}"/>
 					</div>
 				</div>
-										</div>
-									</div>
+					<div class = "col-md-4">
+					 <div class="col-md-12" style="font-weight: bold;">State</div>
+					<div class="col-md-12">
+							<h:outputText value="#{deBean.stateEd}"/>
+					</div>
+					</div>
+					
+					<div class="col-md-4">
+				    
+					<div class="col-md-12" style="font-weight: bold;">Country</div>
+					<div class="col-md-12">
+							<h:outputText value="#{deBean.countryEd}"/>
+					</div>
+					
+				</div>
+				</div> -->
+				</div>
 															
 															
 															
