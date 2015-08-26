@@ -784,7 +784,7 @@ color:black !important;}
 			<div class="col-lg-12 p-0">
 				<div class="col-lg-4">
 					<div class="row m-0 m-5" style="font-weight: bold;">Company
-						Name</div>
+						Name <span style="color:red">&nbsp;&nbsp;*</span></div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control"
 							value="#{deBean.companyName}">
@@ -810,7 +810,7 @@ color:black !important;}
 							<f:validateRegex pattern="^[a-zA-Z0-9' ']*$" />
 						</p:inputText>
 					</div>
-					 <div class="row m-0  m-5" style="font-weight: bold;">State</div>
+					 <div class="row m-0  m-5" style="font-weight: bold;">State </div>
 					<div class="row m-0">
 						<p:autoComplete id="State" forceSelection="true" 
 							value="#{deBean.state}" completeMethod="#{deBean.stateDetails}"
@@ -848,6 +848,7 @@ color:black !important;}
 				</div>
 			</div>
 			<div class="col-lg-12 p-0">
+			
 			<div class="col-lg-4">
 					<div class="row m-0  m-5" style="font-weight: bold;">Address line 2</div>
 					<div class="row m-0">
@@ -860,7 +861,7 @@ color:black !important;}
 					
 					<div class="col-lg-2">
 				    
-					<div class="row m-0  m-5" style="font-weight: bold;">Country</div>
+					<div class="row m-0  m-5" style="font-weight: bold;">Country <span style="color:red">&nbsp;&nbsp;*</span></div>
 					<div class="row m-0">
 						<p:autoComplete id="Country" 
 							value="#{deBean.country}"
@@ -904,7 +905,7 @@ color:black !important;}
 			<div class="col-lg-12 p-0">
 				<div class="col-lg-4">
 					<div class="row m-0 m-5" style="font-weight: bold;">Company
-						Name</div>
+						Name <span style="color:red">&nbsp;&nbsp;*</span></div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control"
 							value="#{deBean.companyNameEd}">
@@ -918,19 +919,17 @@ color:black !important;}
 							value="#{deBean.companyURLEd}" >
 						</p:inputText>
 					</div>
-					
 				</div>
 				
 				<div class="col-lg-2">
 					<div class="row m-0  m-5" style="font-weight: bold;">City</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.cityEd}"
-							
 							validatorMessage="Special characters are not allowed in city.">
 							<f:validateRegex pattern="^[a-zA-Z0-9' ']*$" />
 						</p:inputText>
 					</div>
-					 <div class="row m-0  m-5" style="font-weight: bold;">State</div>
+					 <div class="row m-0  m-5" style="font-weight: bold;">State </div>
 					<div class="row m-0">
 						<p:autoComplete id="State" forceSelection="true" 
 							value="#{deBean.stateEd}" completeMethod="#{deBean.stateDetails}"
@@ -982,7 +981,7 @@ color:black !important;}
 					
 					<div class="col-lg-2">
 				    
-					<div class="row m-0  m-5" style="font-weight: bold;">Country</div>
+					<div class="row m-0  m-5" style="font-weight: bold;">Country <span style="color:red">&nbsp;&nbsp;*</span></div>
 					<div class="row m-0">
 						<p:autoComplete id="Country"
 							value="#{deBean.country}"

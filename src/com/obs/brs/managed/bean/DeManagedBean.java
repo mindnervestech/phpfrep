@@ -4260,7 +4260,7 @@ public List<String> getcompaniesId(String query) {
 			currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 			if(currentUser != null)
 			{
-				if(!(this.country.isEmpty()) && !(this.state.isEmpty()))
+				if(!(this.country.isEmpty()))
 				{
 					//shashank
 								if(this.companyName != null && !this.companyName.isEmpty()){
@@ -4446,7 +4446,7 @@ public List<String> getcompaniesId(String query) {
 						return null; 
 					}
 				}
-				if(dataEntry != null && deCompany != null ){
+				if(dataEntry != null && deCompany != null && selectedCompany != null){
 					System.out.println("start:"+dataEntry.getStartCurrencyRange());
 					/*if(this.startCurrencyRange==null ||this.startCurrencyRange.isEmpty()) {
 						messageService.messageFatal(null, "Start Currency Range is required");
@@ -4464,6 +4464,8 @@ public List<String> getcompaniesId(String query) {
 						deService.updateDataEntry(dataEntry);
 						messageService.messageInformation(null, "Data Entry has been Updated successfully.");
 					//}
+				}else{
+					messageService.messageFatal(null, "CompanyName is required");
 				}
 			}
 
