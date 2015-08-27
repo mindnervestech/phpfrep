@@ -1467,6 +1467,7 @@ public class DeManagedBean implements Serializable{
 		this.currency = dataEntry.getCurrency();
 		this.startCurrencyRange = dataEntry.getStartCurrencyRange();
 		this.endCurrencyRange = dataEntry.getEndCurrencyRange();
+		this.contactInfo = dataEntry.getContactInfo();
 		this.ocrText = dataEntry.getOcrText();
 		this.isApproved=dataEntry.getIsApproved();
 		this.adCategory =dataEntry.getAdCategory(); 
@@ -1491,6 +1492,7 @@ public class DeManagedBean implements Serializable{
 		dataEntry.setCurrency(this.currency);
 		dataEntry.setStartCurrencyRange(this.startCurrencyRange);
 		dataEntry.setEndCurrencyRange(this.endCurrencyRange);
+		dataEntry.setContactInfo(this.contactInfo);
 		dataEntry.setOcrText(this.ocrText);
 		dataEntry.setAdCategory(this.adCategory);
 		dataEntry.setWidth(this.width);
@@ -4330,7 +4332,7 @@ public List<String> getcompaniesId(String query) {
 	
 	public String saveAndExitDataAndCompany() 
 	{
-		System.out.println("in save and edit");
+		
 		try
 		{
 			DeCompany deCompany  = null;
@@ -4461,9 +4463,10 @@ public List<String> getcompaniesId(String query) {
 						dataEntry.setDeCompany(deCompany);
 						dataEntry.setCreated_by(currentUser);
 						dataEntry.setOcrText(this.ocrText);
+						dataEntry.setContactInfo(this.contactInfo);
 						deService.updateDataEntry(dataEntry);
 						messageService.messageInformation(null, "Data Entry has been Updated successfully.");
-					//}
+					
 				}else{
 					messageService.messageFatal(null, "CompanyName is required");
 				}

@@ -349,7 +349,7 @@ color:black !important;}
 										
 										<div class="row">
 			<div class="col-lg-12">
-					<div class="col-md-12" style="font-weight: bold;">Address</div>
+					<!-- <div class="col-md-12" style="font-weight: bold;">Address</div> -->
 					<div class="col-md-12">
 						<h:outputText value="#{deBean.selectedCompany.address}"/> &nbsp;&nbsp;
 						<h:outputText value="#{deBean.selectedCompany.address1}"/>&nbsp;&nbsp;
@@ -873,7 +873,6 @@ color:black !important;}
 			
 			<div class="col-lg-12 p-0">
 				<div class="col-lg-4">
-				
 					<div class="row m-0  m-5" style="font-weight: bold;">Company Line 2</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.department}"
@@ -973,7 +972,6 @@ color:black !important;}
 					<div class="row m-0  m-5" style="font-weight: bold;">Address line 2</div>
 					<div class="row m-0">
 						<p:inputText styleClass="form-control" value="#{deBean.address1}"
-							
 							requiredMessage="Please enter your Address">
 						</p:inputText>
 					</div>
@@ -984,7 +982,7 @@ color:black !important;}
 					<div class="row m-0  m-5" style="font-weight: bold;">Country <span style="color:red">&nbsp;&nbsp;*</span></div>
 					<div class="row m-0">
 						<p:autoComplete id="Country"
-							value="#{deBean.country}"
+							value="#{deBean.countryEd}"
 							completeMethod="#{deBean.countryDetails}" forceSelection="true"  effect="fade" />
 					</div>
 					
