@@ -244,7 +244,27 @@ public class DeManagedBean implements Serializable{
 	private String countryEd = "";
 	private String pincodeEd = "";
 	private  HashMap hm = new HashMap<>() ;
+	private long saveNewCmpId;
 	
+	private DeCompany selectedCompany;
+	private Integer selectedCompanyId;
+	
+	public Integer getSelectedCompanyId() {
+		return selectedCompanyId;
+	}
+
+	public void setSelectedCompanyId(Integer selectedCompanyId) {
+		this.selectedCompanyId = selectedCompanyId;
+	}
+
+	public DeCompany getSelectedCompany() {
+		return selectedCompany;
+	}
+
+	public void setSelectedCompany(DeCompany selectedCompany) {
+		this.selectedCompany = selectedCompany;
+	}
+
 	public String getCityEd() {
 		return cityEd;
 	}
@@ -1447,6 +1467,7 @@ public class DeManagedBean implements Serializable{
 		this.currency = dataEntry.getCurrency();
 		this.startCurrencyRange = dataEntry.getStartCurrencyRange();
 		this.endCurrencyRange = dataEntry.getEndCurrencyRange();
+		this.contactInfo = dataEntry.getContactInfo();
 		this.ocrText = dataEntry.getOcrText();
 		this.isApproved=dataEntry.getIsApproved();
 		this.adCategory =dataEntry.getAdCategory(); 
@@ -1458,6 +1479,7 @@ public class DeManagedBean implements Serializable{
 		this.landingPageURL = dataEntry.getLandingPageURL();
 		this.addColumn = dataEntry.getAddColumn();
 		this.createdBy = dataEntry.getCreated_by().getFirstName();
+		this.selectedCompany = dataEntry.getDeCompany();
 	}
 
 	// getAll AdDetails who is currently in session 
@@ -1470,6 +1492,7 @@ public class DeManagedBean implements Serializable{
 		dataEntry.setCurrency(this.currency);
 		dataEntry.setStartCurrencyRange(this.startCurrencyRange);
 		dataEntry.setEndCurrencyRange(this.endCurrencyRange);
+		dataEntry.setContactInfo(this.contactInfo);
 		dataEntry.setOcrText(this.ocrText);
 		dataEntry.setAdCategory(this.adCategory);
 		dataEntry.setWidth(this.width);
@@ -2209,26 +2232,29 @@ public class DeManagedBean implements Serializable{
 	}
 	
 	public String editCompany() {
-		System.out.println("Company Name :"+this.searchValueInCompanyName);
-		if(this.searchValueInCompanyName!=null && !this.searchValueInCompanyName.isEmpty()) {
-			
+		
+		if(selectedCompany!=null ) {
 			List<DeCompany> companies = null; 
 			//Store entry (Key/Value)of HashMap in set
 	        Set mapSet = (Set) hm.entrySet();
 	        //Create iterator on Set 
 	        Iterator mapIterator = mapSet.iterator();
 	        System.out.println("Display the key/value of HashMap.");
-	        while (mapIterator.hasNext()) {
+	       /* while (mapIterator.hasNext()) {
 	                Map.Entry mapEntry = (Map.Entry) mapIterator.next();
 	                // getKey Method of HashMap access a key of map
 	                //getValue method returns corresponding key's value
 	                if(this.searchValueInCompanyName.equalsIgnoreCase(mapEntry.getValue().toString()) || this.searchValueInCompanyName.equals(mapEntry.getValue().toString()) ){
-	                 companies = deService.getDeCompanyBySeachCriteriaId(Long.parseLong(mapEntry.getKey().toString()));
+	                 companies = deService.getDeCompanyBySeachCriteriaId(selectedCompany.getId());
 	                }
 	                System.out.println("Key : " + mapEntry.getKey() + "= Value : " + mapEntry.getValue());
 	        }
-			
-			
+			*/
+	        companies = deService.getDeCompanyBySeachCriteriaId(selectedCompany.getId());
+	        
+			if(companies == null || companies.isEmpty()){
+				 companies = deService.getDeCompanyBySeachCriteriaId(saveNewCmpId);
+			}
 			
 			if(companies.size()>0) {
 				this.companyIdEd = companies.get(0).getId();
@@ -2251,6 +2277,55 @@ public class DeManagedBean implements Serializable{
 		messageService.messageError(null, "Please select company to edit.");
 		return null;
 	}
+	
+	
+/*	
+	public String getCompany() {
+		System.out.println("Company Name :"+this.selectedCompany + "Id "+this.selectedCompany.getId());
+		if(this.selectedCompany!=null ) {
+			this.selectedCompany.getId();
+			List<DeCompany> companies = null; 
+			//Store entry (Key/Value)of HashMap in set
+	        Set mapSet = (Set) hm.entrySet();
+	        //Create iterator on Set 
+	        Iterator mapIterator = mapSet.iterator();
+	        while (mapIterator.hasNext()) {
+	                Map.Entry mapEntry = (Map.Entry) mapIterator.next();
+	                //getValue method returns corresponding key's value
+	                if(this.searchValueInCompanyName.equalsIgnoreCase(mapEntry.getValue().toString()) || this.searchValueInCompanyName.equals(mapEntry.getValue().toString()) ){
+	                 companies = deService.getDeCompanyBySeachCriteriaId(Long.parseLong(mapEntry.getKey().toString()));
+	                }
+	         }
+	      
+	        companies = deService.getDeCompanyBySeachCriteriaId(selectedCompany.getId());
+	        
+	    	 if(companies == null || companies.isEmpty() ){
+            	 companies = deService.getDeCompanyBySeachCriteriaId(saveNewCmpId);
+               }
+
+			if(companies.size()>0) {
+				selectedCompany = companies.get(0);
+				this.companyIdEd = companies.get(0).getId();
+				this.companyNameEd = companies.get(0).getCompanyName();
+				this.companyURLEd = companies.get(0).getCompanyURL();
+				this.departmentEd = companies.get(0).getDepartment();
+				this.addressEd = companies.get(0).getAddress();
+				this.address1Ed = companies.get(0).getAddress1();
+				this.cityEd = companies.get(0).getCity();
+				this.stateEd = companies.get(0).getState();
+				this.countryEd = companies.get(0).getCountry();
+				this.pincodeEd = companies.get(0).getPincode();
+				//RequestContext.getCurrentInstance().execute("PF('editCompany').show();setTop();");
+				return null;
+			} else {
+				messageService.messageError(null, "Company not found.");
+				return null;
+			}
+		}
+		messageService.messageError(null, "Please select company to edit.");
+		return null;
+	}*/
+	
 	
 	public void clearEditCompany() {
 		this.companyIdEd = null;
@@ -2542,8 +2617,8 @@ public class DeManagedBean implements Serializable{
 				if( ((this.publicationTitle == null ||  this.publicationTitle.isEmpty())) 
 						|| ((this.section == null || this.section.isEmpty()) && (this.sectionNextValue == null || this.sectionNextValue.isEmpty())) 
 						|| this.page==null || this.page.isEmpty()
-						|| (this.issueDay == 0 && this.issueDayNext ==0 &&  this.issueDayNextThird ==0 && this.issueDayNextFour ==0 )
-						|| (this.issueMonth == 0 && this.issueMonthNext ==0)
+						|| (this.issueDay == 0 && this.issueDayNext == 0 &&  this.issueDayNextThird == 0 && this.issueDayNextFour == 0 )
+						|| (this.issueMonth == 0 && this.issueMonthNext == 0)
 						|| this.issueYear  == 0){
 					messageService.messageFatal(null, "You must fill all required feilds");
 				} else {
@@ -2693,7 +2768,13 @@ public class DeManagedBean implements Serializable{
 	public String callPublication(){
 		try
 		{
-			System.out.println("CallPublication");
+			
+			this.section ="";
+			this.sectionNextValue="";
+			this.sectionother="";
+			this.sectionspecialRegional="";
+			this.sectionspecialTopic="";
+			
 			User currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);	
 			FacesUtils facesUtils = new FacesUtils();
 			String val = facesUtils.getRequestParameterMap("parentImg");
@@ -2743,7 +2824,6 @@ public class DeManagedBean implements Serializable{
 							this.issueMonth=0;
 							this. issueMonthNext=0;
 							this.issueYear=0;
-
 
 						}
 						if(parentImage.getSection().getId()>0){
@@ -3198,25 +3278,26 @@ public class DeManagedBean implements Serializable{
 	 * @param query
 	 * @return
 	 */
-	public List<String> companyDetails(String query) {
+	public List<DeCompany> companyDetails(String query) {
 		
 		List<String> results = new ArrayList<String>();
 		 hm = new HashMap();
 
 		deCompanyList = deService.getDeCompany();
+		List<DeCompany> deCompanySearchQueryList = new ArrayList<DeCompany>();
 		if(deCompanyList != null &&  deCompanyList.size() > 0){
 			for(int i = 0; deCompanyList.size()>i; i++) {
 				DeCompany deCompany = deCompanyList.get(i);
 				if(deCompany.getCompanyName().toLowerCase().startsWith(query.toLowerCase())) {
 					results.add(deCompany.getCompanyName());
 				    hm.put(deCompany.getId(),deCompany.getCompanyName());
-
+				    deCompanySearchQueryList.add(deCompanyList.get(i));
 				}
 			}
 		}
 		
 		//public List<String>	getcompaniesId(String query);
-		return results;
+		return deCompanySearchQueryList;
 	}
 
 	
@@ -3245,7 +3326,7 @@ public List<String> getcompaniesId(String query) {
 		if(advertiserTypeList != null &&  advertiserTypeList.size() > 0){
 			for(int i = 0; advertiserTypeList.size()>i; i++) {
 				Publication advertiserType = advertiserTypeList.get(i);
-				if(advertiserType.getPublicationTitle().toLowerCase().startsWith(query)) {
+				if(advertiserType.getPublicationTitle().toLowerCase().startsWith(query.toLowerCase())) {
 					results.add(advertiserType.getPublicationTitle());
 				}
 			}
@@ -3264,7 +3345,7 @@ public List<String> getcompaniesId(String query) {
 		if(countryResults != null &&  countryResults.size() > 0){
 			for(int i = 0; countryResults.size()>i; i++) {
 				Country country = countryResults.get(i);
-				if(country.getCountryName().toLowerCase().startsWith(query)) {
+				if(country.getCountryName().toLowerCase().startsWith(query.toLowerCase())) {
 					countryResult.add(country.getCountryName());
 				}
 			}
@@ -3282,7 +3363,7 @@ public List<String> getcompaniesId(String query) {
 		if(stateResults != null &&  stateResults.size() > 0){
 			for(int i = 0; stateResults.size()>i; i++) {
 				States state = stateResults.get(i);
-				if(state.getStateName().toLowerCase().startsWith(query)) {
+				if(state.getStateName().toLowerCase().startsWith(query.toLowerCase())) {
 					stateResult.add(state.getStateName());
 				}
 			}
@@ -4173,16 +4254,17 @@ public List<String> getcompaniesId(String query) {
 		
 		try
 		{
+			selectedCompany = new DeCompany();
+			System.out.println("add new company : "+this.companyName);
+		    this.setSearchValueInCompanyName(this.companyName);
+		    
 			DeCompany deCompany  = null;
 			currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 			if(currentUser != null)
 			{
-				if(!(this.country.isEmpty()) && !(this.state.isEmpty()))
+				if(!(this.country.isEmpty()))
 				{
-					if(countryDetailsChecking(this.country) == 1)
-					{
-						if(stateDetailsChecking(this.state) == 1)
-						{//shashank
+					//shashank
 								if(this.companyName != null && !this.companyName.isEmpty()){
 									DeCompany duplicate = deService.getDeCompanyNameByCompanyName(this.companyName);
 									if(duplicate == null){
@@ -4190,7 +4272,13 @@ public List<String> getcompaniesId(String query) {
 										deCompany = getAllDeCompanyDetails(deCompany);
 										deCompany.setIsDeleted(false);
 										deCompany.setCreated_by(currentUser);
-										deService.addDeCompany(deCompany);
+										//deService.addDeCompany(deCompany);
+										//System.out.println("test data save: "+deService.addDeCompany(deCompany));
+										saveNewCmpId = deService.addDeCompany(deCompany);
+										if(saveNewCmpId != 0){
+											selectedCompany = deCompany;
+										}
+										
 										messageService.messageInformation(null, "Company added successfully.");
 									} else {
 										messageService.messageFatal(null, "CompanyName already exist.");
@@ -4207,14 +4295,6 @@ public List<String> getcompaniesId(String query) {
 									}
 								}
 
-						}else{
-							messageService.messageFatal(null, "StateName not found.");
-						}
-
-					}else{
-						messageService.messageFatal(null, "CountryName not found.");
-					}
-
 				}
 			}
 		} catch (Exception e){
@@ -4224,12 +4304,14 @@ public List<String> getcompaniesId(String query) {
 	}
 
 	public String updateCompany() {
-		DeCompany deCompany = deService.getDeCompanySeachByCompanyName(this.searchValueInCompanyName);
+		
+		DeCompany deCompany = deService.getDeCompanySeachByCompanyNameId(selectedCompany.getId());
 		if(deCompany == null)
 			deCompany = new DeCompany();
 		
 		deCompany = setEditCompanyValue(deCompany);
 		deService.updateDeCompany(deCompany);
+		selectedCompany = deCompany;
 		messageService.messageInformation(null, "Company updated successfully.");
 		return null;
 	}
@@ -4250,7 +4332,7 @@ public List<String> getcompaniesId(String query) {
 	
 	public String saveAndExitDataAndCompany() 
 	{
-		System.out.println("in save and edit");
+		
 		try
 		{
 			DeCompany deCompany  = null;
@@ -4318,8 +4400,8 @@ public List<String> getcompaniesId(String query) {
 			System.out.println("baseId:"+deDataId);
 			if(deDataId >0){
 				DataEntry dataEntry = deService.getDataEntryById(deDataId);
-				if(dataEntry != null && this.companyName != null && !this.companyName.isEmpty()){
-					DeCompany duplicate = deService.getDeCompanyNameByCompanyName(this.companyName);
+				if(dataEntry != null && this.selectedCompany != null ){
+					DeCompany duplicate = deService.getDeCompanySeachByCompanyNameId(this.selectedCompany.getId());
 					if(duplicate == null){
 						deCompany = new DeCompany();
 						deCompany = getAllDeCompanyDetails(deCompany);
@@ -4329,6 +4411,8 @@ public List<String> getcompaniesId(String query) {
 					} else {
 						deCompany = duplicate;
 					}
+					
+					
 					/*else{
 						messageService.messageFatal(null, "CompanyName already exist.");
 						System.out.println("CompanyName already exist");
@@ -4336,34 +4420,35 @@ public List<String> getcompaniesId(String query) {
 					}*/
 				}
 				else{
-					if(this.searchValueInCompanyName != null && !this.searchValueInCompanyName.isEmpty()){
-						
+					if(this.selectedCompany != null ){
 						//Store entry (Key/Value)of HashMap in set
 				        Set mapSet = (Set) hm.entrySet();
 				        //Create iterator on Set 
 				        Iterator mapIterator = mapSet.iterator();
 				        System.out.println("Display the key/value of HashMap.");
-				        while (mapIterator.hasNext()) {
+				       /* while (mapIterator.hasNext()) {
 				                Map.Entry mapEntry = (Map.Entry) mapIterator.next();
 				                // getKey Method of HashMap access a key of map
 				                //getValue method returns corresponding key's value
-				                if(this.searchValueInCompanyName.equalsIgnoreCase(mapEntry.getValue().toString()) || this.searchValueInCompanyName.equals(mapEntry.getValue().toString()) ){
+				                if(this.searchValueInCompanyName.equalsIgnoreCase(mapEntry.getValue().toString()) ){
 				                 deCompany = deService.getDeCompanySeachByCompanyNameId(Long.parseLong(mapEntry.getKey().toString()));	
 				                }
 				                System.out.println("Key : " + mapEntry.getKey() + "= Value : " + mapEntry.getValue());
-				        }
+				        }*/
 						
+				        deCompany = deService.getDeCompanySeachByCompanyNameId(this.selectedCompany.getId());
 						
 						
 					}else if(this.companyId > 0){
-						deCompany = deService.getDeCompanyById(this.companyId);	
+						deCompany = deService.getDeCompanyById(this.companyId);
+						selectedCompany = deCompany;
 					} else {
 						messageService.messageFatal(null, "CompanyName is required");
 						System.out.println("CompanyName is required");
 						return null; 
 					}
 				}
-				if(dataEntry != null && deCompany != null ){
+				if(dataEntry != null && deCompany != null && selectedCompany != null){
 					System.out.println("start:"+dataEntry.getStartCurrencyRange());
 					/*if(this.startCurrencyRange==null ||this.startCurrencyRange.isEmpty()) {
 						messageService.messageFatal(null, "Start Currency Range is required");
@@ -4377,9 +4462,13 @@ public List<String> getcompaniesId(String query) {
 						dataEntry.setIsqualityCheck(true);
 						dataEntry.setDeCompany(deCompany);
 						dataEntry.setCreated_by(currentUser);
+						dataEntry.setOcrText(this.ocrText);
+						dataEntry.setContactInfo(this.contactInfo);
 						deService.updateDataEntry(dataEntry);
 						messageService.messageInformation(null, "Data Entry has been Updated successfully.");
-					//}
+					
+				}else{
+					messageService.messageFatal(null, "CompanyName is required");
 				}
 			}
 
@@ -4388,6 +4477,8 @@ public List<String> getcompaniesId(String query) {
 		{
 			e.printStackTrace();
 		}
+
+		selectedCompany = new DeCompany();
 		return null;
 	}
 	/**

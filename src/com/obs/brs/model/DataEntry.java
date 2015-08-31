@@ -57,6 +57,9 @@ public class DataEntry implements Serializable{
 	private String jobDensity;
 	private String otherAdvertisertype;
 	private String addColumn;
+	private String contactInfo;
+	
+
 	/**
 	 * Get de_data Id
 	 * 
@@ -129,6 +132,7 @@ public class DataEntry implements Serializable{
 		return created_by;
 	}
 
+	
 	/**
 	 * @param created_by the created_by to set
 	 */
@@ -514,4 +518,22 @@ public class DataEntry implements Serializable{
 		this.addColumn = addColumn;
 	}
 
+	 /**
+     * 
+     * @return the contactInfo
+     */	
+	@Column(name="DC_CONTACT_INFO", nullable = true)
+	public String getContactInfo() {
+		return contactInfo;
+	}
+
+    /**
+     * 
+     * @param contactInfo
+     *        the contactInfo to set
+     */
+	public void setContactInfo(String contactInfo) {
+		this.contactInfo = contactInfo;
+	}
+	
 }

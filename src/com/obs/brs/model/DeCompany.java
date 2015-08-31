@@ -36,6 +36,12 @@ public class DeCompany implements Serializable{
 	private String state;
 	private String country;
 	private String department;
+	@Override
+	public String toString() {
+		return "DeCompany [companyName=" + companyName + ", companyURL="
+				+ companyURL + "]";
+	}
+
 	private String companyURL;
 	private String pincode;
 	private Boolean isDeleted;

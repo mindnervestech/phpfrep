@@ -141,7 +141,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 	border-width: 1px 1px 1px 1px;
 	float: left;
 	line-height: 18px;
-	padding: 4px 12px;
+	padding: 0px 12px;
 	text-decoration: none;
 	margin: 0px;
 }
@@ -207,12 +207,11 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 	<f:viewParam name="msgLabel" value="#{deBean.msgLabel}" />
 	<f:event type="preRenderView" listener="#{deBean.loadMessage}" />
 	<f:viewParam name="img" value="#{deBean.id}" />
-	<f:event type="preRenderView"
-		listener="#{deBean.loadAllPublicationInfo}" />
+	<f:event type="preRenderView" listener="#{deBean.loadAllPublicationInfo}"    />
 </f:metadata>
-<h:body data-page="file_upload">
+<h:body data-page="file_upload" >
 	<ui:include src="/pages/header_admin.xhtml" />
-	<div id="wrapper" data-ng-app="myApp"  data-ng-controller="controller">
+	<div id="wrapper" data-ng-app="myApp"  data-ng-controller="controller" >
 		<ui:include src="/pages/userMenu.xhtml" />
 
 		<!-- BEGIN MAIN CONTENT -->
@@ -256,9 +255,48 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 												rendered="#{empty deBean.parentImageList}" />
 											<t:div id="div_photo_list"
 												rendered="#{not empty deBean.parentImageList}">
+												
+												<t:div styleClass="pull-right"
+														rendered="#{((fn:length(deBean.parentImageList) > (deBean.imagePerPage)) and (deBean.imageOffset == 0)) or ((deBean.imageOffset > 0))}" style="margin-bottom: 0.5%;">
+														<ul class="pagination pagination-right"
+															style="margin: 0px; border: 0px solid #ccc;">
+															<li style="padding-bottom: 0px;"><p:commandLink
+																	disabled="true"
+																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) ==1}">	First
+																			</p:commandLink> <p:commandLink ajax="true" action="#{deBean.firstPage}"
+																	update="div_photo_list"
+																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1)>1}"> First
+																			</p:commandLink></li>
+															<li style="font-size: 13px;"><p:commandLink
+																	disabled="true"
+																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) ==1}">	&#60;
+																			</p:commandLink> <p:commandLink ajax="true" action="#{deBean.prevPage}"
+																	update="div_photo_list"
+																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) >1}"> &#60;
+																			</p:commandLink></li>
+															<li class="active"><a href="#"> <h:outputText
+																		value="#{(deBean.imageOffset/deBean.imagePerPage)+1}">
+																		<f:converter converterId="javax.faces.Integer" />
+																	</h:outputText></a></li>
+															<li style="font-size: 13px;"><p:commandLink ajax="true"
+																	action="#{deBean.nxtPage}" update="div_photo_list"
+																	rendered="#{fn:length(deBean.parentImageList) > (deBean.imageOffset+deBean.imagePerPage)}">&#62;															
+																			</p:commandLink> <p:commandLink disabled="true"
+																	rendered="#{(fn:length(deBean.parentImageList) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.parentImageList) == (deBean.imageOffset+deBean.imagePerPage))}">&#62;
+																			</p:commandLink></li>
+															<li style="padding-bottom: 0px;"><p:commandLink
+																	ajax="true" action="#{deBean.lastPage}"
+																	update="div_photo_list"
+																	rendered="#{fn:length(deBean.parentImageList) > (deBean.imageOffset+deBean.imagePerPage)}">Last
+																	<f:param name="type" value="parent" />
+																</p:commandLink> <p:commandLink disabled="true"
+																	rendered="#{(fn:length(deBean.parentImageList) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.parentImageList) == (deBean.imageOffset+deBean.imagePerPage))}">Last
+																			</p:commandLink></li>
+														</ul>
+													</t:div>
 												<ui:repeat var="val" value="#{deBean.parentImageList}"
 													rendered="#{not empty deBean.parentImageList}"
-													size="#{deBean.imagePerPage-1}" offset="#{deBean.imageOffset}"
+													size="#{deBean.imagePerPage-1}" id= "dt_orgList" offset="#{deBean.imageOffset}"
 													varStatus="status">
 			
 													<div class="col-xs-12 col-sm-12 col-md-12">
@@ -361,6 +399,22 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																						</div>
 																					</div>
 																				</div>
+																				<div class="p-0 f_l">
+																					<div class="row m-5 f_l">
+																						<div style="font-weight: bold; float: left">Comment
+																							:</div>
+																						<div class="f_l p-l-10">
+																							<h:outputText
+																								value="#{val.sectionspecialTopic}" rendered="#{val.section.publicationTitle == 'Special-Topic'}"></h:outputText>
+																								<h:outputText
+																								value="#{val.sectionspecialRegional}" rendered="#{val.section.publicationTitle == 'Special-Regional'}" ></h:outputText>
+																								<h:outputText
+																								value="#{val.sectionother}"   ></h:outputText>
+																						</div>
+																					</div>
+																				</div>
+																				
+																				
 																				<div class="p-0 f_l">
 																					<div class="row m-5 f_l">
 																						<div style="font-weight: bold; float: left">Child
@@ -471,8 +525,8 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 													<t:div styleClass="pull-right"
 														rendered="#{((fn:length(deBean.parentImageList) > (deBean.imagePerPage)) and (deBean.imageOffset == 0)) or ((deBean.imageOffset > 0))}">
 														<ul class="pagination pagination-right"
-															style="margin: 0px; border: 1px solid #ccc;">
-															<li style="padding-bottom: 5px;"><p:commandLink
+															style="margin: 0px; border: 0px solid #ccc;">
+															<li style="padding-bottom: 0px;"><p:commandLink
 																	disabled="true"
 																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) ==1}">	First
 																			</p:commandLink> <p:commandLink ajax="true" action="#{deBean.firstPage}"
@@ -496,7 +550,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																			</p:commandLink> <p:commandLink disabled="true"
 																	rendered="#{(fn:length(deBean.parentImageList) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.parentImageList) == (deBean.imageOffset+deBean.imagePerPage))}">&#62;
 																			</p:commandLink></li>
-															<li style="padding-bottom: 5px;"><p:commandLink
+															<li style="padding-bottom: 0px;"><p:commandLink
 																	ajax="true" action="#{deBean.lastPage}"
 																	update="div_photo_list"
 																	rendered="#{fn:length(deBean.parentImageList) > (deBean.imageOffset+deBean.imagePerPage)}">Last
