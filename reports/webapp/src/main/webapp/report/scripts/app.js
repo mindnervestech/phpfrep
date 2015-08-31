@@ -144,9 +144,13 @@
 			renderers[rName] = nrecoPivotExt.wrapTableRenderer(renderers[rName]);
 		});
         $scope.lastQueryExecuted = 1;
+        window.drillDown = function(v){
+        	var obj = $scope.$eval($(v).attr('json'));
+        	executeReport(obj);
+        };
 		$scope.runReport = function (option) {
 			$scope.isAnyActiveReport = false;
-			console.log($scope.reportTemplate.model);
+			//console.log($scope.reportTemplate.model);
 			$scope.lastQueryExecuted = option;
 			var obj;
 			if(option==2) {
@@ -157,15 +161,10 @@
 			if(typeof obj.id =="undefined")
 				obj.id = $scope.searchConfig.id;
 			
+			executeReport(obj);
+		}
+		executeReport = function(obj) {
 			$http.get('/webapp/report/run',{params:{filter:obj}}).success(function(data){
-				console.log(data);
-				//$scope.finishedHeader = false;
-				
-				
-				//console.log(PivotData);
-				console.log(renderers);
-				console.log($.pivotUtilities.aggregators);
-				console.log($scope.isSavedTemplate);
 				if($scope.isSavedTemplateTable) {
 					$scope.reportData = data.data;
 					$scope.dtColumns = data.columns;
@@ -177,7 +176,7 @@
 				} else if($scope.isSavedTemplate) {
 					$('a[href="#pivot-view"]').parent().show();
 					$('a[href="#table-view"]').parent().hide();
-					console.log(":insaved template");
+					//console.log(":insaved template");
 					var parent = $("#pivot-table-output").parent();
 					$("#pivot-table-output").remove();
 					parent.append("<div id='pivot-table-output' style='margin: 10px;'></div>");
@@ -245,8 +244,8 @@
 			$scope.config.aggregatorName = config.aggregatorName;
 			$scope.config.cols = config.cols;
 			$scope.config.rows = config.rows;
-			console.log($scope.config);
-			console.log(config);
+			//console.log($scope.config);
+			//console.log(config);
 		};
 		
 		$scope.openTemplateModal = function(option) {
@@ -272,7 +271,7 @@
 		};
 		
 		$scope.showLargeImage = function(url) {
-			console.log("consol:"+url);
+			//console.log("consol:"+url);
 			$("#img-enlarge").attr("src",url);
 			$("#enlarge-image-modal").modal({backdrop:"static"});
 		};
@@ -319,7 +318,9 @@
 				$.each(columns, function(i,e){
 					if(e.link) {
 						e.render = function(cellData, type, rowData) {
-							return "<a href='#'>" + cellData + "</a>";
+							console.log(cellData);
+							return "<a href='#'" + e.link + "/" + rowData.ids + ">" + cellData + "</a>";
+						
 						}
 					} 
 				});
@@ -328,18 +329,24 @@
 			
 		    scope.$watch('finishedHeader', function(val) {
 		      if (val) {
-		    	if(window.oTable) {  
-		    		window.oTable.fnDestroy();
-		    		window.oTable = null;
-		    	}
+		    	  if(window.oTable) {  
+			    		try{
+			    		    window.oTable.fnDestroy();
+			    		}catch(e) {
+			    			window.oTable.fnClearTable();
+			    		}
+			    		window.oTable.empty();
+			    		window.oTable = null;
+			    	}
 		    	
 		    	existingHead = $(element).find('thead');
 		    	existingHead.remove();
+		    	$(element).empty();
 		    	$(element).append($("#tableHeaderTmp").find('thead').clone());  
 		        
 		    	window.oTable = $(element).dataTable({
 		          sDom: '<"clear">TlfCrtip',
-		          pageLength: 10,
+		          pageLength: 1000,
 		          //sScrollY: "500px",
 		          tableTools: {
 		        	  "sSwfPath": "/webapp/report/app/swf/copy_csv_xls_pdf.swf",
@@ -386,10 +393,12 @@
 				$.each(columns, function(i,e){
 					if(e.link) {
 						e.render = function(cellData, type, rowData) {
-							console.log(cellData);
-							console.log(type);
-							console.log(rowData);
-							return "<a href='#'>" + cellData + "</a>";
+							//return cellData;
+							if(cellData == undefined || (cellData[0] == undefined &&  cellData[1] == "TODO") ) return "";
+							if(cellData[1] == "TODO") return cellData[0];
+							
+							return "<a json='"+cellData[1]+"' onClick='drillDown(this);return false;' href='#'>" + cellData[0] + "</a>";
+						
 						};
 					} 
 					if(e.img) {
@@ -407,18 +416,24 @@
 			
 		    scope.$watch('finishedHeader1', function(val) {
 		      if (val) {
-		    	if(window.oTable1) {  
-		    		window.oTable1.fnDestroy();
-		    		window.oTable1 = null;
-		    	}
+		    	  if(window.oTable1) {  
+			    		try{
+			    		    window.oTable1.fnDestroy();
+			    		}catch(e) {
+			    			window.oTable1.fnClearTable();
+			    		}
+			    		window.oTable1.empty();
+			    		window.oTable1 = null;
+			    	}
 		    	
 		    	existingHead = $(element).find('thead');
 		    	existingHead.remove();
+		    	$(element).empty();
 		    	$(element).append($("#tableHeaderTmp1").find('thead').clone());  
 		        
 		    	window.oTable1 = $(element).dataTable({
 		          sDom: '<"clear">TlfCrtip',
-		          pageLength: 10,
+		          pageLength: 1000,
 		          //sScrollY: "500px",
 		          tableTools: {
 		        	  "sSwfPath": "/webapp/report/app/swf/copy_csv_xls_pdf.swf",
