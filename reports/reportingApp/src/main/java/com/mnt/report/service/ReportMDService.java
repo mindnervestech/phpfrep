@@ -2,27 +2,20 @@ package com.mnt.report.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.lang.annotation.Retention;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.hibernate.SessionFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -51,6 +44,7 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.mnt.report.service.Report3.RowColValue;
 
 @Controller
 public class ReportMDService {
@@ -185,7 +179,7 @@ public class ReportMDService {
     	try {
 			JSONObject jsonObject = (JSONObject)new JSONParser().parse(filter);
 			Long id = Long.parseLong(jsonObject.get("id").toString());
-			Map<String,Object> mdResult = jt.queryForMap("Select query,columns,hiddenpivotcol from reportmd where id =" + id);//.query("Select query from reportmd where id = ?",new Object[]{id},);
+			Map<String,Object> mdResult = jt.queryForMap("Select query,columns,hiddenpivotcol,isJava from reportmd where id =" + id);//.query("Select query from reportmd where id = ?",new Object[]{id},);
 			String query = mdResult.get("query").toString();	
 			String[] namedParameters =  query.split(":");
 			Map<String, Object> parameters = new HashMap<String, Object>();
@@ -220,17 +214,30 @@ public class ReportMDService {
 				    }
 				}
 			}
-			
-			List<Map<String, Object>> rs = namedJdbcTemplate.queryForList(mdResult.get("query").toString(),parameters);
-			resp.put("data" , rs);
-			
-			JSONArray columns = ((JSONArray)new JSONParser().parse(mdResult.get("columns").toString()));
-			resp.put("columns" , columns);
-			
-			JSONArray hiddenpivotcol = ((JSONArray)new JSONParser().parse(mdResult.get("hiddenpivotcol").toString()));
-			
-			resp.put("hiddenpivotcol",hiddenpivotcol);
-			return resp;
+				Object java = mdResult.get("isJava");
+				if(java != null) {
+					if(java.toString().equalsIgnoreCase("report3")) {
+						List<Report3.RowColValue> rs = namedJdbcTemplate.query(mdResult.get("query").toString(),
+								parameters,new Report3.RowColValue());
+						return Report3.main(rs);
+					}
+					if(java.toString().equalsIgnoreCase("report1")) {
+						List<Report1.RowColValue> rs = namedJdbcTemplate.query(mdResult.get("query").toString(),
+								parameters,new Report1.RowColValue());
+						return Report1.main(rs);
+					}
+				} else {
+				List<Map<String, Object>> rs = namedJdbcTemplate.queryForList(mdResult.get("query").toString(),parameters);
+					
+				resp.put("data" , rs);
+				
+				JSONArray columns = ((JSONArray)new JSONParser().parse(mdResult.get("columns").toString()));
+				resp.put("columns" , columns);
+				
+				JSONArray hiddenpivotcol = ((JSONArray)new JSONParser().parse(mdResult.get("hiddenpivotcol").toString()));
+				resp.put("hiddenpivotcol",hiddenpivotcol);
+				return resp;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -272,7 +279,7 @@ public class ReportMDService {
 	public List<ReportMDVM> getReports() {
 		//return sessionFactory.getCurrentSession().createQuery("FROM ReportMD1").list();
 		
-		return jt.query("Select * from reportmd", new RowMapper<ReportMDVM>(){
+		return jt.query("Select * from reportmd where access = 1", new RowMapper<ReportMDVM>(){
 
 			public ReportMDVM mapRow(ResultSet arg0, int arg1)
 					throws SQLException {
@@ -283,7 +290,7 @@ public class ReportMDService {
 				reportMD.jsonSchema = ((JSONObject)new JSONParser().parse(arg0.getString("jsonSchema")));
 				reportMD.name = (arg0.getString("name"));
 				reportMD.description = (arg0.getString("description"));
-				System.out.println("jkds:"+arg0.getString("pivotConfig"));
+				//System.out.println("jkds:"+arg0.getString("pivotConfig"));
 				if(arg0.getString("pivotConfig")!=null) 
 					reportMD.pivotConfig = ((JSONObject)new JSONParser().parse(arg0.getString("pivotConfig")));
 				if(arg0.getString("searchCriteria")!=null) 
