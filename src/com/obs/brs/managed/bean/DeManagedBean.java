@@ -3282,18 +3282,29 @@ public class DeManagedBean implements Serializable{
 		
 		List<String> results = new ArrayList<String>();
 		 hm = new HashMap();
-
+		System.out.println("here1");
 		deCompanyList = deService.getDeCompany();
+		System.out.println("here2");
 		List<DeCompany> deCompanySearchQueryList = new ArrayList<DeCompany>();
+		System.out.println("here3");
 		if(deCompanyList != null &&  deCompanyList.size() > 0){
+			System.out.println("here4");
 			for(int i = 0; deCompanyList.size()>i; i++) {
+				System.out.println("here5");
 				DeCompany deCompany = deCompanyList.get(i);
+				System.out.println("here6");
 				if(deCompany.getCompanyName().toLowerCase().startsWith(query.toLowerCase())) {
+					System.out.println("here7");
 					results.add(deCompany.getCompanyName());
-				    hm.put(deCompany.getId(),deCompany.getCompanyName());
-				    deCompanySearchQueryList.add(deCompanyList.get(i));
+					System.out.println("here8");
+					hm.put(deCompany.getId(),deCompany.getCompanyName());
+					System.out.println("here9");
+					deCompanySearchQueryList.add(deCompanyList.get(i));
+					System.out.println("here10");
 				}
+				System.out.println("here11");
 			}
+			System.out.println("here12");
 		}
 		
 		//public List<String>	getcompaniesId(String query);
