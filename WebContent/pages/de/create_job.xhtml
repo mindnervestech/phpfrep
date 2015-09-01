@@ -481,7 +481,11 @@ color:black !important;}
 													
 															<div class="f_l" style="margin: 0px 5px;">
 																<div class="row m-0 m-5" style="font-weight: bold;">
-																	Ad Orientation</div>
+																	Ad Orientation <p:commandLink ajax="true"
+																	oncomplete="PF('tooltipImage').show();setPopupHeight();">
+																		<span style="cursor: pointer;" class="glyphicon glyphicon-question-sign"></span>
+																		</p:commandLink>
+																	</div>
 																<div class="row m-0">
 																	<h:selectOneMenu class="btn btn-default form-control bootselect"
 																		style="  padding: 0px 3px !important;margin-bottom:10px;"
@@ -543,6 +547,7 @@ color:black !important;}
 																					class="btn btn-default form-control bootselect" id="addColumn">
 
 																					<f:selectItem itemLabel="1" itemValue="1" />
+																					<f:selectItem itemLabel="1.5" itemValue="1.5" />
 																					<f:selectItem itemLabel="2" itemValue="2" />
 																					<f:selectItem itemLabel="3" itemValue="3" />
 																					<f:selectItem itemLabel="4" itemValue="4" />
@@ -749,6 +754,20 @@ color:black !important;}
 					<div id="panzoom4" style="text-align: center">
 				<h:graphicImage id="imgcrp" style="width:100%;min-width:100%;min-height:100%"
 					value="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}" />
+			</div>
+			
+			</t:div>
+		</div>
+	</p:dialog>
+	<p:dialog id="tooltipImage" draggable="true" resizable="true" position="left top"
+		header="Child Image" modal="false" widgetVar="tooltipImage"
+		style="width:30%; overflow:scroll;background-color:#ffffff">
+		<div class="" style="width:100%;min-width: 100%; min-height: 100%">
+			<t:div styleClass="data_image m-b-20" id="imgcrp_div1"
+				style="width:100%;min-width:100%;min-height:100%">
+					<div id="panzoom41">
+				<h:graphicImage id="imgorientation" style="width:50%;min-width:50%;min-height:100%"
+					value="#{global['baseURL']}#{global['imageContextPath']}images/AdsizesFRACTS.jpg" />
 			</div>
 			
 			</t:div>
