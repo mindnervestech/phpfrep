@@ -3293,6 +3293,8 @@ public class DeManagedBean implements Serializable{
 				System.out.println("here5");
 				DeCompany deCompany = deCompanyList.get(i);
 				System.out.println("here6");
+				System.out.println("query:");
+				System.out.println(query);
 				if(deCompany.getCompanyName().toLowerCase().startsWith(query.toLowerCase())) {
 					System.out.println("here7");
 					results.add(deCompany.getCompanyName());
