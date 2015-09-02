@@ -767,7 +767,7 @@ color:black !important;}
 				style="width:100%;min-width:100%;min-height:100%">
 					<div id="panzoom41">
 				<h:graphicImage id="imgorientation" style="width:50%;min-width:50%;min-height:100%"
-					value="#{global['baseURL']}#{global['imageContextPath']}images/AdsizesFRACTS.jpg" />
+					value="#{global['baseURL']}#{global['imageContextPath']}images/adorientation.jpg" />
 			</div>
 			
 			</t:div>
@@ -1252,6 +1252,13 @@ a.panLeft:hover,a.panRight:hover {
 	function setHeight() {
 		$("#imageDialog").css("width","50.3%");
 		$("#imageDialog").css("height","90.3%");
+	}
+	
+	function setPopupHeight() {
+		$("#tooltipImage").css("width","50.3%");
+		$("#tooltipImage").css("top","130px");
+		$("#tooltipImage").css("left","35px");
+		//$("#imageDialog").css("height","90.3%");
 	}
 	function setParentPopupHeight() {
 		$("#imageDialogDescImage").css("width","50.3%");

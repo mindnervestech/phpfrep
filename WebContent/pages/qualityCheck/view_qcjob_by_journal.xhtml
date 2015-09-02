@@ -167,6 +167,14 @@ h3{
 .nav>li>a {
   padding: 5px 15px;
 }
+#qc_form td {
+	font-size: 11px;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+#qc_form th {
+	font-size: 10px;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
 
 </style>
 
@@ -277,28 +285,28 @@ h3{
 													<t:dataTable value="#{deBean.qcJobListBySeachCriteria}"
 														id="dt_orgList" sortMode="multiple"
 														rendered="#{not empty deBean.qcJobListBySeachCriteria}"
-														var="o" styleClass="table table-striped table-hover"
+														var="o" styleClass="table table-striped table-hover main-table"
 														border="0" width="711" rows="#{deBean.rowsPerPage}" binding="#{table}">
 														<h:column headerClass="no-bd" style="width:40px">
-															<div class="div_checkbox">
+															<div class="" style="position: relative;width: 14px;margin-left: 3px;">
 																<h:selectBooleanCheckbox styleClass="uniform"
 																	value="#{deBean.checkedQc[o.id]}" />
 															</div>
 														</h:column>
-														<h:column headerClass="no-bd">
-															<td style="width: 200px;"><t:div
+														<h:column headerClass="col-md-6 col-sm-12">
+															<td style="width: 50%;"><t:div
 																	styleClass="col-md-12 col-sm-12" style="padding:0px">
-																	<div id="frc_img" onclick="goto(#{table.rowIndex + 1})">
+																	<div id="frc_img">
 																		<t:div rendered="#{not empty o.parentImage.imageName}">
-																			<p:commandLink>
+																			<p:commandLink style="width:50%;" ajax="true" oncomplete="PF('enlargeImage').show();setParentPopupHeight(event);">
 																				<img
-																					style="height: 100px; float: left; margin: 5px;"
+																					style=" float: left; margin: 5px;width:98%;"
 																					src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{o.parentImage.id}/#{o.parentImage.imageName}"
 																					class="img-responsive"
 																					alt="#{deBean.parentImageName}" />
 																			</p:commandLink>
-																			<p:commandLink>
-																				<img style="width: 100px; height: 65px;"
+																			<p:commandLink style="width:50%;" oncomplete="PF('enlargeImage').show();setParentPopupHeight(event);">
+																				<img style="width: 98%;"
 																					src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{o.parentImage.id}/#{o.childImage.id}/#{o.childImage.imageName}"
 																					class="img-responsive"
 																					alt="#{deBean.parentImageName}" />
@@ -307,52 +315,39 @@ h3{
 																	</div>
 																</t:div></td>
 														</h:column>
-														<h:column headerClass="col-md-9 col-sm-12">
+														<h:column headerClass="col-md-6 col-sm-12">
 															<div class="table-responsive" id="qc_form"
 																style="padding: 0px;">
-																<table width="100%" border="0"
-																	class="table table-striped table-hover">
-																	<thead class="no-bd" id="first_child">
-																		<tr>
-																			<td>Job ID</td>
-																			<td>Publication</td>
-																			<td>Section</td>
-																			<td>Issue Date</td>
-																			<td>Created By</td>
-																			<td>Job Page URL</td>
-																		</tr>
-																	</thead>
+																<table width="100%" style="border: 1px solid;border-radius:4px;"
+																	>
 																	<tbody class="no-bd-y">
 																		<tr>
-																			<td><h:outputText value="#{o.id}"></h:outputText></td>
-																			<td><h:outputText
+																			<th style="width: 15%;color: green;text-align: right;">Job ID</th>
+																			<td style="width: 40%;background: transparent;"><h:outputText value="#{o.id}"></h:outputText></td>
+																			<th style="width: 15%;color: green;text-align: right;">Publication</th>
+																			<td style="width: 30%;background: transparent;"><h:outputText
 																					value="#{o.parentImage.publicationTitle.publicationTitle}"></h:outputText></td>
-																			<td><h:outputText
+																		</tr>
+																		<tr>
+																			<th style="color: green;text-align: right;">Section</th>
+																			<td style="background: transparent;"><h:outputText
 																					value="#{o.parentImage.section.publicationTitle}"></h:outputText></td>
-																			<td><h:outputText
+																			<th style="color: green;text-align: right;">Issue Date</th>
+																			<td style="background: transparent;"><h:outputText
 																					value="#{o.parentImage.issueDate}"></h:outputText></td>
-																			<td><h:outputText
+																		</tr>
+																		<tr>
+																			<th style="color: green;text-align: right;">Job Page URL</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.landingPageURL}"></h:outputText></td>
+																			<th style="color: green;text-align: right;">Created By</th>
+																			<td style="background: transparent;"><h:outputText
 																					value="#{o.created_by.firstName}"></h:outputText></td>
-																			<td><h:outputText value="#{o.landingPageURL}"></h:outputText></td>
 																		</tr>
-																	</tbody>
-																</table>
-																<table width="100%" border="0"
-																	class="table table-striped table-hover">
-																	<thead class="no-bd" id="second_child">
 																		<tr>
-																			<td>Headline</td>
-																			<td>Institution Type</td>
-																			<td>Ad Type</td>
-																			<td>AdOrientation</td>
-																			<td>Ad Column Width</td>
-																			<td>Job Density</td>
-																		</tr>
-																	</thead>
-																	<tbody class="no-bd-y">
-																		<tr>
-																			<td><h:outputText value="#{o.adHeadLine}"></h:outputText></td>
-																			<td><h:outputText value="Academic"
+																			<th style="color: green;text-align: right;">Headline</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.adHeadLine}"></h:outputText></td>
+																			<th style="color: green;text-align: right;">Institution Type</th>
+																			<td style="background: transparent;"><h:outputText value="Academic"
 																					rendered="#{o.advertiserType == '1074'}" /> <h:outputText
 																					value="Corporate"
 																					rendered="#{o.advertiserType == '1075'}" /> <h:outputText
@@ -360,36 +355,35 @@ h3{
 																					rendered="#{o.advertiserType == '1076'}" /> <h:outputText
 																					value="Private/Nonprofit"
 																					rendered="#{o.advertiserType == '1077'}" /></td>
-																			<td><h:outputText value="#{o.adType}"></h:outputText></td>
-																			<td><h:outputText value="#{o.adOrientation}"></h:outputText></td>
-																			<td><h:outputText value="#{o.addColumn}"></h:outputText></td>
-																			<td><h:outputText value="#{o.jobDensity}"></h:outputText></td>
 																		</tr>
-																	</tbody>
-																</table>
-																<table width="100%" border="0"
-																	class="table table-striped table-hover">
-																	<thead class="no-bd" id="second_child">
 																		<tr>
-																			<td>AdvertiserType</td>
-																			<td>Width</td>
-																			<td>Length</td>
-																			<td>AdCategory</td>
-																			<td>AdSize</td>
-																			<td>Job Listing</td>
+																			<th style="color: green;text-align: right;">Ad Type</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.adType}"></h:outputText></td>
+																			<th style="color: green;text-align: right;">AdOrientation</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.adOrientation}"></h:outputText></td>
 																		</tr>
-																	</thead>
-																	<tbody class="no-bd-y">
 																		<tr>
-																			<td><h:outputText value="Direct"
+																			<th style="color: green;text-align: right;">Ad Column Width</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.addColumn}"></h:outputText></td>
+																			<th style="color: green;text-align: right;">Job Density</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.jobDensity}"></h:outputText></td>
+																		</tr>
+																		<tr>
+																			<th style="color: green;text-align: right;">AdvertiserType</th>
+																			<td style="background: transparent;"><h:outputText value="Direct"
 																					rendered="#{o.advertiserType == '1078'}" /> <h:outputText
 																					value="Agency"
 																					rendered="#{o.advertiserType == '1079'}" /> <h:outputText
 																					value="Others"
 																					rendered="#{o.advertiserType == '1083'}" /></td>
-																			<td><h:outputText value="#{o.width}"></h:outputText></td>
-																			<td><h:outputText value="#{o.length}"></h:outputText></td>
-																			<td><h:outputText value="Recruitment-Job"
+																			<th style="color: green;text-align: right;">Width</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.width}"></h:outputText></td>
+																		</tr>
+																		<tr>
+																			<th style="color: green;text-align: right;">Length</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.length}"></h:outputText></td>
+																			<th style="color: green;text-align: right;">AdCategory</th>
+																			<td style="background: transparent;"><h:outputText value="Recruitment-Job"
 																					rendered="#{o.adCategory == '1047'}" /> <h:outputText
 																					value="Recruitement-Brand"
 																					rendered="#{o.adCategory == '1048'}" /> <h:outputText
@@ -398,9 +392,50 @@ h3{
 																					rendered="#{o.adCategory == '1050'}" /> <h:outputText
 																					value="Meetings/Symposia/Conference"
 																					rendered="#{o.adCategory == '1051'}" /></td>
-																			<td><h:outputText value="#{o.adSize}"></h:outputText></td>
-																			<td><h:outputText value="#{o.jobListing}"></h:outputText></td>
 																		</tr>
+																		<tr>
+																			<th style="color: green;text-align: right;">Job Listing</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.jobListing}"></h:outputText></td>
+																			<th style="color: green;text-align: right;">AdSize</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.adSize}"></h:outputText></td>
+																		</tr>
+																		<tr>
+																			<th style="color: green;text-align: right;">Company Name</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.deCompany.companyName}"></h:outputText></td>
+																			<th style="color: green;text-align: right;">Company Url</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.deCompany.companyURL}"></h:outputText></td>
+																		</tr>
+																		<tr>
+																			<th style="color: green;text-align: right;">Company Address 1</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.deCompany.address}"></h:outputText></td>
+																			<th style="color: green;text-align: right;">Company City</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.deCompany.city}"></h:outputText></td>
+																		</tr>
+																		<tr>
+																			<th style="color: green;text-align: right;">Company Address 2</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.deCompany.address1}"></h:outputText></td>
+																			<th style="color: green;text-align: right;">Company Pincode</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.deCompany.pincode}"></h:outputText></td>
+																		</tr>
+																		<tr>
+																			<th style="color: green;text-align: right;">Company State</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.deCompany.state}"></h:outputText></td>
+																			<th style="color: green;text-align: right;">Company Country</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.deCompany.country}"></h:outputText></td>
+																		</tr>
+																		<tr>
+																			<th style="color: green;text-align: right;">Contact Info </th>
+																			<td style="background: transparent;"><h:outputText value="#{o.contactInfo}"></h:outputText></td>
+																			<th style="color: green;text-align: right;">Start Currency Range</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.currency==1?'$':o.currency==2?'£':'€'}#{o.startCurrencyRange}"></h:outputText></td>
+																		</tr>
+																		<tr>
+																			<th style="color: green;text-align: right;">Company Department</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.deCompany.department}"></h:outputText></td>																			
+																			<th style="color: green;text-align: right;">End Currency Range</th>
+																			<td style="background: transparent;"><h:outputText value="#{o.currency==1?'$':o.currency==2?'£':'€'}#{o.endCurrencyRange}"></h:outputText></td>
+																		</tr>
+																		
 																	</tbody>
 																</table>
 															</div>
@@ -473,9 +508,8 @@ h3{
 												<div class="panel-body">
 													<div class="row">
 														<div class="col-md-12 col-xs-12 p-0 f_l">
-															<div class="col-lg-8 p-0 p-l-20 p-t-20">&nbsp;</div>
-															<div class="col-lg-2 p-0 p-l-20 ">
-																 <h:commandLink ajax="true" styleClass="btn btn-warning" rendered="#{deBean.isApproved == '0'}"
+															<div class="col-lg-8 p-0 p-l-20 p-t-20">
+																<h:commandLink ajax="true" styleClass="btn btn-warning" rendered="#{deBean.isApproved == '0'}"
 																	action="#{deBean.qcRejectJobByList}">
 																	<i class="fa fa-times" title="Reject"
 																		style="margin: 3px 7px 0px 0px; color: white; float: left; text-align: center;"></i>
@@ -484,7 +518,6 @@ h3{
 																	<f:param name="baseId" value="#{o.id}" />
 																</h:commandLink>
 															</div>
-
 															<div class="col-lg-2 p-0 p-l-20 ">
 																<h:commandLink ajax="true" styleClass="btn btn-primary" rendered="#{deBean.isApproved == '0'}"
 																	action="#{deBean.qcApprovedJobByList}">
@@ -493,7 +526,9 @@ h3{
 																		Approve
 																	<f:ajax execute="@form"/>
 																	<f:param name="baseId" value="#{o.id}" />
-																</h:commandLink>
+																</h:commandLink> 
+															</div>
+															<div class="col-lg-2 p-0 p-l-20 ">
 																
 															</div>
 														</div>
@@ -592,7 +627,66 @@ h3{
 																			<div class="row m-5"><div style="font-weight: bold; float:left">AdSize : </div>
 																			<div class="f_l p-l-10"> <h:outputText value="#{o.adSize}"></h:outputText></div></div>
 																		</div>
-	
+																		<div class="f_l p-0">
+																			<div class="row m-5"><div style="font-weight: bold; float:left">Company Name : </div>
+																				<div class="f_l p-l-10"> <h:outputText value="#{o.deCompany.companyName}"></h:outputText></div>
+																			</div>
+																		</div>
+																		<div class="f_l p-0">
+																			<div class="row m-5"><div style="font-weight: bold; float:left">Company Url : </div>
+																				<div class="f_l p-l-10"> <h:outputText value="#{o.deCompany.companyURL}"></h:outputText></div>
+																			</div>
+																		</div>
+																		<div class="f_l p-0">
+																			<div class="row m-5"><div style="font-weight: bold; float:left">Company Address 1 : </div>
+																				<div class="f_l p-l-10"> <h:outputText value="#{o.deCompany.address}"></h:outputText></div>
+																			</div>
+																		</div>
+																		<div class="f_l p-0">
+																			<div class="row m-5"><div style="font-weight: bold; float:left">Company City : </div>
+																				<div class="f_l p-l-10"> <h:outputText value="#{o.deCompany.city}"></h:outputText></div>
+																			</div>
+																		</div>
+																		<div class="f_l p-0">
+																			<div class="row m-5"><div style="font-weight: bold; float:left">Company Address 2 : </div>
+																				<div class="f_l p-l-10"> <h:outputText value="#{o.deCompany.address1}"></h:outputText></div>
+																			</div>
+																		</div>
+																		<div class="f_l p-0">
+																			<div class="row m-5"><div style="font-weight: bold; float:left">Company Pincode : </div>
+																				<div class="f_l p-l-10"> <h:outputText value="#{o.deCompany.pincode}"></h:outputText></div>
+																			</div>
+																		</div>
+																		<div class="f_l p-0">
+																			<div class="row m-5"><div style="font-weight: bold; float:left">Company State : </div>
+																				<div class="f_l p-l-10"> <h:outputText value="#{o.deCompany.state}"></h:outputText></div>
+																			</div>
+																		</div>
+																		<div class="f_l p-0">
+																			<div class="row m-5"><div style="font-weight: bold; float:left">Company Country : </div>
+																				<div class="f_l p-l-10"> <h:outputText value="#{o.deCompany.country}"></h:outputText></div>
+																			</div>
+																		</div>
+																		<div class="f_l p-0">
+																			<div class="row m-5"><div style="font-weight: bold; float:left">Contact Info : </div>
+																				<div class="f_l p-l-10"> <h:outputText value="#{o.contactInfo}"></h:outputText></div>
+																			</div>
+																		</div>
+																		<div class="f_l p-0">
+																			<div class="row m-5"><div style="font-weight: bold; float:left">Start Currency Range : </div>
+																				<div class="f_l p-l-10"> <h:outputText value="#{o.currency==1?'$':o.currency==2?'£':'€'}#{o.startCurrencyRange}"></h:outputText></div>
+																			</div>
+																		</div>
+																		<div class="f_l p-0">
+																			<div class="row m-5"><div style="font-weight: bold; float:left">Company Department : </div>
+																				<div class="f_l p-l-10"> <h:outputText value="#{o.deCompany.department}"></h:outputText></div>
+																			</div>
+																		</div>
+																		<div class="f_l p-0">
+																			<div class="row m-5"><div style="font-weight: bold; float:left">End Currency Range : </div>
+																				<div class="f_l p-l-10"> <h:outputText value="#{o.currency==1?'$':o.currency==2?'£':'€'}#{o.endCurrencyRange}"></h:outputText></div>
+																			</div>
+																		</div>
 																	</div>
 																	<div class="">
 																		<p:inputTextarea styleClass="form-control"
@@ -615,7 +709,20 @@ h3{
 			</div>
 		</div>
 	</div>
-
+	<p:dialog id="enlargeImage" draggable="true" resizable="true" position="left top"
+		header="Child Image" modal="false" widgetVar="enlargeImage"
+		style="width:30%; overflow:scroll;background-color:#ffffff">
+		<div class="" style="width:100%;min-width: 100%; min-height: 100%">
+			<t:div styleClass="data_image m-b-20" id="imgcrp_div1"
+				style="width:100%;min-width:100%;min-height:100%">
+					<div id="panzoom41">
+				<h:graphicImage id="enlargeImagePop" style="width:50%;min-width:50%;min-height:100%"
+					value="#{global['baseURL']}#{global['imageContextPath']}images/adorientation.jpg" />
+			</div>
+			
+			</t:div>
+		</div>
+	</p:dialog>
 	<script type="text/javascript">
 		
 		
@@ -647,7 +754,14 @@ h3{
 		type="text/javascript"></script>
 	<script type="text/javascript"
 		src="#{request.contextPath}/assets/plugins/jquery.bxslider.min.js"></script>
-
+	<style>
+		.main-table>tr {
+			padding: 2px;
+		}
+		.main-table>tbody>tr {
+			padding: 2px;
+		}
+	</style>
 	<script>
 	var slider;
 		$(document).ready(function() {
@@ -697,6 +811,13 @@ h3{
 			} else {
 				alert("Please Select Any Data Entry");
 			}
+		}
+		
+		function setParentPopupHeight(event) {
+			console.log($(event.srcElement).attr('src'));
+			$("#enlargeImagePop").attr('src',$(event.srcElement).attr('src'));
+			$("#enlargeImage").css("width","50.3%");
+			$("#enlargeImage").css("height","90.3%");
 		}
 	</script>
 	<script src="#{request.contextPath}/assets/js/application.js"></script>
