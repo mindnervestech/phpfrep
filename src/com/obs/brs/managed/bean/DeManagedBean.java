@@ -248,7 +248,16 @@ public class DeManagedBean implements Serializable{
 	
 	private DeCompany selectedCompany;
 	private Integer selectedCompanyId;
+	private boolean isFilter = true;
 	
+	public boolean isFilter() {
+		return isFilter;
+	}
+
+	public void setFilter(boolean isFilter) {
+		this.isFilter = isFilter;
+	}
+
 	public Integer getSelectedCompanyId() {
 		return selectedCompanyId;
 	}
@@ -2941,7 +2950,8 @@ public class DeManagedBean implements Serializable{
 	
 	
 	public List<DataEntry> getQcJobListBySeachCriteria() {
-		if(dataEntryuserList==null || dataEntryuserList.isEmpty()) {
+		if(this.isFilter) {
+			this.isFilter = false;
 			User user = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 			this.publicationId = (String) sessionManager.getSessionAttribute(SessionManager.PUBLICATIONID);
 			this.jobStatusGot = (String) sessionManager.getSessionAttribute(SessionManager.JOBSTATUS);
@@ -2953,7 +2963,7 @@ public class DeManagedBean implements Serializable{
 			dataEntryuserList = new ArrayList<DataEntry>();
 			this.issueDatePubSearch = (String) sessionManager.getSessionAttribute(sessionManager.ISSUEDATE);
 			this.createdByDeo = (String) sessionManager.getSessionAttribute(sessionManager.CREATEDBYDEO);
-			if(this.issueDatePubSearch == null && this.publicationId != ""){
+			if(this.issueDatePubSearch == null && (this.publicationId==null || this.publicationId.equals(""))){
 				dataEntryuserList.addAll(getDeService().geAllQcJob());
 				return dataEntryuserList;
 			}
@@ -3020,6 +3030,7 @@ public class DeManagedBean implements Serializable{
 	
 	public void sendQcJournalView(ValueChangeEvent event)	
 	{ 
+		this.isFilter = true;
 		this.publicationId =((String) event.getNewValue());
 		if(this.publicationId.equals("all"))
 		{
@@ -3032,6 +3043,7 @@ public class DeManagedBean implements Serializable{
 
 	public void sendIssueDate(ValueChangeEvent event)	
 	{ 
+		this.isFilter = true;
 		this.issueDatePubSearch =((String) event.getNewValue());
 		if(this.issueDatePubSearch.equals("all"))
 		{
@@ -3044,6 +3056,7 @@ public class DeManagedBean implements Serializable{
 	
 	public void sendCretedByDeo(ValueChangeEvent event)	
 	{ 
+		this.isFilter = true;
 		this.createdByDeo =((String) event.getNewValue());
 		System.out.println("createdBy:"+this.createdByDeo);
 		if(this.createdByDeo.equals("all"))
@@ -3668,6 +3681,7 @@ public List<String> getcompaniesId(String query) {
 	}
 	public void localeJobChangedValue(ValueChangeEvent event)	
 	{ 
+		this.isFilter = true;
 		this.jobStatusGot =((String) event.getNewValue());
 		if(!this.jobStatusGot.equals("0"))
 		{
