@@ -2941,35 +2941,37 @@ public class DeManagedBean implements Serializable{
 	
 	
 	public List<DataEntry> getQcJobListBySeachCriteria() {
-		User user = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
-		this.publicationId = (String) sessionManager.getSessionAttribute(SessionManager.PUBLICATIONID);
-		this.jobStatusGot = (String) sessionManager.getSessionAttribute(SessionManager.JOBSTATUS);
-		if(this.jobStatusGot != null && this.jobStatusGot != ""){
-			this.jobStatus= Integer.parseInt(this.jobStatusGot);
-		}
-		String DATE_FORMAT = "yyyy-MM-dd";
-		DateFormat dateFormat = new SimpleDateFormat (DATE_FORMAT);	
-		dataEntryuserList = new ArrayList<DataEntry>();
-		this.issueDatePubSearch = (String) sessionManager.getSessionAttribute(sessionManager.ISSUEDATE);
-		this.createdByDeo = (String) sessionManager.getSessionAttribute(sessionManager.CREATEDBYDEO);
-		if(this.issueDatePubSearch == null && this.publicationId != ""){
-			dataEntryuserList.addAll(getDeService().geAllQcJob());
-			return dataEntryuserList;
-		}
-		if(this.issueDatePubSearch == null){
-			this.issueDatePubSearch = "";
-		}
-		if(this.createdByDeo == null) {
-			this.createdByDeo = "";
-		}
-		if(this.jobStatus == 0 && this.searchValue.equals("")){
-			dataEntryuserList.addAll(getDeService().geQcJobBySeach(this.publicationId,this.issueDatePubSearch,this.createdByDeo));
-		}else if(this.jobStatus >= 0 ){
+		if(dataEntryuserList==null || dataEntryuserList.isEmpty()) {
+			User user = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
+			this.publicationId = (String) sessionManager.getSessionAttribute(SessionManager.PUBLICATIONID);
+			this.jobStatusGot = (String) sessionManager.getSessionAttribute(SessionManager.JOBSTATUS);
+			if(this.jobStatusGot != null && this.jobStatusGot != ""){
+				this.jobStatus= Integer.parseInt(this.jobStatusGot);
+			}
+			String DATE_FORMAT = "yyyy-MM-dd";
+			DateFormat dateFormat = new SimpleDateFormat (DATE_FORMAT);	
+			dataEntryuserList = new ArrayList<DataEntry>();
+			this.issueDatePubSearch = (String) sessionManager.getSessionAttribute(sessionManager.ISSUEDATE);
+			this.createdByDeo = (String) sessionManager.getSessionAttribute(sessionManager.CREATEDBYDEO);
+			if(this.issueDatePubSearch == null && this.publicationId != ""){
+				dataEntryuserList.addAll(getDeService().geAllQcJob());
+				return dataEntryuserList;
+			}
+			if(this.issueDatePubSearch == null){
+				this.issueDatePubSearch = "";
+			}
+			if(this.createdByDeo == null) {
+				this.createdByDeo = "";
+			}
+			if(this.jobStatus == 0 && this.searchValue.equals("")){
+				dataEntryuserList.addAll(getDeService().geQcJobBySeach(this.publicationId,this.issueDatePubSearch,this.createdByDeo));
+			}else if(this.jobStatus >= 0 ){
 				dataEntryuserList.addAll(getDeService().geQcJobBySeachCriteria(this.jobStatus,this.searchValue,this.publicationId,this.issueDatePubSearch,this.createdByDeo));
-		}
-		Collections.reverse(dataEntryuserList);
-		for(DataEntry dataEntry: dataEntryuserList){
-			checkedQc.put(dataEntry.getId(),Boolean.FALSE);
+			}
+			Collections.reverse(dataEntryuserList);
+			for(DataEntry dataEntry: dataEntryuserList){
+				checkedQc.put(dataEntry.getId(),Boolean.FALSE);
+			}
 		}
 		return dataEntryuserList;
 	}

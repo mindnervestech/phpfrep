@@ -323,7 +323,7 @@ public class DeServiceDAO implements IDeServiceDAO {
 
 	@Override
 	public DeCompany getDeCompanyNameByCompanyName(String companyName) {
-		List<DeCompany> deCompanyList = getSessionFactory().getCurrentSession().createQuery("from DeCompany where companyName=? and isDeleted=0 ").setParameter(0, companyName).list();
+		List<DeCompany> deCompanyList = getSessionFactory().getCurrentSession().createQuery("from DeCompany where lower(companyName)=? and isDeleted=0 ").setParameter(0, companyName.toLowerCase()).list();
 		if (deCompanyList.size() > 0 ) {
 			return deCompanyList.get(0);
 		}
