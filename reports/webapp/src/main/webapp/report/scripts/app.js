@@ -347,6 +347,7 @@
 		    	window.oTable = $(element).dataTable({
 		          sDom: '<"clear">TlfCrtip',
 		          pageLength: 1000,
+		          "paging": false,
 		          //sScrollY: "500px",
 		          tableTools: {
 		        	  "sSwfPath": "/webapp/report/app/swf/copy_csv_xls_pdf.swf",
@@ -395,7 +396,7 @@
 						e.render = function(cellData, type, rowData) {
 							//return cellData;
 							if(cellData == undefined || (cellData[0] == undefined &&  cellData[1] == "TODO") ) return "";
-							if(cellData[1] == "TODO") return cellData[0];
+							if(cellData[1] == "TODO") return "<b>" + cellData[0] + "</b>";
 							
 							return "<a json='"+cellData[1]+"' onClick='drillDown(this);return false;' href='#'>" + cellData[0] + "</a>";
 						
@@ -434,6 +435,7 @@
 		    	window.oTable1 = $(element).dataTable({
 		          sDom: '<"clear">TlfCrtip',
 		          pageLength: 1000,
+		          "paging": false,
 		          //sScrollY: "500px",
 		          tableTools: {
 		        	  "sSwfPath": "/webapp/report/app/swf/copy_csv_xls_pdf.swf",

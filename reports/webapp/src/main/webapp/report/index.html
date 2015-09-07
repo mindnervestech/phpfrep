@@ -160,20 +160,20 @@ li.active>a {
         <thead style="background-color: #f0ad4e;color: antiquewhite;">
             <tr>
                 <th>Name</th>
-                <th>Description</th>
-                <th colspan=2>Action</th>
+                <!-- <th>Description</th>
+                <th colspan=2>Action</th> -->
             </tr>
         </thead>
         <tbody>
         	<tr data-ng-repeat="rpt in reportMDs" >
-                <td>{{rpt.name}}</td>
-                <td>{{rpt.description}}</td>
+                <!-- <td>{{rpt.name}}</td>
+                <td>{{rpt.description}}</td> -->
                 <td>
-                  <a href="#" data-ng-click="showReport(rpt)">Show</a> &nbsp;
+                  <a href="#" data-ng-click="showReport(rpt)">{{rpt.name}} - Show</a> &nbsp;
                 </td>
-                <td ng-if="rpt.pivotConfig!=null || rpt.searchCriteria!=null">
+                <!-- <td ng-if="rpt.pivotConfig!=null || rpt.searchCriteria!=null">
                   <a href="#" data-ng-click="deleteReport(rpt.id)">Delete</a> &nbsp;
-                </td>
+                </td> -->
             </tr>
             
         </tbody>
@@ -196,7 +196,9 @@ li.active>a {
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#table-view" aria-controls="table-view" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-th-list"></span> Table View</a></li>
     <li role="presentation"><a href="#pivot-view" aria-controls="pivot-view" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Pivot View</a></li>
+   <!-- 
     <li role="presentation"><a href="#detail-view" aria-controls="table-view" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-th-list"></span> Detail View</a></li>
+    -->
     <a href="#" ng-click="expanded =! expanded" style="
     margin-top: 10px;
     margin-left: 10px;
@@ -206,7 +208,7 @@ li.active>a {
   <div class="tab-content" style="padding: 10px;">
     <div role="tabpanel" class="tab-pane active" id="table-view">
 			
-		<div class="btn-group pull-right">
+		<!-- <div class="btn-group pull-right">
 			<button ng-if="!isSavedTemplateTable" class="btn btn-primary" ng-click="openTemplateModal(1)" style="margin-right: 2px;font-size: 12px;">Save as template</button>
 			<button class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown">
 			<i class="fa fa-bars"></i> Export</button>
@@ -218,7 +220,7 @@ li.active>a {
 				<li><a href="#" onclick="$('#rpt_table').tableExport({type:'xml',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/xml.png" width="24px"> XML</a></li>
 				<li class="divider"></li>
 			</ul>
-		</div>
+		</div> -->
 	
 		<!-- DataTable Container -->
 		<table id="rpt_table"
