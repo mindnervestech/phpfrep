@@ -1543,6 +1543,17 @@ public class DeManagedBean implements Serializable{
 		deCompany.setAddress1(this.address1);
 		return deCompany;
 	}
+	public void clearAllDeCompanyDetails(){
+		this.companyName = "";
+		this.address = "";
+		this.city = "";
+		this.state = "";
+		this.country = "";
+		this.pincode = "";
+		this.department = "";
+		this.companyURL = "";
+		this.address1 = "";
+	}
 
 	/** 
 	 * 	  save ad Details 
@@ -4525,7 +4536,10 @@ public List<String> getcompaniesId(String query) {
 									deCompany = getAllDeCompanyDetails(deCompany);
 									deCompany.setIsDeleted(false);
 									//deCompany.setCreated_by(currentUser);
-									deService.addDeCompany(deCompany);
+									deCompany.setId(deService.addDeCompany(deCompany));
+									dataEntry.setDeCompany(deCompany);
+									this.selectedCompany = deCompany;
+									clearAllDeCompanyDetails();
 								}
 								else{
 									messageService.messageFatal(null, "CompanyName already exist.");

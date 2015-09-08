@@ -105,6 +105,7 @@ input[type="radio"],input[type="checkbox"] {
 			closable="true" showDetail="true" showIcon="false"
 			severity="info,fatal" />
 		<div id="main-content" class="trans_wrap">
+		<h:form>
 			<div class="page-title">
 				<i class="icon-custom-left"></i>
 				<h3 style="width: 160px;" class="p-0 m-0">
@@ -145,13 +146,25 @@ input[type="radio"],input[type="checkbox"] {
 							<h:inputHidden value="#{deBean.deJobid}" />
 							<h:inputHidden value="#{deBean.deDataId}" />
 							<h:inputHidden value="#{deBean.companyId}" />
-							<div class="panel-body">
+							<div class="panel-body" style="padding: 5px;">
 								<div class="row">
 									<div class="col-md-12 col-xs-12 p-0 f_l">
-										<div class="col-lg-7 p-0 p-l-20 p-t-20">&nbsp;</div>
+										<div class="col-lg-7 p-0">
+											<div class="col-md-1">&nbsp;</div>
+											<div class="col-md-9">
+											<h:commandLink ajax="true" styleClass="btn btn-warning" rendered="#{deBean.isApproved == '0'}"
+												action="#{deBean.qcRejectJobByList}">
+												<i class="fa fa-times" title="Reject"
+												style="margin: 3px 7px 0px 0px; color: white; float: left; text-align: center;"></i>
+												Reject
+												<f:ajax execute="@form" />
+												<f:param name="baseId" value="#{deBean.deDataId}" />
+											</h:commandLink>
+											</div>
+										</div>
 
-										<div class="col-lg-5 p-0 p-l-20 p-t-20">
-
+										<div class="col-lg-5 p-0">
+											<div class="col-md-10">
 											<h:commandButton styleClass="btn btn-primary"
 												action="#{deBean.updateDataEntry}" value="Update">
 												<f:param name="baseId" value="#{deBean.deDataId}" />
@@ -159,6 +172,17 @@ input[type="radio"],input[type="checkbox"] {
 											&nbsp;
 											<h:outputLink value="manage_qcjob.xhtml"
 												class="btn btn-default">Back</h:outputLink>
+											</div>
+											<div class="col-md-2">
+											<h:commandLink ajax="true" styleClass="btn btn-primary" style="float:right;" rendered="#{deBean.isApproved == '0'}"
+												action="#{deBean.qcApprovedJobByList}">
+												<i  class="fa fa-check" title="Approve"
+													style="margin: 3px 7px 0px 0px; color: white; float: left; text-align: center;"></i>
+													Approve
+													<f:ajax execute="@form"/>
+													<f:param name="baseId" value="#{deBean.deDataId}" />
+											</h:commandLink>
+											</div> 
 										</div>
 									</div>
 									<div class="col-md-4 f_l">
@@ -219,12 +243,66 @@ input[type="radio"],input[type="checkbox"] {
 														<div class="col-md-7 col-sm-7 col-xs-7 p-0 p-b-5 ">
 															<p:autoComplete id="acSimple"
 																placeholder="Search by Company"
-																value="#{deBean.searchValueInCompanyName}"
+																value="#{deBean.selectedCompany}"
+																var="selectedCompany1" 
+																itemLabel="#{selectedCompany1.companyName}" 
+																itemValue="#{selectedCompany1}"
+																converter="#{companyConverter}"
 																style="height:32px;"
-																completeMethod="#{deBean.companyDetails}" effect="fade" />
+																completeMethod="#{deBean.companyDetails}" effect="fade">
+																<p:ajax event="itemSelect" update = "abc" />
+																</p:autoComplete>
 														</div>
 													</div>
-
+													<h:panelGroup  id="abc">
+																	<div class="row">
+															
+															<div class = "col-lg-4">
+															<div class="col-lg-12" style="font-weight: bold;">Company
+															Name</div>
+													<div class="col-lg-12">
+														   <h:outputText  value="#{deBean.selectedCompany.companyName}" />
+													</div>
+													</div>
+													<div class = "col-lg-4">
+												<div class="col-lg-12" style="font-weight: bold;margin-top: 0%;">Company
+													URL</div>
+												<div class="col-lg-12">
+													
+													<h:outputText value="#{deBean.selectedCompany.companyURL}" />
+													
+												</div>
+					
+											</div>
+										
+										<div class="col-lg-4">
+				
+											<div class="col-lg-12" style="font-weight: bold;">Company Line 2</div>
+												<div class="col-lg-12">
+						
+													<h:outputText value="#{deBean.selectedCompany.department}" />
+						
+											</div>
+										</div>
+										
+										</div>
+										
+										<div class="row">
+			<div class="col-lg-12">
+					<!-- <div class="col-md-12" style="font-weight: bold;">Address</div> -->
+					<div class="col-md-12">
+						<h:outputText value="#{deBean.selectedCompany.address}"/> &nbsp;&nbsp;
+						<h:outputText value="#{deBean.selectedCompany.address1}"/>&nbsp;&nbsp;
+						<h:outputText value="#{deBean.selectedCompany.city}"/>&nbsp;&nbsp;
+						<h:outputText value="#{deBean.selectedCompany.state}"/>&nbsp;&nbsp;
+						<h:outputText value="#{deBean.selectedCompany.country}"/>&nbsp;&nbsp;
+					</div>
+					</div>
+					
+					
+					
+			</div>
+			</h:panelGroup >
 												</div>
 												<div class="tab-pane fade" id="tab2_2">
 													<div class="tab_border">
@@ -239,16 +317,60 @@ input[type="radio"],input[type="checkbox"] {
 																	</p:inputText>
 																</div>
 
+																<div class="row m-0 m-5" style="font-weight: bold;">Company
+																	URL</div>
+																<div class="row m-0">
+																	<p:inputText styleClass="form-control"
+																		value="#{deBean.companyURL}"
+																		placeholder="Company Name">
+																	</p:inputText>
+																</div>
+																
+																<div class="row m-0  m-5" style="font-weight: bold;">State</div>
+																<div class="row m-0">
+																	<p:autoComplete id="State" placeholder="State"
+																		value="#{deBean.state}"
+																		completeMethod="#{deBean.stateDetails}" effect="fade" />
+																</div>
+															</div>
+															
+															<div class="col-lg-4">
 																<div class="row m-0  m-5" style="font-weight: bold;">Address
-																	line</div>
+																	line 1</div>
 																<div class="row m-0">
 																	<p:inputText styleClass="form-control"
 																		value="#{deBean.address}" placeholder="Address line"
 																		requiredMessage="Please enter your Address">
 																	</p:inputText>
 																</div>
+																
+																<div class="row m-0  m-5" style="font-weight: bold;">Company
+																	line</div>
+																<div class="row m-0">
+																	<p:inputText styleClass="form-control"
+																		value="#{deBean.department}" placeholder="Address line"
+																		requiredMessage="Please enter your Address">
+																	</p:inputText>
+																</div>
+																
+																<div class="row m-0  m-5" style="font-weight: bold;">Country</div>
+																<div class="row m-0">
+																	<p:autoComplete id="Country" placeholder="Country"
+																		value="#{deBean.country}"
+																		completeMethod="#{deBean.countryDetails}"
+																		effect="fade" />
+																</div>
 															</div>
+															
 															<div class="col-lg-4">
+																<div class="row m-0  m-5" style="font-weight: bold;">Address
+																	line 2</div>
+																<div class="row m-0">
+																	<p:inputText styleClass="form-control"
+																		value="#{deBean.address1}" placeholder="Address line"
+																		requiredMessage="Please enter your Address">
+																	</p:inputText>
+																</div>
 																<div class="row m-0  m-5" style="font-weight: bold;">City</div>
 																<div class="row m-0">
 																	<p:inputText styleClass="form-control"
@@ -257,15 +379,6 @@ input[type="radio"],input[type="checkbox"] {
 																		<f:validateRegex pattern="^[a-zA-Z0-9' ']*$" />
 																	</p:inputText>
 																</div>
-
-																<div class="row m-0  m-5" style="font-weight: bold;">State</div>
-																<div class="row m-0">
-																	<p:autoComplete id="State" placeholder="State"
-																		value="#{deBean.state}"
-																		completeMethod="#{deBean.stateDetails}" effect="fade" />
-																</div>
-															</div>
-															<div class="col-lg-4">
 																<div class="row m-0  m-5" style="font-weight: bold;">ZipCode</div>
 																<div class="row m-0">
 																	<p:inputText styleClass="form-control"
@@ -278,20 +391,13 @@ input[type="radio"],input[type="checkbox"] {
 																		<f:converter converterId="javax.faces.Integer"></f:converter>
 																	</p:inputText>
 																</div>
-																<div class="row m-0  m-5" style="font-weight: bold;">Country</div>
-																<div class="row m-0">
-																	<p:autoComplete id="Country" placeholder="Country"
-																		value="#{deBean.country}"
-																		completeMethod="#{deBean.countryDetails}"
-																		effect="fade" />
-																</div>
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-										<div class="col-md-12 p-0 bord">
+										<div class="col-md-12 p-0">
 											<div class="col-md-4 p-0">
 												<div class="row m-0  m-5" style="font-weight: bold;">Job
 													Density</div>
@@ -319,21 +425,8 @@ input[type="radio"],input[type="checkbox"] {
 														</h:inputText>
 													</t:div>
 												</div>
-												<div class="col-md-12">
-													<div class="row m-0 p-b-10" style="font-weight: bold;">
-														Width in cm</div>
-													<div class="row m-0">
-														<p:inputText styleClass="form-control" id="img_width"
-															style="height:30px;" value="#{deBean.width}"
-															placeholder="Width"
-															validatorMessage="Invalid Image width">
-															<f:validateDoubleRange minimum="0.0" />
-														</p:inputText>
-														<p:message for="img_width" display="text" />
-													</div>
-												</div>
 											</div>
-											<div class="col-md-6 p-0">
+											<div class="col-md-4 p-0">
 												<div class="row m-0  m-5" style="font-weight: bold;">Ad
 													Size</div>
 												<div class="row m-0">
@@ -363,9 +456,40 @@ input[type="radio"],input[type="checkbox"] {
 
 												</div>
 												<div class="col-md-7 p-0">
-													<div class="row m-0 p-b-10" style="font-weight: bold;">
+													
+												</div>
+											</div>
+											<div class="col-md-4 p-0">
+												<div class="row m-0  m-5" style="font-weight: bold;">Ad
+													Type</div>
+												<div class="row m-0">
+													<h:selectOneRadio value="#{deBean.adType}"
+														layout="lineDirection">
+														<f:selectItem itemLabel="Display" itemValue="Display" />
+														<f:selectItem itemLabel="Line" itemValue="Line" />
+														<f:selectItem itemLabel="Insert" itemValue="Insert" />
+													</h:selectOneRadio>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-12 col-xs-12 p-0 p-b-10 f_l">
+											<div class="col-md-4 p-0">
+											<div class="col-md-12 p-0">
+													<div class="col-md-6 m-0 p-b-10" style="font-weight: bold;">
+														Width in cm</div>
+													<div class="col-md-6 m-0 p-b-10" style="font-weight: bold;">
 														Length in cm</div>
-													<div class="row m-0">
+													<div class="col-md-6 m-0">
+														<p:inputText styleClass="form-control" id="img_width"
+															style="height:30px;" value="#{deBean.width}"
+															placeholder="Width"
+															validatorMessage="Invalid Image width">
+															<f:validateDoubleRange minimum="0.0" />
+														</p:inputText>
+														<p:message for="img_width" display="text" />
+													</div>
+													
+													<div class="col-md-6 m-0">
 														<p:inputText styleClass="form-control" id="img_height"
 															style="height:30px;" value="#{deBean.length}"
 															placeholder="Length"
@@ -375,19 +499,37 @@ input[type="radio"],input[type="checkbox"] {
 														<p:message for="img_height" display="text" />
 													</div>
 												</div>
-											</div>
-											<div class="col-md-2 p-0">
-												<div class="row m-0  m-5" style="font-weight: bold;">Ad
-													Type</div>
-												<div class="row m-0">
-													<h:selectOneRadio value="#{deBean.adType}"
-														layout="pageDirection">
-														<f:selectItem itemLabel="Display" itemValue="Display" />
-														<f:selectItem itemLabel="Line" itemValue="Line" />
-														<f:selectItem itemLabel="Insert" itemValue="Insert" />
-													</h:selectOneRadio>
 												</div>
-											</div>
+												<div class="col-md-8">
+													<div class="col-md-10 col-xs-9 p-t-10 f_l"
+													style="background-color: #eee; margin: 14px 0px 0px 10px;">
+													<div class="col-md-3 col-xs-12 p-0 p-t-10 p-b-10 "
+														style="font-weight: bold;">Currency Range</div>
+														<div class="col-md-3 col-xs-12 p-0 ">
+															<h:selectOneMenu class="form-control"
+																hideNoSelectionOption="false" value="#{deBean.currency}">
+																<!-- <f:selectItem itemLabel="Select" itemValue="" /> -->
+																<f:selectItem itemLabel="US" itemValue="1" />
+															</h:selectOneMenu>
+														</div>
+														<div class="col-md-3 col-xs-12 p-0 p-r-5 p-l-5 p-b-10">
+															<h:inputText class="form-control col-lg-1"
+																id="startCurrency" value="#{deBean.startCurrencyRange}"
+																validatorMessage="Invalid Currency">
+																<f:validateDoubleRange minimum="0.0" />
+															</h:inputText>
+															<p:message for="startCurrency" display="text" />
+														</div>
+														<div class="col-md-3 col-xs-12 p-0 p-r-5 p-l-5">
+															<h:inputText class="form-control col-lg-1" id="endCurrency"
+																value="#{deBean.endCurrencyRange}"
+																validatorMessage="Invalid Currency">
+																<f:validateDoubleRange minimum="0.0" />
+															</h:inputText>
+															<p:message for="endCurrency" display="text" />
+														</div>
+													</div>
+												</div>
 										</div>
 										<div class="col-md-12 col-xs-12 p-0 p-b-10 f_l">
 											<div class="col-md-3 p-0">
@@ -502,57 +644,37 @@ input[type="radio"],input[type="checkbox"] {
 											</div>
 										</div>
 										<div class="col-md-12">
-											<div class="col-md-6 col-sm-9 col-xs-9  p-b-10 f_l p-0">
+											<div class="col-md-3 col-sm-9 col-xs-9  p-b-10 f_l p-0">
 												<div class="row m-0 p-b-10" style="font-weight: bold;">Ad
 													Headline</div>
 												<div class="row m-0">
 													<p:inputTextarea styleClass="form-control"
-														style="margin: 0px; height: 50px; padding-top: 4px;"
+														style="margin: 0px; height: 250px; padding-top: 4px;"
 														autoResize="false" placeholder="Headline"
 														value="#{deBean.adHeadLine}" />
 												</div>
 											</div>
-											<div class="col-md-5 col-xs-9 p-t-10 f_l"
-												style="background-color: #eee; margin: 14px 0px 0px 10px;">
-												<div class="col-md-3 col-xs-12 p-0 p-t-10 p-b-10 "
-													style="font-weight: bold;">Currency Range</div>
-												<div class="col-md-3 col-xs-12 p-0 ">
-													<h:selectOneMenu class="form-control"
-														hideNoSelectionOption="false" value="#{deBean.currency}">
-														<!-- <f:selectItem itemLabel="Select" itemValue="" /> -->
-														<f:selectItem itemLabel="US" itemValue="1" />
-													</h:selectOneMenu>
-												</div>
-												<div class="col-md-3 col-xs-12 p-0 p-r-5 p-l-5 p-b-10">
-													<h:inputText class="form-control col-lg-1"
-														id="startCurrency" value="#{deBean.startCurrencyRange}"
-														validatorMessage="Invalid Currency">
-														<f:validateDoubleRange minimum="0.0" />
-													</h:inputText>
-													<p:message for="startCurrency" display="text" />
-												</div>
-												<div class="col-md-3 col-xs-12 p-0 p-r-5 p-l-5">
-													<h:inputText class="form-control col-lg-1" id="endCurrency"
-														value="#{deBean.endCurrencyRange}"
-														validatorMessage="Invalid Currency">
-														<f:validateDoubleRange minimum="0.0" />
-													</h:inputText>
-													<p:message for="endCurrency" display="text" />
-												</div>
+											<div class="col-md-9 f_l">
+												<div class="row m-0 p-b-10" style="font-weight: bold;">OCR
+													Text</div>
+												<p:inputTextarea styleClass="form-control"
+													style="height:250px;" autoResize="false"
+													value="#{deBean.ocrText}" />
 											</div>
 										</div>
-										<div class="col-md-12 f_l">
-											<p:inputTextarea styleClass="form-control"
-												style="height:72px;" autoResize="false"
-												value="#{deBean.ocrText}" />
-										</div>
+										
 									</div>
 
 
 								</div>
 							</div>
 						</h:form>
-						<h:form id="dlgform">
+						
+					</div>
+				</div>
+			</div>
+			</h:form>
+			<h:form id="dlgform">
 							<h:inputHidden value="#{deBean.id}" />
 							<div id="main-content">
 								<div class="page-title">
@@ -608,9 +730,6 @@ input[type="radio"],input[type="checkbox"] {
 								</div>
 							</div>
 						</h:form>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 	<!-- BEGIN MANDATORY SCRIPTS -->
