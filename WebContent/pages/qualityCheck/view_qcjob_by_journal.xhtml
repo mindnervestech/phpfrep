@@ -296,17 +296,17 @@ h3{
 														<h:column headerClass="col-md-6 col-sm-12">
 															<td style="width: 50%;"><t:div
 																	styleClass="col-md-12 col-sm-12" style="padding:0px">
-																	<div id="frc_img">
-																		<t:div rendered="#{not empty o.parentImage.imageName}">
-																			<p:commandLink style="width:50%;" ajax="true" oncomplete="PF('enlargeImage').show();setParentPopupHeight(event);">
+																	<div class="col-md-12">
+																		<t:div rendered="#{not empty o.parentImage.imageName}" style="width:100%;">
+																			<p:commandLink ajax="true" style="width:50%;" oncomplete="PF('enlargeImage').show();setParentPopupHeight(event);">
 																				<img
-																					style=" float: left; margin: 5px;width:98%;"
+																					style=" float: left; margin: 5px;width:49%;height: 275px;"
 																					src="#{global['baseURL']}#{global['imageContextPath']}#{global['parentImagePath']}#{o.parentImage.id}/#{o.parentImage.imageName}"
 																					class="img-responsive"
 																					alt="#{deBean.parentImageName}" />
 																			</p:commandLink>
 																			<p:commandLink style="width:50%;" oncomplete="PF('enlargeImage').show();setParentPopupHeight(event);">
-																				<img style="width: 98%;"
+																				<img style="width: 49%;height: 275px;"
 																					src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{o.parentImage.id}/#{o.childImage.id}/#{o.childImage.imageName}"
 																					class="img-responsive"
 																					alt="#{deBean.parentImageName}" />
