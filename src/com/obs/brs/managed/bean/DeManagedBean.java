@@ -249,7 +249,47 @@ public class DeManagedBean implements Serializable{
 	private DeCompany selectedCompany;
 	private Integer selectedCompanyId;
 	private boolean isFilter = true;
+	private Integer pages[];
+	private int pageRange = 10;
+	private String totalStr;
 	
+	
+	public String getTotalStr() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append((this.imageOffset/this.imagePerPage)+1);
+		buffer.append("/");
+		buffer.append(((this.getParentImageList().size()/this.imagePerPage)+1));
+		return buffer.toString();
+	}
+
+	public void setTotalStr(String totalStr) {
+		this.totalStr = totalStr;
+	}
+
+	private void loadPagination() {
+		int totalRows = this.getParentImageList().size();
+		int currentPage = (this.imageOffset/this.imagePerPage)+1;
+		currentPage = (totalRows / this.imagePerPage) - ((totalRows - currentPage) / this.imagePerPage) + 1;
+        int totalPages = (totalRows / this.imagePerPage) + ((totalRows % this.imagePerPage != 0) ? 1 : 0);
+        int pagesLength = Math.min(pageRange, totalPages);
+        pages = new Integer[pagesLength];
+        int firstPage = Math.min(Math.max(0, currentPage - (pageRange / 2)), totalPages - pagesLength);
+        for (int i = 0; i < pagesLength; i++) {
+            pages[i] = ++firstPage;
+        }
+	}
+	
+	public Integer[] getPages() {
+		if(pages==null) {
+			loadPagination();
+		}
+		return pages;
+	}
+
+	public void setPages(Integer[] pages) {
+		this.pages = pages;
+	}
+
 	public boolean isFilter() {
 		return isFilter;
 	}
@@ -427,6 +467,13 @@ public class DeManagedBean implements Serializable{
 		this.advertiserName = advertiserName;
 	}
 	public int getImagePerPage() {
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGE); 
+			if(rowsPerPage!=null){
+				imagePerPage = Integer.valueOf(rowsPerPage.toString());
+			}
+		}catch(Exception e){
+		}
 		return imagePerPage;
 	}
 	public void setImagePerPage(int imagePerPage) {
@@ -4114,7 +4161,9 @@ public List<String> getcompaniesId(String query) {
 	public void localImageChanged(ValueChangeEvent event)	
 	{ 
 		String perPage = event.getNewValue().toString();
+		imagePerPage = Integer.parseInt(perPage);
 		sessionManager.setSessionAttributeInSession(SessionManager.IMAGEPERPAGE, perPage);
+		loadPagination();
 	}
 	/**
 	 * pagination method for next page 
@@ -4143,6 +4192,20 @@ public List<String> getcompaniesId(String query) {
 			}
 			if(imageOffset>1)
 				imageOffset = imageOffset - Integer.valueOf(imagePerPage);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void gotoPage() {
+		int page = Integer.valueOf(facesUtils.getRequestParameterMap("page"));
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGE);
+			if(rowsPerPage!=null){
+				imagePerPage = Integer.valueOf(rowsPerPage.toString());
+			}
+			imageOffset = (page-1) * imagePerPage;
+			loadPagination();
 		}catch(Exception e){
 			e.printStackTrace();
 		}

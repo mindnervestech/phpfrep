@@ -6,7 +6,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <h:head>
 	<!-- BEGIN META SECTION -->
@@ -200,6 +201,20 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 .col1half {
 	width: 12.5%;
 }
+.pagination>li:has(> b) {
+	background: gray;
+}
+
+.pagination>li>b {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.428571429;
+    color: #428bca;
+    text-decoration: none;
+    background-color: #fff;
+}
 </style>
 </h:head>
 <f:metadata>
@@ -247,6 +262,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 									class="glyphicon glyphicon glyphicon-th"></i> Grid View </a></li>
 						</ul>
 						<div id="myTabContent" class="tab-content" style="float: left;">
+							<h:outputLabel value="#{deBean.pages}" style="display:none;"></h:outputLabel>
 							<div class="tab-pane fade in active" id="tab1">
 								<div class="tab_border p-0">
 									<div class="col-sm-12">
@@ -274,10 +290,16 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																	update="div_photo_list"
 																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) >1}"> &#60;
 																			</p:commandLink></li>
-															<li class="active"><a href="#"> <h:outputText
-																		value="#{(deBean.imageOffset/deBean.imagePerPage)+1}">
-																		<f:converter converterId="javax.faces.Integer" />
-																	</h:outputText></a></li>
+															<c:forEach id="userSearchResults" var="page" items="#{deBean.pages}" >
+                              									<li>
+																	<p:commandLink value="#{page}" ajax="true" action="#{deBean.gotoPage}"
+                									                 rendered="#{page != (deBean.imageOffset/deBean.imagePerPage)+1}" update="div_photo_list">
+                									               <f:param name="page" value="#{page}" />
+                									               </p:commandLink>
+                												<h:outputText value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                              										rendered="#{page == (deBean.imageOffset/deBean.imagePerPage)+1}" />                              									
+                              									</li>
+            												</c:forEach>
 															<li style="font-size: 13px;"><p:commandLink ajax="true"
 																	action="#{deBean.nxtPage}" update="div_photo_list"
 																	rendered="#{fn:length(deBean.parentImageList) > (deBean.imageOffset+deBean.imagePerPage)}">&#62;															
@@ -292,6 +314,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																</p:commandLink> <p:commandLink disabled="true"
 																	rendered="#{(fn:length(deBean.parentImageList) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.parentImageList) == (deBean.imageOffset+deBean.imagePerPage))}">Last
 																			</p:commandLink></li>
+															<li><span style="font-size: 14px;color:#000;"><h:outputText value="#{deBean.totalStr}"/></span></li>
 														</ul>
 													</t:div>
 												<ui:repeat var="val" value="#{deBean.parentImageList}"
@@ -523,7 +546,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 														</label>
 													</t:div>
 													<t:div styleClass="pull-right"
-														rendered="#{((fn:length(deBean.parentImageList) > (deBean.imagePerPage)) and (deBean.imageOffset == 0)) or ((deBean.imageOffset > 0))}">
+														rendered="#{((fn:length(deBean.parentImageList) > (deBean.imagePerPage)) and (deBean.imageOffset == 0)) or ((deBean.imageOffset > 0))}" style="margin-bottom: 0.5%;">
 														<ul class="pagination pagination-right"
 															style="margin: 0px; border: 0px solid #ccc;">
 															<li style="padding-bottom: 0px;"><p:commandLink
@@ -540,10 +563,16 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																	update="div_photo_list"
 																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) >1}"> &#60;
 																			</p:commandLink></li>
-															<li class="active"><a href="#"> <h:outputText
-																		value="#{(deBean.imageOffset/deBean.imagePerPage)+1}">
-																		<f:converter converterId="javax.faces.Integer" />
-																	</h:outputText></a></li>
+															<c:forEach id="userSearchResults" var="page" items="#{deBean.pages}" >
+                              									<li>
+																	<p:commandLink value="#{page}" ajax="true" action="#{deBean.gotoPage}"
+                									                 rendered="#{page != (deBean.imageOffset/deBean.imagePerPage)+1}" update="div_photo_list">
+                									               <f:param name="page" value="#{page}" />
+                									               </p:commandLink>
+                												<h:outputText value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                              										rendered="#{page == (deBean.imageOffset/deBean.imagePerPage)+1}" />                              									
+                              									</li>
+            												</c:forEach>
 															<li style="font-size: 13px;"><p:commandLink ajax="true"
 																	action="#{deBean.nxtPage}" update="div_photo_list"
 																	rendered="#{fn:length(deBean.parentImageList) > (deBean.imageOffset+deBean.imagePerPage)}">&#62;															
@@ -558,6 +587,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																</p:commandLink> <p:commandLink disabled="true"
 																	rendered="#{(fn:length(deBean.parentImageList) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.parentImageList) == (deBean.imageOffset+deBean.imagePerPage))}">Last
 																			</p:commandLink></li>
+															<li><span style="font-size: 14px;color:#000;"><h:outputText value="#{deBean.totalStr}"/></span></li>
 														</ul>
 													</t:div>
 												</div>
