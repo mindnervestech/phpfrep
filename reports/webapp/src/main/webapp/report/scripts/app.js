@@ -107,6 +107,16 @@
 			$scope.isSavedTemplateTable = false;
 			$scope.reportTemplate.jsonForm = report.jsonForm;
 			$scope.reportTemplate.jsonSchema = report.jsonSchema;
+			setTimeout(function(){
+				$('[name=DC_AD_ORIENTATION]').click();
+				$('[name=DC_AD_TYPE]').click();
+				$('[name=DC_AD_SIZE]').click();
+				$('[name=DC_JOB_DENSITY]').click();
+				$('[name=DC_AD_CATEGORY]').click();
+				$('[name=DC_SEARCH_ADVERTISER_TYPE]').click();
+				$('[name=DC_ADVERTISER_TYPE]').click();
+				$('[name=DC_PUBLICATION_TITLE]').click();
+			},1500);
 			//$scope.reportTemplate.model = {};
 			$scope.showExcButton = true;
 			$scope.currenttab = 'search';
