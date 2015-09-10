@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -164,6 +165,7 @@ public class DeManagedBean implements Serializable{
 	private String croppedImageName;
 	private ParentImage parentImage;
 	private String msgLabel;
+	private String msgWarnLabel;
 	private int msgFormat;
 	//For Publication
 	private String publicationTitle;
@@ -252,14 +254,39 @@ public class DeManagedBean implements Serializable{
 	private Integer pages[];
 	private int pageRange = 10;
 	private String totalStr;
+	private Set<String> duplicateFileNames;
+	private List<String> duplicateNames;
 	
-	
+	public List<String> getDuplicateNames() {
+		return duplicateNames;
+	}
+
+	public void setDuplicateNames(List<String> duplicateNames) {
+		this.duplicateNames = duplicateNames;
+	}
+
+	public Set<String> getDuplicateFileNames() {
+		return duplicateFileNames;
+	}
+
+	public void setDuplicateFileNames(Set<String> duplicateFileNames) {
+		this.duplicateFileNames = duplicateFileNames;
+	}
+
 	public String getTotalStr() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append((this.imageOffset/this.imagePerPage)+1);
 		buffer.append("/");
 		buffer.append(((this.getParentImageList().size()/this.imagePerPage)+1));
 		return buffer.toString();
+	}
+
+	public String getMsgWarnLabel() {
+		return msgWarnLabel;
+	}
+
+	public void setMsgWarnLabel(String msgWarnLabel) {
+		this.msgWarnLabel = msgWarnLabel;
 	}
 
 	public void setTotalStr(String totalStr) {
@@ -2144,9 +2171,21 @@ public class DeManagedBean implements Serializable{
 	private List<ParentImage> buildParentImageList() {
 		long start = System.currentTimeMillis();
 		parentImageList = new ArrayList<ParentImage>();
+		Set<String> duplicateNames = new HashSet<String>();
+		if(this.duplicateNames==null) {
+			this.duplicateNames = new ArrayList<String>();
+		} else {
+			this.duplicateNames.clear();
+		}
 		if(filterParentImage != null){
 			parentImageList.addAll(getParentImageService().getParentImageByFilter(filterParentImage));
 			for(ParentImage image : parentImageList){
+				if(!duplicateNames.add(image.getImageName())) {
+					if(!this.duplicateNames.contains(image.getImageName()))
+						this.duplicateNames.add(image.getImageName());
+					System.out.println("duplicate name:"+image.getImageName());
+					System.out.println(this.duplicateNames.size());
+				}
 				List<ChildImage> childImages = getChildImageService().getChildImagesByParent(image.getId());
 				image.childImageList.addAll(childImages);
 				if(childImages.size() == 0){
@@ -2282,7 +2321,7 @@ public class DeManagedBean implements Serializable{
 					ImageIO.write(bi,"jpg",newFile );
 					//set image to page
 					croppedImageName = currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName();
-					RequestContext.getCurrentInstance().execute("PF('dlg1').show();('div[id*=\"basicDialog\"]').css('top','10px')");
+					RequestContext.getCurrentInstance().execute("PF('dlg1').show();$('div[id*=\"basicDialog\"]').css('top','10px')");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -2576,6 +2615,13 @@ public class DeManagedBean implements Serializable{
 		String sourcePath = imageBasePath+CommonProperties.getParentImageTempPath()+"/"+currentUser.getId();
 		String fileNameWithExt ="";
 		String extension ="";
+		if(duplicateFileNames==null) {
+			duplicateFileNames = new HashSet<String>();
+		} else {
+			if(!duplicateFileNames.isEmpty()) {
+				duplicateFileNames.clear();
+			}
+		}
 		boolean flag=false;
 		if(sourcePath!=null){
 			File cropFile = new File(sourcePath);
@@ -2594,6 +2640,12 @@ public class DeManagedBean implements Serializable{
 							file=file.replaceAll(" ", "_");
 							filename=file+"."+extension;
 							if(extension.equalsIgnoreCase("jpeg") || extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("gif")){
+								System.out.println("filename:"+filename);
+								ParentImage duplicateImage = getParentImageService().getParentImageByName(filename);
+								System.out.println("duplicateImage:"+duplicateImage);
+								if(duplicateImage!=null) {
+									duplicateFileNames.add(filename);
+								}
 								parentImage.setImageName(filename);
 								parentImage.setCreatedBy(currentUser);
 								parentImage.setCreatedOn(new Date());
@@ -2646,7 +2698,19 @@ public class DeManagedBean implements Serializable{
 			msgLabel = "Parent Image has been Saved Successfully";
 
 		}
-		return "/pages/de/gallery.xhtml?msgLabel="+this.msgLabel+"&msgFormat="+this.msgFormat+"&faces-redirect=true";
+		System.out.println("isEmpty:"+duplicateFileNames.isEmpty());
+		this.msgWarnLabel = "";
+		if(!duplicateFileNames.isEmpty()) {
+			StringBuffer sb = new StringBuffer();
+			sb.append("These file with names ");
+			for(String s:duplicateFileNames) {
+				sb.append(s).append(",");
+			}
+			sb.append(" are duplicated.");
+			this.msgWarnLabel = sb.toString() ;
+			messageService.messageWarning(null, this.msgWarnLabel);
+		}
+		return "/pages/de/gallery.xhtml?msgLabel="+this.msgLabel+"&msgFormat="+this.msgFormat+"&faces-redirect=true&msgWarnLabel="+this.msgWarnLabel;
 	}
 
 	public void loadMessage(ComponentSystemEvent event)
@@ -2660,6 +2724,11 @@ public class DeManagedBean implements Serializable{
 		{
 			FacesContext.getCurrentInstance().addMessage("deo", new FacesMessage(FacesMessage.SEVERITY_INFO,this.msgLabel,this.msgLabel));
 			this.msgLabel="";
+		}
+		if(com.obs.brs.utils.StringUtility.isNotEmpty(this.msgWarnLabel))
+		{
+			FacesContext.getCurrentInstance().addMessage("deo", new FacesMessage(FacesMessage.SEVERITY_WARN,this.msgWarnLabel,this.msgWarnLabel));
+			this.msgWarnLabel="";
 		}
 	}
 	/** 

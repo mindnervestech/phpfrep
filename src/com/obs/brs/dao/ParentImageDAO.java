@@ -89,4 +89,13 @@ public class ParentImageDAO implements IParentImageDAO{
 		return list;
 	}
 
+	@Override
+	public ParentImage getParentImageByName(String name) {
+		List<ParentImage> list = getSessionFactory().getCurrentSession().createQuery("from ParentImage where imageName=?").setParameter(0, name).list();
+		if(list.isEmpty())
+			return null;
+		else
+			return list.get(0);
+	}
+
 }

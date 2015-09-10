@@ -38,6 +38,8 @@ public interface IParentImageService {
 	 */
 	public ParentImage getParentImageById(long id);
 	
+	public ParentImage getParentImageByName(String name);
+	
 	/**
 	 * Get ParentImage List
 	 * 

@@ -37,7 +37,7 @@ public interface IParentImageDAO {
 	 * @param  int ParentImage Id
 	 */
 	public ParentImage getParentImageById(long id);
-	
+	public ParentImage getParentImageByName(String name);
 	/**
 	 * Get ParentImage List
 	 * 

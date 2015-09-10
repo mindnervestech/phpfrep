@@ -220,6 +220,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 <f:metadata>
 	<f:viewParam name="msgFormat" value="#{deBean.msgFormat}" />
 	<f:viewParam name="msgLabel" value="#{deBean.msgLabel}" />
+	<f:viewParam name="msgWarnLabel" value="#{deBean.msgWarnLabel}" />
 	<f:event type="preRenderView" listener="#{deBean.loadMessage}" />
 	<f:viewParam name="img" value="#{deBean.id}" />
 	<f:event type="preRenderView" listener="#{deBean.loadAllPublicationInfo}"    />
@@ -242,7 +243,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 				<div class="panel-content">
 					<p:messages id="messages" showSummary="false" autoUpdate="true"
 						closable="true" showDetail="true" showIcon="false"
-						severity="info,fatal" />
+						severity="info,fatal,warning" />
 					<div class="row media-manager">
 						<ul class="media-header" style="margin-right: 0px;">
 							<li class="pull-right"><p:selectOneMenu
@@ -271,9 +272,14 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 												rendered="#{empty deBean.parentImageList}" />
 											<t:div id="div_photo_list"
 												rendered="#{not empty deBean.parentImageList}">
-												
+												<div style="width: 50%;">
+													Duplicated Images :
+													<ui:repeat id="duplicateNames" var="name" value="#{deBean.duplicateNames}" >
+														<span style="color:red;">#{name}</span>
+													</ui:repeat>
+												</div>
 												<t:div styleClass="pull-right"
-														rendered="#{((fn:length(deBean.parentImageList) > (deBean.imagePerPage)) and (deBean.imageOffset == 0)) or ((deBean.imageOffset > 0))}" style="margin-bottom: 0.5%;">
+														rendered="#{((fn:length(deBean.parentImageList) > (deBean.imagePerPage)) and (deBean.imageOffset == 0)) or ((deBean.imageOffset > 0))}" style="margin-bottom: 0.5%;width:50%;">
 														<ul class="pagination pagination-right"
 															style="margin: 0px; border: 0px solid #ccc;">
 															<li style="padding-bottom: 0px;"><p:commandLink
