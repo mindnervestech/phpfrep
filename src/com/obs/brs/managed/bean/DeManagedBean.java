@@ -2282,7 +2282,7 @@ public class DeManagedBean implements Serializable{
 					ImageIO.write(bi,"jpg",newFile );
 					//set image to page
 					croppedImageName = currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName();
-					RequestContext.getCurrentInstance().execute("PF('dlg1').show();$('#basicDialog').css('top','10px')");
+					RequestContext.getCurrentInstance().execute("PF('dlg1').show();('div[id*=\"basicDialog\"]').css('top','10px')");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
