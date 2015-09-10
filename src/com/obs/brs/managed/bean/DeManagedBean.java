@@ -507,6 +507,14 @@ public class DeManagedBean implements Serializable{
 		this.imagePerPage = imagePerPage;
 	}
 	public int getImageOffset() {
+		try{
+			Object offset = sessionManager.getSessionAttribute(SessionManager.IMAGEOFFSET);
+			if(offset!=null){
+				imageOffset = Integer.valueOf(offset.toString());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return imageOffset;
 	}
 	public void setImageOffset(int imageOffset) {
@@ -4245,7 +4253,7 @@ public List<String> getcompaniesId(String query) {
 				imagePerPage = Integer.valueOf(rowsPerPage.toString());
 			}
 			imageOffset +=Integer.valueOf(imagePerPage);
-
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSET, imageOffset);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -4261,6 +4269,8 @@ public List<String> getcompaniesId(String query) {
 			}
 			if(imageOffset>1)
 				imageOffset = imageOffset - Integer.valueOf(imagePerPage);
+			
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSET, imageOffset);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -4274,6 +4284,7 @@ public List<String> getcompaniesId(String query) {
 				imagePerPage = Integer.valueOf(rowsPerPage.toString());
 			}
 			imageOffset = (page-1) * imagePerPage;
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSET, imageOffset);
 			loadPagination();
 		}catch(Exception e){
 			e.printStackTrace();
@@ -4290,6 +4301,8 @@ public List<String> getcompaniesId(String query) {
 			}
 			if(imageOffset>1)
 				imageOffset = 0;
+			
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSET, imageOffset);
 
 		}catch(Exception e){
 			e.printStackTrace();
@@ -4331,6 +4344,7 @@ public List<String> getcompaniesId(String query) {
 			{
 				imageOffset =listSize-(Integer.valueOf(imagePerPage));
 			}
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSET, imageOffset);
 		}
 		catch(Exception e){
 			e.printStackTrace();
