@@ -116,17 +116,19 @@
 								<!-- Define Diaglog for assigning questions against the choices  -->
 								<p:dialog id="basicDialog" showHeader="false" position="center" draggable="false" closable="false" resizable="false" modal="true"
 									widgetVar="dlg1" style="overflow-y:scroll;max-height:100% !important;top: 10px !important;">
-									<div class="media-manager">
+									<div style="float: left;width: 10%;">
+										<h:commandLink action="#{deBean.saveCroppedImage}"
+										styleClass="btn btn-primary m-10">Done</h:commandLink>
+										<h:outputLink value="crop_image.xhtml"
+										class="btn btn-default m-5">Cancel</h:outputLink>
+									</div>
+									<div  style="float: left;width: 90%;" class="media-manager">
 										<t:div styleClass="data_image m-b-20" id="imgcrp_div">
 											<h:graphicImage id="imgcrp"
 											    style="max-width:700px" 
 												value="#{global['baseURL']}#{global['imageContextPath']}#{global['tempPath']}#{deBean.croppedImageName}" />
 										</t:div>
 									</div>
-									<h:commandLink action="#{deBean.saveCroppedImage}"
-										styleClass="btn btn-primary m-10">Done</h:commandLink>
-									<h:outputLink value="crop_image.xhtml"
-										class="btn btn-default m-5">Cancel</h:outputLink>
 								</p:dialog>
 								<h:inputText id="x1" styleClass="x1" style="display:none"
 									value="#{deBean.cropX1}" />
