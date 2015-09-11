@@ -113,7 +113,12 @@
 									</h:outputText>
 
 								</div>
-
+								<div class="col-md-6">
+									<h:commandLink update="imgcrp_div" ajax="true"
+										styleClass="btn btn-primary m-10 f-right" style="float: right;line-height:2.3em;height:54px;border-radius:29px;" action="#{userBean.redirctMenuLink}">
+										<f:param name="menuId" value="6" />
+										Back</h:commandLink>
+								</div>
 							</div>
 							<!--gallery_top_menu-->
 
@@ -188,40 +193,40 @@
 											</label>
 										</t:div>
 										<t:div id="paging" styleClass="pull-right"
-											rendered="#{((fn:length(deBean.childImageListFromParent) > (deBean.imagePerPage)) and (deBean.imageOffset == 0)) or ((deBean.imageOffset > 0))}">
+											rendered="#{((fn:length(deBean.childImageListFromParent) > (deBean.childImagePerPage)) and (deBean.childImageOffset == 0)) or ((deBean.childImageOffset > 0))}">
 											<ul class="pagination pagination-right"
 												style="margin: 0px; border: 1px solid #ccc;">
 												<li style="padding-bottom: 5px;"><p:commandLink
 														disabled="true"
-														rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) ==1}">	First
-																</p:commandLink> <p:commandLink ajax="true" action="#{deBean.firstPage}"
+														rendered="#{((deBean.childImageOffset/deBean.childImagePerPage)+1) ==1}">	First
+																</p:commandLink> <p:commandLink ajax="true" action="#{deBean.childFirstPage}"
 														update="div_photo_list"
-														rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1)>1}"> First
+														rendered="#{((deBean.childImageOffset/deBean.childImagePerPage)+1)>1}"> First
 																</p:commandLink></li>
 												<li style="font-size: 13px;"><p:commandLink
 														disabled="true"
-														rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) ==1}">	&#60;
-																</p:commandLink> <p:commandLink ajax="true" action="#{deBean.prevPage}"
+														rendered="#{((deBean.childImageOffset/deBean.childImagePerPage)+1) ==1}">	&#60;
+																</p:commandLink> <p:commandLink ajax="true" action="#{deBean.childPrevPage}"
 														update="div_photo_list"
-														rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) >1}"> &#60;
+														rendered="#{((deBean.childImageOffset/deBean.childImagePerPage)+1) >1}"> &#60;
 																</p:commandLink></li>
 												<li class="active"><a href="#"> <h:outputText
-															value="#{(deBean.imageOffset/deBean.imagePerPage)+1}">
+															value="#{(deBean.childImageOffset/deBean.childImagePerPage)+1}">
 															<f:converter converterId="javax.faces.Integer" />
 														</h:outputText></a></li>
 												<li style="font-size: 13px;"><p:commandLink ajax="true"
-														action="#{deBean.nxtPage}" update="div_photo_list"
-														rendered="#{fn:length(deBean.childImageListFromParent) > (deBean.imageOffset+deBean.imagePerPage)}">&#62;
+														action="#{deBean.childNxtPage}" update="div_photo_list"
+														rendered="#{fn:length(deBean.childImageListFromParent) > (deBean.childImageOffset+deBean.childImagePerPage)}">&#62;
 																</p:commandLink> <p:commandLink disabled="true"
-														rendered="#{(fn:length(deBean.childImageListFromParent) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.childImageListFromParent) == (deBean.imageOffset+deBean.imagePerPage))}">&#62;
+														rendered="#{(fn:length(deBean.childImageListFromParent) &lt; (deBean.childImageOffset+deBean.childImagePerPage)) or(fn:length(deBean.childImageListFromParent) == (deBean.childImageOffset+deBean.childImagePerPage))}">&#62;
 																</p:commandLink></li>
 												<li style="padding-bottom: 5px;"><p:commandLink
-														ajax="true" action="#{deBean.lastPage}"
+														ajax="true" action="#{deBean.childLastPage}"
 														update="div_photo_list"
-														rendered="#{fn:length(deBean.childImageListFromParent) > (deBean.imageOffset+deBean.imagePerPage)}">Last
+														rendered="#{fn:length(deBean.childImageListFromParent) > (deBean.childImageOffset+deBean.childImagePerPage)}">Last
 														<f:param name="type" value="child" />
 													</p:commandLink> <p:commandLink disabled="true"
-														rendered="#{(fn:length(deBean.childImageListFromParent) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.childImageListFromParent) == (deBean.imageOffset+deBean.imagePerPage))}">Last
+														rendered="#{(fn:length(deBean.childImageListFromParent) &lt; (deBean.childImageOffset+deBean.childImagePerPage)) or(fn:length(deBean.childImageListFromParent) == (deBean.childImageOffset+deBean.childImagePerPage))}">Last
 																</p:commandLink></li>
 											</ul>
 										</t:div>

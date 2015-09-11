@@ -27,6 +27,7 @@ public class SessionManager implements Serializable{
 	public static final String REPORTCURRENTITEMID = "report_current_item_id";
 	public static final String REPORTCURRENTJOURNALID = "report_current_journal_id";
 	public static final String IMAGEPERPAGE 		= "imagePerPage";
+	public static final String CHILDIMAGEPERPAGE 		= "childImagePerPage";
 	public static final String PUBLICATIONID 		= "publicationId";
 	public static final String JOBSTATUS 			= "jobStatusGot";
 	public static final String ISSUEDATE 			= "issueDate";

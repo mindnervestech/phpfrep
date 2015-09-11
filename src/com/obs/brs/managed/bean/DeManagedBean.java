@@ -486,6 +486,24 @@ public class DeManagedBean implements Serializable{
 	//paging
 	private int imagePerPage = 20;
 	private int imageOffset = 0;
+	private int childImagePerPage = 20;
+	private int childImageOffset = 0;
+	
+	public int getChildImagePerPage() {
+		return childImagePerPage;
+	}
+
+	public void setChildImagePerPage(int childImagePerPage) {
+		this.childImagePerPage = childImagePerPage;
+	}
+
+	public int getChildImageOffset() {
+		return childImageOffset;
+	}
+
+	public void setChildImageOffset(int childImageOffset) {
+		this.childImageOffset = childImageOffset;
+	}
 
 	public String getAdvertiserName() {
 		return advertiserName;
@@ -4345,6 +4363,79 @@ public List<String> getcompaniesId(String query) {
 				imageOffset =listSize-(Integer.valueOf(imagePerPage));
 			}
 			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSET, imageOffset);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void childNxtPage(){
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.CHILDIMAGEPERPAGE); 
+			//System.out.println("rowsPerPage"+rowsPerPage);
+			if(rowsPerPage!=null){
+				childImagePerPage = Integer.valueOf(rowsPerPage.toString());
+			}
+			childImageOffset +=Integer.valueOf(childImagePerPage);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * for previous page
+	 */
+	public void childPrevPage(){
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.CHILDIMAGEPERPAGE);
+			if(rowsPerPage!=null){
+				childImagePerPage = Integer.valueOf(rowsPerPage.toString());
+			}
+			if(childImageOffset>1)
+				childImageOffset = childImageOffset - Integer.valueOf(childImagePerPage);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * for first page record
+	 */
+	public void childFirstPage(){
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.CHILDIMAGEPERPAGE);
+			if(rowsPerPage!=null){
+				childImagePerPage = Integer.valueOf(rowsPerPage.toString());
+			}
+			if(childImageOffset>1)
+				childImageOffset = 0;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * for first page record
+	 */
+	public void childLastPage(){
+		try{
+			int listSize = 0;
+			int pagecount;
+			int remainder;
+			if(childImageList !=null && childImageList.size()>0 ) {
+				listSize=childImageList.size();
+			}
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.CHILDIMAGEPERPAGE); 
+			if(rowsPerPage!=null) {
+				childImagePerPage = Integer.valueOf(rowsPerPage.toString());
+			}
+			pagecount=(listSize/Integer.valueOf(childImagePerPage));
+			remainder=(listSize%Integer.valueOf(childImagePerPage));
+			if(pagecount>0 && remainder >0) {
+				childImageOffset =listSize-(listSize%Integer.valueOf(childImagePerPage));
+			}
+			else {
+				childImageOffset =listSize-(Integer.valueOf(childImagePerPage));
+			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
