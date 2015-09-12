@@ -296,7 +296,6 @@ public class DeManagedBean implements Serializable{
 	private void loadPagination() {
 		int totalRows = this.getParentImageList().size();
 		int currentPage = (this.imageOffset/this.imagePerPage)+1;
-		currentPage = (totalRows / this.imagePerPage) - ((totalRows - currentPage) / this.imagePerPage) + 1;
         int totalPages = (totalRows / this.imagePerPage) + ((totalRows % this.imagePerPage != 0) ? 1 : 0);
         int pagesLength = Math.min(pageRange, totalPages);
         pages = new Integer[pagesLength];

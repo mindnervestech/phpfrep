@@ -14,6 +14,7 @@ import com.obs.brs.model.States;
 import com.obs.brs.model.Subscriber;
 import com.obs.brs.model.SubscriberPublication;
 import com.obs.brs.model.SubscriberUser;
+import com.obs.brs.model.Territory;
 import com.obs.brs.model.User;
 import com.obs.brs.model.UserType;
 
@@ -777,13 +778,48 @@ public class UserService implements IUserService {
      */
 	@Override
 	public Publication getPublicationByPublicationTitle(String publicationTitle) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<DeCompany> getAllCompanyData() {
-		// TODO Auto-generated method stub
 		return getUserDAO().getAllCompanyData();
+	}
+
+	@Override
+	public List getCountriesForTerritoryBySubscriberId(long subscriberId) {
+		return getUserDAO().getCountriesForTerritoryBySubscriberId(subscriberId);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public long saveSubscriberTerritory(String countryIds, long subscriberId,
+			String name) {
+		return getUserDAO().saveSubscriberTerritory(countryIds, subscriberId, name);
+	}
+
+	@Override
+	public List<Territory> getSubscriberTerritory(long subscriberId) {
+		return getUserDAO().getSubscriberTerritory(subscriberId);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void deleteSubscriberTerritory(long territoryId) {
+		getUserDAO().deleteSubscriberTerritory(territoryId);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void deleteSubscriberTerritoryCountry(long territoryId,
+			long countryId) {
+		getUserDAO().deleteSubscriberTerritoryCountry(territoryId, countryId);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void addSubscriberTerritoryCountry(long territoryId,
+			List<String> countryIds) {
+		getUserDAO().addSubscriberTerritoryCountry(territoryId, countryIds);
 	}
 }

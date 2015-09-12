@@ -11,6 +11,7 @@ import com.obs.brs.model.States;
 import com.obs.brs.model.Subscriber;
 import com.obs.brs.model.SubscriberPublication;
 import com.obs.brs.model.SubscriberUser;
+import com.obs.brs.model.Territory;
 import com.obs.brs.model.User;
 import com.obs.brs.model.UserType;
 import com.obs.brs.model.Country;
@@ -597,5 +598,13 @@ public Publication getPublicationBySearchValueAdvertisertype(String publicationI
 
 Publication getPublicationByPublicationTitleandType(String publicationTitle,
 		int publicationType);
+
+public List getCountriesForTerritoryBySubscriberId(long subscriberId);
+
+public long saveSubscriberTerritory(String countryIds,long subscriberId,String name);
+public List<Territory> getSubscriberTerritory(long subscriberId);
+public void deleteSubscriberTerritory(long territoryId);
+public void deleteSubscriberTerritoryCountry(long territoryId,long countryId);
+public void addSubscriberTerritoryCountry(long territoryId,List<String> countryIds);
 
 }

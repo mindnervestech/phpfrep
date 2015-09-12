@@ -34,6 +34,7 @@ public class SessionManager implements Serializable{
 	public static String CHILDIMAGEID 			= "child_image_id";
 	public static final String CREATEDBYDEO = "createdByDeo";
 	public static final String IMAGEOFFSET = "image_offset";
+	public static final String TERRITORYSUCCESS = "territorysuccess";
 	public static SessionManager getMyInstatnce(){
 		if(sessionManager == null){
 			return sessionManager = new SessionManager();

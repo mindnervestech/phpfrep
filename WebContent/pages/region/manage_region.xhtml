@@ -83,6 +83,9 @@ margin:0;
 float: right;
 margin:6px;
 }
+.bootstrap-select {
+	max-width: 50px;
+}
 </style>
 </h:head>
 <h:body data-page="tables">
@@ -96,198 +99,115 @@ margin:6px;
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<div class="panel panel-default">
-						<div class="panel-heading"></div>
+					<div class="panel panel-default col-md-12">
+						<div class="panel-heading">
+							<p:messages id="messages" showSummary="false" autoUpdate="true"
+							closable="true" showDetail="true" showIcon="false"
+							severity="info,fatal,warning" />
+						</div>
 						<h:form id="emp_stafflist" enctype="multipart/form-data">
-							<h:inputHidden id="activeFilter" value="#{userBean.statusFilter}" />
-									<p:messages closable="true" showDetail="true"
-											showSummary="false" />
-											
 							<div class="col-md-12 p-0 p-b-30">
-							<div class="col-md-4 p-10">
-									<div class="search_box">
-										<h:inputText value="#{userBean.searchValue}"
-											styleClass="form-control" />
-										</div>
-											<div class="manage_button">		
-									 <p:commandButton
-												styleClass="btn btn-default" value="Go!" ajax="true"
-												update="@all">
-											</p:commandButton>
-											</div>
-												<div class="manage_button">	
-											 <p:commandButton styleClass="btn btn-warning" 
-											 value="Reset" action="#{userBean.resetRegion}">
-											<f:setPropertyActionListener target="#{userBean.searchValue}"
-												value="" />
-										</p:commandButton>
-										</div>
-									</div>
-								<div class="col-md-8 p-10">
-									<div class="manage_button">
-									<h:commandLink styleClass="btn btn-success fileinput-button"
-										title="Add New" action="#{userBean.loadAddOrEditRegion}">
-										<i class="glyphicon glyphicon-plus"></i>
-										<span>Add Region</span>
-										<f:param name="companyUserId" value="0" />
-									</h:commandLink>
-									</div>
-									<div class="manage_button">
-									<h:commandLink
-										onclick="if(checkboxCheckedDelete())return true; else return false;"
-										action="#{userBean.deleteRegion}"
-										styleClass="btn btn-danger delete" title="Delete">
-										<i class="glyphicon glyphicon-trash"></i>
-										<span>Delete</span>
-									</h:commandLink>
-								</div>
-							</div>
-							</div>
-							<div class="panel-body">
 								<div class="row">
-									<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
-										<h:outputLabel value="No record found"
-											rendered="#{empty userBean.regionListBySeachCriteria}" />
-										<t:dataTable
-											value="#{userBean.regionListBySeachCriteria}"
-											columnClasses="column1,name_list,,,,,,,column8"
-											id="dt_orgList" rowClasses="odd,even"
-											rendered="#{not empty userBean.regionListBySeachCriteria}"
-											var="o" styleClass="table table-striped table-hover"
-											border="0" width="711" rows="#{userBean.rowsPerPage}">
-											<h:column headerClass="">
-												<f:facet name="header">
-													<h:selectBooleanCheckbox styleClass="toggle_checkbox" />
-												</f:facet>
-												<div class="div_checkbox">
-													<h:selectBooleanCheckbox styleClass="uniform"
-														value="#{userBean.checkedRegion[o.country.countryId]}" />
-												</div>
-											</h:column>
-
-	                                    <h:column headerClass="no-bd">
-												<f:facet name="header">
-													<h:outputText value="Country" />
-												</f:facet>
-												<h:outputText styleClass="no-bd-y"
-													value="#{o.country.countryName}" />
-											</h:column>
-											<h:column headerClass="no-bd">
-												<f:facet name="header">
-													<h:outputText value="Region Count" />
-												</f:facet>
-												<h:outputText styleClass="no-bd-y"
-													value="#{o.countOfRegions}" />
-											</h:column>
-
-											<h:column headerClass="text-center">
-												<f:facet name="header">
-													<h:outputText value="Actions" />
-												</f:facet>
-												<div class="text-center">
-													<p:commandLink
-														action="#{userBean.loadAddOrEditRegion}"
-														styleClass="btn btn-warning" value="Edit">
-														<f:param name="countryId" value="#{o.country.countryId}" />
-													</p:commandLink> &nbsp;
-													<p:commandLink action="#{userBean.viewRegion}"
-														styleClass="btn btn-primary" value="View">
-														<f:param name="countryId" value="#{o.country.countryId}" />
-													</p:commandLink>
-												</div>
-											</h:column>
-
-										</t:dataTable>
-										<t:dataScroller id="scroll_1" for="dt_orgList" fastStep="10"
-											pageCountVar="pageCount" pageIndexVar="pageIndex"
-											paginator="true" paginatorMaxPages="3"
-											paginatorActiveColumnStyle="font-weight:bold;"
-											immediate="true" actionListener="#{userBean.scrollerAction}"
-											styleClass="pagination pagination-right"
-											renderFacetsIfSinglePage="false">
-											<f:facet name="first">
-												<t:outputText value="&#171;" />
-											</f:facet>
-											<f:facet name="last">
-												<t:outputText value="&#187;" />
-											</f:facet>
-											<f:facet name="previous">
-												<t:outputText value="&#60;" />
-											</f:facet>
-											<f:facet name="next">
-												<t:outputText value="&#62;" />
-											</f:facet>
-										</t:dataScroller>
-										<label class="p-5 pull-left">
-										<h:selectOneMenu styleClass="form-control"
-													value="#{userBean.changeRowsPerPage}"
-													id="changeRowsPerPage"
-													valueChangeListener="#{userBean.localeChanged}"
-													onchange="this.form.submit()">
-													<f:selectItem itemLabel="15" itemValue="15" />
-													<f:selectItem itemLabel="30" itemValue="30" />
-													<f:selectItem itemLabel="45" itemValue="45" />
-													</h:selectOneMenu>
-										</label>
+									<div class="col-md-12">
+										<span style="padding: 10px;">Select Country :</span>
+										<h:selectManyListbox value="#{userBean.selectedSubscriberCountries}" style="margin:5px;">
+   											<f:selectItems value="#{userBean.subscriberCountries}" var="c"
+   											itemLabel="#{c.countryName}" itemValue="#{c.countryId}" />
+   										</h:selectManyListbox>
+   										<p:commandLink ajax="true" style="margin:5px;"
+   											oncomplete="PF('addTerritory').show();$('#basicDialog').css('top','100px')" id="edit">
+											<span class="btn btn-primary">Add Territory</span>
+										</p:commandLink>
 									</div>
 								</div>
-
+								<div class="row"> 
+									<div class="col-md-12 p-10">
+										<ui:repeat var="terri" value="#{userBean.subscriberTerritories}"
+														rendered="#{not empty userBean.subscriberTerritories}"
+														id= "dt_orgList"
+														varStatus="status">
+											<div class="col-md-2" style="border: 1px solid;border-radius:6px;">
+												<div style="border-radius: 6px;text-align: center;box-shadow: 1px 2px 2px;"><h4>#{terri.territoryName}
+												<p:commandLink
+													action="#{userBean.deleteTerritory}"
+													update="@form" ajax="true" style="padding-left: 30px;"
+													onstart="if(confirmDelete())return true; else return false;">
+													<f:param name="territoryId" value="#{terri.id}" />
+													<span class="fa fa-trash-o fa-2" style="float: right;padding: 1px;color: black;"></span></p:commandLink>
+													</h4></div>
+												
+											
+												<ui:repeat var="country" value="#{terri.countries}"
+														rendered="#{not empty terri.countries}"
+														id= "dt_orgList1"
+														varStatus="innerstatus">
+														<div>#{country.countryName}
+															<p:commandLink
+																action="#{userBean.deleteTerritoryCountry}"
+																update="@form" ajax="true" style="padding-left: 30px;">
+																<f:param name="territoryId" value="#{terri.id}" />
+																<f:param name="countryId" value="#{country.countryId}" />
+																<span class="fa fa-trash-o fa-1" style="float: right;padding: 3px;color: black;"></span></p:commandLink>
+														</div>
+												</ui:repeat>
+												<div style="padding: 10px 5px;text-align: center;">
+													<p:commandLink
+																action="#{userBean.addTerritoryCountry}"
+																update="@form" ajax="true">
+																<f:param name="territoryId" value="#{terri.id}" />
+																<span class="btn btn-default" style="padding: 3px;color: black;">Add selected</span></p:commandLink>
+												</div>
+											</div>
+										</ui:repeat>
+									</div>
+								</div>
 							</div>
-
-
-
 						</h:form>
-
+						<p:dialog id="basicDialog" widgetVar="addTerritory" draggable="true"
+							resizable="false" header="Add New Territory"
+							style=" width: 70% !important;margin-left:42%; margin-right:2%;">
+							<h:form style="  overflow: hidden;">
+								<div class="col-lg-12 p-0">
+									<div class="col-lg-12">
+										<div class="row m-0 m-5" style="font-weight: bold;">
+											Territory Name <span style="color: red">&nbsp;&nbsp;*</span>
+										</div>
+										<div class="row m-0">
+											<p:inputText styleClass="form-control"
+												value="#{userBean.territoryName}">
+											</p:inputText>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-12 p-0">
+									<div class="col-lg-12" style="margin-top: 3%;">
+										<div class="row m-0  m-5" style="font-weight: bold;"></div>
+										<div class="row m-0">
+											<h:commandButton ajax="true"
+												styleClass="btn btn-primary col-md-offset-1 col-sm-offset-1 col-xs-offset-1 pull-right"
+												action="#{userBean.saveTerritory}" value="Save">
+												<f:ajax execute="@all" />
+											</h:commandButton>
+											
+										</div>
+									</div>
+								</div>
+							</h:form>
+						</p:dialog>
 						<!--// container-inner -->
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<script type="text/javascript">
-		function checkboxChecked() {
-			var checkedValue = false;
-			var inputElements = document.getElementsByTagName('input');
-			for ( var i = 0; inputElements[i]; ++i) {
-				if (inputElements[i].className === "uniform")
-					if (inputElements[i].checked) {
-						checkedValue = true;
-						break;
-					}
-			}
-			if (checkedValue) {
-				if (confirm('Are you sure want to change status?'))
-					return true;
-				else
-					return false;
-			} else {
-				alert("Please Select Any Subscriber User");
-			}
+	<script>
+		function confirmDelete() {
+			if (confirm('Are you sure, you want to delete the Territory?'))
+				return true;
+			else
+				return false;
 		}
-	</script>
-
-	<script type="text/javascript">
-		function checkboxCheckedDelete() {
-			var checkedValue = false;
-			var inputElements = document.getElementsByTagName('input');
-			for ( var i = 0; inputElements[i]; ++i) {
-				if (inputElements[i].className === "uniform")
-					if (inputElements[i].checked) {
-						checkedValue = true;
-						break;
-					}
-			}
-			if (checkedValue) {
-				if (confirm('Are you sure, you want to delete the Region?'))
-					return true;
-				else
-					return false;
-			} else {
-				alert("Please Select Any Region");
-			}
-		}
-	</script>
+	</script>	
 		<script
 		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
 	<script

@@ -1,7 +1,10 @@
 package com.obs.brs.dao;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.SessionFactory;
@@ -18,6 +21,7 @@ import com.obs.brs.model.States;
 import com.obs.brs.model.Subscriber;
 import com.obs.brs.model.SubscriberPublication;
 import com.obs.brs.model.SubscriberUser;
+import com.obs.brs.model.Territory;
 import com.obs.brs.model.User;
 import com.obs.brs.model.UserType;
 
@@ -1175,11 +1179,81 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public List<DeCompany> getAllCompanyData() {
-		// TODO Auto-generated method stub
 		String SQL = "select c.companyName,c.companyURL,c.city,c.pincode,c.state,c.country,c.address,c.address1,c.department from DeCompany  as c  ORDER BY c.companyName ASC";
 		List list = getSessionFactory().getCurrentSession().createQuery(SQL).list();
-		System.out.println("returning data: "+list.size());
 		return list;
+	}
+
+	@Override
+	public List getCountriesForTerritoryBySubscriberId(long subscriberId) {
+		String SQL = "from Territory  as t where t.subscriberId = "+subscriberId;
+		List<Territory> territories = getSessionFactory().getCurrentSession().createQuery(SQL).list();
+		StringBuffer sb = new StringBuffer();
+		for(Territory territory : territories) {
+			for(Country country: territory.getCountries()) {
+				sb.append(country.getCountryId()+",");
+			}
+		}
+		String ids;
+		if(!sb.toString().isEmpty()) {
+			ids = sb.toString().substring(0,sb.toString().length()-1);  
+			SQL = "from Country as c where c.countryId NOT IN ("+ids+")";
+		}
+		else
+			SQL = "from Country as c";
+		
+		List<Country> countries = getSessionFactory().getCurrentSession().createQuery(SQL)/*.setParameter("ids", ids)*/.list();
+		return countries;
+	}
+
+	@Override
+	public long saveSubscriberTerritory(String countryIds, long subscriberId,
+			String name) {
+		String SQL = "from Country as c where c.countryId IN ("+countryIds+")";
+		List<Country> countries = getSessionFactory().getCurrentSession().createQuery(SQL).list();
+		Territory territory = new Territory();
+		territory.setCountries(countries);
+		territory.setSubscriberId(subscriberId);
+		territory.setTerritoryName(name);
+		return (Long)getSessionFactory().getCurrentSession().save(territory);
+	}
+
+	@Override
+	public List<Territory> getSubscriberTerritory(long subscriberId) {
+		String SQL = "from Territory  as t where t.subscriberId = "+subscriberId;
+		return getSessionFactory().getCurrentSession().createQuery(SQL).list();
+	}
+
+	@Override
+	public void deleteSubscriberTerritory(long territoryId) {
+		String SQL = "from Territory  as t where t.id = "+territoryId;
+		List<Territory> territories = getSessionFactory().getCurrentSession().createQuery(SQL).list();
+		if(!territories.isEmpty()) {
+			getSessionFactory().getCurrentSession().delete(territories.get(0));
+		}
+	}
+
+	@Override
+	public void deleteSubscriberTerritoryCountry(long territoryId,
+			long countryId) {
+		String SQL = "delete from tbl_territory_tbl_country where Territory_T_ID = "+territoryId + " and countries_DN_ID = "+countryId;
+		getSessionFactory().getCurrentSession().createSQLQuery(SQL).executeUpdate();
+	}
+
+	@Override
+	public void addSubscriberTerritoryCountry(long territoryId,
+			List<String> countryIds) {
+		StringBuffer sb = new StringBuffer("insert into tbl_territory_tbl_country values ");
+		for(String countryId:countryIds) {
+			sb.append("(");
+			sb.append(territoryId);
+			sb.append(",");
+			sb.append(countryId);
+			sb.append("),");
+		}
+		String SQL = sb.toString().substring(0,sb.toString().length()-1);
+		System.out.println("SQL:"+SQL);
+		getSessionFactory().getCurrentSession().createSQLQuery(SQL).executeUpdate();
 	}	
 
 }

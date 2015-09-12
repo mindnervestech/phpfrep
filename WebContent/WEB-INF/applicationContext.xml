@@ -86,6 +86,7 @@ http://www.springframework.org/schema/context/spring-context.xsd">
 				<value>com.obs.brs.model.SubscriberPublication</value> 
 				<value>com.obs.brs.model.States</value>
 				<value>com.obs.brs.model.DeletedImage</value>
+				<value>com.obs.brs.model.Territory</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

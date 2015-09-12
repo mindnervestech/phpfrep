@@ -6,11 +6,13 @@ import com.obs.brs.email.EmailManager;
 import com.obs.brs.messages.IMessagesService;
 import com.obs.brs.model.Country;
 import com.obs.brs.model.DeCompany;
+import com.obs.brs.model.DeJob;
 import com.obs.brs.model.Publication;
 import com.obs.brs.model.Region;
 import com.obs.brs.model.Subscriber;
 import com.obs.brs.model.SubscriberPublication;
 import com.obs.brs.model.SubscriberUser;
+import com.obs.brs.model.Territory;
 import com.obs.brs.model.User;
 import com.obs.brs.model.UserType;
 import com.obs.brs.service.IDeService;
@@ -44,6 +46,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.custom.datascroller.ScrollerActionEvent;
+import org.primefaces.context.RequestContext;
 
 @ManagedBean(name="userBean")
 @ViewScoped
@@ -184,6 +187,8 @@ implements Serializable
 	private List<String[]> editSubscriberUserList = new ArrayList();
 	private List<String[]> editMoreSubscriberUserList = new ArrayList();
 	private  List<DeCompany> allCompnayList = new ArrayList<DeCompany>();
+	private List<String> selectedSubscriberCountries = new ArrayList<String>();
+	private List<Country> subscriberCountries;
 	private int rowIndex = -1;
 	private Date curdate = new Date();
 	private int subscriberUserIdByAdmin;
@@ -192,8 +197,53 @@ implements Serializable
 	private String errormessage;
 	User currentUser;
 	private Boolean isPopup=false;
-
+	private String territoryName;
+	private List<Territory> subscriberTerritories;
      private  String compList;
+     
+    public List<Territory> getSubscriberTerritories() {
+    	if(subscriberTerritories==null || subscriberTerritories.isEmpty()) {
+    		SubscriberUser subscriberUser = (SubscriberUser) sessionManager.getSessionAttribute(SessionManager.LOGINSUBSCRIBERUSER);
+    		if(subscriberUser!=null)
+    			subscriberTerritories = userService.getSubscriberTerritory(subscriberUser.getId());
+    	}
+		return subscriberTerritories;
+	}
+
+	public void setSubscriberTerritories(List<Territory> subscriberTerritories) {
+		this.subscriberTerritories = subscriberTerritories;
+	}
+
+	public String getTerritoryName() {
+		return territoryName;
+	}
+
+	public void setTerritoryName(String territoryName) {
+		this.territoryName = territoryName;
+	}
+
+	public List<String> getSelectedSubscriberCountries() {
+		return selectedSubscriberCountries;
+	}
+
+	public void setSelectedSubscriberCountries(
+			List<String> selectedSubscriberCountries) {
+		this.selectedSubscriberCountries = selectedSubscriberCountries;
+	}
+
+	public List<Country> getSubscriberCountries() {
+		if(subscriberCountries==null || subscriberCountries.isEmpty()) {
+			SubscriberUser subscriberUser = (SubscriberUser) sessionManager.getSessionAttribute(SessionManager.LOGINSUBSCRIBERUSER);
+			if(subscriberUser!=null)
+				subscriberCountries = (List<Country>)userService.getCountriesForTerritoryBySubscriberId(subscriberUser.getId()); 
+		}
+		return subscriberCountries;
+	}
+
+	public void setSubscriberCountries(List<Country> subscriberCountries) {
+		this.subscriberCountries = subscriberCountries;
+	}
+
 	public Date getCurdate()
 	{
 		return this.curdate;
@@ -4126,5 +4176,99 @@ implements Serializable
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public String saveTerritory() {
+		if(this.territoryName==null || this.territoryName.isEmpty()) {
+			this.messageService.messageError(null, "Please add territory name.");
+			RequestContext.getCurrentInstance().execute("PF('addTerritory').hide()");
+			return null;
+		}
+		StringBuffer sb = new StringBuffer();
+		for(String id:selectedSubscriberCountries) {
+			sb.append(id+",");
+		}
+		String ids;
+		if(!sb.toString().isEmpty())
+			ids = sb.toString().substring(0,sb.toString().length()-1);
+		else {
+			this.messageService.messageError(null, "Please select coutry to add in territory.");
+			RequestContext.getCurrentInstance().execute("PF('addTerritory').hide();");
+			return null;
+		}
+		SubscriberUser subscriberUser = (SubscriberUser)this.sessionManager.getSessionAttribute("login_subscriber_user");
+		if(subscriberUser!=null && subscriberUser.getUserType().getUserType().equals("Subscriber Admin")) {
+			System.out.println(this.getUserService().saveSubscriberTerritory(ids, subscriberUser.getId(), this.territoryName));
+			this.sessionManager.setSessionAttributeInSession(SessionManager.TERRITORYSUCCESS, "Territory Saved Successfully.");
+		}
+		RequestContext.getCurrentInstance().execute("PF('addTerritory').hide();location.reload();");
+		return null;
+	}
+	
+	public String deleteTerritory() {
+		FacesUtils facesUtils = new FacesUtils();
+		Long territoryId;
+		System.out.println("here");
+		System.out.println(facesUtils.getRequestParameterMap("territoryId"));
+		try {
+			territoryId = Long.parseLong(facesUtils.getRequestParameterMap("territoryId"));
+		} catch(Exception e) {
+			RequestContext.getCurrentInstance().execute("location.reload();");
+			return null;
+		}
+		System.out.println("territoryId:"+territoryId);
+		SubscriberUser subscriberUser = (SubscriberUser)this.sessionManager.getSessionAttribute("login_subscriber_user");
+		if(subscriberUser!=null && subscriberUser.getUserType().getUserType().equals("Subscriber Admin")) {
+			getUserService().deleteSubscriberTerritory(territoryId);
+			this.sessionManager.setSessionAttributeInSession(SessionManager.TERRITORYSUCCESS, "Territory Deleted Successfully.");
+		}
+		RequestContext.getCurrentInstance().execute("location.reload();");
+		return null;
+	}
+	
+	public String deleteTerritoryCountry() {
+		FacesUtils facesUtils = new FacesUtils();
+		Long territoryId;
+		Long countryId;
+		try {
+			territoryId = Long.parseLong(facesUtils.getRequestParameterMap("territoryId"));
+			System.out.println("territoryId:"+territoryId);
+		} catch(Exception e) {
+			RequestContext.getCurrentInstance().execute("location.reload();");
+			return null;
+		}
+		try {
+			countryId = Long.parseLong(facesUtils.getRequestParameterMap("countryId"));
+			System.out.println("countryId:"+countryId);
+		} catch(Exception e) {
+			RequestContext.getCurrentInstance().execute("location.reload();");
+			return null;
+		}
+		getUserService().deleteSubscriberTerritoryCountry(territoryId,countryId);
+		this.sessionManager.setSessionAttributeInSession(SessionManager.TERRITORYSUCCESS, "Territory Country Deleted Successfully.");
+		RequestContext.getCurrentInstance().execute("location.reload();");
+		return null;
+	}
+	
+	public String addTerritoryCountry() {
+		FacesUtils facesUtils = new FacesUtils();
+		Long territoryId;
+		Long countryId;
+		try {
+			territoryId = Long.parseLong(facesUtils.getRequestParameterMap("territoryId"));
+			System.out.println("territoryId:"+territoryId);
+		} catch(Exception e) {
+			this.messageService.messageError(null, "Invalid territory.");
+			RequestContext.getCurrentInstance().execute("location.reload();");
+			return null;
+		}
+		if(selectedSubscriberCountries.isEmpty()) {
+			this.messageService.messageError(null, "Please select coutry to add in territory.");
+			RequestContext.getCurrentInstance().execute("location.reload();");
+			return null;
+		} 
+		getUserService().addSubscriberTerritoryCountry(territoryId, this.selectedSubscriberCountries);
+		RequestContext.getCurrentInstance().execute("location.reload();");
+		return null;
 	}
 }
