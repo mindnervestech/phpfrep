@@ -104,7 +104,7 @@
 			$scope.reportTemplate.jsonSchema = report.jsonSchema;
 			$scope.showPivot = report.isJava;
 			setTimeout(function(){
-				$('[name=DC_AD_ORIENTATION]').unbind();
+				/*$('[name=DC_AD_ORIENTATION]').unbind();
 				$('[name=DC_AD_SECTION]').unbind();
 				$('[name=DC_AD_TYPE]').unbind();
 				$('[name=DC_AD_SIZE]').unbind();
@@ -112,16 +112,21 @@
 				$('[name=DC_AD_CATEGORY]').unbind();
 				$('[name=DC_SEARCH_ADVERTISER_TYPE]').unbind();
 				$('[name=DC_ADVERTISER_TYPE]').unbind();
-				$('[name=DC_PUBLICATION_TITLE]').unbind();
-				$('[name=DC_AD_SECTION]').click();
-				$('[name=DC_AD_ORIENTATION]').click();
-				$('[name=DC_AD_TYPE]').click();
-				$('[name=DC_AD_SIZE]').click();
-				$('[name=DC_JOB_DENSITY]').click();
-				$('[name=DC_AD_CATEGORY]').click();
-				$('[name=DC_SEARCH_ADVERTISER_TYPE]').click();
-				$('[name=DC_ADVERTISER_TYPE]').click();
-				$('[name=DC_PUBLICATION_TITLE]').click();
+				$('[name=DC_PUBLICATION_TITLE]').unbind();*/
+				
+				
+				
+				$('[name=DC_AD_SECTION]').prop("checked", true);
+				$('[name=DC_AD_ORIENTATION]').prop("checked", true);
+				$('[name=DC_AD_TYPE]').prop("checked", true);
+				$('[name=DC_AD_SIZE]').prop("checked", true);
+				$('[name=DC_JOB_DENSITY]').prop("checked", true);
+				$('[name=DC_AD_CATEGORY]').prop("checked", true);
+				$('[name=DC_SEARCH_ADVERTISER_TYPE]').prop("checked", true);
+				$('[name=DC_ADVERTISER_TYPE]').prop("checked", true);
+				$('[name=DC_PUBLICATION_TITLE]').prop("checked", true);
+				
+				
 			},1500);
 			//$scope.reportTemplate.model = {};
 			$scope.showExcButton = true;
