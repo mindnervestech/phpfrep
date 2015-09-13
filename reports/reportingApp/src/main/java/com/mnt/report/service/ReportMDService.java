@@ -216,14 +216,15 @@ public class ReportMDService {
 			}
 				Object java = mdResult.get("isJava");
 				if(java != null) {
+					String adUnit = jsonObject.get("DC_AD_UNIT").toString();
 					if(java.toString().equalsIgnoreCase("report3")) {
 						List<Report3.RowColValue> rs = namedJdbcTemplate.query(mdResult.get("query").toString(),
-								parameters,new Report3.RowColValue());
+								parameters,new Report3.RowColValue(adUnit));
 						return Report3.main(rs);
 					}
 					if(java.toString().equalsIgnoreCase("report1")) {
 						List<Report1.RowColValue> rs = namedJdbcTemplate.query(mdResult.get("query").toString(),
-								parameters,new Report1.RowColValue());
+								parameters,new Report1.RowColValue(adUnit));
 						return Report1.main(rs);
 					}
 				} else {
@@ -295,6 +296,7 @@ public class ReportMDService {
 					reportMD.pivotConfig = ((JSONObject)new JSONParser().parse(arg0.getString("pivotConfig")));
 				if(arg0.getString("searchCriteria")!=null) 
 					reportMD.searchCriteria = arg0.getString("searchCriteria");
+				reportMD.isJava = arg0.getString("isJava");
 				return reportMD;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -334,6 +336,7 @@ public class ReportMDService {
 		public String searchCriteria;
 		public String name;
 		public String description;
+		public String isJava;
 		public Long id;
 	}
 	

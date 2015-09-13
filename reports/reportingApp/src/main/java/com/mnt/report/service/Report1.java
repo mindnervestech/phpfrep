@@ -101,7 +101,14 @@ public class Report1 {
 		String x;
 		String y;
 		Float summ;
-		int countt;
+		String adUnit;
+		public RowColValue() {
+			
+		}
+		public RowColValue(String adUnit) {
+			this.adUnit = adUnit;
+		}
+		
 		public String getIds() {
 			return ids;
 		}
@@ -126,17 +133,12 @@ public class Report1 {
 		public void setSumm(Float summ) {
 			this.summ = summ;
 		}
-		public int getCountt() {
-			return countt;
-		}
-		public void setCountt(int countt) {
-			this.countt = countt;
-		}
+		
 		public RowColValue mapRow(ResultSet rs, int rowNum) throws SQLException {
 			RowColValue colValue = new RowColValue();
 			colValue.setDate(rs.getString(X));
 			colValue.setPublication(rs.getString(Y));
-			colValue.setSumm(rs.getFloat("Summ"));
+			colValue.setSumm(rs.getFloat(adUnit));
 			colValue.setIds(rs.getString("ids"));
 			return colValue;
 		}

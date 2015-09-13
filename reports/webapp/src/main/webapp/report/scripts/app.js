@@ -12,7 +12,6 @@
 		$scope.backBtn = false;
 		function registerEvent() {
 			$("#rpt_table").on("click",".enlarge-img",function(e) {
-				console.log(e);
 				$scope.showLargeImage($(e.currentTarget).attr("src"));
 			});
 			
@@ -21,7 +20,6 @@
 				rowData = window.oTable.fnGetData(aPos[0]);
 				var link = window.oTable.DataTable.settings[0].aoColumns[aPos[1]].link;
 				linkUrl = Mustache.render(link.url, rowData);
-				console.log(linkUrl);
 				if(link.target == '_blank') {
 					
 				}
@@ -62,7 +60,6 @@
 					lastQueryCriteria = $scope.searchConfig;
 				}
 				$http({method:'post',url:'/webapp/reports/drildownreport',data:{searchCriteria:lastQueryCriteria,filters:dataFiler}}).success(function(data) {
-					console.log(data);
 					$scope.detailsData = data.data;
 					$scope.detailColumns = data.columns;
 					$("a[href='#detail-view']").click();
@@ -74,7 +71,6 @@
 		
 		$scope.loadReportsMd = function () {
 			$http.get('/webapp/reports/md').success(function(resp){
-				console.log(resp);
 				$scope.reportMDs = resp;
 				if(!$scope.isReportSaved) {
 					$('#saved-report-tab a').click();
@@ -84,7 +80,6 @@
 		
 		$scope.loadReportsMdDummy = function () {
 			$http.get('/template/reports/file/md.json').success(function(resp){
-				console.log(resp);
 				$scope.reportMDs = resp;
 			});
 		};
@@ -107,7 +102,18 @@
 			$scope.isSavedTemplateTable = false;
 			$scope.reportTemplate.jsonForm = report.jsonForm;
 			$scope.reportTemplate.jsonSchema = report.jsonSchema;
+			$scope.showPivot = report.isJava;
 			setTimeout(function(){
+				$('[name=DC_AD_ORIENTATION]').unbind();
+				$('[name=DC_AD_SECTION]').unbind();
+				$('[name=DC_AD_TYPE]').unbind();
+				$('[name=DC_AD_SIZE]').unbind();
+				$('[name=DC_JOB_DENSITY]').unbind();
+				$('[name=DC_AD_CATEGORY]').unbind();
+				$('[name=DC_SEARCH_ADVERTISER_TYPE]').unbind();
+				$('[name=DC_ADVERTISER_TYPE]').unbind();
+				$('[name=DC_PUBLICATION_TITLE]').unbind();
+				$('[name=DC_AD_SECTION]').click();
 				$('[name=DC_AD_ORIENTATION]').click();
 				$('[name=DC_AD_TYPE]').click();
 				$('[name=DC_AD_SIZE]').click();
@@ -121,11 +127,9 @@
 			$scope.showExcButton = true;
 			$scope.currenttab = 'search';
 			$('#custom-search-tab a').click();
-			console.log(report.pivotConfig);
 			if(report.pivotConfig!=null) {
 				$scope.pivotConfig = report.pivotConfig;
 				$scope.searchConfig = JSON.parse(report.searchCriteria);
-				console.log($scope.reportTemplate.model);
 				$scope.isSavedTemplate = true;
 				$scope.runReport(2);
 				$scope.expanded = true;
@@ -160,7 +164,6 @@
         };
 		$scope.runReport = function (option) {
 			$scope.isAnyActiveReport = false;
-			//console.log($scope.reportTemplate.model);
 			$scope.lastQueryExecuted = option;
 			var obj;
 			if(option==2) {
@@ -186,7 +189,6 @@
 				} else if($scope.isSavedTemplate) {
 					$('a[href="#pivot-view"]').parent().show();
 					$('a[href="#table-view"]').parent().hide();
-					//console.log(":insaved template");
 					var parent = $("#pivot-table-output").parent();
 					$("#pivot-table-output").remove();
 					parent.append("<div id='pivot-table-output' style='margin: 10px;'></div>");
@@ -218,7 +220,6 @@
 					$('a[href="#table-view"]').parent().show();
 					$scope.reportData = data.data;
 					$scope.dtColumns = data.columns;
-					console.log(":in original");
 					$('a[href="#table-view"]').click();
 					var parent = $("#pivot-table-output").parent();
 					$("#pivot-table-output").remove();
@@ -254,8 +255,6 @@
 			$scope.config.aggregatorName = config.aggregatorName;
 			$scope.config.cols = config.cols;
 			$scope.config.rows = config.rows;
-			//console.log($scope.config);
-			//console.log(config);
 		};
 		
 		$scope.openTemplateModal = function(option) {
@@ -281,7 +280,6 @@
 		};
 		
 		$scope.showLargeImage = function(url) {
-			//console.log("consol:"+url);
 			$("#img-enlarge").attr("src",url);
 			$("#enlarge-image-modal").modal({backdrop:"static"});
 		};
@@ -328,7 +326,6 @@
 				$.each(columns, function(i,e){
 					if(e.link) {
 						e.render = function(cellData, type, rowData) {
-							console.log(cellData);
 							return "<a href='#'" + e.link + "/" + rowData.ids + ">" + cellData + "</a>";
 						
 						}
@@ -400,7 +397,6 @@
 			  
 			decorateColumns = function (cols) {
 				var columns = scope.$eval(cols);
-				console.log(columns);
 				$.each(columns, function(i,e){
 					if(e.link) {
 						e.render = function(cellData, type, rowData) {
