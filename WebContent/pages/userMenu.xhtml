@@ -77,6 +77,20 @@
 								<span class="sidebar-text">QC Job</span>
 								<f:param name="menuId" value="9" />
 							</h:commandLink></li>
+						<li id="menu13"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
+								<i class="fa fa-file" style="margin-left:-4px;"></i>
+								<span class="sidebar-text">Reports </span>
+								<f:param name="menuId" value="13" />
+							</h:commandLink></li>
+						<li id="menu14"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
+								<i class="fa fa-group" style="margin-left:-4px;"></i>
+								<span class="sidebar-text">Manage Regions </span>
+								<f:param name="menuId" value="14" />
+							</h:commandLink></li>
 					</ul>
 				</div>
 				

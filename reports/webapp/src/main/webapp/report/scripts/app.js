@@ -2,6 +2,21 @@
 	                                          'schemaForm-datepicker', 'schemaForm-timepicker', 'schemaForm-datetimepicker'/*'datatables','datatables.bootstrap'*/]);
 
 	App.controller('datatableCtrl', function ($scope, $http) {
+		$.extend({
+			getUrlVars:function() {
+				var vars = [],hash;
+				var hashes = window.location.href.slice(window.location.href.indexOf('?')+1).split("#")[0].split("&");
+				for(var i = 0; i<hashes.length;i++) {
+					hash = hashes[i].split("=");
+					vars.push(hash[0]);
+					vars[hash[0]] = hash[1];
+				}
+				return vars;
+			},
+			getUrlVar:function(name){
+				return $.getUrlVars()[name];
+			}
+		});
 		$scope.finishedHeader = false;
 		$scope.dtColumns = [];
 		$scope.detailColumns = [];
@@ -10,6 +25,8 @@
 		$scope.isSavedTemplateTable = false;
 		$scope.isReportSaved = false;
 		$scope.backBtn = false;
+		$scope.subscriberId = $.getUrlVar('subscriberId');
+		$scope.userId = $.getUrlVar('userId');
 		function registerEvent() {
 			$("#rpt_table").on("click",".enlarge-img",function(e) {
 				$scope.showLargeImage($(e.currentTarget).attr("src"));
@@ -70,7 +87,7 @@
 		$scope.reportMDs = [];
 		
 		$scope.loadReportsMd = function () {
-			$http.get('/webapp/reports/md').success(function(resp){
+			$http.get('/webapp/reports/md',{params:{'subscriberId':$scope.subscriberId,'userId':$scope.userId}}).success(function(resp){
 				$scope.reportMDs = resp;
 				if(!$scope.isReportSaved) {
 					$('#saved-report-tab a').click();

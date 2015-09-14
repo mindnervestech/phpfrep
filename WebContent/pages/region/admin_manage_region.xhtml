@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta charset="utf-8" />
+	<title>Fracts-Manage Region</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon" type="text/css"
+		href="#{request.contextPath}/assets/img/favicon.png" />
+	<!-- END META SECTION -->
+	<!-- BEGIN MANDATORY STYLE -->
+	<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.min.css"
+		rel="stylesheet" />
+		<link href="#{request.contextPath}/assets/css/my_style.css" rel="stylesheet" />	
+	<link href="#{request.contextPath}/assets/css/colors/color-dark.css" rel="stylesheet" />
+	<!-- END  MANDATORY STYLE -->
+	<style>
+.ui-button-text-only .ui-button-text {
+	padding: 0 !important;
+}
+
+.table>thead>tr>th,.table>tbody>tr>th,.table>tfoot>tr>th,.table>thead>tr>td,.table>tbody>tr>td,.table>tfoot>tr>td
+	{
+	padding: 10px !important;
+}
+
+.table thead .icheckbox_flat,.table thead
+	.icheckbox_flat-red,.table thead .icheckbox_flat-green,.table thead
+	.icheckbox_flat-blue,.table thead .icheckbox_flat-aero,.table thead
+	.icheckbox_flat-grey,.table thead .icheckbox_flat-orange,.table thead
+	.icheckbox_flat-yellow,.table thead .icheckbox_flat-pink,.icheckbox_flat-purple,.table thead .iradio_flat,.iradio_flat-red,.table thead .iradio_flat-green,.table thead .iradio_flat-blue,.table
+	thead .iradio_flat-aero,.table thead .iradio_flat-grey,.table thead
+	.iradio_flat-orange,.table thead .iradio_flat-yellow,.table thead
+	.iradio_flat-pink,.table thead .iradio_flat-purple {
+	margin-left: 20px !important;
+}
+
+.table tbody .icheckbox_flat,.table tbody .icheckbox_flat-red,.table tbody .icheckbox_flat-green,.table tbody .icheckbox_flat-blue,.table tbody .icheckbox_flat-aero,.table tbody .icheckbox_flat-grey,.table tbody .icheckbox_flat-orange,.table tbody .icheckbox_flat-yellow,.table tbody .icheckbox_flat-pink,.icheckbox_flat-purple,.table tbody .iradio_flat,.iradio_flat-red,.table tbody .iradio_flat-green,.table tbody .iradio_flat-blue,.table tbody .iradio_flat-aero,.table tbody .iradio_flat-grey,.table tbody .iradio_flat-orange,.table tbody .iradio_flat-yellow,.table tbody .iradio_flat-pink,.table tbody .iradio_flat-purple
+	{
+	margin-left: -2px !important;
+}
+     .btn {
+padding: 7px 19px !important;
+}
+
+.pagination a{
+-moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #FFFFFF;
+    border-color: #DDDDDD;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    float: left;
+    line-height: 18px;
+    padding: 4px 12px;
+    text-decoration: none;
+}
+.pagination td{
+padding: 0;
+margin:0;
+}
+
+.pagination{
+float: right;
+margin:6px;
+}
+.bootstrap-select {
+	max-width: 50px;
+}
+</style>
+</h:head>
+<h:body data-page="tables">
+	<ui:include src="/pages/header_admin.xhtml" />
+	<div id="wrapper">
+		<ui:include src="/pages/userMenu.xhtml" />
+		<div id="main-content">
+			<div class="page-title">
+				<i class="icon-custom-left"></i>
+				<h3>Manage Region </h3>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default col-md-12">
+						<div class="panel-heading">
+							<p:messages id="messages" showSummary="false" autoUpdate="true"
+							closable="true" showDetail="true" showIcon="false"
+							severity="info,fatal,warning" />
+						</div>
+						<h:form id="emp_stafflist" enctype="multipart/form-data">
+							<div class="col-md-12 p-0 p-b-30">
+								<div class="row">
+									<div class="col-md-12">
+										<span style="padding: 10px;">Select Country :</span>
+										<h:selectManyListbox value="#{userBean.selectedSubscriberCountries}" style="margin:5px;">
+   											<f:selectItems value="#{userBean.subscriberCountries}" var="c"
+   											itemLabel="#{c.countryName}" itemValue="#{c.countryId}" />
+   										</h:selectManyListbox>
+   										<p:commandLink ajax="true" style="margin:5px;"
+   											oncomplete="PF('addTerritory').show();$('#basicDialog').css('top','100px')" id="edit">
+											<span class="btn btn-primary">Add Territory</span>
+										</p:commandLink>
+									</div>
+								</div>
+								<div class="row"> 
+									<div class="col-md-12 p-10">
+										<ui:repeat var="terri" value="#{userBean.subscriberTerritories}"
+														rendered="#{not empty userBean.subscriberTerritories}"
+														id= "dt_orgList"
+														varStatus="status">
+											<div class="col-md-2" style="border: 1px solid;border-radius:6px;">
+												<div style="border-radius: 6px;text-align: center;box-shadow: 1px 2px 2px;"><h4>#{terri.territoryName}
+												<p:commandLink
+													action="#{userBean.deleteTerritory}"
+													update="@form" ajax="true" style="padding-left: 30px;"
+													onstart="if(confirmDelete())return true; else return false;">
+													<f:param name="territoryId" value="#{terri.id}" />
+													<span class="fa fa-trash-o fa-2" style="float: right;padding: 1px;color: black;"></span></p:commandLink>
+													</h4></div>
+												
+											
+												<ui:repeat var="country" value="#{terri.countries}"
+														rendered="#{not empty terri.countries}"
+														id= "dt_orgList1"
+														varStatus="innerstatus">
+														<div>#{country.countryName}
+															<p:commandLink
+																action="#{userBean.deleteTerritoryCountry}"
+																update="@form" ajax="true" style="padding-left: 30px;">
+																<f:param name="territoryId" value="#{terri.id}" />
+																<f:param name="countryId" value="#{country.countryId}" />
+																<span class="fa fa-trash-o fa-1" style="float: right;padding: 3px;color: black;"></span></p:commandLink>
+														</div>
+												</ui:repeat>
+												<div style="padding: 10px 5px;text-align: center;">
+													<p:commandLink
+																action="#{userBean.addTerritoryCountry}"
+																update="@form" ajax="true">
+																<f:param name="territoryId" value="#{terri.id}" />
+																<span class="btn btn-default" style="padding: 3px;color: black;">Add selected</span></p:commandLink>
+												</div>
+											</div>
+										</ui:repeat>
+									</div>
+								</div>
+							</div>
+						</h:form>
+						<p:dialog id="basicDialog" widgetVar="addTerritory" draggable="true"
+							resizable="false" header="Add New Territory"
+							style=" width: 70% !important;margin-left:42%; margin-right:2%;">
+							<h:form style="  overflow: hidden;">
+								<div class="col-lg-12 p-0">
+									<div class="col-lg-12">
+										<div class="row m-0 m-5" style="font-weight: bold;">
+											Territory Name <span style="color: red">&nbsp;&nbsp;*</span>
+										</div>
+										<div class="row m-0">
+											<p:inputText styleClass="form-control"
+												value="#{userBean.territoryName}">
+											</p:inputText>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-12 p-0">
+									<div class="col-lg-12" style="margin-top: 3%;">
+										<div class="row m-0  m-5" style="font-weight: bold;"></div>
+										<div class="row m-0">
+											<h:commandButton ajax="true"
+												styleClass="btn btn-primary col-md-offset-1 col-sm-offset-1 col-xs-offset-1 pull-right"
+												action="#{userBean.saveTerritory}" value="Save">
+												<f:ajax execute="@all" />
+											</h:commandButton>
+											
+										</div>
+									</div>
+								</div>
+							</h:form>
+						</p:dialog>
+						<!--// container-inner -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		function confirmDelete() {
+			if (confirm('Are you sure, you want to delete the Territory?'))
+				return true;
+			else
+				return false;
+		}
+	</script>	
+		<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script
+		src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<!-- END MANDATORY SCRIPTS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<!-- 	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-switch/bootstrap-switch.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script> -->
+	<!-- END  PAGE LEVEL SCRIPTS -->
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+</h:body>
+
+</html>

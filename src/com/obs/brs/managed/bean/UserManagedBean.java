@@ -206,6 +206,8 @@ implements Serializable
     		SubscriberUser subscriberUser = (SubscriberUser) sessionManager.getSessionAttribute(SessionManager.LOGINSUBSCRIBERUSER);
     		if(subscriberUser!=null)
     			subscriberTerritories = userService.getSubscriberTerritory(subscriberUser.getId());
+    		else
+    			subscriberTerritories = userService.getSubscriberTerritory(-1);
     	}
 		return subscriberTerritories;
 	}
@@ -236,6 +238,8 @@ implements Serializable
 			SubscriberUser subscriberUser = (SubscriberUser) sessionManager.getSessionAttribute(SessionManager.LOGINSUBSCRIBERUSER);
 			if(subscriberUser!=null)
 				subscriberCountries = (List<Country>)userService.getCountriesForTerritoryBySubscriberId(subscriberUser.getId()); 
+			else
+				subscriberCountries = (List<Country>)userService.getCountriesForTerritoryBySubscriberId(-1);
 		}
 		return subscriberCountries;
 	}
@@ -1409,6 +1413,12 @@ implements Serializable
 			break;
 		case 12: 
 			redirectLink = "manage_company";
+			break;
+		case 13: 
+			redirectLink = "/pages/reports/admin_search_view.xhtml";
+			break;
+		case 14: 
+			redirectLink = "/pages/region/admin_manage_region.xhtml";
 			break;
 		}
 		return redirectLink;
@@ -4200,6 +4210,9 @@ implements Serializable
 		if(subscriberUser!=null && subscriberUser.getUserType().getUserType().equals("Subscriber Admin")) {
 			System.out.println(this.getUserService().saveSubscriberTerritory(ids, subscriberUser.getId(), this.territoryName));
 			this.sessionManager.setSessionAttributeInSession(SessionManager.TERRITORYSUCCESS, "Territory Saved Successfully.");
+		} else if(subscriberUser==null) {
+			System.out.println(this.getUserService().saveSubscriberTerritory(ids, -1, this.territoryName));
+			this.sessionManager.setSessionAttributeInSession(SessionManager.TERRITORYSUCCESS, "Territory Saved Successfully.");
 		}
 		RequestContext.getCurrentInstance().execute("PF('addTerritory').hide();location.reload();");
 		return null;
@@ -4219,6 +4232,9 @@ implements Serializable
 		System.out.println("territoryId:"+territoryId);
 		SubscriberUser subscriberUser = (SubscriberUser)this.sessionManager.getSessionAttribute("login_subscriber_user");
 		if(subscriberUser!=null && subscriberUser.getUserType().getUserType().equals("Subscriber Admin")) {
+			getUserService().deleteSubscriberTerritory(territoryId);
+			this.sessionManager.setSessionAttributeInSession(SessionManager.TERRITORYSUCCESS, "Territory Deleted Successfully.");
+		} else if(subscriberUser==null) {
 			getUserService().deleteSubscriberTerritory(territoryId);
 			this.sessionManager.setSessionAttributeInSession(SessionManager.TERRITORYSUCCESS, "Territory Deleted Successfully.");
 		}

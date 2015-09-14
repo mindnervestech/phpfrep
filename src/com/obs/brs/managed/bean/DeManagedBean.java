@@ -256,7 +256,17 @@ public class DeManagedBean implements Serializable{
 	private String totalStr;
 	private Set<String> duplicateFileNames;
 	private List<String> duplicateNames;
+	private String iframeUrl;
 	
+	public String getIframeUrl() {
+		User user = (User)this.sessionManager.getSessionAttribute("login_user");
+		return "http://enter-fracts.com/webapp/report/index.html?userId="+user.getId()+"&subscriberId=-1";
+	}
+
+	public void setIframeUrl(String iframeUrl) {
+		this.iframeUrl = iframeUrl;
+	}
+
 	public List<String> getDuplicateNames() {
 		return duplicateNames;
 	}

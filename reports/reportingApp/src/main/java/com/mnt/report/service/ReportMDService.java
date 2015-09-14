@@ -271,13 +271,13 @@ public class ReportMDService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	return getReports();
+    	return getReports(null, -1l);
     }
     
 	@RequestMapping(value="/reports/md",method=RequestMethod.GET)
 	@ResponseBody
 	@Transactional
-	public List<ReportMDVM> getReports() {
+	public List<ReportMDVM> getReports(@RequestParam("userId") Long userId,@RequestParam("subscriberId") final Long subscriberId) {
 		//return sessionFactory.getCurrentSession().createQuery("FROM ReportMD1").list();
 		
 		return jt.query("Select * from reportmd where access = 1", new RowMapper<ReportMDVM>(){
@@ -287,7 +287,7 @@ public class ReportMDService {
 				try {
 				ReportMDVM reportMD = new ReportMDVM();
 				reportMD.id = (arg0.getLong("id"));
-				reportMD.jsonForm = ((JSONArray)new JSONParser().parse(buildTitleMap(arg0.getString("jsonForm"))));
+				reportMD.jsonForm = ((JSONArray)new JSONParser().parse(buildTitleMap(arg0.getString("jsonForm"),subscriberId)));
 				reportMD.jsonSchema = ((JSONObject)new JSONParser().parse(arg0.getString("jsonSchema")));
 				reportMD.name = (arg0.getString("name"));
 				reportMD.description = (arg0.getString("description"));
@@ -309,12 +309,12 @@ public class ReportMDService {
 		
 	}
 	
-	private String  buildTitleMap(String jsonStr) {
+	private String  buildTitleMap(String jsonStr,Long subscriberId) {
 		String titleMapFn[] =  jsonStr.split("titleMapFn_");
 		for(int i = 1 ; i < titleMapFn.length ;i++) {
 			String functionName = titleMapFn[i].split("\"")[0].trim();
 			try {
-				String o = (String)TitleMapHelper.class.getMethod(functionName,JdbcTemplate.class).invoke(null,jt);
+				String o = (String)TitleMapHelper.class.getMethod(functionName,JdbcTemplate.class,Long.class).invoke(null,jt,subscriberId);
 				jsonStr = jsonStr.replace("\"titleMapFn_"+functionName+"\"", o);
 			} catch (Exception e) {
 				e.printStackTrace();
