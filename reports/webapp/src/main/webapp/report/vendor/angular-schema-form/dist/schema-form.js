@@ -1381,6 +1381,10 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
 
             // We watch the model for changes and the titleMapValues to reflect
             // the modelArray
+            form.titleMap.forEach(function(item,index) {
+            	scope.modelArray.push(item.value);
+            	scope.titleMapValues[index]=true;
+            });
             var updateTitleMapValues = function(arr) {
               scope.titleMapValues = [];
               arr = arr || [];
@@ -1391,7 +1395,7 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
 
             };
             //Catch default values
-            updateTitleMapValues(scope.modelArray);
+            //updateTitleMapValues(scope.modelArray);
             scope.$watchCollection('modelArray', updateTitleMapValues);
 
             //To get two way binding we also watch our titleMapValues

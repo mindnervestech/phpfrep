@@ -133,7 +133,7 @@
 				
 				
 				
-				$('[name=DC_AD_SECTION]').prop("checked", true);
+				/*$('[name=DC_AD_SECTION]').prop("checked", true);
 				$('[name=DC_AD_ORIENTATION]').prop("checked", true);
 				$('[name=DC_AD_TYPE]').prop("checked", true);
 				$('[name=DC_AD_SIZE]').prop("checked", true);
@@ -142,6 +142,18 @@
 				$('[name=DC_SEARCH_ADVERTISER_TYPE]').prop("checked", true);
 				$('[name=DC_ADVERTISER_TYPE]').prop("checked", true);
 				$('[name=DC_PUBLICATION_TITLE]').prop("checked", true);
+				$('[name=DC_SUBSCRIBER_TERRITORY]').prop("checked", true);*/
+				
+				var d = new Date();
+				var fd = d.getMonth()>3 ? d.getMonth()-4 : d.getMonth()+8;
+				$('[name=fromdatemm]').val(fd>9?fd:"0"+fd);
+				$('[name=fromdateyy]').val(d.getMonth()>3 ? d.getFullYear() : d.getFullYear()-1);
+				$('[name=todatemm]').val(d.getMonth()>9?d.getMonth():"0"+d.getMonth());
+				$('[name=todateyy]').val(d.getFullYear());
+				$scope.reportTemplate.model.fromdatemm = d.getMonth()>3 ? d.getMonth()-4 : d.getMonth()+8;
+				$scope.reportTemplate.model.fromdateyy = d.getMonth()>3 ? d.getFullYear() : d.getFullYear()-1;
+				$scope.reportTemplate.model.todatemm = d.getMonth();
+				$scope.reportTemplate.model.todateyy = d.getFullYear();
 				
 				
 			},1500);
