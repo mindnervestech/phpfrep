@@ -161,15 +161,25 @@ li.active>a {
 .rowTotal {
 	cursor:pointer; 
 }
+#rpt_table th {
+	text-align: left;
+}
+/* body {
+	background-color: #dfe5e9;
+} */
+.nav-tabs>li.active>a {
+	background-color: #2B2E33 !important;
+    color: #dadada !important;
+}
 </style>
 </head>
 
 
-<body ng-app="datatableApp" ng-controller="datatableCtrl">
+<body ng-app="datatableApp" ng-controller="datatableCtrl" >
 
 <!-- Tab Panel 1 Start -->
 <div ng-show="backBtn" style="padding-top:10px;">
-	<button class="btn btn-warning btn-xs" style="float: right;" ng-click="back()">Back to report</button>
+	<button class="btn btn-default btn-xs" style="float: right;" ng-click="back()">Back to report</button>
 </div>
 <div ng-hide="expanded" role="tabpanel">
  <ul class="nav nav-tabs" role="tablist">
@@ -186,7 +196,7 @@ li.active>a {
 		         sf-model="reportTemplate.model">
 		     </div>
 		    
-		    <button ng-show="showExcButton" class="btn btn-warning btn-xs" type="button"  ng-click="runReport(1)">
+		    <button ng-show="showExcButton" class="btn btn-primary btn-xs" type="button"  ng-click="runReport(1)">
 		    	Execute
 		    </button>
 		  </form>
@@ -198,7 +208,7 @@ li.active>a {
 	 	>
         <thead style="background-color: #f0ad4e;color: antiquewhite;">
             <tr>
-                <th>Name</th>
+                <th style="background-color: black;">Name</th>
                 <!-- <th>Description</th>
                 <th colspan=2>Action</th> -->
             </tr>

@@ -13,7 +13,7 @@ public class TitleMapHelper {
 
 
 	public static String allDN_DECOMPANY_ID(JdbcTemplate jt,Long subscriberId) {
-    	List<JSONObject> list = jt.query("select P.DN_ID AS value, P.DC_COMPANY_NAME AS name  from tbl_de_company P", new RowMapper<JSONObject>(){
+    	List<JSONObject> list = jt.query("select P.DN_ID AS value, P.DC_COMPANY_NAME AS name  from tbl_de_company P order by P.DC_COMPANY_NAME", new RowMapper<JSONObject>(){
 
 			public JSONObject mapRow(ResultSet rs, int arg1)
 					throws SQLException {
