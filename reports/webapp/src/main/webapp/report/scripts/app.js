@@ -76,10 +76,12 @@
 				} else {
 					lastQueryCriteria = $scope.searchConfig;
 				}
+				$("#loading").show();
 				$http({method:'post',url:'/webapp/reports/drildownreport',data:{searchCriteria:lastQueryCriteria,filters:dataFiler}}).success(function(data) {
 					$scope.detailsData = data.data;
 					$scope.detailColumns = data.columns;
 					$("a[href='#detail-view']").click();
+					$("#loading").hide();
 				});
 			}
 		});
@@ -87,17 +89,21 @@
 		$scope.reportMDs = [];
 		
 		$scope.loadReportsMd = function () {
+			$("#loading").show();
 			$http.get('/webapp/reports/md',{params:{'subscriberId':$scope.subscriberId,'userId':$scope.userId}}).success(function(resp){
 				$scope.reportMDs = resp;
 				if(!$scope.isReportSaved) {
 					$('#saved-report-tab a').click();
 				}
+				$("#loading").hide();
 			});
 		};
 		
 		$scope.loadReportsMdDummy = function () {
+			$("#loading").show();
 			$http.get('/template/reports/file/md.json').success(function(resp){
 				$scope.reportMDs = resp;
+				$("#loading").hide();
 			});
 		};
 		
@@ -196,6 +202,13 @@
         	var obj = $scope.$eval($(v).attr('json'));
         	executeReport(obj);
         };
+        window.openPopUp = function(id) {
+        	$http.get('/webapp/getParentImage?parentImageId='+id).success(function(data){
+        		$("#parent-img").attr("src","files/fracts_files/images/parent/"+data);
+        		$("#parent-popup").css("height",$("body").height());
+        		$("#parent-popup").modal({backdrop:"static"});
+        	});
+        };
 		$scope.runReport = function (option) {
 			$scope.isAnyActiveReport = false;
 			$scope.lastQueryExecuted = option;
@@ -211,7 +224,9 @@
 			executeReport(obj);
 		}
 		executeReport = function(obj) {
+			$("#loading").show();
 			$http.get('/webapp/report/run',{params:{filter:obj}}).success(function(data){
+				$("#loading").hide();
 				if($scope.isSavedTemplateTable) {
 					$scope.reportData = data.data;
 					$scope.dtColumns = data.columns;
@@ -299,7 +314,9 @@
 		$scope.deleteReport = function(id) {
 			bootbox.confirm("Are you sure?", function(result) {
 				if(result) {
+					$("#loading").show();
 					$http({url:"/webapp/deleteReport",params:{id:id},method:"get"}).success(function(data) {
+						$("#loading").hide();
 						$scope.reportMDs = data;
 					});
 				}
@@ -329,9 +346,11 @@
 						templateName:$scope.templateName,
 						searchCriteria:JSON.stringify($scope.reportTemplate.model)
 					};
+					$("#loading").show();
 					$http({url:"/webapp/report/saveTemplate",data:data,method:"post"}).success(function(data) {
 						$scope.loadReportsMd();
 						$("#template-save-modal").modal('hide');
+						$("#loading").hide();
 					});
 				} else {
 					var data = {
@@ -340,9 +359,11 @@
 						data:JSON.stringify($scope.config),
 						searchCriteria:JSON.stringify($scope.reportTemplate.model)
 					};
+					$("#loading").show();
 					$http({url:"/webapp/report/saveTemplate",data:data,method:"post"}).success(function(data) {
 						$scope.loadReportsMd();
 						$("#template-save-modal").modal('hide');
+						$("#loading").hide();
 					});
 				}
 			} else {
@@ -432,6 +453,16 @@
 			decorateColumns = function (cols) {
 				var columns = scope.$eval(cols);
 				$.each(columns, function(i,e){
+					if(e.linkpopup) {
+						e.render = function(cellData, type, rowData) {
+							//return cellData;
+							if(cellData == undefined || (cellData[0] == undefined &&  cellData[1] == "TODO") ) return "";
+							if(cellData[1] == "TODO") return "<b>" + cellData[0] + "</b>";
+							
+							return "<a style='cursor:poiter;' onClick='openPopUp("+cellData+");return false;'>Image</a>";
+						
+						};
+					}
 					if(e.link) {
 						e.render = function(cellData, type, rowData) {
 							//return cellData;

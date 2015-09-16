@@ -200,6 +200,9 @@ public class ReportMDService {
 					if(!value.equals(""))
 						parameters.put(key.toString(), value);
 				}
+				if (value instanceof Long || value instanceof Integer || value instanceof Double || value instanceof Float) {
+					parameters.put(key.toString(), value);
+				}
 				
 				if (value instanceof JSONArray) {
 					JSONArray jsonArray = (JSONArray) value;
@@ -327,6 +330,17 @@ public class ReportMDService {
 	@ResponseBody
 	public Object execute(Long id) {
 		return null;
+	}
+	
+	@RequestMapping(value="/getParentImage",method=RequestMethod.GET)
+	@ResponseBody
+	public String getParentImage(@RequestParam("parentImageId") Long id) {
+		Map<String,Object> mdResult = jt.queryForMap("select DC_IMAGENAME from tbl_parent_image where DN_ID ="+id);
+		String result = "";
+		if(mdResult!=null &&!mdResult.isEmpty()) {
+			result = id+"/"+mdResult.get("DC_IMAGENAME").toString();
+		}
+		return result;
 	}
 	
 	public static class  ReportMDVM {

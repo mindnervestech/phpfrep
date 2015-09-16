@@ -350,6 +350,25 @@ li.active>a {
   		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 	
+	<div id="parent-popup" class="modal fade">
+  		<div class="modal-dialog"  style="width:50%;margin-left: 0;">
+    		<div class="modal-content">
+      			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        			<h4 class="modal-title">Parent Image</h4>
+      			</div>
+      			<div class="modal-body">
+        			<div style="width: 100%;margin: auto;text-align: center;">
+        				<img id="parent-img"  style="width: 100%;"/>
+        			</div>
+      			</div>
+      			<div class="modal-footer">
+        			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      			</div>
+    		</div><!-- /.modal-content -->
+  		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	
 	<div id="enlarge-image-modal" class="modal fade">
   		<div class="modal-dialog" style="width:96%;margin:2%;">
     		<div class="modal-content" >
@@ -368,5 +387,8 @@ li.active>a {
     		</div><!-- /.modal-content -->
   		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
+	<div id="loading" style="z-index:9999;display: none;position:absolute;width:4%;margin-left: 48%">
+		<img src="/webapp/report/image/loading_spinner.gif" style="width: 100%;"/>
+	</div>
 </body>
 </html>
