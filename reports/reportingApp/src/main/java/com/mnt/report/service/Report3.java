@@ -25,6 +25,7 @@ public class Report3 {
 		Map<String,Float> advertiserSum = new HashMap<String, Float>();
 		Map<String,Float> publicationSum = new HashMap<String, Float>();
 		
+		float total = 0.0f;
 		for(RowColValue _rcv : rowColValues) {
 			xAxis.add(_rcv.Publication);
 			yAxis.add(_rcv.Advertiser);
@@ -41,6 +42,7 @@ public class Report3 {
 			} else {
 				advertiserSum.put(_rcv.Advertiser,_rcv.summ + sumA);
 			}
+			total = total+_rcv.summ;
 			
 			valueHolder.put(_rcv.Publication + _rcv.Advertiser , _rcv);
 		}
@@ -54,7 +56,7 @@ public class Report3 {
 		Map<String,Object> sumRowh  = new HashMap<String,Object>();
 		Map<String,Object> sumRowf  = new HashMap<String,Object>();
 		sumRowh.put("Advertiser", new String[]{" Total","TODO"});//(1,0)
-		sumRowh.put("Total", new String[]{" ","TODO"});//()
+		sumRowh.put("Total", new String[]{" "+total,"TODO"});//()
 		sumRowf.put("Advertiser", new String[]{"~Total","TODO"});//(1,0)
 		sumRowf.put("Total", new String[]{"~","TODO"});//()
 		for(String xStr : xAxis) {

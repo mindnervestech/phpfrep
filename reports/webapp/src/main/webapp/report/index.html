@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="/webapp/report/vendor/pivottable/dist/pivot.css">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css">
-
+<link rel="stylesheet" href="/webapp/report/app/vendors/bootstrap/css/bootstrap.icon.min.css"/>
     
 <script src="/webapp/report/app/js/libs/jquery-1.10.2.min.js"></script>
 <script src="/webapp/report/app/js/libs/angular.js"></script>
@@ -171,6 +171,21 @@ li.active>a {
 	background-color: #2B2E33 !important;
     color: #dadada !important;
 }
+.nav-tabs>button.active {
+	background-color: #2B2E33 !important;
+    color: #dadada !important;
+}
+.nav-tabs>button {
+    float: left;
+    margin-bottom: -1px;
+}
+.nav>button {
+    position: relative;
+    display: block;
+}
+.no-left-padd {
+	padding-left: 0;
+}
 </style>
 </head>
 
@@ -178,13 +193,15 @@ li.active>a {
 <body ng-app="datatableApp" ng-controller="datatableCtrl" >
 
 <!-- Tab Panel 1 Start -->
-<div ng-show="backBtn" style="padding-top:10px;">
+<!-- <div ng-show="backBtn" style="padding-top:10px;">
 	<button class="btn btn-default btn-xs" style="float: right;" ng-click="back()">Back to report</button>
-</div>
+</div> -->
 <div ng-hide="expanded" role="tabpanel">
  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" id="saved-report-tab" ng-click="currenttab = 'report'" ><a href="#saved-report" aria-controls="saved-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-list-alt"></span> Reports</a></li>
-    <li role="presentation" id="custom-search-tab" ng-click="currenttab = 'search'"><a href="#custom-search" ng-click="backBtn=true" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-search"></span> Search</a></li>
+    <!-- <button data-ng-repeat="rpt in reportMDs" ng-click="showReport(rpt);selectedIndex = $index;" ng-class="$index==selectedIndex?'active':''">{{rpt.name}} - Show</button> -->
+    <li role="presentation" ng-repeat="rpt in reportMDs" id="tab{{$index}}" ng-click="showReport(rpt);currenttab = 'other';" class="{{$index==0?'active':''}}"><span ng-if="$index==0" ng-init="showReport(rpt);"></span><a href="#custom-search" aria-controls="saved-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-search"></span>{{rpt.name}} - Show</a></li>
+    <li role="presentation" ng-click="showPivotFun();currenttab = 'pivot';"><a href="#custom-search" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Pivot View</a></li>
+    <!-- <li role="presentation" id="custom-search-tab" ng-click="currenttab = 'search'"><a href="#custom-search" ng-click="backBtn=true" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-search"></span> Search</a></li> -->
   	  
   </ul>
 
@@ -202,58 +219,72 @@ li.active>a {
 		  </form>
     </div>
     <!--  -->
-    <div role="tabpanel" class="tab-pane" id="saved-report">
+   <!--  <div role="tabpanel" class="tab-pane" id="saved-report">
     	<table id="rpt_save-search"
 		class="table table-condensed table-hover table-striped table-bordered" 
 	 	>
         <thead style="background-color: #f0ad4e;color: antiquewhite;">
             <tr>
                 <th style="background-color: black;">Name</th>
-                <!-- <th>Description</th>
-                <th colspan=2>Action</th> -->
+                <th>Description</th>
+                <th colspan=2>Action</th>
             </tr>
         </thead>
         <tbody>
         	<tr data-ng-repeat="rpt in reportMDs" >
-                <!-- <td>{{rpt.name}}</td>
-                <td>{{rpt.description}}</td> -->
+                <td>{{rpt.name}}</td>
+                <td>{{rpt.description}}</td>
                 <td>
                   <a href="#" data-ng-click="showReport(rpt)">{{rpt.name}} - Show</a> &nbsp;
                 </td>
-                <!-- <td ng-if="rpt.pivotConfig!=null || rpt.searchCriteria!=null">
+                <td ng-if="rpt.pivotConfig!=null || rpt.searchCriteria!=null">
                   <a href="#" data-ng-click="deleteReport(rpt.id)">Delete</a> &nbsp;
-                </td> -->
+                </td>
             </tr>
             
         </tbody>
  
         
     </table>		
-    </div>
+    </div> -->
+    
     <!--  -->
+    <div role="tabpanel" class="tab-pane" id="pivot-view">
+    	
+    </div>
+    
     <div role="tabpanel" class="tab-pane" id="ad-hoc-search">
     			Need to develop
     </div>
     
   </div>
 </div><!-- Tab Panel 1 End -->
-
-
+<div ng-if="isCompanyDetail" class="row" style="padding: 10px;">
+{{$scope.companyDetail}}
+	Company Name : {{$scope.companyDetail.companyName?$scope.companyDetail.companyName+",":''}}{{$scope.companyDetail.addressLine1?$scope.addressLine1.companyName:''}}
+	{{$scope.companyDetail.country?$scope.companyDetail.country:''}}
+</div>
+<div ng-show="isAnyActiveReport && currenttab == 'pivot'">
+	<div>
+    		<input type="button" ng-if="!isSavedTemplate" name="save" class="btn btn-primary" ng-click="openTemplateModal(2)" style="margin-left: 88%;" value="Save as template">
+    </div>
+    <div id="pivot-table-output" style="margin: 10px;"></div>
+</div>
 <!-- Tab Panel 2 start -->
-<div  ng-show="isAnyActiveReport && currenttab == 'search'"  role="tabpanel">
+<div ng-show="isAnyActiveReport && currenttab == 'other'"  role="tabpanel">
 	<!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
+  <!-- ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#table-view" aria-controls="table-view" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-th-list"></span> Table View</a></li>
-    <li ng-show='showPivot == null' role="presentation"><a href="#pivot-view" aria-controls="pivot-view" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Pivot View</a></li>
-   <!-- 
+    
+   
     <li role="presentation"><a href="#detail-view" aria-controls="table-view" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-th-list"></span> Detail View</a></li>
-    -->
+   
     <a href="#" ng-click="expanded =! expanded" style="
     margin-top: 10px;
     margin-left: 10px;
     position: absolute;"><span class="glyphicon" ng-class="expanded ? 'glyphicon-resize-small' : 'glyphicon-resize-full'"></span></a>
     
-  </ul>
+  </ul> -->
   <div class="tab-content" style="padding: 10px;">
     <div role="tabpanel" class="tab-pane active" id="table-view">
 			
@@ -279,12 +310,7 @@ li.active>a {
 	    </table>    
     </div><!-- table-view end here -->
     
-    <div role="tabpanel" class="tab-pane" id="pivot-view">
-    	<div>
-    		<input type="button" ng-if="!isSavedTemplate" name="save" class="btn btn-primary" ng-click="openTemplateModal(2)" style="margin-left: 88%;" value="Save as template">
-    	</div>
-    	<div id="pivot-table-output" style="margin: 10px;"></div>
-    </div>
+    
     
     <div role="tabpanel" class="tab-pane" id="detail-view">
     	<div class="btn-group pull-right">

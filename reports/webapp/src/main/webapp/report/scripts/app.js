@@ -93,7 +93,7 @@
 			$http.get('/webapp/reports/md',{params:{'subscriberId':$scope.subscriberId,'userId':$scope.userId}}).success(function(resp){
 				$scope.reportMDs = resp;
 				if(!$scope.isReportSaved) {
-					$('#saved-report-tab a').click();
+					$('#tab0').click();
 				}
 				$("#loading").hide();
 			});
@@ -115,7 +115,7 @@
 				model:{}
 				
 		};
-		
+		$scope.selectedIndex = 0;
 		$scope.showExcButton = false;
 		$scope.isAnyActiveReport= false;
 		$scope.showReport = function (report) {
@@ -165,7 +165,7 @@
 			},1500);
 			//$scope.reportTemplate.model = {};
 			$scope.showExcButton = true;
-			$scope.currenttab = 'search';
+			$scope.currenttab = 'other';
 			$('#custom-search-tab a').click();
 			if(report.pivotConfig!=null) {
 				$scope.pivotConfig = report.pivotConfig;
@@ -204,10 +204,15 @@
         };
         window.openPopUp = function(id) {
         	$http.get('/webapp/getParentImage?parentImageId='+id).success(function(data){
-        		$("#parent-img").attr("src","files/fracts_files/images/parent/"+data);
+        		$("#parent-img").attr("src","/files/fracts_files/images/parent/"+data);
         		$("#parent-popup").css("height",$("body").height());
         		$("#parent-popup").modal({backdrop:"static"});
         	});
+        };
+        $scope.pivotTab = false;
+        $scope.showPivotFun = function() {
+        	$scope.pivotTab = true;
+        	$scope.runReport(1);
         };
 		$scope.runReport = function (option) {
 			$scope.isAnyActiveReport = false;
@@ -227,7 +232,46 @@
 			$("#loading").show();
 			$http.get('/webapp/report/run',{params:{filter:obj}}).success(function(data){
 				$("#loading").hide();
-				if($scope.isSavedTemplateTable) {
+				if(data.company) {
+					$scope.isCompanyDetail = true;
+					if(data.company.companyName) {
+						$("#companyName").text(data.company.companyName+",");
+					}
+					if(data.company.addressLine1) {
+						$("#addressLine1").text(data.company.addressLine1+",");
+					}
+					if(data.company.country) {
+						$("#country").text(data.company.country);
+					}
+				} else {
+					$scope.isCompanyDetail = false;
+				}
+				if($scope.pivotTab) {
+					$scope.pivotTab = false;
+					var parent = $("#pivot-table-output").parent();
+					$("#pivot-table-output").remove();
+					parent.append("<div id='pivot-table-output' style='margin: 10px;'></div>");
+					$("#pivot-table-output").pivotUI(data.data, {
+						renderers: renderers,
+						rows:[],
+						cols:[],
+						vals:[],
+						rendererName:'Table',
+						aggregatorName:'Count',
+						derivedAttributes: {
+							"Year":       dateFormat("Issue Date", "%y", true),
+							"Month": dateFormat("Issue Date", "%n", true),
+						},
+						sorters: function(attr) {
+							if(attr == "Month") {
+								return sortAs(["Jan","Feb","Mar","Apr", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]);
+							}
+						},
+						onRefresh:$scope.onRefresh,
+						hiddenAttributes: data.hiddenpivotcol//["DN_ID","ISSUE_DATE"],
+					});
+					$scope.isAnyActiveReport = false;
+				} else if($scope.isSavedTemplateTable) {
 					$scope.reportData = data.data;
 					$scope.dtColumns = data.columns;
 					$('a[href="#table-view"]').click();
@@ -238,32 +282,6 @@
 				} else if($scope.isSavedTemplate) {
 					$('a[href="#pivot-view"]').parent().show();
 					$('a[href="#table-view"]').parent().hide();
-					var parent = $("#pivot-table-output").parent();
-					$("#pivot-table-output").remove();
-					parent.append("<div id='pivot-table-output' style='margin: 10px;'></div>");
-					$("#pivot-table-output").pivotUI(data.data, {
-						renderers: renderers,
-						rendererName:$scope.pivotConfig.rendererName,
-						aggregatorName:$scope.pivotConfig.aggregatorName,
-						derivedAttributes: {
-							"Year":       dateFormat("Issue Date", "%y", true),
-							"Month": dateFormat("Issue Date", "%n", true),
-						},
-						sorters: function(attr) {
-							if(attr == "Month") {
-								return sortAs(["Jan","Feb","Mar","Apr", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]);
-							}
-						},
-						rows:$scope.pivotConfig.rows,
-						cols:$scope.pivotConfig.cols,
-						vals:$scope.pivotConfig.vals,
-						hiddenAttributes: data.hiddenpivotcol//["DN_ID","ISSUE_DATE"],
-					});
-					$scope.isAnyActiveReport = true;
-					$("#pivot-table-output td").hide();
-					$(".pvtRendererArea").show();
-					$(".pvtTable td").show();
-					$('a[href="#pivot-view"]').click();
 				} else {
 					$('a[href="#pivot-view"]').parent().show();
 					$('a[href="#table-view"]').parent().show();
@@ -292,6 +310,7 @@
 						onRefresh:$scope.onRefresh,
 						hiddenAttributes: data.hiddenpivotcol//["DN_ID","ISSUE_DATE"],
 					});
+					
 				}
 				$scope.isAnyActiveReport = true;
 			});
@@ -459,7 +478,7 @@
 							if(cellData == undefined || (cellData[0] == undefined &&  cellData[1] == "TODO") ) return "";
 							if(cellData[1] == "TODO") return "<b>" + cellData[0] + "</b>";
 							
-							return "<a style='cursor:poiter;' onClick='openPopUp("+cellData+");return false;'>Image</a>";
+							return "<a style='cursor:pointer;' onClick='openPopUp("+cellData+");return false;'><span class='glyphicon glyphicon-eye-open' style='font-size:14px;color:black;'></span></a>";
 						
 						};
 					}
