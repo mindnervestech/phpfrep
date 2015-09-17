@@ -259,10 +259,8 @@ li.active>a {
     
   </div>
 </div><!-- Tab Panel 1 End -->
-<div ng-if="isCompanyDetail" class="row" style="padding: 10px;">
-{{$scope.companyDetail}}
-	Company Name : {{$scope.companyDetail.companyName?$scope.companyDetail.companyName+",":''}}{{$scope.companyDetail.addressLine1?$scope.addressLine1.companyName:''}}
-	{{$scope.companyDetail.country?$scope.companyDetail.country:''}}
+<div ng-if="isCompanyDetail" class="row" style="padding: 0px 20px; font-weight: bold;">
+	Company Name : <span id="companyName"></span><span id="addressLine1"></span><span id="country"></span>
 </div>
 <div ng-show="isAnyActiveReport && currenttab == 'pivot'">
 	<div>
