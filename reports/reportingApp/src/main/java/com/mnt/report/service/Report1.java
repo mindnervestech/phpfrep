@@ -2,12 +2,17 @@ package com.mnt.report.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.json.simple.JSONObject;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,8 +23,21 @@ public class Report1 {
 
 	public static JSONObject  main(List<RowColValue> rowColValues) {
 		
-		
-		Set<String> xAxis = new HashSet<String>();
+		//Collections.sort(rowColValues);
+		Set<String> xAxis = new TreeSet<String>(new Comparator<String>() {
+
+			public int compare(String o1, String o2) {
+				Date d1;
+				try {
+					d1 = sdf.parse("01-"+o1);
+					Date d2 = sdf.parse("01-"+o2);
+					return d1.compareTo(d2);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				return 0;
+			}
+		});
 		Set<String> yAxis = new HashSet<String>();
 		Map<String, RowColValue> valueHolder = new HashMap<String, RowColValue>();
 		List<Column> column  = new ArrayList<Column>();
@@ -28,6 +46,7 @@ public class Report1 {
 		Map<String,Float> xSum = new HashMap<String, Float>();
 		Map<String,Float> ySum = new HashMap<String, Float>();
 		
+		float total = 0.0f;
 		for(RowColValue _rcv : rowColValues) {
 			xAxis.add(_rcv.x);
 			yAxis.add(_rcv.y);
@@ -44,6 +63,7 @@ public class Report1 {
 			} else {
 				xSum.put(_rcv.x,_rcv.summ + sumA);
 			}
+			total = total+_rcv.summ;
 			
 			valueHolder.put( _rcv.x + _rcv.y  , _rcv);
 		}
@@ -57,7 +77,7 @@ public class Report1 {
 		Map<String,Object> sumRowh  = new HashMap<String,Object>();
 		Map<String,Object> sumRowf  = new HashMap<String,Object>();
 		sumRowh.put(Y, new String[]{" Total","TODO"});//(1,0)
-		sumRowh.put("Total", new String[]{" ","TODO"});//()
+		sumRowh.put("Total", new String[]{" "+total,"TODO"});//()
 		//sumRowf.put(Y, new String[]{"~Total","TODO"});//(1,0)
 		//sumRowf.put("Total", new String[]{"~","TODO"});//()
 		for(String xStr : xAxis) {
@@ -142,7 +162,10 @@ public class Report1 {
 			colValue.setIds(rs.getString("ids"));
 			return colValue;
 		}
+		
 	}
+	
+	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MMMMM-yyyy");
 	
 	public static class Column {
 		public String data;
