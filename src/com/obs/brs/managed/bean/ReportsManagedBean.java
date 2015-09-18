@@ -125,6 +125,7 @@ public class ReportsManagedBean implements Serializable{
 	private int reportCurrentYearThird;
 	private int reportCurrentMonthFour;
 	private int reportCurrentYearFour;
+	private int subscriberId;
 	private String fromMonthRange;
 	private String fromYearRange;
 	private String toMonthRange;
@@ -1901,6 +1902,16 @@ public class ReportsManagedBean implements Serializable{
 			e.printStackTrace();
 		}
 		return changeRowsPerPage; //default value
+	}
+	
+	public int getSubscriberId() {
+		
+		SubscriberUser subscriberUser = (SubscriberUser) sessionManager.getSessionAttribute(SessionManager.LOGINSUBSCRIBERUSER);
+		return subscriberUser.getSubscriber().getId();
+	}
+	
+	public void setSubscriberId(int subscriberId) {
+		this.subscriberId = subscriberId;
 	}
 
 	/**

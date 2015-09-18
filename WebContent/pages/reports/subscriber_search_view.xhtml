@@ -163,8 +163,6 @@ function dropdownchecklistselection(){
 </script>
 </h:head>
 <f:metadata>
-	<f:viewParam name="subscriberId" value="#{deBean.reportSubscriberId}" />
-	<f:viewParam name="userId" value="#{deBean.reportUserId}" />
 	<f:event type="preRenderView"
 		listener="#{reportsBean.loadCurrentMonthAndYear}" />
 </f:metadata>
@@ -174,7 +172,7 @@ function dropdownchecklistselection(){
 		<ui:include src="/pages/subscriberUserMenu.xhtml" />
 		<div id="main-content" style="padding: 5px 20px;">
 			<div class="row">
-				<iframe id="iframe" src="http://enter-fracts.com/webapp/report/index.html?subscriberId=#{subscriberId}&userId=#{userId}" style="width: 100%;height: 700px;border: none;"></iframe>
+				<iframe id="iframe" src="http://enter-fracts.com/webapp/report/index.html?subscriberId=#{reportsBean.subscriberId}" style="width: 100%;height: 700px;border: none;"></iframe>
 			</div>
 		</div>
 	</div>

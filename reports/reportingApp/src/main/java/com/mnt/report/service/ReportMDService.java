@@ -279,13 +279,13 @@ public class ReportMDService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	return getReports(null, -1l);
+    	return getReports(-1l);
     }
     
 	@RequestMapping(value="/reports/md",method=RequestMethod.GET)
 	@ResponseBody
 	@Transactional
-	public List<ReportMDVM> getReports(@RequestParam("userId") Long userId,@RequestParam("subscriberId") final Long subscriberId) {
+	public List<ReportMDVM> getReports(@RequestParam("subscriberId") final Long subscriberId) {
 		//return sessionFactory.getCurrentSession().createQuery("FROM ReportMD1").list();
 		
 		return jt.query("Select * from reportmd where access = 1", new RowMapper<ReportMDVM>(){
