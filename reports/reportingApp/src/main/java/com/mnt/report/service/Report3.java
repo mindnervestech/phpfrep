@@ -1,13 +1,17 @@
 package com.mnt.report.service;
 
+import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.json.simple.JSONObject;
 import org.springframework.jdbc.core.RowMapper;
@@ -16,7 +20,12 @@ public class Report3 {
 	public static JSONObject  main(List<RowColValue> rowColValues) {
 		
 		
-		Set<String> xAxis = new HashSet<String>();
+		Set<String> xAxis = new TreeSet<String>(new Comparator<String>() {
+
+			public int compare(String o1, String o2) {
+					return o1.compareTo(o2);
+			}
+		});
 		Set<String> yAxis = new HashSet<String>();
 		Map<String, RowColValue> valueHolder = new HashMap<String, RowColValue>();
 		List<Column> column  = new ArrayList<Column>();
@@ -56,14 +65,14 @@ public class Report3 {
 		Map<String,Object> sumRowh  = new HashMap<String,Object>();
 		Map<String,Object> sumRowf  = new HashMap<String,Object>();
 		sumRowh.put("Advertiser", new String[]{" Total","TODO"});//(1,0)
-		sumRowh.put("Total", new String[]{" "+total,"TODO"});//()
-		sumRowf.put("Advertiser", new String[]{"~Total","TODO"});//(1,0)
-		sumRowf.put("Total", new String[]{"~","TODO"});//()
+		sumRowh.put("Total", new String[]{" "+df.format(total),"TODO"});//()
+		//sumRowf.put("Advertiser", new String[]{"~Total","TODO"});//(1,0)
+		//sumRowf.put("Total", new String[]{"~","TODO"});//()
 		for(String xStr : xAxis) {
 			Float sum = publicationSum.get(xStr);
 			if(sum != null) {
-				sumRowh.put(xStr, new String[]{" " + sum,"TODO"});
-				sumRowf.put(xStr, new String[]{"~" + sum,"TODO"});
+				sumRowh.put(xStr, new String[]{" " + df.format(sum),"TODO"});
+				//sumRowf.put(xStr, new String[]{"~" + df.format(sum),"TODO"});
 			}
 		}
 		rows.add(sumRowh); // Adding row for sum of Publication (1,1...xAxis.length)
@@ -82,7 +91,7 @@ public class Report3 {
 				}
 				
 			}
-			row.put("Total", new String[]{" "+advertiserSum.get(yStr),"TODO"});//(xAxis.length, 1...yStr.length)
+			row.put("Total", new String[]{" "+df.format(advertiserSum.get(yStr)),"TODO"});//(xAxis.length, 1...yStr.length)
 			rows.add(row);
 		}
 		
@@ -135,12 +144,15 @@ public class Report3 {
 			RowColValue colValue = new RowColValue();
 			colValue.setAdvertiser(rs.getString("Advertiser"));
 			colValue.setPublication(rs.getString("Publication"));
-			colValue.setSumm(rs.getFloat(adUnit));
+			colValue.setSumm(Float.valueOf(df.format(rs.getFloat(adUnit))));
 			colValue.setIds(rs.getString("ids"));
 			return colValue;
 		}
 	}
-	
+	static DecimalFormat df = new DecimalFormat("#.##");
+	static {
+		df.setRoundingMode(RoundingMode.CEILING);
+	}
 	public static class Column {
 		public String data;
 		public String name;

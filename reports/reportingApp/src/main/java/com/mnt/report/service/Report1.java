@@ -1,7 +1,9 @@
 package com.mnt.report.service;
 
+import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -77,13 +79,13 @@ public class Report1 {
 		Map<String,Object> sumRowh  = new HashMap<String,Object>();
 		Map<String,Object> sumRowf  = new HashMap<String,Object>();
 		sumRowh.put(Y, new String[]{" Total","TODO"});//(1,0)
-		sumRowh.put("Total", new String[]{" "+total,"TODO"});//()
+		sumRowh.put("Total", new String[]{" "+ df.format(total),"TODO"});//()
 		//sumRowf.put(Y, new String[]{"~Total","TODO"});//(1,0)
 		//sumRowf.put("Total", new String[]{"~","TODO"});//()
 		for(String xStr : xAxis) {
 			Float sum = xSum.get(xStr);
 			if(sum != null) {
-				sumRowh.put(xStr, new String[]{" " + sum,"TODO"});
+				sumRowh.put(xStr, new String[]{" " + df.format(sum),"TODO"});
 				//sumRowf.put(xStr, new String[]{"~" + sum,"TODO"});
 			}
 		}
@@ -103,7 +105,7 @@ public class Report1 {
 				}
 				
 			}
-			row.put("Total", new String[]{" "+ySum.get(yStr),"TODO"});//(xAxis.length, 1...yStr.length)
+			row.put("Total", new String[]{" "+df.format(ySum.get(yStr)),"TODO"});//(xAxis.length, 1...yStr.length)
 			rows.add(row);
 		}
 		
@@ -158,13 +160,17 @@ public class Report1 {
 			RowColValue colValue = new RowColValue();
 			colValue.setDate(rs.getString(X));
 			colValue.setPublication(rs.getString(Y));
-			colValue.setSumm(rs.getFloat(adUnit));
+			
+			colValue.setSumm(Float.valueOf(df.format(rs.getFloat(adUnit))));
 			colValue.setIds(rs.getString("ids"));
 			return colValue;
 		}
 		
 	}
-	
+	static DecimalFormat df = new DecimalFormat("#.##");
+	static {
+	df.setRoundingMode(RoundingMode.CEILING);
+	}
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd-MMMMM-yyyy");
 	
 	public static class Column {
