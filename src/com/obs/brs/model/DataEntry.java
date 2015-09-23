@@ -58,7 +58,16 @@ public class DataEntry implements Serializable{
 	private String otherAdvertisertype;
 	private String addColumn;
 	private String contactInfo;
-	
+	private int isProcessedOcr = 0;
+
+	@Column(name="DB_IS_PROCESSED_OCR", nullable = false)
+	public int getIsProcessedOcr() {
+		return isProcessedOcr;
+	}
+
+	public void setIsProcessedOcr(int isProcessedOcr) {
+		this.isProcessedOcr = isProcessedOcr;
+	}
 
 	/**
 	 * Get de_data Id

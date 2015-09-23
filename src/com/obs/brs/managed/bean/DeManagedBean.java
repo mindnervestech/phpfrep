@@ -31,6 +31,10 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.imageio.ImageIO;
+
+import com.ning.http.client.AsyncCompletionHandler;
+import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.Response;
 import com.obs.brs.ocr.Ocr;
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.custom.datascroller.ScrollerActionEvent;
@@ -1708,7 +1712,8 @@ public class DeManagedBean implements Serializable{
 									dataEntry.setChildImage(childImageList.get(i));
 									dataEntry.setWidth(String.valueOf(childImageList.get(i).getImageWidth()));
 									dataEntry.setLength(String.valueOf(childImageList.get(i).getImageHeight()));
-									deService.addDataEntry(dataEntry);				
+									deService.addDataEntry(dataEntry);
+									callAddDEOcr();
 								}
 							}
 						}else if(dataEntry == null && childImageList!=null && childImageList.size() >0){
@@ -1725,7 +1730,8 @@ public class DeManagedBean implements Serializable{
 									dataEntry.setChildImage(childImageList.get(i));
 									dataEntry.setWidth(String.valueOf(childImageList.get(i).getImageWidth()));
 									dataEntry.setLength(String.valueOf(childImageList.get(i).getImageHeight()));
-									deService.addDataEntry(dataEntry);				
+									deService.addDataEntry(dataEntry);
+									callAddDEOcr();
 								}
 							}
 						}else if(dataEntry != null && childImageList.isEmpty()){
@@ -1735,7 +1741,8 @@ public class DeManagedBean implements Serializable{
 							dataEntry.setCreated_by(currentUser);
 							dataEntry.setParentImage(deJob.getParentImage());
 							//dataEntry.setChildImage(deJob.getParentImage());
-							deService.updateDataEntry(dataEntry);		
+							deService.updateDataEntry(dataEntry);	
+							updateDataEntryOcr(dataEntry);
 						}else{
 							dataEntry = new DataEntry();
 							dataEntry.setIsDeleted(false);
@@ -1743,7 +1750,8 @@ public class DeManagedBean implements Serializable{
 							dataEntry.setDeJobid(deJob);
 							dataEntry.setCreated_by(currentUser);
 							dataEntry.setParentImage(deJob.getParentImage());
-							deService.addDataEntry(dataEntry);		
+							deService.addDataEntry(dataEntry);	
+							callAddDEOcr();
 						}
 					} else {
 						flag=String.valueOf(deJob.getParentImage().getId());
@@ -1757,6 +1765,24 @@ public class DeManagedBean implements Serializable{
 			e.printStackTrace();
 		}
 		return flag;
+	}
+	
+	private void callAddDEOcr() {
+		try {
+			AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+			asyncHttpClient.prepareGet("http://localhost:8080/webapp/addUnProcessedOcr").execute(new AsyncCompletionHandler<Response>(){
+				
+				@Override
+				public Response onCompleted(Response response) throws Exception{
+					return response;
+				}
+
+				@Override
+				public void onThrowable(Throwable t){
+				}
+			});
+		} catch(Exception e){
+		}
 	}
 	/**
 	 * Set Approval to job qcApprovedJob
@@ -4737,6 +4763,7 @@ public List<String> getcompaniesId(String query) {
 						dataEntry.setOcrText(this.ocrText);
 						dataEntry.setContactInfo(this.contactInfo);
 						deService.updateDataEntry(dataEntry);
+						updateDataEntryOcr(dataEntry);
 						messageService.messageInformation(null, "Data Entry has been Updated successfully.");
 					
 				}else{
@@ -4752,6 +4779,28 @@ public List<String> getcompaniesId(String query) {
 
 		selectedCompany = new DeCompany();
 		return null;
+	}
+	
+	private void updateDataEntryOcr(DataEntry dataEntry) {
+		try {
+			AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+			asyncHttpClient.prepareGet(
+					"http://localhost:8080/webapp/updateDEOcr?id="
+							+ dataEntry.getId()).execute(
+					new AsyncCompletionHandler<Response>() {
+
+						@Override
+						public Response onCompleted(Response response)
+								throws Exception {
+							return response;
+						}
+
+						@Override
+						public void onThrowable(Throwable t) {
+						}
+					});
+		} catch (Exception e) {
+		}
 	}
 	/**
 	 * 
@@ -4808,6 +4857,7 @@ public List<String> getcompaniesId(String query) {
 								dataEntry.setIsqualityCheck(true);
 								dataEntry.setCreated_by(currentUser);
 								deService.updateDataEntry(dataEntry);
+								updateDataEntryOcr(dataEntry);
 								messageService.messageInformation(null, "Data Entry has been Updated successfully.");
 							}
 
@@ -4854,6 +4904,7 @@ public List<String> getcompaniesId(String query) {
 							dataEntry.setIsqualityCheck(true);
 							dataEntry.setCreated_by(currentUser);
 							deService.updateDataEntry(dataEntry);
+							updateDataEntryOcr(dataEntry);
 							messageService.messageInformation(null, "Data Entry has been Updated successfully.");
 						}
 
@@ -4929,6 +4980,7 @@ public List<String> getcompaniesId(String query) {
 						dataEntry = getAllAdDetails(dataEntry);
 						dataEntry.setIsApproved(2);
 						deService.updateDataEntry(dataEntry);
+						updateDataEntryOcr(dataEntry);
 						messageService.messageInformation(null, "Data Entry has been Approval successfully.");
 						return null;
 					}
@@ -4960,6 +5012,7 @@ public List<String> getcompaniesId(String query) {
 						dataEntry = getAllAdDetails(dataEntry);
 						dataEntry.setIsApproved(3);
 						deService.updateDataEntry(dataEntry);
+						updateDataEntryOcr(dataEntry);
 						messageService.messageInformation(null, "Data Entry has been Rejected successfully.");
 						return null;
 					}

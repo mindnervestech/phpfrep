@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.ws.RequestWrapper;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -46,6 +48,17 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.mnt.report.service.Report3.RowColValue;
 
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+
 @Controller
 public class ReportMDService {
 	
@@ -55,6 +68,115 @@ public class ReportMDService {
 	@Autowired
 	NamedParameterJdbcTemplate namedJdbcTemplate;
 
+	private static Client client;
+	
+	static {
+		Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", "elasticsearch").build();
+		TransportClient transportClient = new TransportClient(settings);
+		transportClient = transportClient.addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
+		client  = (Client)transportClient;
+	}
+	
+	@RequestMapping(value="/searchDataEntry",method=RequestMethod.GET)
+	@ResponseBody
+	public List<Long> searchDataEntry(@RequestParam("query") String query) {
+		System.out.println("query:"+query);
+		List<Long> ids = new ArrayList<Long>();
+		SearchResponse response = client.prepareSearch("fracts").setTypes("DataEntry").setQuery(QueryBuilders.queryString(query)
+				.defaultField("ocrText")).execute().actionGet();
+		 for (SearchHit hit : response.getHits().getHits()) {
+		        Long id = Long.parseLong(hit.getId());
+		        ids.add(id);
+			 System.out.println("id:"+id);//Handle the hit...
+		    }
+
+		return ids;
+	}
+	
+	@RequestMapping(value="/addUnProcessedOcr",method=RequestMethod.GET)
+	@ResponseBody 
+	public String addUnProcessedOcr() {
+		try {
+		
+			List<DataEntryVM> unProcessedList =  jt.query("Select DN_ID as 'id',DC_OCR_TEXT as 'ocrText' from tbl_de_data where DB_IS_PROCESSED_OCR = 0", new RowMapper<DataEntryVM>(){
+				
+				public DataEntryVM mapRow(ResultSet arg0, int arg1)
+						throws SQLException {
+					try {
+						DataEntryVM dataEntryVM = new DataEntryVM();
+						dataEntryVM.id = (arg0.getLong("id"));
+						dataEntryVM.ocrText = (arg0.getString("ocrText"));
+						return dataEntryVM;
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+					
+				}
+				
+			});
+			KeyHolder keyHolder=new GeneratedKeyHolder();
+			for(final DataEntryVM vm :unProcessedList) {
+				IndexResponse response = client.prepareIndex("fracts", "DataEntry",vm.id+"")
+						.setSource(XContentFactory.jsonBuilder()
+							    .startObject()
+						        .field("ocrText", vm.ocrText)
+						    .endObject())
+						.execute()
+						.actionGet();
+				try {
+					jt.update(new PreparedStatementCreator(){
+						public PreparedStatement createPreparedStatement(    Connection connection) throws SQLException {
+							PreparedStatement ps=connection.prepareStatement("update tbl_de_data set DB_IS_PROCESSED_OCR = 1 where DN_ID=?",new String[]{"id"});
+							int index=1;
+							ps.setLong(index++,vm.id);
+							return ps;
+						}
+					}
+					,keyHolder);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return "error";
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+		return "success";
+	}
+	
+	@RequestMapping(value="/updateDEOcr",method=RequestMethod.GET)
+	@ResponseBody
+	public String updateDEOcr(@RequestParam("id")Long id) {
+		try {
+			
+			Map<String,Object> mdResult = jt.queryForMap("Select DC_OCR_TEXT as 'ocrText' from tbl_de_data where DN_ID =" + id);
+			IndexResponse response = client.prepareIndex("fracts", "DataEntry",id+"")
+					.setSource(XContentFactory.jsonBuilder()
+						.startObject()
+						.field("ocrText", mdResult.get("ocrText"))
+						.endObject())
+					.execute()
+					.actionGet();
+		} catch(Exception e) {
+			return "error";
+		}
+		return "success";
+	}
+	
+	@RequestMapping(value="/deleteDEOcr",method=RequestMethod.GET)
+	@ResponseBody
+	public String deleteDEOcr(@RequestParam("id") Long id) {
+		try {
+			client.prepareDelete("fracts", "DataEntry", id+"")
+	        .execute()
+	        .actionGet();
+		} catch(Exception e) {
+			return "error";
+		}
+		return "success";
+	}
 	
 	@RequestMapping(value="/reports/drildownreport",method=RequestMethod.POST)
 	@ResponseBody
@@ -231,16 +353,31 @@ public class ReportMDService {
 						return Report1.main(rs);
 					}
 				} else {
-				List<Map<String, Object>> rs = namedJdbcTemplate.queryForList(mdResult.get("query").toString(),parameters);
-					
-				resp.put("data" , rs);
+					boolean flag = true;
+					if(jsonObject.get("DC_OCR_TEXT")!=null && !jsonObject.get("DC_OCR_TEXT").toString().isEmpty()) {
+						List<Long> ids = searchDataEntry(jsonObject.get("DC_OCR_TEXT").toString());
+						if(ids.size()>0) {
+							System.out.println("size:"+ids.size());
+							parameters.put("DE_IDSin", ids);
+							parameters.put("DE_IDS", "");
+						} else {
+							flag = false;
+							resp.put("data" , new ArrayList<Map<String,Object>>());
+						}
+					} else {
+						parameters.put("DE_IDS", null);							
+						
+					}
+					if(flag) {
+						List<Map<String, Object>> rs = namedJdbcTemplate.queryForList(mdResult.get("query").toString(),parameters);
+						resp.put("data" , rs);
+					}
 				
-				JSONArray columns = ((JSONArray)new JSONParser().parse(mdResult.get("columns").toString()));
-				resp.put("columns" , columns);
+					JSONArray columns = ((JSONArray)new JSONParser().parse(mdResult.get("columns").toString()));
+					resp.put("columns" , columns);
 				
-				JSONArray hiddenpivotcol = ((JSONArray)new JSONParser().parse(mdResult.get("hiddenpivotcol").toString()));
-				resp.put("hiddenpivotcol",hiddenpivotcol);
-				
+					JSONArray hiddenpivotcol = ((JSONArray)new JSONParser().parse(mdResult.get("hiddenpivotcol").toString()));
+					resp.put("hiddenpivotcol",hiddenpivotcol);
 			}
 			if(id == 19l) {
 				Map<String,Object> companyMap= jt.queryForMap("Select DC_COMPANY_NAME as 'companyName',DC_ADDRESS_LINE_1 as 'addressLine1',DC_COUNTRY as 'country' from tbl_de_company where DN_ID =" + Long.parseLong(jsonObject.get("DN_DECOMPANY_ID").toString().replace("[","").replace("]","")));
@@ -364,6 +501,11 @@ public class ReportMDService {
 		public String templateName;
 		public String data;
 		public String searchCriteria;
+	}
+	
+	public static class DataEntryVM {
+		public Long id;
+		public String ocrText;
 	}
 	/*
 	select B.DD_ISSUE_DATE from tbl_de_data A,tbl_parent_image B  WHERE 
