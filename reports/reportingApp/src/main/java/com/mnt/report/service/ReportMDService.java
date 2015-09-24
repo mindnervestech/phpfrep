@@ -2,6 +2,7 @@ package com.mnt.report.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,6 +60,10 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 
+import java.io.File;
+
+import net.coobird.thumbnailator.Thumbnails;
+
 @Controller
 public class ReportMDService {
 	
@@ -68,6 +73,17 @@ public class ReportMDService {
 	@Autowired
 	NamedParameterJdbcTemplate namedJdbcTemplate;
 
+	private static String localpath = "/usr/local/apache-tomcat-7.0.34/webapps"+File.separator+"files"+File.separator+"fracts_files"+File.separator;
+	
+	/*
+	 *  978  mvn install
+  979  cd /usr/local/apache-tomcat-7.0.34/webapps/
+  980  rm -rf webapp
+  981  cp -r /home/phpfrep/reports/webapp/target/webapp /usr/local/apache-tomcat-7.0.34/webapps/webapp
+  982  /usr/local/apache-tomcat-7.0.34/bin/shutdown.sh
+  983  /usr/local/apache-tomcat-7.0.34/bin/startup.sh
+
+	 * */
 	private static Client client;
 	
 	static {
@@ -466,6 +482,52 @@ public class ReportMDService {
 			} 
 		}
 		return jsonStr;
+	}
+	
+	@RequestMapping(value="/getParentImageThumb",method=RequestMethod.GET) 
+	@ResponseBody
+	public FileSystemResource getParentImageThumb(@RequestParam("id") Long id) {
+		Map<String,Object> mdResult = jt.queryForMap("select DC_IMAGENAME from tbl_parent_image where DN_ID ="+id);
+		String result = "";
+		if(mdResult!=null &&!mdResult.isEmpty()) {
+			result = localpath+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString().split(".")[0]+"_thumb.jpg";
+			File f = new File(result);
+			if(!f.exists()) {
+				try {	
+					Thumbnails.of(new File(localpath+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString()))
+		        	.size(100, 100)
+		        	.outputFormat("jpg")
+		        	.toFile(result);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+			return new FileSystemResource(f);
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="/getChildImageThumb",method=RequestMethod.GET) 
+	@ResponseBody
+	public FileSystemResource getChildImageThumb(@RequestParam("id") Long id) {
+		Map<String,Object> mdResult = jt.queryForMap("select DC_IMAGENAME from tbl_child_image where DN_ID ="+id);
+		String result = "";
+		if(mdResult!=null &&!mdResult.isEmpty()) {
+			result = localpath+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString().split(".")[0]+"_thumb.jpg";
+			File f = new File(result);
+			if(!f.exists()) {
+				try {	
+					Thumbnails.of(new File(localpath+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString()))
+		        	.size(100, 100)
+		        	.outputFormat("jpg")
+		        	.toFile(result);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+			return new FileSystemResource(f);
+		}
+		return null;
 	}
 	
 	@RequestMapping(value="/reports/md/{reportid}",method=RequestMethod.GET)

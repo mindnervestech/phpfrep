@@ -496,8 +496,12 @@
 						e.render = function(cellData,type,rowData) {
 							if(cellData.indexOf("http")===0 || cellData.indexOf("www.")===0) {
 								return "<img class='enlarge-img' src='"+cellData+"' style='width:100px;height:100px;cursor:pointer;'>";
-							} else {
-								return "<img class='enlarge-img' src='/webapp/report/getImage/"+rowData.DN_ID+"' style='width:100px;height:100px;cursor:pointer;'>";
+							} else if(cellData.indexOf("Parent")===0) {
+								var id = cellData.split("Parent")[1];
+								return "<img class='enlarge-img'  onClick='openPopUp("+id+")' src='/webapp/report/getParentImageThumb?id="+id+"' style='width:100px;height:100px;cursor:pointer;'>";
+							} else if(cellData.indexOf("Child")===0) {
+								var id = cellData.split("Child")[1];
+								return "<img class='enlarge-img'  onClick='openPopUp("+id+")' src='/webapp/report/getChildImageThumb?id="+id+"' style='width:100px;height:100px;cursor:pointer;'>";
 							}
 						};
 					}
