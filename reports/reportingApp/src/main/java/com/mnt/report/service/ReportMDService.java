@@ -509,15 +509,15 @@ public class ReportMDService {
 	
 	@RequestMapping(value="/getChildImageThumb",method=RequestMethod.GET) 
 	@ResponseBody
-	public FileSystemResource getChildImageThumb(@RequestParam("id") Long id) {
+	public FileSystemResource getChildImageThumb(@RequestParam("id") Long id,@RequestParam("parentId") Long parentId) {
 		Map<String,Object> mdResult = jt.queryForMap("select DC_IMAGENAME from tbl_child_image where DN_ID ="+id);
 		String result = "";
 		if(mdResult!=null &&!mdResult.isEmpty()) {
-			result = localpath+File.separator+"child"+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+			result = localpath+File.separator+"child"+File.separator+parentId+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
 			File f = new File(result);
 			if(!f.exists()) {
 				try {	
-					Thumbnails.of(new File(localpath+File.separator+"child"+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString()))
+					Thumbnails.of(new File(localpath+File.separator+"child"+File.separator+parentId+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString()))
 		        	.size(100, 100)
 		        	.outputFormat("jpg")
 		        	.toFile(f);

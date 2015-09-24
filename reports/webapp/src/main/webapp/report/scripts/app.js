@@ -500,8 +500,8 @@
 								var id = cellData.split("Parent")[1];
 								return "<img class='enlarge-img'  onClick='openPopUp("+id+")' src='/webapp/getParentImageThumb?id="+id+"' style='width:100px;height:100px;cursor:pointer;'>";
 							} else if(cellData.indexOf("Child")===0) {
-								var id = cellData.split("Child")[1];
-								return "<img class='enlarge-img'  onClick='openPopUp("+id+")' src='/webapp/getChildImageThumb?id="+id+"' style='width:100px;height:100px;cursor:pointer;'>";
+								var ids = cellData.split("Child")[1].split("-");
+								return "<img class='enlarge-img'  onClick='openPopUp("+id+")' src='/webapp/getChildImageThumb?id="+ids[1]+"&parentId="+ids[0]+"' style='width:100px;height:100px;cursor:pointer;'>";
 							}
 						};
 					}
