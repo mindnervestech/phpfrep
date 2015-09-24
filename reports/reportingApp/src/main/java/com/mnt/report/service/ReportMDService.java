@@ -73,7 +73,7 @@ public class ReportMDService {
 	@Autowired
 	NamedParameterJdbcTemplate namedJdbcTemplate;
 
-	private static String localpath = "/usr/local/apache-tomcat-7.0.34/webapps"+File.separator+"files"+File.separator+"fracts_files"+File.separator;
+	private static String localpath = "/usr/local/apache-tomcat-7.0.34/webapps"+File.separator+"files"+File.separator+"fracts_files"+File.separator+"images"+File.separator;
 	
 	/*
 	 *  978  mvn install
