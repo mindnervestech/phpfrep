@@ -498,10 +498,10 @@
 								return "<img class='enlarge-img' src='"+cellData+"' style='width:100px;height:100px;cursor:pointer;'>";
 							} else if(cellData.indexOf("Parent")===0) {
 								var id = cellData.split("Parent")[1];
-								return "<img class='enlarge-img'  onClick='openPopUp("+id+")' src='/webapp/report/getParentImageThumb?id="+id+"' style='width:100px;height:100px;cursor:pointer;'>";
+								return "<img class='enlarge-img'  onClick='openPopUp("+id+")' src='/webapp/getParentImageThumb?id="+id+"' style='width:100px;height:100px;cursor:pointer;'>";
 							} else if(cellData.indexOf("Child")===0) {
 								var id = cellData.split("Child")[1];
-								return "<img class='enlarge-img'  onClick='openPopUp("+id+")' src='/webapp/report/getChildImageThumb?id="+id+"' style='width:100px;height:100px;cursor:pointer;'>";
+								return "<img class='enlarge-img'  onClick='openPopUp("+id+")' src='/webapp/getChildImageThumb?id="+id+"' style='width:100px;height:100px;cursor:pointer;'>";
 							}
 						};
 					}
