@@ -205,7 +205,7 @@
         window.openPopUp = function(id) {
         	$http.get('/webapp/getParentImage?parentImageId='+id).success(function(data){
         		$("#parent-img").attr("src","/files/fracts_files/images/parent/"+data);
-        		$("#parent-popup").css("height",$("body").height());
+        		$("#parent-popup").css("height",window.screen.availHeight+"px");
         		$("#parent-popup").modal({backdrop:"static"});
         	});
         };
@@ -213,7 +213,7 @@
         window.openChildPopUp = function(parentId,id) {
         	$http.get('/webapp/getChildImage?childImageId='+id).success(function(data){
         		$("#parent-img").attr("src","/files/fracts_files/images/child/"+parentId+"/"+id+"/"+data);
-        		$("#parent-popup").css("height",$("body").height());
+        		$("#parent-popup").css("height",window.screen.availHeight+"px");
         		$("#parent-popup").modal({backdrop:"static"});
         	});
         };
