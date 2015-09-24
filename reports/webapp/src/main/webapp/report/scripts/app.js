@@ -209,6 +209,15 @@
         		$("#parent-popup").modal({backdrop:"static"});
         	});
         };
+        
+        window.openChildPopUp = function(parentId,id) {
+        	$http.get('/webapp/getChildImage?childImageId='+id).success(function(data){
+        		$("#parent-img").attr("src","/files/fracts_files/images/child/"+parentId+"/"+id+"/"+data);
+        		$("#parent-popup").css("height",$("body").height());
+        		$("#parent-popup").modal({backdrop:"static"});
+        	});
+        };
+        
         $scope.pivotTab = false;
         $scope.showPivotFun = function() {
         	$scope.pivotTab = true;
@@ -495,13 +504,13 @@
 					if(e.img) {
 						e.render = function(cellData,type,rowData) {
 							if(cellData.indexOf("http")===0 || cellData.indexOf("www.")===0) {
-								return "<img class='enlarge-img' src='"+cellData+"' style='width:100px;height:100px;cursor:pointer;'>";
+								return "<img src='"+cellData+"' style='width:100px;height:100px;cursor:pointer;'>";
 							} else if(cellData.indexOf("Parent")===0) {
 								var id = cellData.split("Parent")[1];
-								return "<img class='enlarge-img'  onClick='openPopUp("+id+")' src='/webapp/getParentImageThumb?id="+id+"' style='width:100px;height:100px;cursor:pointer;'>";
+								return "<img  onClick='openPopUp("+id+")' src='/webapp/getParentImageThumb?id="+id+"' style='width:100px;height:100px;cursor:pointer;'>";
 							} else if(cellData.indexOf("Child")===0) {
 								var ids = cellData.split("Child")[1].split("-");
-								return "<img class='enlarge-img'  onClick='openPopUp("+id+")' src='/webapp/getChildImageThumb?id="+ids[1]+"&parentId="+ids[0]+"' style='width:100px;height:100px;cursor:pointer;'>";
+								return "<img  onClick='openChildPopUp("+ids[0]+","+ids[1]+")' src='/webapp/getChildImageThumb?id="+ids[1]+"&parentId="+ids[0]+"' style='width:100px;height:100px;cursor:pointer;'>";
 							}
 						};
 					}

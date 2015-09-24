@@ -547,6 +547,17 @@ public class ReportMDService {
 		return result;
 	}
 	
+	@RequestMapping(value="/getChildImage",method=RequestMethod.GET)
+	@ResponseBody
+	public String getChildImage(@RequestParam("") Long id) {
+		Map<String,Object> mdResult = jt.queryForMap("select DC_IMAGENAME from tbl_child_image where DN_ID ="+id);
+		String result = "";
+		if(mdResult!=null &&!mdResult.isEmpty()) {
+			result = mdResult.get("DC_IMAGENAME").toString();
+		}
+		return result;
+	}
+	
 	public static class  ReportMDVM {
 		public JSONArray jsonForm;
 		public JSONObject jsonSchema;
