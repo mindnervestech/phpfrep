@@ -549,7 +549,7 @@ public class ReportMDService {
 	
 	@RequestMapping(value="/getChildImage",method=RequestMethod.GET)
 	@ResponseBody
-	public String getChildImage(@RequestParam("") Long id) {
+	public String getChildImage(@RequestParam("childImageId") Long id) {
 		Map<String,Object> mdResult = jt.queryForMap("select DC_IMAGENAME from tbl_child_image where DN_ID ="+id);
 		String result = "";
 		if(mdResult!=null &&!mdResult.isEmpty()) {
