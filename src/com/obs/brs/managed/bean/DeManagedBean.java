@@ -36,6 +36,9 @@ import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
 import com.obs.brs.ocr.Ocr;
+
+import net.coobird.thumbnailator.Thumbnails;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.custom.datascroller.ScrollerActionEvent;
 import org.primefaces.context.RequestContext;
@@ -2576,6 +2579,14 @@ public class DeManagedBean implements Serializable{
 					targetPath = targetPath+"/"+imgId;
 					new File(targetPath).mkdirs();
 					IoUtils.copyImages(sourcePath,targetPath,filename);
+					try {	
+						Thumbnails.of(new File(targetPath+File.separator+imgId+File.separator+filename))
+			        	.size(100, 100)
+			        	.outputFormat("jpg")
+			        	.toFile(targetPath+File.separator+imgId+File.separator+filename.split("\\.")[0]+"_thumb.jpg");
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 					new File(sourcePath).delete();
 					messageService.messageInformation(null, "Image cropped Successfully.");	
 					return RETURN_CHILD_IMAGE;
@@ -2721,6 +2732,14 @@ public class DeManagedBean implements Serializable{
 								sourcePathImage = sourcePath+"/"+parentImage.getImageName();
 								targetPathImage = targetPathImage+"/"+imgId;
 								new File(targetPathImage).mkdirs();
+								try {	
+									Thumbnails.of(new File(targetPathImage+File.separator+parentImage.getImageName()))
+						        	.size(100, 100)
+						        	.outputFormat("jpg")
+						        	.toFile(targetPathImage+File.separator+parentImage.getImageName().split("\\.")[0]+"_thumb.jpg");
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
 								IoUtils.copyImages(sourcePathImage,targetPathImage,parentImage.getImageName());
 							}else{
 								flag =true;
