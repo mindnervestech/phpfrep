@@ -490,14 +490,14 @@ public class ReportMDService {
 		Map<String,Object> mdResult = jt.queryForMap("select DC_IMAGENAME from tbl_parent_image where DN_ID ="+id);
 		String result = "";
 		if(mdResult!=null &&!mdResult.isEmpty()) {
-			result = localpath+File.separator+"parent"+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString().split(".")[0]+"_thumb.jpg";
+			result = localpath+File.separator+"parent"+File.separator+id+File.separator+(mdResult.get("DC_IMAGENAME").toString().split("\\.")[0])+"_thumb.jpg";
 			File f = new File(result);
 			if(!f.exists()) {
 				try {	
 					Thumbnails.of(new File(localpath+File.separator+"parent"+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString()))
 		        	.size(100, 100)
 		        	.outputFormat("jpg")
-		        	.toFile(result);
+		        	.toFile(f);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -520,7 +520,7 @@ public class ReportMDService {
 					Thumbnails.of(new File(localpath+File.separator+"child"+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString()))
 		        	.size(100, 100)
 		        	.outputFormat("jpg")
-		        	.toFile(result);
+		        	.toFile(f);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
