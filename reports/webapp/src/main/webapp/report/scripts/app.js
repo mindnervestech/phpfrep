@@ -202,19 +202,27 @@
         	var obj = $scope.$eval($(v).attr('json'));
         	executeReport(obj);
         };
-        window.openPopUp = function(id) {
-        	$http.get('/webapp/getParentImage?parentImageId='+id).success(function(data){
-        		$("#parent-img").attr("src","/files/fracts_files/images/parent/"+data);
-        		$("#parent-popup").css("height",window.screen.availHeight+"px");
-        		$("#parent-popup").modal({backdrop:"static"});
-        	});
+        window.openPopUp = function(e,id,option) {
+        	if(option==1) {
+        		$http.get('/webapp/getParentImage?parentImageId='+id).success(function(data){
+        			$("#parent-img").attr("src","/files/fracts_files/images/parent/"+data);
+        			$("#parent-popup").css("height",window.screen.availHeight+"px");
+        			$("#parent-popup").modal({backdrop:"static"});
+        		});
+        	} else {
+        		$http.get('/webapp/getParentImage?parentImageId='+id).success(function(data){
+        			$("#imgcrp").attr("src","/files/fracts_files/images/parent/"+data);
+        			$("#parent-zoom-popup-title").text("Parent Image");
+        			$("#parent-zoom-popup").modal({backdrop:"static"});
+        		});
+        	}
         };
         
-        window.openChildPopUp = function(parentId,id) {
+        window.openChildPopUp = function(e,parentId,id) {
         	$http.get('/webapp/getChildImage?childImageId='+id).success(function(data){
-        		$("#parent-img").attr("src","/files/fracts_files/images/child/"+parentId+"/"+id+"/"+data);
-        		$("#parent-popup").css("height",window.screen.availHeight+"px");
-        		$("#parent-popup").modal({backdrop:"static"});
+        		$("#imgcrp").attr("src","/files/fracts_files/images/child/"+parentId+"/"+id+"/"+data);
+        		$("#parent-zoom-popup-title").text("Child Image");
+        		$("#parent-zoom-popup").modal({backdrop:"static"});
         	});
         };
         
@@ -487,7 +495,7 @@
 							if(cellData == undefined || (cellData[0] == undefined &&  cellData[1] == "TODO") ) return "";
 							if(cellData[1] == "TODO") return "<b>" + cellData[0] + "</b>";
 							
-							return "<a style='cursor:pointer;' onClick='openPopUp("+cellData+");return false;'><span class='glyphicon glyphicon-eye-open' style='font-size:14px;color:black;'></span></a>";
+							return "<a style='cursor:pointer;' onClick='openPopUp(event,"+cellData+",1);return false;'><span class='glyphicon glyphicon-eye-open' style='font-size:14px;color:black;'></span></a>";
 						
 						};
 					}
@@ -507,10 +515,10 @@
 								return "<img src='"+cellData+"' style='width:100px;height:100px;cursor:pointer;'>";
 							} else if(cellData.indexOf("Parent")===0) {
 								var id = cellData.split("Parent")[1];
-								return "<img  onClick='openPopUp("+id+")' src='/webapp/getParentImageThumb?id="+id+"' style='width:100px;height:100px;cursor:pointer;'>";
+								return "<img  onClick='openPopUp(event,"+id+",2)' src='/webapp/getParentImageThumb?id="+id+"' style='width:200px;height:100px;cursor:pointer;'>";
 							} else if(cellData.indexOf("Child")===0) {
 								var ids = cellData.split("Child")[1].split("-");
-								return "<img  onClick='openChildPopUp("+ids[0]+","+ids[1]+")' src='/webapp/getChildImageThumb?id="+ids[1]+"&parentId="+ids[0]+"' style='width:100px;height:100px;cursor:pointer;'>";
+								return "<img  onClick='openChildPopUp(event,"+ids[0]+","+ids[1]+")' src='/webapp/getChildImageThumb?id="+ids[1]+"&parentId="+ids[0]+"' style='width:200px;height:100px;cursor:pointer;'>";
 							}
 						};
 					}

@@ -335,7 +335,17 @@ public class ReportMDService {
 			for(Object key : jsonObject.keySet()){
 				Object value = jsonObject.get(key);
 				if (value instanceof String) {
-					if(!value.equals(""))
+					if(key.toString().equals("DN_F_ID") && !value.toString().isEmpty()) {
+						String[] ids = value.toString().split(",");
+						List<String> inValues = new ArrayList<String>();
+						for (String ida:ids) {
+							try {
+								inValues.add((Long.parseLong(ida))+"");
+							} catch(Exception e) {}
+						}
+						parameters.put(key.toString()+"in", inValues);
+					    parameters.put(key.toString(), "");
+					} else if(!value.equals(""))
 						parameters.put(key.toString(), value);
 				}
 				if (value instanceof Long || value instanceof Integer || value instanceof Double || value instanceof Float) {

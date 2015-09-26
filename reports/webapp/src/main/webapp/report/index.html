@@ -56,6 +56,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+<script src="http://filedb.experts-exchange.com/incoming/2013/06_w26/662697/jq.panzoom.js"></script>
 
 <script type="text/javascript" src="/webapp/report/vendor/pivottable/dist/pivot.js"></script>
 <script type="text/javascript" src="/webapp/report/vendor/pivottable/dist/gchart_renderers.js"></script>
@@ -392,6 +393,32 @@ li.active>a {
     		</div><!-- /.modal-content -->
   		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
+	<div id="parent-zoom-popup" class="modal fade" style="width: 400px;top:350px;height:650px;left:10px;position:fixed;overflow: hidden;">
+  		<div class="modal-dialog"  style="width:400px;margin-left: 0;margin-top: 0;">
+    		<div class="modal-content">
+      			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        			<h4 class="modal-title" id="parent-zoom-popup-title">Parent Image</h4>
+      			</div>
+      			<div class="modal-body">
+					<span class="buttons">
+						<button class="zoom-in btn btn-default ">Zoom In</button>
+						<button class="zoom-out btn btn-default ">Zoom Out</button>
+						<button class="reset btn btn-default ">Reset</button> 
+						<!-- <input type="range" class="zoom-range"></input>-->
+						 </span> 
+					<div class="" style="width:100%;min-width: 100%; max-height: 500px;">
+						<div id="imgcrp_div" style="width:100%;min-width:100%;max-height:500px;">
+							<div id="panzoom4" style="text-align: center">
+								<img id="imgcrp" style="width:100%;min-width:100%;max-height:500px"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	
 	<div id="enlarge-image-modal" class="modal fade">
   		<div class="modal-dialog" style="width:96%;margin:2%;">
@@ -414,5 +441,15 @@ li.active>a {
 	<div id="loading" style="z-index:9999;display: none;position:absolute;width:4%;margin-left: 48%">
 		<img src="/webapp/report/image/loading_spinner.gif" style="width: 100%;"/>
 	</div>
+	<script>
+		$(function() {
+			$("#panzoom4").panzoom({
+				$zoomIn : $(".zoom-in"),
+				$zoomOut : $(".zoom-out"),
+				$zoomRange : $(".zoom-range"),
+				$reset : $(".reset")
+			});
+		});
+	</script>
 </body>
 </html>

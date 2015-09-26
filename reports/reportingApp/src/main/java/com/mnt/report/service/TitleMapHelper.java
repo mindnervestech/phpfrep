@@ -11,7 +11,20 @@ import org.springframework.jdbc.core.RowMapper;
 
 public class TitleMapHelper {
 
+	public static String allDC_DEO(JdbcTemplate jt,Long subscriberId) {
+		List<JSONObject> list = jt.query("select U.DN_ID AS value, U.DC_FIRSTNAME AS name  from tbl_user U WHERE U.DN_USER_TYPE = 3 order by U.DC_FIRSTNAME", new RowMapper<JSONObject>(){
 
+			public JSONObject mapRow(ResultSet rs, int arg1)
+					throws SQLException {
+				JSONObject nameValue = new JSONObject();
+				nameValue.put("name", rs.getObject("name").toString());
+				nameValue.put("value",  rs.getObject("value").toString());
+				return nameValue;
+			}
+		});
+		return JSONArray.toJSONString(list);
+	}
+	
 	public static String allDN_DECOMPANY_ID(JdbcTemplate jt,Long subscriberId) {
     	List<JSONObject> list = jt.query("select P.DN_ID AS value, P.DC_COMPANY_NAME AS name  from tbl_de_company P order by P.DC_COMPANY_NAME", new RowMapper<JSONObject>(){
 
