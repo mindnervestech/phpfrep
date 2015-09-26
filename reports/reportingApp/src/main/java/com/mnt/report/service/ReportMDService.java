@@ -505,7 +505,7 @@ public class ReportMDService {
 			if(!f.exists()) {
 				try {	
 					Thumbnails.of(new File(localpath+File.separator+"parent"+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString()))
-		        	.size(100, 100)
+		        	.size(200, 100)
 		        	.outputFormat("jpg")
 		        	.toFile(f);
 				} catch (IOException e1) {
