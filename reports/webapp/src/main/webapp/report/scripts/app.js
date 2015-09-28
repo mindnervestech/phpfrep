@@ -208,12 +208,14 @@
         			$("#parent-img").attr("src","/files/fracts_files/images/parent/"+data);
         			$("#parent-popup").css("height",window.screen.availHeight+"px");
         			$("#parent-popup").modal({backdrop:"static"});
+        			$(".modal-backdrop").removeClass("modal-backdrop");
         		});
         	} else {
         		$http.get('/webapp/getParentImage?parentImageId='+id).success(function(data){
         			$("#imgcrp").attr("src","/files/fracts_files/images/parent/"+data);
         			$("#parent-zoom-popup-title").text("Parent Image");
         			$("#parent-zoom-popup").modal({backdrop:"static"});
+        			$(".modal-backdrop").removeClass("modal-backdrop");
         		});
         	}
         };
@@ -223,6 +225,7 @@
         		$("#imgcrp").attr("src","/files/fracts_files/images/child/"+parentId+"/"+id+"/"+data);
         		$("#parent-zoom-popup-title").text("Child Image");
         		$("#parent-zoom-popup").modal({backdrop:"static"});
+        		$(".modal-backdrop").removeClass("modal-backdrop");
         	});
         };
         
