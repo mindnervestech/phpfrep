@@ -610,9 +610,7 @@
 			}
 		}
 	
-		if(oOptions && oOptions.width) {
-			th.css('width',oOptions.width);
-		}
+		
 		
 		/* User specified column options */
 		if ( oOptions !== undefined && oOptions !== null )
@@ -706,6 +704,9 @@
 		{
 			oCol.sSortingClass = oClasses.sSortable;
 			oCol.sSortingClassJUI = oClasses.sSortJUI;
+		}
+		if(oOptions && oOptions.width) {
+			th.css('width',oOptions.width);
 		}
 	}
 	

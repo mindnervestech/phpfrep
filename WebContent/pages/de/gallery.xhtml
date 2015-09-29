@@ -49,7 +49,7 @@
 	overflow: auto;
 	padding: 0.5em 1em;
 	position: relative;
-	width: 685px !important;
+	width: 1085px !important;
 	height: 350px;
 }
 
@@ -811,7 +811,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 								<p:dialog id="basicDialog" widgetVar="dlg" draggable="true"
 									resizable="false" header="#{deBean.parentImageName}"
 									visible="#{facesContext.postback and facesContext.validationFailed}">
-									<div class="col-md-12 f_l p-t-10 "
+									<div class="col-md-7 f_l p-t-10 "
 										style="height: 500px; scroll: overflow;">
 
 										<div class="row m-0" style="width: 607px;">
@@ -1030,6 +1030,9 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 											&nbsp;
 											<h:outputLink onclick="dlg.hide()" class="btn btn-default">Cancel</h:outputLink>
 										</div>
+									</div>
+									<div class="col-md-4" style=" display: inline-block;">
+										<img style="height: 475px; width: 100%;" src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['parentImagePath']}#{deBean.id}/#{deBean.parentImageName}" class="img-responsive m-10"/>
 									</div>
 								</p:dialog>
 							</div>
