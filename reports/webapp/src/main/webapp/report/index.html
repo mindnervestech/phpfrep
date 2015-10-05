@@ -196,6 +196,13 @@ body {
 .table-hover>tbody>tr:hover>td, .table-hover>tbody>tr:hover>th {
 	background: #EAEAEA !important;
 }
+#rpt_table div:nth-child(odd) {
+
+}
+#rpt_table div:nth-child(even) {
+	font-weight: bold;
+	font-size: 11px;
+}
 </style>
 </head>
 
@@ -447,6 +454,158 @@ body {
     		</div><!-- /.modal-content -->
   		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
+	<div id="updateDE" class="modal fade">
+  		<div class="modal-dialog col-md-offset-17 col-lg-offset-17 col-sm-offset-17" style="width:66%;">
+    		<div class="modal-content" >
+      			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        			<h4 class="modal-title">Update DE</h4>
+      			</div>
+      			<div class="modal-body">
+      				<div class="row" style="padding: 10px;">
+        				<div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+        					<div class="row">
+        						<p>Ocr Text</p>
+        						<textarea rows="20" name="ocrText" style="width: 100%;" ng-model="deData.ocrText"></textarea>
+        					</div>
+        				</div>
+        				<div class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
+        					<div class="row" style="padding: 5px 10px;">
+        						<div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        							<p>Ad Type</p>
+        							<select name="adType" ng-model="deData.adType" style="width: 100%;">
+        								<option value="Display">Display</option>
+        								<option value="Line">Line</option>
+        								<option value="Insert">Insert</option>
+        							</select>
+        						</div>
+        						<div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+	        						<p>Job Density</p>
+        							<select name="jobDensity" ng-model="deData.jobDensity" style="width: 100%;">
+        								<option value="0">0</option>
+        								<option value="1">1</option>
+        								<option value="2">2</option>
+        								<option value="3">3</option>
+        								<option value="4">4</option>
+        								<option value="5">Many</option>
+        								<option value="6">NA</option>
+        							</select>
+        						</div>
+        						<div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        							<p>Ad Size</p>
+        							<select name="adSize" ng-model="deData.adSize" style="width: 100%;">
+        								<option value="0.12">0.12</option>
+        								<option value="0.25">0.25</option>
+        								<option value="0.33">0.33</option>
+        								<option value="0.5">0.5</option>
+        								<option value="0.66">0.66</option>
+        								<option value="1.0">1.0</option>
+        								<option value="2.0">2.0</option>
+        								<option value="Other">Other</option>
+        							</select>
+        						</div>
+        						<div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        							<p>Ad Orientation</p>
+        							<select name="adOrientation" ng-model="deData.adOrientation" style="width: 100%;">
+        								<option value="">Select</option>
+        								<option value="vertical">Vertical</option>
+        								<option value="horizontal">Horizontal</option>
+        								<option value="island">Island</option>
+        								<option value="FP">FP</option>
+        								<option value="DPS">DPS</option>
+        								<option value="fold-out">Fold-out</option>
+        								<option value="insert">Insert</option>
+        							</select>
+        						</div>
+        					</div>
+        					<div class="row" style="padding: 5px 10px;">
+        						<div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+	        						<p>Ad Column Width</p>
+        							<select name="adColumn" ng-model="deData.adColumn" style="width: 100%;">
+        								<option value="1">1</option>
+        								<option value="1.5">1.5</option>
+        								<option value="2">2</option>
+        								<option value="3">3</option>
+        								<option value="4">4</option>
+        								<option value="5">Other</option>
+        							</select>
+        						</div>
+        						<div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        							<p>Advertiser Type</p>
+        							<select name="advertiserType" ng-model="deData.advertiserType" style="width: 100%;">
+        								<option value="{{item.value}}" ng-repeat="item in allAdvertiserType">{{item.name}}</option>
+        							</select>
+        						</div>
+        						<div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        							<p>Institution Type</p>
+        							<select name="institutionType" ng-model="deData.institutionType" style="width: 100%;">
+        								<option value="{{item.value}}" ng-repeat="item in allInstituteType">{{item.name}}</option>
+        							</select>
+        						</div>
+        						<div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
+        							<p>Ad Category</p>
+        							<select name="adCategory" ng-model="deData.adCategory" style="width: 100%;">
+        								<option value="{{item.value}}" ng-repeat="item in allAdCategory">{{item.name}}</option>
+        							</select>
+        						</div>
+        					</div>
+        					<div class="row" style="padding: 5px 10px;">
+        						<div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+        							<p>Landing Page URL</p>
+        							<input type="text" ng-model="deData.landingPageURL" name="landingPageURL" style="width: 100%;"/>
+        						</div>
+        						<div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+        							<p>Length in cm</p>
+        							<input type="text" ng-model="deData.length" name="length" style="width: 100%;"/>
+        						</div>
+        						<div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+        							<p>Width in cm</p>
+        							<input type="text" ng-model="deData.width" name="width" style="width: 100%;"/>
+        						</div>
+        					</div>
+        					<div class="row" style="padding: 5px 10px;">
+        						<div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+        							<p>Currency Range</p>
+        							<div>
+        								<select name="currency" ng-model="deData.currency">
+        									<option value="1">$</option>
+        									<option value="2">£</option>
+        									<option value="3">€</option>
+        								</select>
+        								<input type="text" name="startCurrency" ng-model="deData.startCurrency"/>
+        								<input type="text" name="endCurrency" ng-model="deData.endCurrency"/>
+        							</div>
+        						</div>
+        						<div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+        							<p>Company</p>
+        							<div style="width: 100%;">
+        								<select name="company" class="col-md-12 col-lg-12 col-sm-12 col-xs-12" ng-model="deData.company">
+        									<option value="{{item.value}}" ng-repeat="item in allCompany">{{item.name}}</option>
+        								</select>
+        							</div>
+        						</div>
+        					</div>
+        					<div class="row" style="padding: 5px 10px;">
+        						<div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+        							<p>Contact Info</p>
+       								<textarea rows="5" name="contactInfo" style="width: 100%;" ng-model="deData.contactInfo"></textarea>
+        						</div>
+        						<div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+	        						<p>Headline</p>
+        							<textarea rows="5" name="headline" style="width: 100%;" ng-model="deData.headline"></textarea>
+        						</div>
+        					</div>
+        				</div>
+        			</div>
+      			</div>
+      			<div class="modal-footer">
+      				<button type="button" class="btn btn-primary" ng-click="updateDe()">Update</button>
+        			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      			</div>
+    		</div><!-- /.modal-content -->
+  		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	<input type="hidden" id="updateDeId"/>
 	<div id="loading" style="z-index:9999;display: none;position:absolute;width:4%;margin-left: 48%">
 		<img src="/webapp/report/image/loading_spinner.gif" style="width: 100%;"/>
 	</div>

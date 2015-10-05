@@ -229,6 +229,104 @@
         	});
         };
         
+        window.editPopup = function(e,id) {
+        	$scope.deId = id;
+			$scope.getAllData();
+			$scope.getDeData();
+        };
+        
+        $scope.isAdvertiseTypeLoaded = false;
+        $scope.isInstituteTypeLoaded = false;
+        $scope.isAdCategoryLoaded = false;
+        $scope.isAllCompanyLoaded = false;
+        
+        $scope.getAllData = function() {
+        	$("#loading").show();
+        	$scope.getAdvertiserType();
+        };
+        
+        $scope.getAdvertiserType = function() {
+        	if(!$scope.isAdvertiseTypeLoaded) {
+        		$http.get('/webapp/getAdvertiserType').then(function(response) {
+        			$scope.isAdvertiseTypeLoaded = true;
+        			$scope.allAdvertiserType = response.data;
+        			$scope.getInstituteType();
+        		},function(error){
+        			$("#loading").hide();
+        		});
+        	} else {
+        		$scope.getInstituteType();
+        	}
+        };
+        
+        $scope.getInstituteType = function() {
+        	if(!$scope.isInstituteTypeLoaded) {
+        		$http.get('/webapp/getInstituteType').then(function(response) {
+        			$scope.isInstituteTypeLoaded = true;
+        			$scope.allInstituteType = response.data;
+        			$scope.getAdCategory();
+        		},function(error){
+        			$("#loading").hide();
+        		});
+        	} else {
+        		$scope.getAdCategory();
+        	}
+        };
+        
+        $scope.getAdCategory = function() {
+        	if(!$scope.isAdCategoryLoaded) {
+        		$http.get('/webapp/getAdCategory').then(function(response) {
+        			$scope.isAdCategoryLoaded = true;
+        			$scope.allAdCategory = response.data;
+        			$scope.getAllCompany();
+        		},function(error){
+        			$("#loading").hide();
+        		});
+        	} else {
+        		$scope.getAllCompany();
+        	}
+        };
+        
+        $scope.getAllCompany = function() {
+        	if(!$scope.isAllCompanyLoaded) {
+        		$http.get('/webapp/getAllCompany').then(function(response) {
+        			$scope.allCompany = response.data;
+        			$scope.isAllCompanyLoaded = true;
+        			$("#loading").hide();
+        			$("#updateDeId").val($scope.deId);
+                	$("#updateDE").modal({backdrop:"static"});
+        			$(".modal-backdrop").removeClass("modal-backdrop");
+        		},function(error){
+        			$("#loading").hide();
+        		});
+        	} else {
+        		$("#loading").hide();
+        		$("#updateDeId").val($scope.deId);
+            	$("#updateDE").modal({backdrop:"static"});
+    			$(".modal-backdrop").removeClass("modal-backdrop");
+        	}
+        };
+        
+        $scope.getDeData = function() {
+			$scope.deData = {};
+			$http.get('/webapp/getDeData',{params:{'id':$scope.deId}}).then(function(response) {
+				$scope.deData = response.data;
+			},function(error) {
+			});
+		};
+		
+		$scope.updateDe = function() {
+			console.log($scope.deData);
+			if(($scope.deData.endCurrency == '' && $scope.deData.startCurrency == '') ||parseInt($scope.deData.endCurrency) && parseInt($scope.deData.startCurrency) && $scope.deData.endCurrency<$scope.deData.startCurrency) {
+				$http.post('/webapp/updateDe',$scope.deData).then(function(response) {
+					$("#updateDE").modal('hide');
+				},function(error) {
+				});
+			} else {
+				alert("Invalid Currency Range");
+			}
+		};
+        
         $scope.pivotTab = false;
         $scope.showPivotFun = function() {
         	$scope.pivotTab = true;
@@ -492,7 +590,17 @@
 			decorateColumns = function (cols) {
 				var columns = scope.$eval(cols);
 				$.each(columns, function(i,e){
-					if(e.linkpopup) {
+					if(e.composite) {
+						e.render = function(cellData, type, rowData) {
+							console.log(e.composite.split(','));
+							var arr = e.composite.split(',');
+							var res = "<div ondblclick='editPopup(event,"+rowData['DN_ID']+")' style='width:100%;height:100px;cursor:pointer;'>";
+							angular.forEach(arr,function(val,key){
+								res += "<div>"+rowData[val]+"</div>";
+							});
+							return res+"</div>";
+						};
+					} else if(e.linkpopup) {
 						e.render = function(cellData, type, rowData) {
 							//return cellData;
 							if(cellData == undefined || (cellData[0] == undefined &&  cellData[1] == "TODO") ) return "";
@@ -501,8 +609,7 @@
 							return "<a style='cursor:pointer;' onClick='openPopUp(event,"+cellData+",1);return false;'><span class='glyphicon glyphicon-eye-open' style='font-size:14px;color:black;'></span></a>";
 						
 						};
-					}
-					if(e.link) {
+					}else if(e.link) {
 						e.render = function(cellData, type, rowData) {
 							//return cellData;
 							if(cellData == undefined || (cellData[0] == undefined &&  cellData[1] == "TODO") ) return "";
@@ -511,18 +618,20 @@
 							return "<a json='"+cellData[1]+"' onClick='drillDown(this);return false;' href='#'>" + cellData[0] + "</a>";
 						
 						};
-					} 
-					if(e.img) {
+					}else if(e.img) {						
 						e.render = function(cellData,type,rowData) {
+
 							if(cellData.indexOf("http")===0 || cellData.indexOf("www.")===0) {
 								return "<img src='"+cellData+"' style='width:100px;height:100px;cursor:pointer;'>";
 							} else if(cellData.indexOf("Parent")===0) {
-								var id = cellData.split("Parent")[1];
-								return "<img  onClick='openPopUp(event,"+id+",2)' src='/webapp/getParentImageThumb?id="+id+"' style='width:200px;height:100px;cursor:pointer;'>";
+								return "<img  onClick='openPopUp(event,"+rowData['parentId']+",2)' src='/webapp/getParentImageThumb?id="+rowData['parentId']+"' style='width:200px;height:100px;cursor:pointer;'>";
 							} else if(cellData.indexOf("Child")===0) {
-								var ids = cellData.split("Child")[1].split("-");
-								return "<img  onClick='openChildPopUp(event,"+ids[0]+","+ids[1]+")' src='/webapp/getChildImageThumb?id="+ids[1]+"&parentId="+ids[0]+"' style='width:200px;height:100px;cursor:pointer;'>";
+								return "<img  onClick='openChildPopUp(event,"+rowData['parentId']+","+rowData['childId']+")' src='/webapp/getChildImageThumb?id="+rowData['childId']+"&parentId="+rowData['parentId']+"' style='width:200px;height:100px;cursor:pointer;'>";
 							}
+						};
+					} else {
+						e.render = function(cellData,type,rowData) {
+							return "<div ondblclick='editPopup(event,"+rowData['DN_ID']+")' style='width:100%;height:100px;cursor:pointer;'>"+cellData+"</div>";
 						};
 					}
 				});

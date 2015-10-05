@@ -1,7 +1,6 @@
 package com.mnt.report.service;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,12 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.ws.RequestWrapper;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -39,16 +32,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.mnt.report.service.Report3.RowColValue;
-
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -60,7 +43,6 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 
-import java.io.File;
 
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -566,6 +548,194 @@ public class ReportMDService {
 			result = mdResult.get("DC_IMAGENAME").toString();
 		}
 		return result;
+	}
+	
+	@RequestMapping(value="/updateReportRecord",method=RequestMethod.GET)
+	@ResponseBody 
+	public String updateReportRecord(@RequestParam Map<String,String> map) {
+		for(String key :map.keySet()) {
+			System.out.println(key+" : "+ map.get(key));
+		}
+		return "";
+	}
+	
+	@RequestMapping(value="/getDeData",method=RequestMethod.GET)
+	@ResponseBody
+	public DEVM getDeData(@RequestParam("id") Long id) {
+		Map<String,Object> mdResult = jt.queryForMap("select DC_OCR_TEXT,DC_AD_HEADLINE,DC_AD_TYPE,DC_JOB_DENSITY,DC_AD_SIZE,DC_AD_ORIENTATION,"+
+					"DC_ADD_COLUMN,DC_ADVERTISER_TYPE as institutionType,DC_SEARCH_ADVERTISER_TYPE as advertiserType,DC_AD_CATEGORY,DC_PAGE_URL,"+
+					"DC_LENGTH,DC_WIDTH,DC_CURRENCY,DC_START_CURRENCY_RANGE,DC_END_CURRENCY_RANGE,DN_DECOMPANY_ID,DC_CONTACT_INFO from tbl_de_data where DN_ID ="+id);
+		if(mdResult!=null &&!mdResult.isEmpty()) {
+			DEVM devm = new DEVM();
+			devm.id = id;
+			devm.adCategory = mdResult.get("DC_AD_CATEGORY").toString();
+			devm.adColumn = mdResult.get("DC_ADD_COLUMN").toString();
+			devm.adOrientation = mdResult.get("DC_AD_ORIENTATION").toString();
+			devm.adSize = mdResult.get("DC_AD_SIZE").toString();
+			devm.adType = mdResult.get("DC_AD_TYPE").toString();
+			devm.advertiserType = mdResult.get("advertiserType").toString();
+			devm.company = mdResult.get("DN_DECOMPANY_ID").toString();
+			devm.contactInfo = mdResult.get("DC_CONTACT_INFO").toString();
+			devm.currency = mdResult.get("DC_CURRENCY").toString();
+			devm.endCurrency = mdResult.get("DC_END_CURRENCY_RANGE").toString();
+			devm.headline = mdResult.get("DC_AD_HEADLINE").toString();
+			devm.institutionType = mdResult.get("institutionType").toString();
+			devm.jobDensity = mdResult.get("DC_JOB_DENSITY").toString();
+			devm.landingPageURL = mdResult.get("DC_PAGE_URL").toString();
+			devm.length = mdResult.get("DC_LENGTH").toString();
+			devm.ocrText = mdResult.get("DC_OCR_TEXT").toString();
+			devm.startCurrency = mdResult.get("DC_START_CURRENCY_RANGE").toString();
+			devm.width = mdResult.get("DC_WIDTH").toString();
+			return devm;
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="/getAdvertiserType",method=RequestMethod.GET)
+	@ResponseBody
+	public List<SelectItem> getAdvertiserType(){
+		return jt.query("select DN_ID as value,DC_PUBLICATION_TITLE as name from tbl_publication as m where m.DB_DELETED=0 and m.DC_PUBLICATION_TYPE="+6, new RowMapper<SelectItem>(){
+
+			public SelectItem mapRow(ResultSet arg0, int arg1)
+					throws SQLException {
+				try {
+					SelectItem selectItem = new SelectItem();
+					selectItem.name = arg0.getString("name");
+					selectItem.value = arg0.getString("value");
+					return selectItem;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+		});
+	}
+	
+	@RequestMapping(value="/getInstituteType",method=RequestMethod.GET)
+	@ResponseBody
+	public List<SelectItem> getInstituteType(){
+		return jt.query("select DN_ID as value,DC_PUBLICATION_TITLE as name from tbl_publication as m where m.DB_DELETED=0 and m.DC_PUBLICATION_TYPE="+5, new RowMapper<SelectItem>(){
+
+			public SelectItem mapRow(ResultSet arg0, int arg1)
+					throws SQLException {
+				try {
+					SelectItem selectItem = new SelectItem();
+					selectItem.name = arg0.getString("name");
+					selectItem.value = arg0.getString("value");
+					return selectItem;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+		});
+	}
+	
+	@RequestMapping(value="/getAdCategory",method=RequestMethod.GET)
+	@ResponseBody
+	public List<SelectItem> getAdCategory(){
+		return jt.query("select DN_ID as value,DC_PUBLICATION_TITLE as name from tbl_publication as m where m.DB_DELETED=0 and m.DC_PUBLICATION_TYPE="+4, new RowMapper<SelectItem>(){
+
+			public SelectItem mapRow(ResultSet arg0, int arg1)
+					throws SQLException {
+				try {
+					SelectItem selectItem = new SelectItem();
+					selectItem.name = arg0.getString("name");
+					selectItem.value = arg0.getString("value");
+					return selectItem;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+		});
+	}
+	
+	@RequestMapping(value="/getAllCompany",method=RequestMethod.GET)
+	@ResponseBody
+	public List<SelectItem> getAllCompany(){
+		return jt.query("select DN_ID as value,DC_COMPANY_NAME as name from tbl_de_company as m where m.DB_DELETED=0", new RowMapper<SelectItem>(){
+
+			public SelectItem mapRow(ResultSet arg0, int arg1)
+					throws SQLException {
+				try {
+					SelectItem selectItem = new SelectItem();
+					selectItem.name = arg0.getString("name");
+					selectItem.value = arg0.getString("value");
+					return selectItem;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+		});
+	}
+	
+	@RequestMapping(value="/updateDe",method=RequestMethod.POST)
+	@ResponseBody
+	public void updateDe(@RequestBody final DEVM devm) {
+		try {
+			jt.update(new PreparedStatementCreator(){
+		    public PreparedStatement createPreparedStatement(    Connection connection) throws SQLException {
+		      PreparedStatement ps=connection.prepareStatement("Update tbl_de_data SET DC_AD_HEADLINE = ?,DC_ADVERTISER_TYPE = ?,DC_AD_ORIENTATION = ?,DC_AD_SIZE = ?,"+
+		    		  "DC_CURRENCY = ?,DC_OCR_TEXT = ?,DC_AD_TYPE = ?,DC_START_CURRENCY_RANGE = ?,DC_END_CURRENCY_RANGE = ?,DN_DECOMPANY_ID = ?,DC_AD_CATEGORY = ?,DC_JOB_DENSITY = ?,"+
+		    		  "DC_LENGTH = ?,DC_SEARCH_ADVERTISER_TYPE = ?,DC_WIDTH = ?,DC_ADD_COLUMN = ?,DC_PAGE_URL = ?,DC_CONTACT_INFO = ? where DN_ID = ?");
+		      int index=1;
+		      ps.setString(index++,devm.headline);
+		      ps.setString(index++,devm.institutionType);
+		      ps.setString(index++,devm.adOrientation);
+		      ps.setString(index++,devm.adSize);
+		      ps.setString(index++,devm.currency);
+		      ps.setString(index++,devm.ocrText);
+		      ps.setString(index++,devm.adType);
+		      ps.setString(index++,devm.startCurrency);
+		      ps.setString(index++,devm.endCurrency);
+		      ps.setString(index++,devm.company);
+		      ps.setString(index++,devm.adCategory);
+		      ps.setString(index++,devm.jobDensity);
+		      ps.setString(index++,devm.length);
+		      ps.setString(index++,devm.advertiserType);
+		      ps.setString(index++,devm.width);
+		      ps.setString(index++,devm.adColumn);
+		      ps.setString(index++,devm.landingPageURL);
+		      ps.setString(index++,devm.contactInfo);
+		      ps.setLong(index++,devm.id);
+		      return ps;
+		    }
+		  });
+			updateDEOcr(devm.id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	public static class SelectItem {
+		public String name;
+		public String value;
+	}
+	
+	public static class DEVM {
+		public Long id;
+		public String ocrText;
+		public String headline;
+		public String adType;
+		public String jobDensity;
+		public String adSize;
+		public String adOrientation;
+		public String adColumn;
+		public String advertiserType;
+		public String institutionType;
+		public String adCategory;
+		public String landingPageURL;
+		public String length;
+		public String width;
+		public String currency;
+		public String startCurrency;
+		public String endCurrency;
+		public String company;
+		public String contactInfo;
 	}
 	
 	public static class  ReportMDVM {
