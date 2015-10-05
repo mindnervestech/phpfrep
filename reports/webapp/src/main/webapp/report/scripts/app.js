@@ -624,9 +624,9 @@
 							if(cellData.indexOf("http")===0 || cellData.indexOf("www.")===0) {
 								return "<img src='"+cellData+"' style='width:100px;height:100px;cursor:pointer;'>";
 							} else if(cellData.indexOf("Parent")===0) {
-								return "<img  onClick='openPopUp(event,"+rowData['parentId']+",2)' src='/webapp/getParentImageThumb?id="+rowData['parentId']+"' style='width:200px;height:100px;cursor:pointer;'>";
+								return "<img  onClick='openPopUp(event,"+rowData['parentId']+",2)' src='/webapp/getParentImageThumb?id="+rowData['parentId']+"' style='height:100px;cursor:pointer;'>";
 							} else if(cellData.indexOf("Child")===0) {
-								return "<img  onClick='openChildPopUp(event,"+rowData['parentId']+","+rowData['childId']+")' src='/webapp/getChildImageThumb?id="+rowData['childId']+"&parentId="+rowData['parentId']+"' style='width:200px;height:100px;cursor:pointer;'>";
+								return "<img  onClick='openChildPopUp(event,"+rowData['parentId']+","+rowData['childId']+")' src='/webapp/getChildImageThumb?id="+rowData['childId']+"&parentId="+rowData['parentId']+"' style='height:100px;cursor:pointer;'>";
 							}
 						};
 					} else {

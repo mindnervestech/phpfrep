@@ -3189,8 +3189,9 @@
 	
 		for ( i=0, iLen=columns.length ; i<iLen ; i++ ) {
 			column = columns[i];
-	
-			if ( column.sWidth ) {
+			if(column.width) {
+				column.nTh.style.width = _fnStringToCss( column.width );
+			} else if ( column.sWidth ) {
 				column.nTh.style.width = _fnStringToCss( column.sWidth );
 			}
 		}
