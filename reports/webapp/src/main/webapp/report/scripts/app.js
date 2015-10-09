@@ -152,14 +152,16 @@
 				
 				var d = new Date();
 				var fd = d.getMonth()>3 ? d.getMonth()-4 : d.getMonth()+8;
-				$('[name=fromdatemm]').val(fd>9?fd:"0"+fd);
-				$('[name=fromdateyy]').val(d.getMonth()>3 ? d.getFullYear() : d.getFullYear()-1);
-				$('[name=todatemm]').val(d.getMonth()>9?d.getMonth():"0"+d.getMonth());
-				$('[name=todateyy]').val(d.getFullYear());
-				$scope.reportTemplate.model.fromdatemm = d.getMonth()>3 ? d.getMonth()-4 : d.getMonth()+8;
-				$scope.reportTemplate.model.fromdateyy = d.getMonth()>3 ? d.getFullYear() : d.getFullYear()-1;
-				$scope.reportTemplate.model.todatemm = d.getMonth();
-				$scope.reportTemplate.model.todateyy = d.getFullYear();
+				//$('[name=fromdatemm]').val(fd>9?fd:"0"+fd);
+				//$('[name=fromdateyy]').val(d.getMonth()>3 ? d.getFullYear() : d.getFullYear()-1);
+				//$('[name=todatemm]').val(d.getMonth()>9?d.getMonth():"0"+d.getMonth());
+				//$('[name=todateyy]').val(d.getFullYear());
+				$scope.$apply(function(){
+					$scope.reportTemplate.model.fromdatemm = d.getMonth()>3 ? d.getMonth()-4 : d.getMonth()+8;
+					$scope.reportTemplate.model.fromdateyy = d.getMonth()>3 ? d.getFullYear() : d.getFullYear()-1;
+					$scope.reportTemplate.model.todatemm = d.getMonth();
+					$scope.reportTemplate.model.todateyy = d.getFullYear();
+				});
 				
 				
 			},1500);
@@ -214,6 +216,8 @@
         		$http.get('/webapp/getParentImage?parentImageId='+id).success(function(data){
         			$("#imgcrp").attr("src","/files/fracts_files/images/parent/"+data);
         			$("#parent-zoom-popup-title").text("Parent Image");
+        			$("#parent-zoom-popup").css("height",(window.screen.availHeight-170)+"px");
+        			$("#imgcrp").css("height",(window.screen.availHeight-300)+"px")
         			$("#parent-zoom-popup").modal({backdrop:"static"});
         			$(".modal-backdrop").removeClass("modal-backdrop");
         		});
@@ -224,7 +228,9 @@
         	$http.get('/webapp/getChildImage?childImageId='+id).success(function(data){
         		$("#imgcrp").attr("src","/files/fracts_files/images/child/"+parentId+"/"+id+"/"+data);
         		$("#parent-zoom-popup-title").text("Child Image");
+        		$("#parent-zoom-popup").css("height",(window.screen.availHeight-170)+"px");
         		$("#parent-zoom-popup").modal({backdrop:"static"});
+        		$("#imgcrp").css("height",(window.screen.availHeight-300)+"px")
         		$(".modal-backdrop").removeClass("modal-backdrop");
         	});
         };

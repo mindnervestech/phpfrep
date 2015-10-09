@@ -267,11 +267,13 @@ margin:6px;
 											</t:div>
 											</h:column> -->
 													<h:column headerClass="no-bd">
-																	<f:facet name="header"><p:commandLink action="#{deBean.sortDeJobList('id')}" ajax="true"
-											update="@form" styleClass="colhead">Job ID <i class="fa fa-fw fa-sort"></i></p:commandLink>
+																	<f:facet name="header">
+																		<h:outputText value="Job Id" />
 																	</f:facet>
-																	<h:outputText styleClass="text-left color-success no-bd-y"
-																		value="#{o.id}" />
+																	<p:commandLink action="#{deBean.loadAddOrEditDe}"
+																		value="#{o.id}" style="margin-bottom: -3px;height: 27px; margin-top: -6px;margin: -4px;color:#333;">
+																		<f:param name="deJobId" value="#{o.id}" />
+																	</p:commandLink>
 																</h:column>
 																<h:column headerClass="no-bd">
 												<f:facet name="header">
@@ -330,8 +332,8 @@ margin:6px;
 												<f:facet name="header">
 													<h:outputText value="Actions" />
 												</f:facet>
-												<p:commandLink action="#{deBean.loadAddOrEditDe}"
-													styleClass="btn btn-warning" value="Review" style="margin-bottom: -3px;height: 27px; margin-top: -6px;margin: -4px;">
+												<p:commandLink action="#{deBean.sendJobToQC}" rendered="#{(deBean.isRender(o.id))}" ajax="true" update="@form"
+													styleClass="glyphicon glyphicon-play" style="margin-bottom: -3px;height: 27px; margin-top: -6px;margin: -4px;color:#333;">
 													<f:param name="deJobId" value="#{o.id}" />
 												</p:commandLink>
 											</h:column>

@@ -151,6 +151,7 @@ public class DeManagedBean implements Serializable{
 	private User user;
 	private Date created_On;
 	private Date deleted_On;
+	private boolean isSendToQC = false;
 	//search & filters
 	private String searchValue ="";
 	private String searchIssueDate = "";	
@@ -323,9 +324,7 @@ public class DeManagedBean implements Serializable{
 	}
 	
 	public Integer[] getPages() {
-		if(pages==null) {
-			loadPagination();
-		}
+		loadPagination();
 		return pages;
 	}
 
@@ -2994,6 +2993,8 @@ public class DeManagedBean implements Serializable{
 			User currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);	
 			FacesUtils facesUtils = new FacesUtils();
 			String val = facesUtils.getRequestParameterMap("parentImg");
+			String checkin = facesUtils.getRequestParameterMap("checkin");
+			
 			this.id = Integer.valueOf(val!=null?val:"0");
 			String jobIdval = facesUtils.getRequestParameterMap("jobId");
 			this.deJobid = Integer.valueOf(jobIdval!=null?jobIdval:"0");
@@ -3085,6 +3086,35 @@ public class DeManagedBean implements Serializable{
 					}
 				}
 			}
+			if(checkin!=null) {
+				if(this.publicationTitle!=null && !this.publicationTitle.isEmpty()) {
+					String[] arr = this.publicationTitle.split("_");
+					if(arr.length==3) {
+						this.publicationTitle = arr[0];
+						System.out.println(this.publicationTitle);
+						String[] arr1  = arr[1].split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+						try {
+							if(arr1.length==2) {
+								this.issueDay = Integer.parseInt(arr1[0].substring(4, 6));
+								this.issueMonth = Integer.parseInt(arr1[0].substring(2, 4));
+								this.issueYear = Integer.parseInt(arr1[0].substring(0, 2));
+								this.section = arr1[0].substring(6);
+							} else {
+								try {
+									Integer.parseInt(arr1[0]);
+									this.issueDay = Integer.parseInt(arr1[0].substring(4, 6));
+									this.issueMonth = Integer.parseInt(arr1[0].substring(2, 4));
+									this.issueYear = Integer.parseInt(arr1[0].substring(0, 2));
+								} catch(Exception e) {
+									this.section = arr1[0];
+								}
+							}
+						} catch(Exception e) {
+						}
+						this.publicationTitle = arr[2].split("\\.")[0];
+					}
+				}
+			}
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -3098,7 +3128,8 @@ public class DeManagedBean implements Serializable{
 	 * @return List - CompanyUser List
 	 */
 	public List<DeJob> getDeJobListBySeachCriteria() {
-		if(deJobList == null){
+		if(deJobList == null || isSendToQC){
+			isSendToQC = false;
 			deJobList = new ArrayList<DeJob>();
 			String DATE_FORMAT = "yyyy-MM-dd";
 			DateFormat dateFormat = new SimpleDateFormat (DATE_FORMAT);	
@@ -3117,6 +3148,12 @@ public class DeManagedBean implements Serializable{
 		}
 		
 		return deJobList;
+	}
+	
+	public void sendJobToQC() {
+		int jobid = Integer.valueOf( facesUtils.getRequestParameterMap("deJobId")!=null? facesUtils.getRequestParameterMap("deJobId"):"0");
+		getDeService().sendJobToQC(jobid);
+		isSendToQC = true;
 	}
 	
 	
@@ -3153,6 +3190,10 @@ public class DeManagedBean implements Serializable{
 		}
 		
 		return status;
+	}
+	
+	public boolean isRender(int id) {
+		return getDeService().isRender(id);
 	}
 	
 	

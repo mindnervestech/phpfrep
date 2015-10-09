@@ -405,6 +405,15 @@ public class DeService implements IDeService{
 		// TODO Auto-generated method stub
 		return getDeServiceDAO().getDeCompanySeachByCompanyNameId(searchValue);
 	}
+	@Override
+	public Boolean isRender(int id) {
+		return getDeServiceDAO().isRender(id);
+	}
+	@Override
+	@Transactional(readOnly=false)
+	public void sendJobToQC(int id) {
+		getDeServiceDAO().sendJobToQC(id);
+	}
 
 
 

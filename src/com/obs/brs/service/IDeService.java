@@ -270,8 +270,12 @@ public interface IDeService {
 	List<DataEntry> geAllQcJob();
 
 	public String getStatusOfChildImageCompletion(long string);
+	
+	public Boolean isRender(int id);
 
 	public List getAllDeo();
 
 	public List<DeCompany> getDeCompanyBySeachCriteriaId(long parseLong);
+	
+	public void sendJobToQC(int id);
 }

@@ -34,6 +34,7 @@ public class DeJob implements Serializable{
 	private Date deleted_On;
 	private Boolean isActive;
 	private ParentImage parentImage;
+	private int status;
 	/**
 	 * Get de_data Id
 	 * 
@@ -154,6 +155,14 @@ public class DeJob implements Serializable{
 	 */
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
+	}
+	@Column(name="DN_STATUS", nullable = false)
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

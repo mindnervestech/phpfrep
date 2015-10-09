@@ -266,5 +266,7 @@ public interface IDeServiceDAO {
 	public List<DeCompany> getDeCompanySeachByCompanyNameId(long searchValue);
 
 	List<DeCompany> getDeCompanyBySeachCriteriaId(long searchValue);
-
+	public Boolean isRender(int id);
+	
+	public void sendJobToQC(int id);
 }

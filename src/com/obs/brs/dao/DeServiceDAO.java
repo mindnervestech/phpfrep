@@ -190,7 +190,7 @@ public class DeServiceDAO implements IDeServiceDAO {
 
 	@Override
 	public List<DeJob> getDeJobBySeachCriteria() {
-		String 	SQL = "From DeJob as m where m.isDeleted=0";
+		String 	SQL = "From DeJob as m where m.isDeleted=0 and m.status = 0";
 		return getSessionFactory().getCurrentSession().createQuery(SQL).list();
 	}
 
@@ -216,7 +216,7 @@ public class DeServiceDAO implements IDeServiceDAO {
 			appendStr  = appendStr+" m.parentImage.issueDate = '"+issueDateString+"'";
 			appendStr  = " AND ( "+appendStr+" )";
 		}*/
-		String 	SQL = "From DeJob as m where m.isDeleted=0"+appendStr;
+		String 	SQL = "From DeJob as m where m.isDeleted=0 and m.status = 0"+appendStr;
 		//System.out.println("SQL"+SQL);
 		return getSessionFactory().getCurrentSession().createQuery(SQL).list();
 	}
@@ -471,6 +471,27 @@ public class DeServiceDAO implements IDeServiceDAO {
 	
 		String 	SQL = "From DeCompany as m where m.isDeleted=0 and m.id='"+searchValue+"'";
 		return getSessionFactory().getCurrentSession().createQuery(SQL).list();
+	}
+
+	@Override
+	public Boolean isRender(int id) {
+		String 	SQL = "From DataEntry as m where m.isDeleted=0 and m.isDeleted=0 and m.deJobid='"+id+"'";
+		List<DataEntry> dataEntries = getSessionFactory().getCurrentSession().createQuery(SQL).list();
+		if(dataEntries.size()==0)
+			return false;
+		long compleated = 0;
+		for(DataEntry data : dataEntries){
+			if(data.getDeCompany() != null){
+				compleated++;
+			}
+		}
+		
+		return compleated == dataEntries.size();
+	}
+
+	@Override
+	public void sendJobToQC(int id) {
+		getSessionFactory().getCurrentSession().createSQLQuery("Update tbl_de_job set DN_STATUS=1 Where DN_ID="+id).executeUpdate();
 	}
 
 }
