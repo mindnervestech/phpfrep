@@ -1382,8 +1382,10 @@ angular.module('schemaForm').directive('sfArray', ['sfSelect', 'schemaForm', 'sf
             // We watch the model for changes and the titleMapValues to reflect
             // the modelArray
             form.titleMap.forEach(function(item,index) {
-            	scope.modelArray.push(item.value);
-            	scope.titleMapValues[index]=true;
+            	if(typeof item.checked == 'undefined' || item.checked) {
+            		scope.modelArray.push(item.value);
+                	scope.titleMapValues[index]=true;
+            	}
             });
             var updateTitleMapValues = function(arr) {
               scope.titleMapValues = [];
