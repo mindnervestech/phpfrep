@@ -282,14 +282,14 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 														rendered="#{((fn:length(deBean.parentImageList) > (deBean.imagePerPage)) and (deBean.imageOffset == 0)) or ((deBean.imageOffset > 0))}" style="margin-bottom: 0.5%;width:50%;">
 														<ul class="pagination pagination-right"
 															style="margin: 0px; border: 0px solid #ccc;">
-															<li style="padding-bottom: 0px;"><p:commandLink
+															<li style="padding: 0px;"><p:commandLink
 																	disabled="true"
 																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) ==1}">	First
 																			</p:commandLink> <p:commandLink ajax="true" action="#{deBean.firstPage}"
 																	update="div_photo_list"
 																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1)>1}"> First
 																			</p:commandLink></li>
-															<li style="font-size: 13px;"><p:commandLink
+															<li style="font-size: 13px;padding: 0px;"><p:commandLink
 																	disabled="true"
 																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) ==1}">	&#60;
 																			</p:commandLink> <p:commandLink ajax="true" action="#{deBean.prevPage}"
@@ -297,7 +297,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) >1}"> &#60;
 																			</p:commandLink></li>
 															<c:forEach id="userSearchResults" var="page" items="#{deBean.pages}" >
-                              									<li>
+                              									<li style="padding: 0px;">
 																	<p:commandLink value="#{page}" ajax="true" action="#{deBean.gotoPage}"
                 									                 rendered="#{page != (deBean.imageOffset/deBean.imagePerPage)+1}" update="div_photo_list">
                 									               <f:param name="page" value="#{page}" />
@@ -306,13 +306,13 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
                               										rendered="#{page == (deBean.imageOffset/deBean.imagePerPage)+1}" />                              									
                               									</li>
             												</c:forEach>
-															<li style="font-size: 13px;"><p:commandLink ajax="true"
+															<li style="font-size: 13px;padding: 0px;"><p:commandLink ajax="true"
 																	action="#{deBean.nxtPage}" update="div_photo_list"
 																	rendered="#{fn:length(deBean.parentImageList) > (deBean.imageOffset+deBean.imagePerPage)}">&#62;															
 																			</p:commandLink> <p:commandLink disabled="true"
 																	rendered="#{(fn:length(deBean.parentImageList) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.parentImageList) == (deBean.imageOffset+deBean.imagePerPage))}">&#62;
 																			</p:commandLink></li>
-															<li style="padding-bottom: 0px;"><p:commandLink
+															<li style="padding: 0px;"><p:commandLink
 																	ajax="true" action="#{deBean.lastPage}"
 																	update="div_photo_list"
 																	rendered="#{fn:length(deBean.parentImageList) > (deBean.imageOffset+deBean.imagePerPage)}">Last
@@ -320,7 +320,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																</p:commandLink> <p:commandLink disabled="true"
 																	rendered="#{(fn:length(deBean.parentImageList) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.parentImageList) == (deBean.imageOffset+deBean.imagePerPage))}">Last
 																			</p:commandLink></li>
-															<li><span style="font-size: 14px;color:#000;"><h:outputText value="#{deBean.totalStr}"/></span></li>
+															<li><span style="padding: 0px;font-size: 14px;color:#000;"><h:outputText value="#{deBean.totalStr}"/></span></li>
 														</ul>
 													</t:div>
 												<ui:repeat var="val" value="#{deBean.parentImageList}"
@@ -346,144 +346,171 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																			</div>
 			
 																			<div class="col-md-9 col8half">
-																				<div class="p-0 f_l">
-																					<div class="row m-5 f_l">
-																						<div style="font-weight: bold; float: left">Image Name :</div>
-																						<div class="f_l p-l-10">
-																							<h:outputText value="#{val.imageName}"></h:outputText>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="p-0 f_l">
-																					<div class="row m-5 f_l">
-																						<div style="font-weight: bold; float: left">Issue
-																							Date :</div>
-																						<div class="f_l p-l-10">
-																							<h:outputText value="#{val.issueDate}"></h:outputText>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="p-0 f_l">
-																					<div class="row m-5 f_l">
-																						<div style="font-weight: bold; float: left">Page
-																							:</div>
-																						<div class="f_l p-l-10">
-																							<h:outputText value="#{val.page}"></h:outputText>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="p-0 f_l">
-																					<div class="row m-5 f_l">
-																						<div style="font-weight: bold; float: left">Uploaded
-																							On :</div>
-																						<div class="f_l p-l-10">
-																							<h:outputText value="#{val.createdOn}"></h:outputText>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="p-0 f_l">
-																					<div class="row m-5 f_l">
-																						<div style="font-weight: bold; float: left">Uploaded
-																							By :</div>
-																						<div class="f_l p-l-10">
-																							<h:outputText value="#{val.createdBy.firstName}"></h:outputText>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="p-0 f_l">
-																					<div class="row m-5 f_l">
-																						<div style="font-weight: bold; float: left">Image
-																							Height :</div>
-																						<div class="f_l p-l-10">
-																							<h:outputText value="#{val.imageHeight}"></h:outputText>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="p-0 f_l">
-																					<div class="row m-5 f_l">
-																						<div style="font-weight: bold; float: left">Image
-																							Width :</div>
-																						<div class="f_l p-l-10">
-																							<h:outputText value="#{val.imageWidth}"></h:outputText>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="p-0 f_l">
-																					<div class="row m-5 f_l">
-																						<div style="font-weight: bold; float: left">Publication
-																							:</div>
-																						<div class="f_l p-l-10">
-																							<h:outputText
-																								value="#{val.publicationTitle.publicationTitle}"></h:outputText>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="p-0 f_l">
-																					<div class="row m-5 f_l">
-																						<div style="font-weight: bold; float: left">Section
-																							:</div>
-																						<div class="f_l p-l-10">
-																							<h:outputText
-																								value="#{val.section.publicationTitle}"></h:outputText>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="p-0 f_l">
-																					<div class="row m-5 f_l">
-																						<div style="font-weight: bold; float: left">Comment
-																							:</div>
-																						<div class="f_l p-l-10">
-																							<h:outputText
-																								value="#{val.sectionspecialTopic}" rendered="#{val.section.publicationTitle == 'Special-Topic'}"></h:outputText>
-																								<h:outputText
-																								value="#{val.sectionspecialRegional}" rendered="#{val.section.publicationTitle == 'Special-Regional'}" ></h:outputText>
-																								<h:outputText
-																								value="#{val.sectionother}"   ></h:outputText>
-																						</div>
-																					</div>
-																				</div>
-																				
-																				
-																				<div class="p-0 f_l">
-																					<div class="row m-5 f_l">
-																						<div style="font-weight: bold; float: left">Child
-																							Images :</div>
-																						<div class="f_l p-l-10">
-																							<h:outputText
-																								value="#{fn:length(deBean.getChildImageListCount(val.id))}"></h:outputText>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="col-md-12" style="height: 100px;">
-																					<ui:repeat var="child"
-																						value="#{val.childImageList}">
-																						<div 
-																						class="#{deBean.isCompleatedChild(child.id)} thumbnail childImg"
-																							style="float: left; padding:2px;">
-																							<p:commandLink id="loadAndEdit"
-																								action="#{deBean.loadAddOrEditDeChild}">
-																								<f:param name="deJobId"
-																									value="#{child.parentImage.id}" />
-																								<f:param name="jobid" value="#{child.id}" />
-																								<img  id="childImg"
-																									
-																									style="display: block;"
-																									src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{child.parentImage.id}/#{child.id}/#{child.imageName}" />
-																							</p:commandLink>
-																							<div class="overlay"
-																								style="height: 18%; height: 15%;">
-																								<div class="thumbnail-actions" style="  margin-top: -8px;">
-																									<small class="text-muted pull-center"><p:commandLink
-																											action="#{deBean.deleteChildImage}"
-																											update="@form" ajax="true" style="color:#fff;  padding-left: 30px;"
-																											onstart="if(confirmDelete())return true; else return false;">
-																											<f:param name="childImgId" value="#{child.id}" />
-																											Delete
-																									</p:commandLink></small>
+																				<div class="col-md-12 p-0">
+																					<div class="col-md-5 p-0">
+																						<div class="p-0 f_l">
+																							<div class="row m-5 f_l">
+																								<div style="font-weight: bold; float: left">Image Name :</div>
+																								<div class="f_l p-l-10">
+																									<h:outputText value="#{val.imageName}"></h:outputText>
 																								</div>
 																							</div>
 																						</div>
-																					</ui:repeat>
+																					</div>
+																					<div class="col-md-3 p-0">
+																						<div class="p-0 f_l">
+																							<div class="row m-5 f_l">
+																								<div style="font-weight: bold; float: left">Issue
+																								Date :</div>
+																								<div class="f_l p-l-10">
+																									<h:outputText value="#{val.issueDate}"></h:outputText>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-md-3 p-0">
+																						<div class="p-0 f_l">
+																							<div class="row m-5 f_l">
+																								<div style="font-weight: bold; float: left">Section
+																								:</div>
+																								<div class="f_l p-l-10">
+																									<h:outputText
+																									value="#{val.section.publicationTitle}"></h:outputText>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-12 p-0">
+																					<div class="col-md-2 p-0">
+																						<div class="p-0 f_l">
+																							<div class="row m-5 f_l">
+																								<div style="font-weight: bold; float: left">Child
+																								Images :</div>
+																								<div class="f_l p-l-10">
+																									<h:outputText
+																										value="#{fn:length(deBean.getChildImageListCount(val.id))}"></h:outputText>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-md-5 p-0">
+																						<div class="p-0 f_l">
+																							<div class="row m-5 f_l">
+																								<div style="font-weight: bold; float: left">Publication
+																								:</div>
+																								<div class="f_l p-l-10">
+																									<h:outputText
+																									value="#{val.publicationTitle.publicationTitle}"></h:outputText>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-md-2 p-0">
+																						<div class="p-0 f_l">
+																							<div class="row m-5 f_l">
+																								<div style="font-weight: bold; float: left">Page
+																								:</div>
+																								<div class="f_l p-l-10">
+																									<h:outputText value="#{val.page}"></h:outputText>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-md-3 p-0">
+																						<div class="p-0 f_l">
+																							<div class="row m-5 f_l">
+																								<div style="font-weight: bold; float: left">Comment
+																								:</div>
+																								<div class="f_l p-l-10">
+																									<h:outputText
+																										value="#{val.sectionspecialTopic}" rendered="#{val.section.publicationTitle == 'Special-Topic'}"></h:outputText>
+																									<h:outputText
+																										value="#{val.sectionspecialRegional}" rendered="#{val.section.publicationTitle == 'Special-Regional'}" ></h:outputText>
+																									<h:outputText
+																										value="#{val.sectionother}"   ></h:outputText>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																				
+																				<div class="col-md-12 p-0">
+																					<div class="col-md-10 p-0" style="height: 100px;">
+																						<ui:repeat var="child"
+																							value="#{val.childImageList}">
+																							<div 
+																								class="#{deBean.isCompleatedChild(child.id)} thumbnail childImg"
+																								style="float: left; padding:2px;">
+																								<p:commandLink id="loadAndEdit"
+																									action="#{deBean.loadAddOrEditDeChild}">
+																									<f:param name="deJobId"
+																										value="#{child.parentImage.id}" />
+																									<f:param name="jobid" value="#{child.id}" />
+																									<img  id="childImg"
+																										style="display: block;"
+																										src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{child.parentImage.id}/#{child.id}/#{child.imageName}" />
+																								</p:commandLink>
+																								<div class="overlay"
+																									style="height: 18%; height: 15%;">
+																									<div class="thumbnail-actions" style="  margin-top: -8px;">
+																										<small class="text-muted pull-center">
+																											<p:commandLink
+																												action="#{deBean.deleteChildImage}"
+																												update="@form" ajax="true" style="color:#fff;  padding-left: 30px;"
+																												onstart="if(confirmDelete())return true; else return false;">
+																												<f:param name="childImgId" value="#{child.id}" />
+																												Delete
+																											</p:commandLink>
+																										</small>
+																									</div>
+																								</div>
+																							</div>
+																						</ui:repeat>
+																					</div>
+																					<div class="col-md-2 p-0">
+																						<p:inputText id="memo#{status.index}" value="#{val.memo}">
+ 																						</p:inputText>
+																						<!-- <input type="text" style="background: #C7D6E9;border: 1px solid grey;"/> -->
+																					</div>
+																				</div>
+																				<div class="col-md-12 p-0">
+																					<div class="p-0 f_l">
+																						<div class="row m-5 f_l">
+																							<div style="font-weight: bold; float: left">Image
+																								Height :</div>
+																							<div class="f_l p-l-10">
+																								<h:outputText value="#{val.imageHeight}"></h:outputText>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="p-0 f_l">
+																						<div class="row m-5 f_l">
+																							<div style="font-weight: bold; float: left">Image
+																								Width :</div>
+																							<div class="f_l p-l-10">
+																								<h:outputText value="#{val.imageWidth}"></h:outputText>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="p-0 f_l">
+																						<div class="row m-5 f_l">
+																							<div style="font-weight: bold; float: left">Uploaded
+																							On :</div>
+																							<div class="f_l p-l-10">
+																								<h:outputText value="#{val.createdOn}"></h:outputText>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="p-0 f_l">
+																						<div class="row m-5 f_l">
+																							<div style="font-weight: bold; float: left">Uploaded
+																								By :</div>
+																							<div class="f_l p-l-10">
+																								<h:outputText value="#{val.createdBy.firstName}"></h:outputText>
+																							</div>
+																						</div>
+																					</div>
 																				</div>
 																			</div>
 																			<div class="col-md-1 m-t-10 col1half">

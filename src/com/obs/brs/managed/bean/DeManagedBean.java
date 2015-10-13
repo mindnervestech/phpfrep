@@ -31,6 +31,7 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 
 import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.AsyncHttpClient;
@@ -43,6 +44,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.custom.datascroller.ScrollerActionEvent;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import org.springframework.expression.spel.ast.OpNE;
 
 import com.obs.brs.messages.IMessagesService;
 import com.obs.brs.model.ChildImage;
@@ -261,6 +263,7 @@ public class DeManagedBean implements Serializable{
 	private boolean isFilter = true;
 	private Integer pages[];
 	private int pageRange = 10;
+	private int reviewPageRange = 3;
 	private String totalStr;
 	private Set<String> duplicateFileNames;
 	private List<String> duplicateNames;
@@ -270,7 +273,7 @@ public class DeManagedBean implements Serializable{
 		User user = (User)this.sessionManager.getSessionAttribute("login_user");
 		return "http://enter-fracts.com/webapp/report/index.html?userId="+user.getId()+"&subscriberId=-1";
 	}
-
+	
 	public void setIframeUrl(String iframeUrl) {
 		this.iframeUrl = iframeUrl;
 	}
@@ -298,6 +301,14 @@ public class DeManagedBean implements Serializable{
 		buffer.append(((this.getParentImageList().size()/this.imagePerPage)+1));
 		return buffer.toString();
 	}
+	
+	public String getReviewPageTotal() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append((this.reviewPageOffset/this.getRowsPerPage())+1);
+		buffer.append("/");
+		buffer.append(((this.getDeJobListBySeachCriteria().size()/this.getRowsPerPage())+1));
+		return buffer.toString();
+	}
 
 	public String getMsgWarnLabel() {
 		return msgWarnLabel;
@@ -323,13 +334,51 @@ public class DeManagedBean implements Serializable{
         }
 	}
 	
+	private void loadReviewPagination() {
+		int totalRows = this.getParentImageList().size();
+		int currentPage = (this.reviewPageOffset/this.getRowsPerPage())+1;
+        int totalPages = (totalRows / this.getRowsPerPage()) + ((totalRows % this.getRowsPerPage() != 0) ? 1 : 0);
+        int pagesLength = Math.min(reviewPageRange, totalPages);
+        pages = new Integer[pagesLength];
+        int firstPage = Math.min(Math.max(0, currentPage - (reviewPageRange / 2)), totalPages - pagesLength);
+        for (int i = 0; i < pagesLength; i++) {
+            pages[i] = ++firstPage;
+        }
+	}
+	
 	public Integer[] getPages() {
-		loadPagination();
+		HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		if(origRequest.getRequestURI().indexOf("manage_job")!=-1) {
+			loadReviewPagination();
+		}
+		if(origRequest.getRequestURI().indexOf("gallery")!=-1) {
+			loadPagination();
+		}
 		return pages;
 	}
 
 	public void setPages(Integer[] pages) {
 		this.pages = pages;
+	}
+
+	public int getReviewPageRange() {
+		return reviewPageRange;
+	}
+
+	public void setReviewPageRange(int reviewPageRange) {
+		this.reviewPageRange = reviewPageRange;
+	}
+
+	public int getReviewPageOffset() {
+		String offset = this.sessionManager.getSessionAttribute("reviewPageOffset")!=null?this.sessionManager.getSessionAttribute("reviewPageOffset").toString():null;
+		if(offset!=null) {
+			reviewPageOffset = Integer.parseInt(offset);
+		}
+		return reviewPageOffset;
+	}
+
+	public void setReviewPageOffset(int reviewPageOffset) {
+		this.reviewPageOffset = reviewPageOffset;
 	}
 
 	public boolean isFilter() {
@@ -503,6 +552,7 @@ public class DeManagedBean implements Serializable{
 	private int imageOffset = 0;
 	private int childImagePerPage = 20;
 	private int childImageOffset = 0;
+	private int reviewPageOffset = 0;
 	
 	public int getChildImagePerPage() {
 		return childImagePerPage;
@@ -2270,6 +2320,7 @@ public class DeManagedBean implements Serializable{
 		System.out.println("buildParentImage" + (System.currentTimeMillis() - start)/1000l);
 		return parentImageList;
 	}
+	
 	
 	public List<ParentImage> getParentImageList() {
 		if(parentImageList == null || parentImageList.size() ==0) {
@@ -4306,7 +4357,7 @@ public List<String> getcompaniesId(String query) {
 	{
 		try
 		{
-			String rowsPerPage = (String)this.sessionManager.getSessionAttribute("rowsPerPage");
+			String rowsPerPage = this.sessionManager.getSessionAttribute("rowsPerPage")!=null?this.sessionManager.getSessionAttribute("rowsPerPage").toString():null;
 			if (!StringUtils.isEmpty(rowsPerPage)) {
 				return Integer.valueOf(rowsPerPage).intValue();
 			}
@@ -4463,6 +4514,106 @@ public List<String> getcompaniesId(String query) {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * pagination method for next page 
+	 */
+	public void reviewNxtPage(){
+		try{
+			String rowsPerPage = this.sessionManager.getSessionAttribute("rowsPerPage")!=null?this.sessionManager.getSessionAttribute("rowsPerPage").toString():null; 
+			//System.out.println("rowsPerPage"+rowsPerPage);
+			int reviewPerPage = 15;
+			if(rowsPerPage!=null){
+				reviewPerPage = Integer.valueOf(rowsPerPage);
+			}
+			reviewPageOffset +=Integer.valueOf(reviewPerPage);
+			sessionManager.setSessionAttributeInSession("reviewPageOffset", reviewPageOffset);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * for previous page
+	 */
+	public void reviewPrevPage(){
+		try{
+			String rowsPerPage = this.sessionManager.getSessionAttribute("rowsPerPage")!=null?this.sessionManager.getSessionAttribute("rowsPerPage").toString():null;
+			int reviewPerPage = 15;
+			if(rowsPerPage!=null){
+				reviewPerPage = Integer.valueOf(rowsPerPage);
+			}
+			if(reviewPageOffset>1)
+				reviewPageOffset = reviewPageOffset - Integer.valueOf(reviewPerPage);
+			
+			sessionManager.setSessionAttributeInSession("reviewPageOffset", reviewPageOffset);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void reviewGotoPage() {
+		int page = Integer.valueOf(facesUtils.getRequestParameterMap("page"));
+		try{
+			String rowsPerPage = this.sessionManager.getSessionAttribute("rowsPerPage")!=null?this.sessionManager.getSessionAttribute("rowsPerPage").toString():null;
+			int reviewPerPage = 15;
+			if(rowsPerPage!=null){
+				reviewPerPage = Integer.valueOf(rowsPerPage);
+			}
+			reviewPageOffset = (page-1) * reviewPerPage;
+			sessionManager.setSessionAttributeInSession("reviewPageOffset", reviewPageOffset);
+			loadPagination();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * for first page record
+	 */
+	public void reviewFirstPage(){
+		try{
+			String rowsPerPage = this.sessionManager.getSessionAttribute("rowsPerPage")!=null?this.sessionManager.getSessionAttribute("rowsPerPage").toString():null;
+			if(reviewPageOffset>1)
+				reviewPageOffset = 0;
+			
+			sessionManager.setSessionAttributeInSession("reviewPageOffset", reviewPageOffset);
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * for first page record
+	 */
+	public void reviewLastPage(){
+		try{
+			int listSize = 0;
+			int pagecount;
+			int remainder;
+			int reviewPerPage = 15;
+			listSize=getDeJobListBySeachCriteria().size();
+
+			Object rowsPerPage = sessionManager.getSessionAttribute("rowsPerPage"); 
+			if(rowsPerPage!=null)
+			{
+				reviewPerPage = Integer.valueOf(rowsPerPage.toString());
+			}
+			pagecount=(listSize/Integer.valueOf(reviewPerPage));
+			remainder=(listSize%Integer.valueOf(reviewPerPage));
+			if(pagecount>0 && remainder >0)
+			{
+				reviewPageOffset =listSize-(listSize%Integer.valueOf(reviewPerPage));
+			}
+			else
+			{
+				reviewPageOffset =listSize-(Integer.valueOf(reviewPerPage));
+			}
+			sessionManager.setSessionAttributeInSession("reviewPageOffset", reviewPageOffset);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	public void childNxtPage(){
 		try{
 			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.CHILDIMAGEPERPAGE); 
@@ -5090,6 +5241,7 @@ public List<String> getcompaniesId(String query) {
 	public void sortDeJobList(final String sortOn) {
 
 		List<DeJob> jobs = deJobList;
+		this.reviewPageOffset = 0;
 		if(order){
 			order = false;
 			Collections.sort(jobs, new Comparator<DeJob>() {

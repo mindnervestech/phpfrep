@@ -1115,6 +1115,7 @@ implements Serializable
 				else if(user.getIsActive() && user.getUserType().getUserType().equals("Data Entry")){
 					returnPage = MANAGE_DATAENTRY;
 				}
+				sessionManager.setSessionAttributeInSession("option", "4");
 				return returnPage;
 			}
 			else{
@@ -1385,6 +1386,7 @@ implements Serializable
 		this.sessionManager.setUserInSession("brs.menu", menuIdStr);
 		int menuId = Integer.valueOf(menuIdStr).intValue();
 		User user = (User)this.sessionManager.getSessionAttribute("login_user");
+		this.sessionManager.setSessionAttributeInSession("option", menuId);
 		switch (menuId)
 		{
 		case 2: 
@@ -1421,6 +1423,7 @@ implements Serializable
 			redirectLink = "/pages/region/admin_manage_region.xhtml";
 			break;
 		}
+		this.sessionManager.setSessionAttributeInSession("pageChanged", "1");
 		return redirectLink;
 	}
 
