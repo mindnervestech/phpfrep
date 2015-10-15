@@ -8,6 +8,7 @@ import com.obs.brs.dao.IDeServiceDAO;
 import com.obs.brs.model.DataEntry;
 import com.obs.brs.model.DeCompany;
 import com.obs.brs.model.DeJob;
+import com.obs.brs.model.ParentImage;
 
 /**
  * 
@@ -413,6 +414,11 @@ public class DeService implements IDeService{
 	@Transactional(readOnly=false)
 	public void sendJobToQC(int id) {
 		getDeServiceDAO().sendJobToQC(id);
+	}
+	@Override
+	@Transactional(readOnly=false)
+	public void updateParentImage(ParentImage parentImage) {
+		getDeServiceDAO().updateParentImage(parentImage);
 	}
 
 

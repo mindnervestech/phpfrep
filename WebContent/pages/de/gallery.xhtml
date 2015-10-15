@@ -215,6 +215,11 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
     text-decoration: none;
     background-color: #fff;
 }
+.save-icon {
+	background: url('#{request.contextPath}/assets/img/save.jpg');
+	height: 20px;
+	width: 20px;
+}
 </style>
 </h:head>
 <f:metadata>
@@ -469,8 +474,11 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																						</ui:repeat>
 																					</div>
 																					<div class="col-md-2 p-0">
-																						
-																						<input type="text" style="background: #C7D6E9;border: 1px solid grey;"/>
+																						<p:inputText value="#{val.memo}" />
+ 																						<p:commandLink action="#{deBean.updateMemo(val)}" value="" ajax="true" update="@parent" style="width: 25px;height: 30px;border:none;">
+ 																							Save
+ 																						</p:commandLink>
+																						<!-- <input type="text" style="background: #C7D6E9;border: 1px solid grey;"/> -->
 																					</div>
 																				</div>
 																				<div class="col-md-12 p-0">

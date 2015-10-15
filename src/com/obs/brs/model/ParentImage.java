@@ -48,6 +48,7 @@ public class ParentImage implements Serializable{
 	private String sectionother;
 	private String imageHeight;
 	private String imageWidth;
+	private String memo;
 
 	@Transient
 	public List<ChildImage> childImageList = new ArrayList<>();
@@ -296,6 +297,13 @@ public class ParentImage implements Serializable{
 	public Boolean getAbleToDone() {
 		return this.ableToDone;
 		
+	}
+	@Transient
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 	
 }

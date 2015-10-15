@@ -8,6 +8,8 @@ import org.hibernate.SessionFactory;
 import com.obs.brs.model.DeCompany;
 import com.obs.brs.model.DeJob;
 import com.obs.brs.model.DataEntry;
+import com.obs.brs.model.ParentImage;
+import com.obs.brs.session.manager.SessionManager;
 
 /**
  * 
@@ -492,6 +494,11 @@ public class DeServiceDAO implements IDeServiceDAO {
 	@Override
 	public void sendJobToQC(int id) {
 		getSessionFactory().getCurrentSession().createSQLQuery("Update tbl_de_job set DN_STATUS=1 Where DN_ID="+id).executeUpdate();
+	}
+
+	@Override
+	public void updateParentImage(ParentImage parentImage) {
+		getSessionFactory().getCurrentSession().update(parentImage);
 	}
 
 }

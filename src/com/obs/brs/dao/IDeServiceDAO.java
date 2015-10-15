@@ -269,4 +269,5 @@ public interface IDeServiceDAO {
 	public Boolean isRender(int id);
 	
 	public void sendJobToQC(int id);
+	public void updateParentImage(ParentImage parentImage);
 }

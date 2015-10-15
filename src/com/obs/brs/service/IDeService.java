@@ -6,6 +6,7 @@ import java.util.List;
 import com.obs.brs.model.DataEntry;
 import com.obs.brs.model.DeCompany;
 import com.obs.brs.model.DeJob;
+import com.obs.brs.model.ParentImage;
 
 public interface IDeService {
 	/**
@@ -278,4 +279,6 @@ public interface IDeService {
 	public List<DeCompany> getDeCompanyBySeachCriteriaId(long parseLong);
 	
 	public void sendJobToQC(int id);
+	
+	public void updateParentImage(ParentImage parentImage);
 }

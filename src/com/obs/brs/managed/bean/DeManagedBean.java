@@ -3877,6 +3877,18 @@ public List<String> getcompaniesId(String query) {
 		}
 		return null;
 	}
+	
+	public void updateMemo(ParentImage image) {
+		if(image.getSection().getPublicationTitle().equals("Special-Topic")) {
+			image.setSectionspecialTopic(image.getMemo());
+		} else if(image.getSection().getPublicationTitle().equals("Special-Regional")) {
+			image.setSectionspecialRegional(image.getMemo());
+		} else {
+			image.setSectionother(image.getMemo());
+		}
+		deService.updateParentImage(image);
+	}
+	
 	public void hideValueNext(AjaxBehaviorEvent event) {
 		issueDayNext = 0;
 		issueDayNextThird=0;
