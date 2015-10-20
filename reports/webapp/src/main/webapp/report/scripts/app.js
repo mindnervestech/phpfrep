@@ -241,6 +241,23 @@
 			$scope.getDeData();
         };
         
+        window.buttonClicked = function(e,rowData,btnType) {
+        	console.log(e);
+        	console.log(rowData);
+        	console.log(btnType);
+        	if(btnType=="ocr") {
+        		$http.get('/webapp/getChildImage?childImageId='+rowData['childId']).success(function(data){
+            		$("#ocr-text-area-img").attr("src","/files/fracts_files/images/child/"+rowData['parentId']+"/"+rowData['childId']+"/"+data);
+            		$(".modal-backdrop").removeClass("modal-backdrop");
+            	});
+        		$http.get('/webapp/getOcrTextArea?deDataId='+rowData['DN_ID']).success(function(response) {
+        			$("#ocr-text-area").val(response);
+        			$("#ocr-text-popup").modal({backdrop:"static"});
+            		$(".modal-backdrop").removeClass("modal-backdrop");
+        		});
+        	}
+        };
+        
         $scope.isAdvertiseTypeLoaded = false;
         $scope.isInstituteTypeLoaded = false;
         $scope.isAdCategoryLoaded = false;
@@ -634,6 +651,11 @@
 							} else if(cellData.indexOf("Child")===0) {
 								return "<img  onClick='openChildPopUp(event,"+rowData['parentId']+","+rowData['childId']+")' src='/webapp/getChildImageThumb?id="+rowData['childId']+"&parentId="+rowData['parentId']+"' style='height:100px;cursor:pointer;'>";
 							}
+						};
+					} else if(e.button) {
+						e.render = function(cellData,type,rowData) {
+							console.log(e);
+							return "<button onClick='buttonClicked(event,"+JSON.stringify(rowData)+",\""+e.btnType+"\")' class='btn btn-primary'>"+cellData+"</button>"
 						};
 					} else {
 						e.render = function(cellData,type,rowData) {

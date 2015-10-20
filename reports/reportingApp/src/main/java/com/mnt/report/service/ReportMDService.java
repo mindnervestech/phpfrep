@@ -671,6 +671,17 @@ public class ReportMDService {
 		});
 	}
 	
+	@RequestMapping(value="/getOcrTextArea",method=RequestMethod.GET)
+	@ResponseBody 
+	public String getOcrTextArea(@RequestParam("deDataId") Long id) {
+		Map<String,Object> mdResult = jt.queryForMap("select DC_OCR_TEXT from tbl_de_data where DN_ID ="+id);
+		String result = "";
+		if(mdResult!=null &&!mdResult.isEmpty()) {
+			result = mdResult.get("DC_OCR_TEXT").toString();
+		}
+		return result;
+	}
+	
 	@RequestMapping(value="/updateDe",method=RequestMethod.POST)
 	@ResponseBody
 	public void updateDe(@RequestBody final DEVM devm) {
