@@ -2782,6 +2782,7 @@ public class DeManagedBean implements Serializable{
 								sourcePathImage = sourcePath+"/"+parentImage.getImageName();
 								targetPathImage = targetPathImage+"/"+imgId;
 								new File(targetPathImage).mkdirs();
+								IoUtils.copyImages(sourcePathImage,targetPathImage,parentImage.getImageName());
 								try {	
 									Thumbnails.of(new File(targetPathImage+File.separator+parentImage.getImageName()))
 						        	.size(200, 300).keepAspectRatio(true)
@@ -2790,7 +2791,6 @@ public class DeManagedBean implements Serializable{
 								} catch (IOException e1) {
 									e1.printStackTrace();
 								}
-								IoUtils.copyImages(sourcePathImage,targetPathImage,parentImage.getImageName());
 							}else{
 								flag =true;
 								// Added by Shashank
