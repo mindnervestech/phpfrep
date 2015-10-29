@@ -13,7 +13,6 @@ import com.obs.brs.model.ParentImage;
  * @author Jeevanantham
  *
  */
-@Transactional(readOnly = true)
 public class ParentImageService implements IParentImageService {
 
 	IParentImageDAO parentImageDAO;
