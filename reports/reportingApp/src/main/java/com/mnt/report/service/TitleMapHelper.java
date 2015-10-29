@@ -17,7 +17,7 @@ public class TitleMapHelper {
 			public JSONObject mapRow(ResultSet rs, int arg1)
 					throws SQLException {
 				JSONObject nameValue = new JSONObject();
-				nameValue.put("name", rs.getObject("name").toString());
+				nameValue.put("name", rs.getObject("name")!=null?rs.getObject("name").toString():"No Name");
 				nameValue.put("value",  rs.getObject("value").toString());
 				nameValue.put("checked",  false);
 				return nameValue;
@@ -32,7 +32,7 @@ public class TitleMapHelper {
 			public JSONObject mapRow(ResultSet rs, int arg1)
 					throws SQLException {
 				JSONObject nameValue = new JSONObject();
-				nameValue.put("name", rs.getObject("name").toString());
+				nameValue.put("name", rs.getObject("name")!=null?rs.getObject("name").toString():"No Name");
 				nameValue.put("value",  rs.getObject("value").toString());
 				return nameValue;
 			}
@@ -46,7 +46,7 @@ public class TitleMapHelper {
 			public JSONObject mapRow(ResultSet rs, int arg1)
 					throws SQLException {
 				JSONObject nameValue = new JSONObject();
-				nameValue.put("name", rs.getObject("name").toString());
+				nameValue.put("name", rs.getObject("name")!=null?rs.getObject("name").toString():"No Name");
 				nameValue.put("value",  rs.getObject("value").toString());
 				return nameValue;
 			}
@@ -60,7 +60,7 @@ public class TitleMapHelper {
 			public JSONObject mapRow(ResultSet rs, int arg1)
 					throws SQLException {
 				JSONObject nameValue = new JSONObject();
-				nameValue.put("name", rs.getObject("name").toString());
+				nameValue.put("name", rs.getObject("name")!=null?rs.getObject("name").toString():"No Name");
 				nameValue.put("value",  rs.getObject("value").toString());
 				return nameValue;
 			}
@@ -74,7 +74,7 @@ public class TitleMapHelper {
 			public JSONObject mapRow(ResultSet rs, int arg1)
 					throws SQLException {
 				JSONObject nameValue = new JSONObject();
-				nameValue.put("name", rs.getObject("name").toString());
+				nameValue.put("name", rs.getObject("name")!=null?rs.getObject("name").toString():"No Name");
 				nameValue.put("value",  rs.getObject("value").toString());
 				return nameValue;
 			}
@@ -88,7 +88,7 @@ public class TitleMapHelper {
 			public JSONObject mapRow(ResultSet rs, int arg1)
 					throws SQLException {
 				JSONObject nameValue = new JSONObject();
-				nameValue.put("name", rs.getObject("name").toString());
+				nameValue.put("name", rs.getObject("name")!=null?rs.getObject("name").toString():"No Name");
 				nameValue.put("value",  rs.getObject("value").toString());
 				return nameValue;
 			}
@@ -102,7 +102,7 @@ public class TitleMapHelper {
 			public JSONObject mapRow(ResultSet rs, int arg1)
 					throws SQLException {
 				JSONObject nameValue = new JSONObject();
-				nameValue.put("name", rs.getObject("name").toString());
+				nameValue.put("name", rs.getObject("name")!=null?rs.getObject("name").toString():"No Name");
 				nameValue.put("value",  rs.getObject("value").toString());
 				return nameValue;
 			}
