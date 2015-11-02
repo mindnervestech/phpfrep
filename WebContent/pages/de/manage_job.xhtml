@@ -257,8 +257,9 @@ function changeColor(clicked) {
 							
 								<div class="row">
 									<t:div id="deJob_List"
-														rendered="#{((fn:length(deBean.deJobListBySeachCriteria) > (deBean.rowsPerPage)) and (deBean.reviewPageOffset == 0)) or ((deBean.reviewPageOffset > 0))}" style="margin-bottom: 0.5%;width:100%;">
+														 style="margin-bottom: 0.5%;width:100%;">
 									<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+										
 										<h:outputLabel value="No record found"
 											rendered="#{empty deBean.deJobListBySeachCriteria}" />
 										<t:div styleClass="pull-right"

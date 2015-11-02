@@ -3138,31 +3138,63 @@ public class DeManagedBean implements Serializable{
 				}
 			}
 			if(checkin!=null) {
-				if(this.publicationTitle!=null && !this.publicationTitle.isEmpty()) {
-					String[] arr = this.publicationTitle.split("_");
+				Map<String,String> titleMap = new HashMap<String,String>();
+				titleMap.put("natus", "1084");
+				titleMap.put("natuk", "1085");
+				titleMap.put("newus", "520");
+				titleMap.put("newuk", "521");
+				titleMap.put("cell", "522");
+				titleMap.put("scius", "518");
+				Map<String,String> sectionMap = new HashMap<String,String>();
+				sectionMap.put("SR", "973");
+				sectionMap.put("ST", "1032");
+				sectionMap.put("CL", "644");
+				sectionMap.put("OT", "1033");
+				if(this.parentImageName!=null && !this.parentImageName.isEmpty()) {
+					String[] arr = this.parentImageName.split("_");
 					if(arr.length==3) {
-						this.publicationTitle = arr[0];
+						this.publicationTitle = titleMap.get(arr[0]);
 						System.out.println(this.publicationTitle);
 						String[] arr1  = arr[1].split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
 						try {
 							if(arr1.length==2) {
-								this.issueDay = Integer.parseInt(arr1[0].substring(4, 6));
-								this.issueMonth = Integer.parseInt(arr1[0].substring(2, 4));
-								this.issueYear = Integer.parseInt(arr1[0].substring(0, 2));
-								this.section = arr1[0].substring(6);
+								int day = Integer.parseInt(arr1[0].substring(4, 6));
+								int month = Integer.parseInt(arr1[0].substring(2, 4));
+								if(day<9) {
+									this.setIssueDay(day);
+								} else if(day<17) {
+									this.setIssueDayNext(day);
+								} else if(day<25) {
+									this.setIssueDayNextThird(day);
+								} else {
+									this.setIssueDayNextFour(day);
+								}
+								if(month<7) {
+									this.setIssueMonth(month);
+								} else {
+									this.setIssueMonthNext(month);
+								}
+								
+								if(sectionMap.get(arr1[1]).equals("644") || sectionMap.get(arr1[1]).equals("1033")) {
+									this.setSection(sectionMap.get(arr1[1]));
+								} else {
+									this.setSectionNextValue(sectionMap.get(arr1[1]));
+								}
+								this.setIssueYear(2000+Integer.parseInt(arr1[0].substring(0, 2)));
 							} else {
 								try {
 									Integer.parseInt(arr1[0]);
-									this.issueDay = Integer.parseInt(arr1[0].substring(4, 6));
-									this.issueMonth = Integer.parseInt(arr1[0].substring(2, 4));
-									this.issueYear = Integer.parseInt(arr1[0].substring(0, 2));
+									this.setIssueDay(Integer.parseInt(arr1[0].substring(4, 6)));
+									this.setIssueMonth(Integer.parseInt(arr1[0].substring(2, 4)));
+									this.setIssueYear(2000+Integer.parseInt(arr1[0].substring(0, 2)));
 								} catch(Exception e) {
-									this.section = arr1[0];
+									this.setSection(sectionMap.get(arr1[1]));
 								}
 							}
 						} catch(Exception e) {
+							e.printStackTrace();
 						}
-						this.publicationTitle = arr[2].split("\\.")[0];
+						this.page = arr[2].split("\\.")[0];
 					}
 				}
 			}
