@@ -3175,12 +3175,14 @@ public class DeManagedBean implements Serializable{
 									this.setIssueMonthNext(month);
 								}
 								
-								if(sectionMap.get(arr1[1]).equals("644") || sectionMap.get(arr1[1]).equals("1033")) {
-									this.setSection(sectionMap.get(arr1[1]));
+								if(sectionMap.get(arr1[1].toUpperCase()).equals("644") || sectionMap.get(arr1[1].toUpperCase()).equals("1033")) {
+									this.setSection(sectionMap.get(arr1[1].toUpperCase()));
 								} else {
-									this.setSectionNextValue(sectionMap.get(arr1[1]));
+									this.setSectionNextValue(sectionMap.get(arr1[1].toUpperCase()));
 								}
 								this.setIssueYear(2000+Integer.parseInt(arr1[0].substring(0, 2)));
+								System.out.println(getIssueYear());
+								System.out.println(arr1[1]);
 							} else {
 								try {
 									Integer.parseInt(arr1[0]);
