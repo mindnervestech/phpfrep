@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -255,8 +256,9 @@ public class DeManagedBean implements Serializable{
 	private String stateEd = "";
 	private String countryEd = "";
 	private String pincodeEd = "";
-	private  HashMap hm = new HashMap<>() ;
+	private HashMap hm = new HashMap<>() ;
 	private long saveNewCmpId;
+	private boolean duplicate = true;
 	
 	private DeCompany selectedCompany;
 	private Integer selectedCompanyId;
@@ -268,6 +270,20 @@ public class DeManagedBean implements Serializable{
 	private Set<String> duplicateFileNames;
 	private List<String> duplicateNames;
 	private String iframeUrl;
+	private static Map<String,String> titleMap = new HashMap<String,String>(6);
+	private static Map<String,String> sectionMap = new HashMap<String,String>(4);
+	static {
+		titleMap.put("natus", "1084");
+		titleMap.put("natuk", "1085");
+		titleMap.put("newus", "520");
+		titleMap.put("newuk", "521");
+		titleMap.put("cell", "522");
+		titleMap.put("scius", "518");
+		sectionMap.put("SR", "973");
+		sectionMap.put("ST", "1032");
+		sectionMap.put("CL", "644");
+		sectionMap.put("OT", "1033");
+	}
 	
 	public String getIframeUrl() {
 		User user = (User)this.sessionManager.getSessionAttribute("login_user");
@@ -2732,11 +2748,19 @@ public class DeManagedBean implements Serializable{
 	 * save cropped image from temp path
 	 * @throws IOException 
 	 */
+	
+	public boolean isDuplicate(String name) {
+		return duplicateNames!=null ? duplicateNames.contains(name) : false;
+	}
+	
 	public String saveParentImage() throws IOException{
 		currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 		String sourcePath = imageBasePath+CommonProperties.getParentImageTempPath()+"/"+currentUser.getId();
 		String fileNameWithExt ="";
 		String extension ="";
+		Publication publication = null;
+		Publication sectionTitle = null;
+		String dateField = "";
 		if(duplicateFileNames==null) {
 			duplicateFileNames = new HashSet<String>();
 		} else {
@@ -2779,6 +2803,7 @@ public class DeManagedBean implements Serializable{
 								parentImage.setImageHeight(String.valueOf(heightCM));
 								parentImage.setImageWidth(String.valueOf(widthCM));
 								Long imgId = getParentImageService().addParentImage(parentImage);
+								parentImage.setId(imgId);
 								sourcePathImage = sourcePath+"/"+parentImage.getImageName();
 								targetPathImage = targetPathImage+"/"+imgId;
 								new File(targetPathImage).mkdirs();
@@ -2790,6 +2815,82 @@ public class DeManagedBean implements Serializable{
 						        	.toFile(targetPathImage+File.separator+parentImage.getImageName().split("\\.")[0]+"_thumb.jpg");
 								} catch (IOException e1) {
 									e1.printStackTrace();
+								}
+								String publicationTitle = null;
+								String section = null;
+								Integer day = null;
+								Integer month = null;
+								Integer year = null;
+								if(filename != null && !filename.isEmpty()) {
+									String[] arr = filename.split("_");
+									if(arr.length==3) {
+										publicationTitle = titleMap.get(arr[0]);
+										String[] arr1  = arr[1].split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+										try {
+											if(arr1.length==2) {
+												day = Integer.parseInt(arr1[0].substring(4, 6));
+												month = Integer.parseInt(arr1[0].substring(2, 4));
+												section = sectionMap.get(arr1[1].toUpperCase());
+												year = 2000+Integer.parseInt(arr1[0].substring(0, 2));
+											} else {
+												try {
+													Integer.parseInt(arr1[0]);
+													day = Integer.parseInt(arr1[0].substring(4, 6));
+													month = Integer.parseInt(arr1[0].substring(2, 4));
+													year = 2000+Integer.parseInt(arr1[0].substring(0, 2));
+												} catch(Exception e) {
+													section = sectionMap.get(arr1[1]);
+												}
+											}
+										} catch(Exception e) {
+											e.printStackTrace();
+										}
+										this.page = arr[2].split("\\.")[0];
+									}
+									if(publicationTitle != null && !publicationTitle.isEmpty()){
+										publication = userService.getPublicationById(Integer.valueOf(publicationTitle));
+									}
+									if(section != null && !section.isEmpty()){
+										sectionTitle = userService.getPublicationById(Integer.valueOf(section));
+									}
+									if(day != null && month != null && year != null ){
+										dateField=year+"-"+month+"-"+day;
+									}
+									parentImage.setSectionother("");
+									parentImage.setSectionspecialRegional("");
+									parentImage.setSectionspecialTopic("");
+									if(parentImage != null && publication != null && sectionTitle != null && dateField != null){
+										parentImage.setPublicationTitle(publication);
+										SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+										Date issueDate;
+										try {
+											issueDate = (Date)formatter.parse(dateField);
+											parentImage.setIssueDate(issueDate);
+										} catch (ParseException e) {
+										}
+										parentImage.setSection(sectionTitle);
+										parentImage.setPage(this.page);
+										parentImageService.updateParentImage(parentImage);
+										DeJob deJob = 	deService.getDeJobByParentImageId(parentImage.getId());
+										if(deJob != null){
+											deJob.setParentImage(parentImage);
+											deJob.setCreated_by(currentUser);
+											deJob.setCreated_On(new Date());
+											deJob.setIsActive(true);
+											deJob.setIsDeleted(false);
+											deService.updateDeJob(deJob);
+										}
+										else{
+											deJob = new  DeJob();
+											deJob.setParentImage(parentImage);
+											deJob.setCreated_by(currentUser);
+											deJob.setIsActive(true);
+											deJob.setCreated_On(new Date());
+											deJob.setIsDeleted(false);
+											deService.addDeJob(deJob);
+										}
+										messageService.messageInformation(null, " Publication has been Updated  Successfully.");
+									}
 								}
 							}else{
 								flag =true;
@@ -2886,7 +2987,7 @@ public class DeManagedBean implements Serializable{
 						|| (this.issueDay == 0 && this.issueDayNext == 0 &&  this.issueDayNextThird == 0 && this.issueDayNextFour == 0 )
 						|| (this.issueMonth == 0 && this.issueMonthNext == 0)
 						|| this.issueYear  == 0){
-					messageService.messageFatal(null, "You must fill all required feilds");
+					messageService.messageFatal(null, "You must fill all required fields");
 				} else {
 					if(this.publicationTitle != null && !this.publicationTitle.isEmpty()){
 						publication = userService.getPublicationById(Integer.valueOf(this.publicationTitle));
@@ -3138,18 +3239,6 @@ public class DeManagedBean implements Serializable{
 				}
 			}
 			if(checkin!=null) {
-				Map<String,String> titleMap = new HashMap<String,String>();
-				titleMap.put("natus", "1084");
-				titleMap.put("natuk", "1085");
-				titleMap.put("newus", "520");
-				titleMap.put("newuk", "521");
-				titleMap.put("cell", "522");
-				titleMap.put("scius", "518");
-				Map<String,String> sectionMap = new HashMap<String,String>();
-				sectionMap.put("SR", "973");
-				sectionMap.put("ST", "1032");
-				sectionMap.put("CL", "644");
-				sectionMap.put("OT", "1033");
 				if(this.parentImageName!=null && !this.parentImageName.isEmpty()) {
 					String[] arr = this.parentImageName.split("_");
 					if(arr.length==3) {
@@ -3181,8 +3270,7 @@ public class DeManagedBean implements Serializable{
 									this.setSectionNextValue(sectionMap.get(arr1[1].toUpperCase()));
 								}
 								this.setIssueYear(2000+Integer.parseInt(arr1[0].substring(0, 2)));
-								System.out.println(getIssueYear());
-								System.out.println(arr1[1]);
+								
 							} else {
 								try {
 									Integer.parseInt(arr1[0]);
@@ -4500,6 +4588,24 @@ public List<String> getcompaniesId(String query) {
 			e.printStackTrace();
 		}
 	}
+	
+	public void changeParentImages() {
+		if(this.duplicate) {
+			List<ParentImage> images = new ArrayList<ParentImage>();
+			for(ParentImage image:getParentImageList()) {
+				if(duplicateNames.contains(image.getImageName())) {
+					images.add(image);
+				}
+			}
+			this.parentImageList = images;
+			this.duplicate = false;
+		} else {
+			this.parentImageList = null;
+			getParentImageList();
+			this.duplicate = true;
+		}
+	}
+	
 	/**
 	 * for first page record
 	 */
@@ -5341,4 +5447,11 @@ public List<String> getcompaniesId(String query) {
 		}
 	}
 
+	public boolean isDuplicate() {
+		return duplicate;
+	}
+
+	public void setDuplicate(boolean duplicate) {
+		this.duplicate = duplicate;
+	}
 }

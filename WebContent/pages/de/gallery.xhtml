@@ -277,12 +277,16 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 												rendered="#{empty deBean.parentImageList}" />
 											<t:div id="div_photo_list"
 												rendered="#{not empty deBean.parentImageList}">
-												<div style="width: 50%;">
+												<div style="width: 40%;float:left;">
 													Duplicated Images :
 													<ui:repeat id="duplicateNames" var="name" value="#{deBean.duplicateNames}" >
 														<span style="color:red;">#{name},</span>
 													</ui:repeat>
 												</div>
+												<t:div rendered="#{not empty deBean.duplicateNames}" style="width: 10%;float:left;">
+													<p:commandLink update="div_photo_list" rendered="#{deBean.duplicate}" ajax="true" action="#{deBean.changeParentImages}">Show Duplicate</p:commandLink>
+													<p:commandLink update="div_photo_list" rendered="#{not deBean.duplicate}" ajax="true" action="#{deBean.changeParentImages}">Show All</p:commandLink>
+												</t:div>
 												<t:div styleClass="pull-right"
 														rendered="#{((fn:length(deBean.parentImageList) > (deBean.imagePerPage)) and (deBean.imageOffset == 0)) or ((deBean.imageOffset > 0))}" style="margin-bottom: 0.5%;width:50%;">
 														<ul class="pagination pagination-right"
@@ -515,6 +519,11 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																							<div class="f_l p-l-10">
 																								<h:outputText value="#{val.createdBy.firstName}"></h:outputText>
 																							</div>
+																						</div>
+																					</div>
+																					<div class="p-0 f_l">
+																						<div class="row m-5 f_l">
+																							<h:outputText rendered="#{deBean.isDuplicate(val.imageName)}" style="color:red;font-size:19px;font-weight:bold;" value="DUPLICATE"></h:outputText>
 																						</div>
 																					</div>
 																				</div>
