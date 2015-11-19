@@ -6,7 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -44,6 +45,10 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 
 
+
+
+
+
 import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
@@ -54,6 +59,21 @@ public class ReportMDService {
 	
 	@Autowired
 	NamedParameterJdbcTemplate namedJdbcTemplate;
+	
+	private static Map<String,String> titleMap = new HashMap<String,String>(6);
+	private static Map<String,String> sectionMap = new HashMap<String,String>(4);
+	static {
+		titleMap.put("natus", "1084");
+		titleMap.put("natuk", "1085");
+		titleMap.put("newus", "520");
+		titleMap.put("newuk", "521");
+		titleMap.put("cell", "522");
+		titleMap.put("scius", "518");
+		sectionMap.put("SR", "973");
+		sectionMap.put("ST", "1032");
+		sectionMap.put("CL", "644");
+		sectionMap.put("OT", "1033");
+	}
 
 	private static String localpath = "/usr/local/apache-tomcat-7.0.34/webapps"+File.separator+"files"+File.separator+"fracts_files"+File.separator+"images"+File.separator;
 	
@@ -721,6 +741,122 @@ public class ReportMDService {
 		
 	}
 	
+	@RequestMapping(value="/process-all-parent-images",method=RequestMethod.GET) 
+	@ResponseBody public void processAllParentImages() {
+		List<Map<String,Object>> list =  jt.query("select DN_ID as id, DC_IMAGENAME as name from tbl_parent_image", new RowMapper<Map<String,Object>>(){
+
+			public Map<String,Object> mapRow(ResultSet arg0, int arg1)
+					throws SQLException {
+				try {
+					Map<String,Object> map = new HashMap<String,Object>();
+					map.put("name", arg0.getString("name"));
+					map.put("id", arg0.getString("id"));
+					System.out.println("id :"+((String)map.get("id")));
+					System.out.println("name :"+((String)map.get("name")));
+					return map;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+		});
+		System.out.println("list:"+list.size());
+		for(Map<String,Object> map  : list) {
+			
+			String section = null;
+			Integer day = null;
+			Integer month = null;
+			Integer year = null;
+			String page = null;
+			String filename = (String)map.get("name");
+			String publication = null;
+			String dateField = null;
+			Date date = null;
+			System.out.println(filename);
+			if(filename != null && !filename.isEmpty()) {
+				try {
+					String[] arr = filename.split("_");
+					if(arr.length==3) {
+						publication = titleMap.get(arr[0]);
+						String[] arr1  = arr[1].split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+						try {
+							if(arr1.length==2) {
+								day = Integer.parseInt(arr1[0].substring(4, 6));
+								month = Integer.parseInt(arr1[0].substring(2, 4));
+								section = sectionMap.get(arr1[1].toUpperCase());
+								year = 2000+Integer.parseInt(arr1[0].substring(0, 2));
+							} else {
+								try {
+									Integer.parseInt(arr1[0]);
+									day = Integer.parseInt(arr1[0].substring(4, 6));
+									month = Integer.parseInt(arr1[0].substring(2, 4));
+									year = 2000+Integer.parseInt(arr1[0].substring(0, 2));
+								} catch(Exception e) {
+									e.printStackTrace();
+									section = sectionMap.get(arr1[1].toUpperCase());
+								}
+							}
+							System.out.println(day);
+							System.out.println(month);
+							System.out.println(section);
+							System.out.println(year);
+							page = arr[2].split("\\.")[0];
+							if(day != null && month != null && year != null ){
+								dateField=year+"-"+month+"-"+day;
+								date = new SimpleDateFormat("yyyy-MM-dd").parse(dateField);
+							}
+							final Date d = date;
+							final String pg = page;
+							final String pbl = publication;
+							final String sec = section;
+							final Long id = Long.parseLong((String)map.get("id"));
+							System.out.println(pg);
+							System.out.println(d);
+							System.out.println(sec);
+							System.out.println(pbl);
+							System.out.println(id);
+							try {
+								jt.update(new PreparedStatementCreator(){
+									public PreparedStatement createPreparedStatement(    Connection connection) throws SQLException {
+										PreparedStatement ps=connection.prepareStatement("Update tbl_parent_image SET DD_ISSUE_DATE = ?,DC_PAGE = ?,DC_PUBLICATION_TITLE = ?,DC_SECTION = ?,"+
+												"DC_SECTION_OTHER = ?,DC_SECTION_SPECIAL_REGIONAL = ?,DC_SECTION_SPECIAL_TOPIC = ? where DN_ID = ?");
+										int index=1;
+										if(d==null)
+											ps.setNull(index++, java.sql.Types.NULL);
+										else
+											ps.setDate(index++, new java.sql.Date(d.getTime()));
+										if(pg==null)
+											ps.setNull(index++, java.sql.Types.NULL);
+										else
+											ps.setString(index++, pg);
+										if(pbl==null)
+											ps.setNull(index++, java.sql.Types.NULL);
+										else
+											ps.setString(index++, pbl);
+										if(sec==null)
+											ps.setNull(index++, java.sql.Types.NULL);
+										else
+											ps.setString(index++, sec);
+										ps.setString(index++, "");
+										ps.setString(index++, "");
+										ps.setString(index++, "");
+										ps.setLong(index++, id);
+										return ps;
+									}
+								});
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						} catch(Exception e) {
+							e.printStackTrace();
+						}
+					}
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 	
 	public static class SelectItem {
 		public String name;
