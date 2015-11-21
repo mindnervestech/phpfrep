@@ -1,6 +1,7 @@
 package com.obs.brs.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -419,6 +420,10 @@ public class DeService implements IDeService{
 	@Transactional(readOnly=false)
 	public void updateParentImage(ParentImage parentImage) {
 		getDeServiceDAO().updateParentImage(parentImage);
+	}
+	@Override
+	public DataEntry getDataEntryByChildImageIds(Set<Long> ids) {
+		return getDeServiceDAO().getDataEntryByChildImageIds(ids);
 	}
 
 

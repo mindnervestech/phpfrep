@@ -351,7 +351,7 @@ public class DeManagedBean implements Serializable{
 	}
 	
 	private void loadReviewPagination() {
-		int totalRows = this.getParentImageList().size();
+		int totalRows = this.getDeJobListBySeachCriteria().size();
 		int currentPage = (this.reviewPageOffset/this.getRowsPerPage())+1;
         int totalPages = (totalRows / this.getRowsPerPage()) + ((totalRows % this.getRowsPerPage() != 0) ? 1 : 0);
         int pagesLength = Math.min(reviewPageRange, totalPages);
@@ -2320,14 +2320,16 @@ public class DeManagedBean implements Serializable{
 				if(childImages.size() == 0){
 					image.ableToDone = false;
 					continue;
-				}
-				
-				for(ChildImage childImage : childImages){
-					DataEntry entry = deService.getDataEntryByChildImageId(childImage.getId());
-					if(entry != null)
-					if(entry.getDeCompany() == null){
-						image.ableToDone = false;
-						break;
+				} else {
+					Set<Long> set = new HashSet<Long>(childImages.size());
+					for(ChildImage childImage : childImages){
+						set.add(childImage.getId());
+					}
+					DataEntry entry = deService.getDataEntryByChildImageIds(set);
+					if(entry != null) {
+						if(entry.getDeCompany() == null){
+							image.ableToDone = false;
+						}
 					}
 				}
 			}

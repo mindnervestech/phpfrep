@@ -2,6 +2,7 @@ package com.obs.brs.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import com.obs.brs.model.DataEntry;
 import com.obs.brs.model.DeCompany;
@@ -281,4 +282,5 @@ public interface IDeService {
 	public void sendJobToQC(int id);
 	
 	public void updateParentImage(ParentImage parentImage);
+	public DataEntry getDataEntryByChildImageIds(Set<Long> ids);
 }
