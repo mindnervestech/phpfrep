@@ -1996,31 +1996,25 @@ public class DeManagedBean implements Serializable{
 							}
 							if(this.childImageId == 0 && this.ocrText == null){
 								try {
-									System.out.println("deBean:loadDeInfo:: Loading this path(=0):"+(imageBasePath+CommonProperties.getParentImagePath()+this.parentImageId+"/"+this.parentImageName));
 									File image=new File(imageBasePath+CommonProperties.getParentImagePath()+this.parentImageId+"/"+this.parentImageName);
 									ImageIO.scanForPlugins();
 									String result = new Ocr().doOCR(image);
-									System.out.println("deBean:loadDeInfo:: Data from Image:"+result);
 									if(result != null){
 										this.ocrText = result;
 									}
 								} catch (Exception e) {
-									System.err.println("deBean:loadDeInfo"+e.getMessage());
 									e.printStackTrace();
 								}
 							}
 							if(this.childImageId > 0 && this.ocrText == null){
 								try {
-									System.out.println("deBean:loadDeInfo:: Loading this path(>0):"+(imageBasePath+CommonProperties.getChildImagePath()+this.parentImageId+"/"+this.childImageId+"/"+dataEntry.getChildImage().getImageName()));
 									File image=new File(imageBasePath+CommonProperties.getChildImagePath()+this.parentImageId+"/"+this.childImageId+"/"+dataEntry.getChildImage().getImageName());
 									ImageIO.scanForPlugins();
 									String result = new Ocr().doOCR(image);
-									System.out.println("deBean:loadDeInfo:: Data from Image:"+result);
 									if(result != null){
 										this.ocrText = result;
 									}
 								} catch (Exception e) {
-									System.err.println("deBean:loadDeInfo"+e.getMessage());
 									e.printStackTrace();
 								}
 							}
@@ -2128,7 +2122,6 @@ public class DeManagedBean implements Serializable{
 		}		
 		catch(Exception e)
 		{
-			System.out.println("deBean:activiateDE"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -2158,7 +2151,6 @@ public class DeManagedBean implements Serializable{
 		}		
 		catch(Exception e)
 		{
-			System.out.println("deBean:deleteDeJob"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -2187,7 +2179,6 @@ public class DeManagedBean implements Serializable{
 		}		
 		catch(Exception e)
 		{
-			System.out.println("deBean:deleteQcJob"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -2234,7 +2225,6 @@ public class DeManagedBean implements Serializable{
 	 * @return
 	 */
 	public void doneParentImage(){
-		System.out.println("doneParentImage");
 		String val = facesUtils.getRequestParameterMap("parentImg");
 		int imageId = Integer.valueOf(val!=null?val:"0");
 		if(imageId >0){
@@ -2282,6 +2272,7 @@ public class DeManagedBean implements Serializable{
 	 * @return List - ParentImage 
 	 */
 	public void filterParentImages() {
+		long start = System.currentTimeMillis();
 		parentImageList = new ArrayList<ParentImage>();
 		if(filterParentImage != null){
 			parentImageList.addAll(getParentImageService().getParentImageByFilter(filterParentImage));
@@ -2290,6 +2281,7 @@ public class DeManagedBean implements Serializable{
 			}
 			Collections.reverse(parentImageList);
 		}
+		System.out.println("deBean : filterParentImages :" + (System.currentTimeMillis() - start)/1000);
 	}
 
 	/**
@@ -2318,17 +2310,7 @@ public class DeManagedBean implements Serializable{
 				if(childImages.size() == 0){
 					image.ableToDone = false;
 					continue;
-				} 
-				for(ChildImage childImage : childImages){
-					DataEntry entry = deService.getDataEntryByChildImageId(childImage.getId());
-					if(entry != null) {
-						if(entry.getDeCompany() == null){
-							image.ableToDone = false;
-							break;
-						}
-					}
-				}
-				/*else {
+				} else {
 					Set<Long> set = new HashSet<Long>(childImages.size());
 					for(ChildImage childImage : childImages){
 						set.add(childImage.getId());
@@ -2339,7 +2321,17 @@ public class DeManagedBean implements Serializable{
 							image.ableToDone = false;
 						}
 					}
+				} 
+				/*for(ChildImage childImage : childImages){
+					DataEntry entry = deService.getDataEntryByChildImageId(childImage.getId());
+					if(entry != null) {
+						if(entry.getDeCompany() == null){
+							image.ableToDone = false;
+							break;
+						}
+					}
 				}*/
+				
 			}
 			Collections.reverse(parentImageList);
 		}
@@ -2485,7 +2477,6 @@ public class DeManagedBean implements Serializable{
 	        Set mapSet = (Set) hm.entrySet();
 	        //Create iterator on Set 
 	        Iterator mapIterator = mapSet.iterator();
-	        System.out.println("Display the key/value of HashMap.");
 	       /* while (mapIterator.hasNext()) {
 	                Map.Entry mapEntry = (Map.Entry) mapIterator.next();
 	                // getKey Method of HashMap access a key of map
@@ -2796,9 +2787,7 @@ public class DeManagedBean implements Serializable{
 							file=file.replaceAll(" ", "_");
 							filename=file+"."+extension;
 							if(extension.equalsIgnoreCase("jpeg") || extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("gif")){
-								System.out.println("filename:"+filename);
 								ParentImage duplicateImage = getParentImageService().getParentImageByName(filename);
-								System.out.println("duplicateImage:"+duplicateImage);
 								if(duplicateImage!=null) {
 									duplicateFileNames.add(filename);
 								}
@@ -2939,7 +2928,6 @@ public class DeManagedBean implements Serializable{
 			msgLabel = "Parent Image has been Saved Successfully";
 
 		}
-		System.out.println("isEmpty:"+duplicateFileNames.isEmpty());
 		this.msgWarnLabel = "";
 		if(!duplicateFileNames.isEmpty()) {
 			StringBuffer sb = new StringBuffer();
@@ -3253,7 +3241,6 @@ public class DeManagedBean implements Serializable{
 					String[] arr = this.parentImageName.split("_");
 					if(arr.length==3) {
 						this.publicationTitle = titleMap.get(arr[0]);
-						System.out.println(this.publicationTitle);
 						String[] arr1  = arr[1].split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
 						try {
 							if(arr1.length==2) {
@@ -3489,7 +3476,6 @@ public class DeManagedBean implements Serializable{
 	{ 
 		this.isFilter = true;
 		this.createdByDeo =((String) event.getNewValue());
-		System.out.println("createdBy:"+this.createdByDeo);
 		if(this.createdByDeo.equals("all"))
 		{
 			sessionManager.setUserInSession(SessionManager.CREATEDBYDEO, "");
@@ -3549,16 +3535,13 @@ public class DeManagedBean implements Serializable{
 			setAllAdDetails(childImage);
 			if(this.ocrText==null || this.ocrText.isEmpty()){
 				try {
-					System.out.println("debean:changeNextVal:: loading this path: "+(imageBasePath+CommonProperties.getChildImagePath()+childImage.getParentImage().getId()+"/"+this.childImageId+"/"+this.childImageName));
 					File image=new File(imageBasePath+CommonProperties.getChildImagePath()+childImage.getParentImage().getId()+"/"+this.childImageId+"/"+this.childImageName);
 					ImageIO.scanForPlugins();
 					String result = new Ocr().doOCR(image);
-					System.out.println("debean:changeNextVal:: Data from Image:"+result);
 					if(result != null){
 						this.ocrText = result;
 					}
 				} catch (Exception e) {
-					System.err.println("deBean:loadDeInfo"+e.getMessage());
 					e.printStackTrace();
 				}
 			}
@@ -3600,16 +3583,13 @@ public class DeManagedBean implements Serializable{
 			setAllAdDetails(childImage);
 			if(this.ocrText==null || this.ocrText.isEmpty()){
 				try {
-					System.out.println("debean:changeNextVal:: loading this path: "+(imageBasePath+CommonProperties.getChildImagePath()+childImage.getParentImage().getId()+"/"+this.childImageId+"/"+this.childImageName));
 					File image=new File(imageBasePath+CommonProperties.getChildImagePath()+childImage.getParentImage().getId()+"/"+this.childImageId+"/"+this.childImageName);
 					ImageIO.scanForPlugins();
 					String result = new Ocr().doOCR(image);
-					System.out.println("debean:changeNextVal:: Data from Image:"+result);
 					if(result != null){
 						this.ocrText = result;
 					}
 				} catch (Exception e) {
-					System.err.println("deBean:loadDeInfo"+e.getMessage());
 					e.printStackTrace();
 				}
 			}
@@ -3658,16 +3638,13 @@ public class DeManagedBean implements Serializable{
 				setAllAdDetails(childImages);
 				if(this.ocrText==null || this.ocrText.isEmpty()){
 					try {
-						System.out.println("debean:changePreVal:: loading this path: "+(imageBasePath+CommonProperties.getChildImagePath()+childImage.getParentImage().getId()+"/"+this.childImageId+"/"+this.childImageName));
 						File image=new File(imageBasePath+CommonProperties.getParentImagePath()+childImages.getParentImage().getId()+"/"+this.parentImageName);
 						ImageIO.scanForPlugins();
 						String result = new Ocr().doOCR(image);
-						System.out.println("debean:changePreVal:: Data from Image:"+result);
 						if(result != null){
 							this.ocrText = result;
 						}
 					} catch (Exception e) {
-						System.err.println("deBean:loadDeInfo"+e.getMessage());
 						e.printStackTrace();
 					}
 				}
@@ -3695,7 +3672,6 @@ public class DeManagedBean implements Serializable{
 							this.ocrText = result;
 						}
 					} catch (Exception e) {
-						System.out.println("deBean:loadDeInfo"+e.getMessage());
 						e.printStackTrace();
 					}
 				}
@@ -3851,7 +3827,6 @@ public List<String> getcompaniesId(String query) {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("deBean::getNoOfDays"+e.getMessage());
 		}
 		return noDays;
 	}
@@ -3869,7 +3844,6 @@ public List<String> getcompaniesId(String query) {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("deBean::getNoOfDaysNext"+e.getMessage());
 		}
 		return noDays;
 	} 
@@ -3887,7 +3861,6 @@ public List<String> getcompaniesId(String query) {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("deBean::getNoOfDaysThird"+e.getMessage());
 		}
 		return noDays;
 	}
@@ -3905,7 +3878,6 @@ public List<String> getcompaniesId(String query) {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("deBean::getNoOfDaysThird"+e.getMessage());
 		}
 		return noDays;
 	}
@@ -3928,7 +3900,6 @@ public List<String> getcompaniesId(String query) {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("deBean::getNoOfMonth"+e.getMessage());
 		}
 		return noMonth;
 	}
@@ -3951,7 +3922,6 @@ public List<String> getcompaniesId(String query) {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("deBean::getNoOfMonth"+e.getMessage());
 		}
 		return noMonth;
 	}
@@ -3974,7 +3944,6 @@ public List<String> getcompaniesId(String query) {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("deFormbean::getNoOfYear"+e.getMessage());
 		}
 		return noYear;
 	}
@@ -4004,7 +3973,6 @@ public List<String> getcompaniesId(String query) {
 			}				
 			return "/pages/de/manage_job.xhtml?issueDateString='"+issueDateString+"'&faces-redirect=true";
 		} catch (Exception e) {
-			System.out.println("deBean:searchDate"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -4185,7 +4153,6 @@ public List<String> getcompaniesId(String query) {
 	 */
 	public List<SelectItem> getAllPublicationFirstOff()
 	{
-		System.out.println("AllPubFirstOff");
 		List<Publication> publicationList = new ArrayList<Publication>();
 		List<SelectItem> publicationList1 = new ArrayList<SelectItem>();
 		try {
@@ -4204,7 +4171,6 @@ public List<String> getcompaniesId(String query) {
 			return publicationList1;
 
 		} catch (Exception e) {
-			System.out.println("deBean::getAllPublicationFirstOff"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;		
@@ -4216,7 +4182,6 @@ public List<String> getcompaniesId(String query) {
 	 */
 	public List<SelectItem> getAllPublicationSecondOff()
 	{
-		System.out.println("AllPubSecondOff");
 		List<Publication> publicationList = new ArrayList<Publication>();
 		List<SelectItem> publicationList1 = new ArrayList<SelectItem>();
 		try {
@@ -4233,7 +4198,6 @@ public List<String> getcompaniesId(String query) {
 			return publicationList1;
 
 		} catch (Exception e) {
-			System.out.println("deBean::getAllPublicationSecondOff"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;		
@@ -4245,7 +4209,6 @@ public List<String> getcompaniesId(String query) {
 	 */
 	public List<SelectItem> getAllSectionFirstOff()
 	{
-		System.out.println("AllSectionFirstOff");
 		List<Publication> publicationList = new ArrayList<Publication>();
 		List<SelectItem> sectionList = new ArrayList<SelectItem>();
 		try {
@@ -4263,7 +4226,6 @@ public List<String> getcompaniesId(String query) {
 			return sectionList;
 
 		} catch (Exception e) {
-			System.out.println("deBean::AllSectionFirstOff"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;		
@@ -4274,7 +4236,6 @@ public List<String> getcompaniesId(String query) {
 	 */
 	public List<SelectItem> getAllSectionSecondOff()
 	{
-		System.out.println("AllSectionSecondOff");
 		List<Publication> publicationList = new ArrayList<Publication>();
 		List<SelectItem> sectionList = new ArrayList<SelectItem>();
 		try {
@@ -4291,7 +4252,6 @@ public List<String> getcompaniesId(String query) {
 			return sectionList;
 
 		} catch (Exception e) {
-			System.out.println("deBean::AllSectionSecondOff"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;		
@@ -4321,7 +4281,6 @@ public List<String> getcompaniesId(String query) {
 			return sectionList;
 
 		} catch (Exception e) {
-			System.out.println("deBean::getNoOfAdCategoryFirstOff"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;		
@@ -4350,7 +4309,6 @@ public List<String> getcompaniesId(String query) {
 			return sectionList;
 
 		} catch (Exception e) {
-			System.out.println("deBean::getNoOfAdCategorySecondOff"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;		
@@ -4379,7 +4337,6 @@ public List<String> getcompaniesId(String query) {
 			return sectionList;
 
 		} catch (Exception e) {
-			System.out.println("deBean::getNoOfInstitutionType"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;		
@@ -4406,7 +4363,6 @@ public List<String> getcompaniesId(String query) {
 			return sectionList;
 
 		} catch (Exception e) {
-			System.out.println("deBean::getNoOfInstitutionType"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;		
@@ -4432,7 +4388,6 @@ public List<String> getcompaniesId(String query) {
 			return sectionList;
 
 		} catch (Exception e) {
-			System.out.println("deBean::getNoOfSearchValueAdvertisertype"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;		
@@ -4926,7 +4881,6 @@ public List<String> getcompaniesId(String query) {
 		try
 		{
 			selectedCompany = new DeCompany();
-			System.out.println("add new company : "+this.companyName);
 		    this.setSearchValueInCompanyName(this.companyName);
 		    
 			DeCompany deCompany  = null;
@@ -5068,7 +5022,6 @@ public List<String> getcompaniesId(String query) {
 			
 			FacesUtils facesUtils = new FacesUtils();
 			long deDataId = Long.valueOf(facesUtils.getRequestParameterMap("baseId"));
-			System.out.println("baseId:"+deDataId);
 			if(deDataId >0){
 				DataEntry dataEntry = deService.getDataEntryById(deDataId);
 				if(dataEntry != null && this.selectedCompany != null ){
@@ -5096,7 +5049,6 @@ public List<String> getcompaniesId(String query) {
 				        Set mapSet = (Set) hm.entrySet();
 				        //Create iterator on Set 
 				        Iterator mapIterator = mapSet.iterator();
-				        System.out.println("Display the key/value of HashMap.");
 				       /* while (mapIterator.hasNext()) {
 				                Map.Entry mapEntry = (Map.Entry) mapIterator.next();
 				                // getKey Method of HashMap access a key of map
@@ -5115,12 +5067,10 @@ public List<String> getcompaniesId(String query) {
 						selectedCompany = deCompany;
 					} else {
 						messageService.messageFatal(null, "CompanyName is required");
-						System.out.println("CompanyName is required");
 						return null; 
 					}
 				}
 				if(dataEntry != null && deCompany != null && selectedCompany != null){
-					System.out.println("start:"+dataEntry.getStartCurrencyRange());
 					/*if(this.startCurrencyRange==null ||this.startCurrencyRange.isEmpty()) {
 						messageService.messageFatal(null, "Start Currency Range is required");
 						return null; 

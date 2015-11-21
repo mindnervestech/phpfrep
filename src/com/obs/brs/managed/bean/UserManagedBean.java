@@ -492,7 +492,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("UserFormBean::getViewRegion" + e.getMessage());
 			e.printStackTrace();
 		}
 		return this.noOfregionList;
@@ -668,7 +667,6 @@ implements Serializable
 				id = currentUser.getId();
 			}
 		}
-		System.out.println("current User" + id);
 		return this.id;
 	}
 
@@ -1243,7 +1241,6 @@ implements Serializable
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			System.out.println(e.getMessage());
 		}
 		return "login.xhtml?faces-redirect=false";
 	}
@@ -1317,7 +1314,6 @@ implements Serializable
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			System.out.println(e.getMessage());
 		}
 	}
 
@@ -1507,7 +1503,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("userBean:activiateUser" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -1534,7 +1529,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("userBean:deleteUser" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -2253,7 +2247,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("userBean:activiateCompanyUser" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -2294,7 +2287,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("userBean:deleteCompanyUser" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -2719,7 +2711,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("userBean:activiateSubscriberUser" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -2749,7 +2740,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("userBean:deleteSubscriberUser" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -2859,7 +2849,6 @@ implements Serializable
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			System.out.println(e.getMessage());
 		}
 		return "subscriber_login.xhtml?faces-redirect=false";
 	}
@@ -2885,7 +2874,6 @@ implements Serializable
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			System.out.println(e.getMessage());
 		}
 	}
 
@@ -2942,7 +2930,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("userBean::ViewCountryList" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -3164,7 +3151,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("userBean:deleteRegion" + e.getMessage());
 			e.printStackTrace();
 		}
 		return "returnManageRegion";
@@ -3465,7 +3451,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("userBean:deletePublication" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -3490,7 +3475,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("userBean::ViewPublicationList" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -3515,7 +3499,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("userBean::ViewPublicationList" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -3596,7 +3579,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("userBean:activiateSubscriberUser" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -3626,7 +3608,6 @@ implements Serializable
 		}
 		catch (Exception e)
 		{
-			System.out.println("userBean:deleteSubscriberUser" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -3653,7 +3634,6 @@ implements Serializable
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			System.out.println("UserFormbean::getNoOfRegions" + e.getMessage());
 		}
 		return noRegions;
 	}
@@ -3905,8 +3885,6 @@ implements Serializable
 		FacesUtils facesUtils = new FacesUtils();
 		String rowindex = facesUtils.getRequestParameterMap("rowIndex");
 		String subscriberUser = facesUtils.getRequestParameterMap("subscriberUserId");
-		System.out.println("password" + this.password);
-		System.out.println("Cpassword" + this.confirmPassword);
 		if ((rowindex != null) && (!rowindex.isEmpty())) {
 			rowindexValue = Integer.valueOf(rowindex).intValue();
 		}
@@ -3952,8 +3930,6 @@ implements Serializable
 		} else {
 			duplicateDb = this.userService.getSubscriberUserByEmail(this.email);
 		}
-		System.out.println("2password" + this.password);
-		System.out.println("2Cpassword" + this.confirmPassword);
 		if ((duplicate == null) && (duplicateDb == null))
 		{
 			if ((this.password != null) && (StringUtility.isNotEmpty(this.password)) && (StringUtility.isNotEmpty(this.confirmPassword)))
@@ -4211,10 +4187,8 @@ implements Serializable
 		}
 		SubscriberUser subscriberUser = (SubscriberUser)this.sessionManager.getSessionAttribute("login_subscriber_user");
 		if(subscriberUser!=null && subscriberUser.getUserType().getUserType().equals("Subscriber Admin")) {
-			System.out.println(this.getUserService().saveSubscriberTerritory(ids, subscriberUser.getId(), this.territoryName));
 			this.sessionManager.setSessionAttributeInSession(SessionManager.TERRITORYSUCCESS, "Territory Saved Successfully.");
 		} else if(subscriberUser==null) {
-			System.out.println(this.getUserService().saveSubscriberTerritory(ids, -1, this.territoryName));
 			this.sessionManager.setSessionAttributeInSession(SessionManager.TERRITORYSUCCESS, "Territory Saved Successfully.");
 		}
 		RequestContext.getCurrentInstance().execute("PF('addTerritory').hide();location.reload();");
@@ -4224,15 +4198,12 @@ implements Serializable
 	public String deleteTerritory() {
 		FacesUtils facesUtils = new FacesUtils();
 		Long territoryId;
-		System.out.println("here");
-		System.out.println(facesUtils.getRequestParameterMap("territoryId"));
 		try {
 			territoryId = Long.parseLong(facesUtils.getRequestParameterMap("territoryId"));
 		} catch(Exception e) {
 			RequestContext.getCurrentInstance().execute("location.reload();");
 			return null;
 		}
-		System.out.println("territoryId:"+territoryId);
 		SubscriberUser subscriberUser = (SubscriberUser)this.sessionManager.getSessionAttribute("login_subscriber_user");
 		if(subscriberUser!=null && subscriberUser.getUserType().getUserType().equals("Subscriber Admin")) {
 			getUserService().deleteSubscriberTerritory(territoryId);
@@ -4251,14 +4222,12 @@ implements Serializable
 		Long countryId;
 		try {
 			territoryId = Long.parseLong(facesUtils.getRequestParameterMap("territoryId"));
-			System.out.println("territoryId:"+territoryId);
 		} catch(Exception e) {
 			RequestContext.getCurrentInstance().execute("location.reload();");
 			return null;
 		}
 		try {
 			countryId = Long.parseLong(facesUtils.getRequestParameterMap("countryId"));
-			System.out.println("countryId:"+countryId);
 		} catch(Exception e) {
 			RequestContext.getCurrentInstance().execute("location.reload();");
 			return null;
@@ -4275,7 +4244,6 @@ implements Serializable
 		Long countryId;
 		try {
 			territoryId = Long.parseLong(facesUtils.getRequestParameterMap("territoryId"));
-			System.out.println("territoryId:"+territoryId);
 		} catch(Exception e) {
 			this.messageService.messageError(null, "Invalid territory.");
 			RequestContext.getCurrentInstance().execute("location.reload();");
