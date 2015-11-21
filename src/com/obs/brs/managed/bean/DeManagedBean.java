@@ -2318,7 +2318,17 @@ public class DeManagedBean implements Serializable{
 				if(childImages.size() == 0){
 					image.ableToDone = false;
 					continue;
-				} else {
+				} 
+				for(ChildImage childImage : childImages){
+					DataEntry entry = deService.getDataEntryByChildImageId(childImage.getId());
+					if(entry != null) {
+						if(entry.getDeCompany() == null){
+							image.ableToDone = false;
+							break;
+						}
+					}
+				}
+				/*else {
 					Set<Long> set = new HashSet<Long>(childImages.size());
 					for(ChildImage childImage : childImages){
 						set.add(childImage.getId());
@@ -2329,7 +2339,7 @@ public class DeManagedBean implements Serializable{
 							image.ableToDone = false;
 						}
 					}
-				}
+				}*/
 			}
 			Collections.reverse(parentImageList);
 		}
