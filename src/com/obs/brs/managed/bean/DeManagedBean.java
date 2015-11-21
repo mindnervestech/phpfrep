@@ -2312,8 +2312,6 @@ public class DeManagedBean implements Serializable{
 				if(!duplicateNames.add(image.getImageName())) {
 					if(!this.duplicateNames.contains(image.getImageName()))
 						this.duplicateNames.add(image.getImageName());
-					System.out.println("duplicate name:"+image.getImageName());
-					System.out.println(this.duplicateNames.size());
 				}
 				List<ChildImage> childImages = getChildImageService().getChildImagesByParent(image.getId());
 				image.childImageList.addAll(childImages);
@@ -2335,7 +2333,7 @@ public class DeManagedBean implements Serializable{
 			}
 			Collections.reverse(parentImageList);
 		}
-		System.out.println("buildParentImage" + (System.currentTimeMillis() - start)/1000l);
+		System.out.println("buildParentImageList :" + (System.currentTimeMillis() - start)/1000);
 		return parentImageList;
 	}
 	
