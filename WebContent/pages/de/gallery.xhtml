@@ -584,6 +584,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																styleClass="form-control" value="#{deBean.imagePerPage}"
 																valueChangeListener="#{deBean.localImageChanged}"
 																onchange="this.form.submit()">
+																<f:selectItem itemLabel="6" itemValue="6" />
 																<f:selectItem itemLabel="20" itemValue="20" />
 																<f:selectItem itemLabel="40" itemValue="40" />
 																<f:selectItem itemLabel="60" itemValue="60" />
@@ -781,6 +782,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																id="imagePerPage"
 																valueChangeListener="#{deBean.localImageChanged}"
 																onchange="this.form.submit()">
+																<f:selectItem itemLabel="6" itemValue="6" />
 																<f:selectItem itemLabel="20" itemValue="20" />
 																<f:selectItem itemLabel="40" itemValue="40" />
 																<f:selectItem itemLabel="60" itemValue="60" />
@@ -1001,63 +1003,19 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 													<div class="radio_b">
 														<ul class="list col-md-12 p-0">
 															<li><p:selectOneRadio value="#{deBean.section}"
-																	layout="pageDirection" id="txt_section">
+																	layout="lineDirection" id="txt_section">
 																	<f:selectItems value="#{deBean.allSectionFirstOff}"
 																		var="c" itemLabel="#{c.publicationTitle}"
 																		itemValue="#{c.id}" />
 																	<p:ajax event="change"
-																		update="txt_section_next,txt_sectionother,txt_sectionspecialRegional,txt_sectionspecialTopic"
+																		update=""
 																		listener="#{deBean.hideSectionValue}" />
 																</p:selectOneRadio> <p:message for="txt_section" display="text" /></li>
 														</ul>
 													</div>
 												</div>
 											</div>
-											<div class="col-md-4 col-sm-5 p-0">
-												<div class="skin-section">
-													<div class="radio_b">
-														<ul class="list col-md-12 p-0">
-															<li><p:selectOneRadio
-																	value="#{deBean.sectionNextValue}"
-																	layout="pageDirection" id="txt_section_next">
-																	<f:selectItems value="#{deBean.allSectionSecondOff}"
-																		var="c" itemLabel="#{c.publicationTitle}"
-																		itemValue="#{c.id}" />
-																	<p:ajax event="change"
-																		update="txt_section,txt_sectionother,txt_sectionspecialRegional,txt_sectionspecialTopic"
-																		listener="#{deBean.hideSectionNextValue}" />
-																</p:selectOneRadio> <p:message for="txt_section_next" display="text" /></li>
-														</ul>
-													</div>
-												</div>
-											</div>
-											<t:div styleClass="col-md-6 col-sm-6 p-0"
-												id="txt_sectionspecialRegional" style="float: right;margin-right: 80px;width: 15% !important;">
-												<p:inputText styleClass="form-control"
-													value="#{deBean.sectionspecialRegional}"
-													rendered="#{deBean.sectionNextValue.equals('973')}"
-													style="width:134px;"
-													placeholder="Section Special Regional">
-												</p:inputText>
-											</t:div>
-											<t:div styleClass="col-md-6 col-sm-6 p-0"
-												id="txt_sectionspecialTopic" style="float: right;margin-right: 80px;width: 15% !important;margin-top: 4%;">
-												 <p:inputText styleClass="form-control"
-													rendered="#{deBean.sectionNextValue.equals('1032')}"
-													value="#{deBean.sectionspecialTopic}"
-													style="width:134px;"
-													placeholder="Section Special Topic">
-												</p:inputText> 
-											</t:div>
-											<t:div styleClass="col-md-6 col-sm-6 p-0"
-												id="txt_sectionother">
-												 <p:inputText styleClass="form-control"
-													rendered="#{deBean.section.equals('1033')}"
-													value="#{deBean.sectionother}"
-													style="margin-left:146px !important;width:134px;"
-													placeholder="Section Other">
-												</p:inputText> 
-											</t:div>
+											
 										</div>
 										
 										<div class="col-md-12 col-xs-12 p-0 p-t-10 f_l">

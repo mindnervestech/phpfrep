@@ -4215,7 +4215,7 @@ public List<String> getcompaniesId(String query) {
 			publicationList = userService.findAllSection();
 			Double  sectionListSize = (double) publicationList.size(); 
 			sectionFirstOff = (int) Math.round(sectionListSize/2);
-			for(int i=0;i<sectionFirstOff;i++)
+			for(int i=0;i<publicationList.size();i++)
 			{
 				Publication publication = publicationList.get(i);
 				SelectItem sItem = new SelectItem();
