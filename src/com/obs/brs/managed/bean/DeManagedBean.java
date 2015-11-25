@@ -2316,10 +2316,26 @@ public class DeManagedBean implements Serializable{
 					for(ChildImage childImage : childImages){
 						set.add(childImage.getId());
 					}
-					DataEntry entry = deService.getDataEntryByChildImageIds(set);
-					if(entry != null) {
-						if(entry.getDeCompany() == null){
-							image.ableToDone = false;
+					List<DataEntry> entries = deService.getDataEntryByChildImageIds(set);
+					List<Long> idsAdded = new ArrayList<Long>(set.size()); 
+					if(entries != null) {
+						for(DataEntry entry:entries) {
+							for(ChildImage childImage : image.childImageList){
+								if(entry.getChildImage().getId() == childImage.getId()) {
+									if(entry.getDeCompany()!=null) {
+										childImage.setIsCompleted("complete");
+									} else {
+										childImage.setIsCompleted("incomplete");
+									}
+									idsAdded.add(childImage.getId());
+									break;
+								}
+							}
+						}
+						for(ChildImage childImage : image.childImageList){
+							if(!idsAdded.contains(childImage.getId())) {
+								childImage.setIsCompleted("incomplete");
+							}
 						}
 					}
 				} 
@@ -2967,6 +2983,9 @@ public class DeManagedBean implements Serializable{
 	 */
 	public String updateAndExitPublicationByParentImage() 
 	{
+		String label = "";
+		if(this.msgLabel!=null)
+			label = this.msgLabel;
 		try
 		{
 			String dateField ="";
@@ -3057,8 +3076,9 @@ public class DeManagedBean implements Serializable{
 							deJob.setIsDeleted(false);
 							deService.addDeJob(deJob);
 						}
-						messageService.messageInformation(null, " Publication has been Updated  Successfully.");
-						//return "/pages/de/gallery.xhtml?msgLabel="+this.msgLabel+"&faces-redirect=true";
+						label = " Publication has been Updated  Successfully.";
+						messageService.messageInformation(null, label);
+						return "/pages/de/gallery.xhtml?msgLabel="+label+"&msgFormat=1&faces-redirect=true";
 					}
 				}
 				this.publicationTitle ="";
@@ -3073,13 +3093,14 @@ public class DeManagedBean implements Serializable{
 				this.issueMonth=0;
 				this.issueMonthNext=0;
 				this.issueYear=0;
-				return null;
+				return "/pages/de/gallery.xhtml?msgLabel="+label+"faces-redirect=true";
 			}
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		return null;
+		
+		return "/pages/de/gallery.xhtml?msgLabel="+label+"faces-redirect=true";
 	}
 	public void loadAllPublicationInfo(ComponentSystemEvent event){
 		try
@@ -3981,7 +4002,6 @@ public List<String> getcompaniesId(String query) {
 	}
 	
 	public void updateMemo(ParentImage image,Integer index) {
-		this.parentImageList.get(index);
 		if(image.getSection().getPublicationTitle().equals("Special-Topic")) {
 			image.setSectionspecialTopic(image.getMemo());
 		} else if(image.getSection().getPublicationTitle().equals("Special-Regional")) {
@@ -3990,7 +4010,13 @@ public List<String> getcompaniesId(String query) {
 			image.setSectionother(image.getMemo());
 		}
 		deService.updateParentImage(image);
-		this.parentImageList.set(index, image);
+		int i;
+		for(i = this.imageOffset; i<this.imageOffset+this.imagePerPage;i++) {
+			if(getParentImageList().get(i).getId() == image.getId()) {
+				break;
+			}
+		}
+		getParentImageList().set(i, image);
 	}
 	
 	public void hideValueNext(AjaxBehaviorEvent event) {

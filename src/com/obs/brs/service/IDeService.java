@@ -282,5 +282,5 @@ public interface IDeService {
 	public void sendJobToQC(int id);
 	
 	public void updateParentImage(ParentImage parentImage);
-	public DataEntry getDataEntryByChildImageIds(Set<Long> ids);
+	public List<DataEntry> getDataEntryByChildImageIds(Set<Long> ids);
 }

@@ -503,12 +503,9 @@ public class DeServiceDAO implements IDeServiceDAO {
 	}
 
 	@Override
-	public DataEntry getDataEntryByChildImageIds(Set<Long> ids) {
+	public List<DataEntry> getDataEntryByChildImageIds(Set<Long> ids) {
 		List <DataEntry> deChildList = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.isDeleted=0 and  m.childImage.id in (:ids) and m.deCompany is null").setParameterList("ids", ids).list();
-		if (deChildList.size() > 0 ) {
-			return deChildList.get(0);
-		}
-		return null;
+		return deChildList;
 	}
 
 }

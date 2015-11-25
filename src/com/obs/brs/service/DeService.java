@@ -422,7 +422,7 @@ public class DeService implements IDeService{
 		getDeServiceDAO().updateParentImage(parentImage);
 	}
 	@Override
-	public DataEntry getDataEntryByChildImageIds(Set<Long> ids) {
+	public List<DataEntry> getDataEntryByChildImageIds(Set<Long> ids) {
 		return getDeServiceDAO().getDataEntryByChildImageIds(ids);
 	}
 

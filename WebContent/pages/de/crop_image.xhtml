@@ -183,10 +183,16 @@
 											value="#{deBean.currentParentsChild}">
 											<div 
 												class="#{deBean.isCompleatedChild(child.id)} thumbnail childImg"
-												style="float: left; padding:2px;">
-												<img  id="childImg"
-													style="display: block;"
-													src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{child.parentImage.id}/#{child.id}/#{child.imageName}" />
+												style="float: left; padding:2px;width: 48%;margin-left: 2px;">
+												<p:commandLink id="loadAndEdit"
+													action="#{deBean.loadAddOrEditDeChild}">
+													<f:param name="deJobId"
+														value="#{child.parentImage.id}" />
+													<f:param name="jobid" value="#{child.id}" />
+													<img id="childImg"
+														style="display: block;width:100%;height:250px;"
+														src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{child.parentImage.id}/#{child.id}/#{child.imageName}" />
+												</p:commandLink>
 											</div>
 										</ui:repeat>
 										<!--data_image-->

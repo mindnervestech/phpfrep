@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * 
@@ -39,7 +40,8 @@ public class ChildImage implements Serializable {
 	private Date deletedOn;
 	private String imageHeight;
 	private String imageWidth;
-	
+	@Transient
+	private String isCompleted;
 	/**
 	 * @return the id
 	 */
@@ -172,6 +174,12 @@ public class ChildImage implements Serializable {
 	 */
 	public void setImageWidth(String imageWidth) {
 		this.imageWidth = imageWidth;
+	}
+	public String getIsCompleted() {
+		return isCompleted;
+	}
+	public void setIsCompleted(String isCompleted) {
+		this.isCompleted = isCompleted;
 	}
 	
 	

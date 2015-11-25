@@ -431,15 +431,15 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																						<div class="p-0 f_l">
 																							<div class="row m-5 f_l">
 																								<div style="font-weight: bold; float: left">Comment
-																								:</div>
-																								<div class="f_l p-l-10">
+																								: </div>
+																								<t:div styleClass="f_l p-l-10">
 																									<h:outputText
 																										value="#{val.sectionspecialTopic}" rendered="#{val.section.publicationTitle == 'Special-Topic'}"></h:outputText>
 																									<h:outputText
 																										value="#{val.sectionspecialRegional}" rendered="#{val.section.publicationTitle == 'Special-Regional'}" ></h:outputText>
 																									<h:outputText
 																										value="#{val.sectionother}"   ></h:outputText>
-																								</div>
+																								</t:div>
 																							</div>
 																						</div>
 																					</div>
@@ -450,7 +450,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																						<ui:repeat var="child"
 																							value="#{val.childImageList}">
 																							<div 
-																								class="#{deBean.isCompleatedChild(child.id)} thumbnail childImg"
+																								class="#{child.isCompleted} thumbnail childImg"
 																								style="float: left; padding:2px;">
 																								<p:commandLink id="loadAndEdit"
 																									action="#{deBean.loadAddOrEditDeChild}">
@@ -480,7 +480,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																					</div>
 																					<div class="col-md-2 p-0">
 																						<p:inputText value="#{val.memo}" />
- 																						<p:commandButton action="#{deBean.updateMemo(val,status.index)}" value="Save" ajax="true" update="@form">
+ 																						<p:commandButton action="#{deBean.updateMemo(val,status.index)}" value="Save" ajax="true" update="dt_orgList">
  																						</p:commandButton>
 																						<!-- <input type="text" style="background: #C7D6E9;border: 1px solid grey;"/> -->
 																					</div>
@@ -1021,11 +1021,11 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 										<div class="col-md-12 col-xs-12 p-0 p-t-10 f_l">
 											<h:commandLink style=" float:left;" class="btn btn-primary"
 												action="#{deBean.updateAndExitPublicationByParentImage}"
-												value="Update">
-												<f:param name="parentImg" value="#{deBean.id}" />
+												value="Update" ajax="true" update="@form">
+												<f:param name="parentImg"  update="@form" value="#{deBean.id}" />
 											</h:commandLink>
 											&nbsp;
-											<h:outputLink onclick="dlg.hide()" class="btn btn-default">Cancel</h:outputLink>
+											<h:outputLink onclick="dlg.hide()"  class="btn btn-default">Cancel</h:outputLink>
 										</div>
 									</div>
 									<div class="col-md-4" style=" display: inline-block;">
