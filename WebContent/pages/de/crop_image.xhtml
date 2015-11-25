@@ -117,7 +117,8 @@
 								<p:dialog id="basicDialog" showHeader="false" position="center" draggable="false" closable="false" resizable="false" modal="true"
 									widgetVar="dlg1" style="overflow-y:scroll;max-height:100% !important;top: 10px !important;">
 									<div style="float: left;width: 10%;padding-right:10px;">
-										<h:commandLink action="#{deBean.saveCroppedImage}"
+										<h:commandLink action="#{deBean.saveCroppedImage}" ajax="true"
+										update="child_images"
 										styleClass="btn btn-primary m-10">Done</h:commandLink>
 										<h:outputLink value="crop_image.xhtml"
 										class="btn btn-default m-5">Cancel</h:outputLink>
@@ -178,7 +179,16 @@
 									</div>
 
 									<div class="col-md-4 f_l">
-
+										<ui:repeat var="child" id="child_images"
+											value="#{deBean.currentParentsChild}">
+											<div 
+												class="#{deBean.isCompleatedChild(child.id)} thumbnail childImg"
+												style="float: left; padding:2px;">
+												<img  id="childImg"
+													style="display: block;"
+													src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{child.parentImage.id}/#{child.id}/#{child.imageName}" />
+											</div>
+										</ui:repeat>
 										<!--data_image-->
 									</div>
 

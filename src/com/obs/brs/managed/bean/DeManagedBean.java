@@ -165,6 +165,7 @@ public class DeManagedBean implements Serializable{
 	List<ParentImage> parentImageList = new ArrayList<ParentImage>();
 	List<ChildImage> childImageList = new ArrayList<ChildImage>();
 	List<DataEntry> childImagesDataList = new ArrayList<DataEntry>();
+	List<ChildImage> currentParentsChild = new ArrayList<ChildImage>();
 	String filterParentImage = "0";
 	//For cropping 
 	private float cropWidth;
@@ -2620,7 +2621,7 @@ public class DeManagedBean implements Serializable{
 	/**
 	 * save cropped image from temp path
 	 */
-	public String saveCroppedImage(){
+	public void saveCroppedImage(){
 		currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 		String sourcePath = imageBasePath+CommonProperties.getTempPath()+croppedImageName;
 		String targetPath = imageBasePath+CommonProperties.getChildImagePath()+parentImage.getId();
@@ -2655,15 +2656,16 @@ public class DeManagedBean implements Serializable{
 						e1.printStackTrace();
 					}
 					new File(sourcePath).delete();
-					messageService.messageInformation(null, "Image cropped Successfully.");	
-					return RETURN_CHILD_IMAGE;
+					messageService.messageInformation(null, "Image cropped Successfully.");
+					RequestContext.getCurrentInstance().execute("PF('dlg1').hide()");
+					//return RETURN_CHILD_IMAGE;
 				}
 			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		return null;
+		//return null;
 	}
 
 	/**
@@ -3978,7 +3980,8 @@ public List<String> getcompaniesId(String query) {
 		return null;
 	}
 	
-	public void updateMemo(ParentImage image) {
+	public void updateMemo(ParentImage image,Integer index) {
+		this.parentImageList.get(index);
 		if(image.getSection().getPublicationTitle().equals("Special-Topic")) {
 			image.setSectionspecialTopic(image.getMemo());
 		} else if(image.getSection().getPublicationTitle().equals("Special-Regional")) {
@@ -3987,6 +3990,7 @@ public List<String> getcompaniesId(String query) {
 			image.setSectionother(image.getMemo());
 		}
 		deService.updateParentImage(image);
+		this.parentImageList.set(index, image);
 	}
 	
 	public void hideValueNext(AjaxBehaviorEvent event) {
@@ -5414,4 +5418,19 @@ public List<String> getcompaniesId(String query) {
 	public void setDuplicate(boolean duplicate) {
 		this.duplicate = duplicate;
 	}
+
+	public List<ChildImage> getCurrentParentsChild() {
+		List<ChildImage> childImages = null;
+		if(this.parentImage!=null) {
+			currentParentsChild.clear();
+			childImages = getChildImageService().getChildImagesByParent(this.parentImage.getId());
+			currentParentsChild.addAll(childImages);
+		}
+		return currentParentsChild;
+	}
+
+	public void setCurrentParentsChild(List<ChildImage> currentParentsChild) {
+		this.currentParentsChild = currentParentsChild;
+	}
+	
 }
