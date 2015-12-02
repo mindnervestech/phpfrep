@@ -1,6 +1,7 @@
 package com.obs.brs.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.obs.brs.model.ParentImage;
 
@@ -45,4 +46,6 @@ public interface IParentImageDAO {
 	public List<ParentImage> getParentImage();
 
 	List<ParentImage> getParentImageByFilter(String filter);
+
+	public void updateParentImageStatusById(Map<Long, Boolean> selectedIds);
 }

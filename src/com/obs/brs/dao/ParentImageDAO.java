@@ -1,9 +1,11 @@
 package com.obs.brs.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.SessionFactory;
 
+import com.obs.brs.model.DeJob;
 import com.obs.brs.model.ParentImage;
 
 /**
@@ -84,7 +86,10 @@ public class ParentImageDAO implements IParentImageDAO{
 			sqlQuery = sqlQuery + " where status = '1'";
 		} else if(filter == 2){
 			sqlQuery = sqlQuery + " where status = '0'";
+		}else{
+			sqlQuery = sqlQuery + " where status != '2'";
 		}
+		
 		List<ParentImage> list = getSessionFactory().getCurrentSession().createQuery(sqlQuery).list();
 		return list;
 	}
@@ -96,6 +101,41 @@ public class ParentImageDAO implements IParentImageDAO{
 			return null;
 		else
 			return list.get(0);
+	}
+
+	@Override
+	public void updateParentImageStatusById(Map<Long, Boolean> selectedIds) {
+		// TODO Auto-generated method stub
+		System.out.println("selectedIds.size  in move : "+selectedIds.size());
+		for (Map.Entry<Long, Boolean> entry : selectedIds.entrySet()) {
+			         System.out.println("Key : " + entry.getKey() + " Value : " + entry.getValue());
+			        if(entry.getValue() == true){
+			        	 
+			        	String sqlQuery = "from ParentImage";
+			        	//int filter = Integer.parseInt(entry.getKey().toString());
+			        	//Long l = new Long(Integer.parseInt(entry.getKey().toString()));
+			        	sqlQuery = sqlQuery + " where id ="+entry.getKey().toString();
+				        
+					    List<ParentImage> parentImage = getSessionFactory().getCurrentSession().createQuery(sqlQuery).list();
+				        System.out.println(parentImage.size());
+	     			        
+				        for(ParentImage p : parentImage ){
+	     			        	p.setStatus(2);
+	     			        	getSessionFactory().getCurrentSession().update(p);
+				        	    String sqlQuerydejob = "from DeJob";
+							    long  id =  p.getId();
+							    sqlQuerydejob = sqlQuerydejob + " where  parentImage.id ="+id;
+								List<DeJob>  deJobs = getSessionFactory().getCurrentSession().createQuery(sqlQuerydejob).list();
+						         
+								 for(DeJob d :deJobs){
+									 d.setStatus(0);
+									 getSessionFactory().getCurrentSession().update(d);
+								 }
+	     			        }	
+			        }
+			         
+		}
+		
 	}
 
 }

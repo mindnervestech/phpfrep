@@ -2,6 +2,7 @@ package com.obs.brs.service;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,6 +82,12 @@ public class ParentImageService implements IParentImageService {
 	@Override
 	public ParentImage getParentImageByName(String name) {
 		return getParentImageDAO().getParentImageByName(name);
+	}
+	@Override
+	@Transactional(readOnly=false)
+	public void updateParentImagesStatus(Map<Long, Boolean> selectedIds) {
+		// TODO Auto-generated method stub
+		 getParentImageDAO().updateParentImageStatusById(selectedIds);
 	}
 	
 

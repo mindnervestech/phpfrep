@@ -271,6 +271,24 @@ public class DeManagedBean implements Serializable{
 	private Set<String> duplicateFileNames;
 	private List<String> duplicateNames;
 	private String iframeUrl;
+	private int count = 1;
+
+	
+	
+	private Map<Long, Boolean> selectedIds = new HashMap<Long, Boolean>();
+	  public Map<Long, Boolean> getSelectedIds() {
+		  System.out.println("selectedIds : "+selectedIds.size());
+	    return selectedIds;
+	  }
+	
+	public int getCount() {
+		return (count++);
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
 	private static Map<String,String> titleMap = new HashMap<String,String>(6);
 	private static Map<String,String> sectionMap = new HashMap<String,String>(4);
 	static {
@@ -4530,6 +4548,7 @@ public List<String> getcompaniesId(String query) {
 	 */
 	public void localImageChanged(ValueChangeEvent event)	
 	{ 
+		count  = 1;
 		String perPage = event.getNewValue().toString();
 		imagePerPage = Integer.parseInt(perPage);
 		sessionManager.setSessionAttributeInSession(SessionManager.IMAGEPERPAGE, perPage);
@@ -4539,6 +4558,7 @@ public List<String> getcompaniesId(String query) {
 	 * pagination method for next page 
 	 */
 	public void nxtPage(){
+		count  = 1;
 		try{
 			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGE); 
 			//System.out.println("rowsPerPage"+rowsPerPage);
@@ -4555,6 +4575,7 @@ public List<String> getcompaniesId(String query) {
 	 * for previous page
 	 */
 	public void prevPage(){
+		count  = 1;
 		try{
 			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGE);
 			if(rowsPerPage!=null){
@@ -4570,6 +4591,7 @@ public List<String> getcompaniesId(String query) {
 	}
 	
 	public void gotoPage() {
+		count  = 1;
 		int page = Integer.valueOf(facesUtils.getRequestParameterMap("page"));
 		try{
 			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGE);
@@ -4605,6 +4627,7 @@ public List<String> getcompaniesId(String query) {
 	 * for first page record
 	 */
 	public void firstPage(){
+		count =1;
 		try{
 			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGE);
 			if(rowsPerPage!=null){
@@ -4623,6 +4646,7 @@ public List<String> getcompaniesId(String query) {
 	 * for first page record
 	 */
 	public void lastPage(){
+		count  = 1;
 		try{
 			int listSize = 0;
 			int pagecount;
@@ -5459,4 +5483,9 @@ public List<String> getcompaniesId(String query) {
 		this.currentParentsChild = currentParentsChild;
 	}
 	
+	public void changeActive(){
+		 count   = 1;
+		getParentImageService().updateParentImagesStatus(selectedIds);	
+		buildParentImageList();
+	}
 }

@@ -260,7 +260,12 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 									<p:ajax listener="#{deBean.filterParentImages()}" event="change" update="@form"/>
 								</p:selectOneMenu></li>
 						</ul>
-
+					<div class = "col-md-5" style="float:right;">
+	                      <p:commandButton    value = "Select All" type="button" onclick="selectAllCheckBox();"  />
+				           <p:commandButton    value="DeSelect All" type="button" onclick="deSelectAllCheckBox();" style="margin-left:1%;" />
+						    <p:commandButton    action="#{deBean.changeActive}" style="margin-left:1%;"  value="Move to Transcription" ajax="true" update="@form" />
+													      
+                   </div>
 						<ul id="myTab2" class="nav nav-tabs nav-dark">
 							<li class="active"><a href="#tab1" data-toggle="tab"><i
 									class="glyphicon glyphicon-th-list"></i> List View </a></li>
@@ -277,7 +282,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 												rendered="#{empty deBean.parentImageList}" />
 											<t:div id="div_photo_list"
 												rendered="#{not empty deBean.parentImageList}">
-												<div style="width: 40%;float:left;">
+												<div style="width: 44%;float:left;">
 													Duplicated Images :
 													<ui:repeat id="duplicateNames" var="name" value="#{deBean.duplicateNames}" >
 														<span style="color:red;">#{name},</span>
@@ -337,6 +342,12 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 													size="#{deBean.imagePerPage-1}" id= "dt_orgList" offset="#{deBean.imageOffset}"
 													varStatus="status">
 			
+                                                    <div class = "col-md-1">
+                                                    	<h:outputText value="#{deBean.count}" style="margin-left:-42%;"></h:outputText>
+                                                        <h:selectBooleanCheckbox value="#{deBean.selectedIds[val.id]}"  class = "checkbox">
+                                                 		 </h:selectBooleanCheckbox>
+                                                    </div>			
+                                               
 													<div class="col-xs-12 col-sm-12 col-md-12">
 														<div class="panel panel-default">
 															<div class="panel-body"
@@ -357,7 +368,19 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 			
 																			<div class="col-md-9 col8half">
 																				<div class="col-md-12 p-0">
-																					<div class="col-md-5 p-0">
+																					
+																					<div class="col-md-2 p-0">
+																						<div class="p-0 f_l">
+																							<div class="row m-5 f_l">
+																								<div style="font-weight: bold; float: left">Job ID :</div>
+																								<div class="f_l p-l-10">
+																									<h:outputText value="#{val.id}"></h:outputText>
+																								
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-md-4_5">
 																						<div class="p-0 f_l">
 																							<div class="row m-5 f_l">
 																								<div style="font-weight: bold; float: left">Image Name :</div>
@@ -378,7 +401,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																							</div>
 																						</div>
 																					</div>
-																					<div class="col-md-3 p-0">
+																					<div class="col-md-2_5">
 																						<div class="p-0 f_l">
 																							<div class="row m-5 f_l">
 																								<div style="font-weight: bold; float: left">Section
@@ -480,7 +503,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																					</div>
 																					<div class="col-md-2 p-0">
 																						<p:inputText value="#{val.memo}" />
- 																						<p:commandButton action="#{deBean.updateMemo(val,status.index)}" value="Save" ajax="true" update="dt_orgList">
+ 																						<p:commandButton action="#{deBean.updateMemo(val,status.index)}"  value="Save" ajax="true" update="@form">
  																						</p:commandButton>
 																						<!-- <input type="text" style="background: #C7D6E9;border: 1px solid grey;"/> -->
 																					</div>
@@ -1040,6 +1063,15 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 		</h:form>
 	</div>
 	<!-- END WRAPPER -->
+	<style>
+	.col-md-4_5{
+		width:76.5%;
+	}
+	
+	.col-md-2_5{
+		width:100.83%;
+	}
+	</style>
 	<script type="text/javascript">
 		function confirmDelete() {
 			if (confirm('Are you sure, you want to delete the Image?'))
@@ -1069,7 +1101,20 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 			$("#menu6").addClass("current active");
 			
 		});
-	</script>
+	    
+	    function selectAllCheckBox(){
+	    	$('.icheckbox_flat-blue').addClass('checked');
+	    	$('.checkbox').attr('checked','checked');
+	    }
+	    
+	    function deSelectAllCheckBox (){
+	    	$('.icheckbox_flat-blue').removeClass('checked');
+	    	$('.checkbox').removeAttr('checked');
+	    }
+	    
+	    
+
+	    </script>
 	<!-- BEGIN MANDATORY SCRIPTS -->
 	<script
 		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>

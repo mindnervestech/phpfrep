@@ -193,7 +193,7 @@ public class DeServiceDAO implements IDeServiceDAO {
 
 	@Override
 	public List<DeJob> getDeJobBySeachCriteria() {
-		String 	SQL = "From DeJob as m where m.isDeleted=0 and m.status = 0";
+		String 	SQL = "From DeJob as m where m.isDeleted=0 and m.status = 0 and m.parentImage.status = 2";
 		return getSessionFactory().getCurrentSession().createQuery(SQL).list();
 	}
 
@@ -219,7 +219,7 @@ public class DeServiceDAO implements IDeServiceDAO {
 			appendStr  = appendStr+" m.parentImage.issueDate = '"+issueDateString+"'";
 			appendStr  = " AND ( "+appendStr+" )";
 		}*/
-		String 	SQL = "From DeJob as m where m.isDeleted=0 and m.status = 0"+appendStr;
+		String 	SQL = "From DeJob as m where m.isDeleted=0 and m.status = 0 and m.parentImage.status = 2"+appendStr;
 		//System.out.println("SQL"+SQL);
 		return getSessionFactory().getCurrentSession().createQuery(SQL).list();
 	}
@@ -413,13 +413,13 @@ public class DeServiceDAO implements IDeServiceDAO {
 	  if(createdBy != null && !createdBy.isEmpty()) {
 		  appendCreatedBy = " AND m.created_by.id ="+createdBy+" ";
 	  }
-	  String  SQL = "From DataEntry as m " +""+" where m.deCompany != null and m.isDeleted=0 "+appendCreatedBy+appendPublicationId+appendDate+issueDatePubSearch+appendQuote;
+	  String  SQL = "From DataEntry as m where m.deCompany != null and m.isDeleted=0 "+appendCreatedBy+appendPublicationId+appendDate+issueDatePubSearch+appendQuote;
 	  return getSessionFactory().getCurrentSession().createQuery(SQL).list();
 	 }
 	 
 	 @Override
 	 public List<DataEntry> geAllQcJob() {
-	  String  SQL = "From DataEntry as m " +""+" where m.deCompany != null and m.isDeleted=0";
+	  String  SQL = "From DataEntry as m where m.deCompany != null and m.isDeleted=0";
 	  //System.out.println("SQL"+SQL);
 	  return getSessionFactory().getCurrentSession().createQuery(SQL).list();
 	 }

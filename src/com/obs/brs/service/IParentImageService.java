@@ -1,6 +1,7 @@
 package com.obs.brs.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.obs.brs.model.ParentImage;
 /**
@@ -47,4 +48,7 @@ public interface IParentImageService {
 	public List<ParentImage> getParentImage();
 
 	List<ParentImage> getParentImageByFilter(String filter);
+
+	public void updateParentImagesStatus(Map<Long, Boolean> selectedIds);
+	
 }
