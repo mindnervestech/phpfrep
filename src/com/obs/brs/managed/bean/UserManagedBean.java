@@ -4187,8 +4187,10 @@ implements Serializable
 		}
 		SubscriberUser subscriberUser = (SubscriberUser)this.sessionManager.getSessionAttribute("login_subscriber_user");
 		if(subscriberUser!=null && subscriberUser.getUserType().getUserType().equals("Subscriber Admin")) {
+			this.getUserService().saveSubscriberTerritory(ids, subscriberUser.getId(), this.territoryName);
 			this.sessionManager.setSessionAttributeInSession(SessionManager.TERRITORYSUCCESS, "Territory Saved Successfully.");
 		} else if(subscriberUser==null) {
+			this.getUserService().saveSubscriberTerritory(ids, -1, this.territoryName);
 			this.sessionManager.setSessionAttributeInSession(SessionManager.TERRITORYSUCCESS, "Territory Saved Successfully.");
 		}
 		RequestContext.getCurrentInstance().execute("PF('addTerritory').hide();location.reload();");
