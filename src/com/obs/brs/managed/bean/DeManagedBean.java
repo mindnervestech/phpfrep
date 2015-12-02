@@ -2291,6 +2291,7 @@ public class DeManagedBean implements Serializable{
 	 * @return List - ParentImage 
 	 */
 	public void filterParentImages() {
+		count  = 1;
 		long start = System.currentTimeMillis();
 		parentImageList = new ArrayList<ParentImage>();
 		if(filterParentImage != null){
