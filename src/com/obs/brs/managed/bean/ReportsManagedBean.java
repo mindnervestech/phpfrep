@@ -1907,7 +1907,7 @@ public class ReportsManagedBean implements Serializable{
 	public int getSubscriberId() {
 		
 		SubscriberUser subscriberUser = (SubscriberUser) sessionManager.getSessionAttribute(SessionManager.LOGINSUBSCRIBERUSER);
-		return subscriberUser.getSubscriber().getId();
+		return subscriberUser.getId();
 	}
 	
 	public void setSubscriberId(int subscriberId) {
