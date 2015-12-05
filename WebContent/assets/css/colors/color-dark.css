@@ -3,7 +3,9 @@
 /* Header */
 .navbar-inverse {background-color: #2B2E33;border-bottom: none} 
 .navbar-center {color:#bebebe}
-.navbar-inverse .navbar-brand {background: url('../../img/logo.png') no-repeat center; width: 120px}
+.navbar-inverse .navbar-brand {background: url('../../img/fracts header.jpg') no-repeat center; width: 330px;
+    margin-top: 0%;
+    height: 48px;}
 .sidebar-toggle {color:#ADADAD;border-right:none} 
 .header-menu #notifications-header .glyph-icon {color:#fff} 
 .header-menu #messages-header .glyph-icon {color:#fff} 

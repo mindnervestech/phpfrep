@@ -6,18 +6,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -33,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -452,13 +459,19 @@ public class ReportMDService {
 	@Transactional
 	public List<ReportMDVM> getReports(@RequestParam("subscriberId") final Long subscriberId) {
 		//return sessionFactory.getCurrentSession().createQuery("FROM ReportMD1").list();
-		
-		return jt.query("Select * from reportmd where access = 1", new RowMapper<ReportMDVM>(){
+		System.out.println("subscriberId:"+subscriberId);
+		String ids = "";
+		if(subscriberId==-1)
+			ids = "(1,3)";
+		else 
+			ids = "(2,3)";
+		List<ReportMDVM> results = jt.query("Select * from reportmd where access in "+ids, new RowMapper<ReportMDVM>(){
 
 			public ReportMDVM mapRow(ResultSet arg0, int arg1)
 					throws SQLException {
 				try {
 				ReportMDVM reportMD = new ReportMDVM();
+			    reportMD.order = arg0.getInt("order"); 
 				reportMD.id = (arg0.getLong("id"));
 				reportMD.jsonForm = ((JSONArray)new JSONParser().parse(buildTitleMap(arg0.getString("jsonForm"),subscriberId)));
 				reportMD.jsonSchema = ((JSONObject)new JSONParser().parse(arg0.getString("jsonSchema")));
@@ -475,11 +488,19 @@ public class ReportMDService {
 					e.printStackTrace();
 					return null;
 				}
-				
+			}
+		});
+
+		Collections.sort(results, new Comparator() {
+
+			public int compare(Object o1, Object o2) {
+				ReportMDVM rm1 = (ReportMDVM)o1;
+				ReportMDVM rm2 = (ReportMDVM)o2;
+				return rm1.order.compareTo(rm2.order);
 			}
 			
 		});
-		
+		return results; 
 	}
 	
 	private String  buildTitleMap(String jsonStr,Long subscriberId) {
@@ -894,6 +915,7 @@ public class ReportMDService {
 		public String description;
 		public String isJava;
 		public Long id;
+		public Integer order;
 	}
 	
 	public static class ReportTemplateVM {

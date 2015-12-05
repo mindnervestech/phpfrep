@@ -2440,6 +2440,7 @@ implements Serializable
 			if(subscriberUser != null)
 			{
 				sessionManager.setUserInSession(SessionManager.LOGINSUBSCRIBERUSER,subscriberUser);
+				sessionManager.setSessionAttributeInSession(SessionManager.LOGINSUBSCRIBERUSER, subscriberUser);
 				if(subscriberUser.getIsActive() && subscriberUser.getUserType().getUserType().equals("Subscriber Admin")){
 					returnPage = MANAGE_SUBSCRIBER_USER;
 				}
