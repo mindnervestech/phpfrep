@@ -48,4 +48,7 @@ public interface IParentImageDAO {
 	List<ParentImage> getParentImageByFilter(String filter);
 
 	public void updateParentImageStatusById(Map<Long, Boolean> selectedIds);
+	public void updateParentImageStatusLiveById(Map<Long, Boolean> selectedIds);
+	
+
 }

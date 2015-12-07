@@ -50,5 +50,6 @@ public interface IParentImageService {
 	List<ParentImage> getParentImageByFilter(String filter);
 
 	public void updateParentImagesStatus(Map<Long, Boolean> selectedIds);
+	public void updateParentImagesStatusLive(Map<Long, Boolean> selectedIds);
 	
 }

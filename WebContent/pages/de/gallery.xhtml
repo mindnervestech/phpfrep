@@ -260,10 +260,11 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 									<p:ajax listener="#{deBean.filterParentImages()}" event="change" update="@form"/>
 								</p:selectOneMenu></li>
 						</ul>
-					<div class = "col-md-5" style="float:right;">
+					<div class = "col-md-7" style="float:right;">
 	                      <p:commandButton    value = "Select All" type="button" onclick="selectAllCheckBox();"  />
 				           <p:commandButton    value="DeSelect All" type="button" onclick="deSelectAllCheckBox();" style="margin-left:1%;" />
-						    <p:commandButton    action="#{deBean.changeActive}" style="margin-left:1%;"  value="Move to Transcription" ajax="true" update="@form" />
+						    <p:commandButton    action="#{deBean.changeActive}" style="margin-left:1%;"  value="Move to Transcription" ajax="true" update = "@form" />
+							<p:commandButton    action="#{deBean.makeLive}" style="margin-left:1%;"  value="Make Live" ajax="true" update = "@form" />
 													      
                    </div>
 						<ul id="myTab2" class="nav nav-tabs nav-dark">

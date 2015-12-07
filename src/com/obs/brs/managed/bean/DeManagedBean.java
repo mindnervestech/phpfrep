@@ -5488,5 +5488,12 @@ public List<String> getcompaniesId(String query) {
 		 count   = 1;
 		getParentImageService().updateParentImagesStatus(selectedIds);	
 		buildParentImageList();
+		selectedIds = new HashMap<Long, Boolean>();
+	}
+	public void makeLive(){
+		count   = 1;
+		getParentImageService().updateParentImagesStatusLive(selectedIds);	
+		buildParentImageList();
+		selectedIds = new HashMap<Long, Boolean>();
 	}
 }

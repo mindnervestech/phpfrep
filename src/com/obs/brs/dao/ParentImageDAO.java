@@ -137,5 +137,39 @@ public class ParentImageDAO implements IParentImageDAO{
 		}
 		
 	}
+	
+	
+	public void updateParentImageStatusLiveById(Map<Long, Boolean> selectedIds) {
+		// TODO Auto-generated method stub
+		System.out.println("selectedIds.size  in move : "+selectedIds.size());
+		for (Map.Entry<Long, Boolean> entry : selectedIds.entrySet()) {
+			         System.out.println("Key : " + entry.getKey() + " Value : " + entry.getValue());
+			        if(entry.getValue() == true){
+			        	 
+			        	String sqlQuery = "from ParentImage";
+			        	//int filter = Integer.parseInt(entry.getKey().toString());
+			        	//Long l = new Long(Integer.parseInt(entry.getKey().toString()));
+			        	sqlQuery = sqlQuery + " where id ="+entry.getKey().toString();
+				        
+					    List<ParentImage> parentImage = getSessionFactory().getCurrentSession().createQuery(sqlQuery).list();
+				        System.out.println(parentImage.size());
+	     			        
+				        for(ParentImage p : parentImage ){
+	     			        	p.setStatus(2);
+	     			        	getSessionFactory().getCurrentSession().update(p);
+				        	    String sqlQuerydejob = "from DeJob";
+							    long  id =  p.getId();
+							    sqlQuerydejob = sqlQuerydejob + " where  parentImage.id ="+id;
+								List<DeJob>  deJobs = getSessionFactory().getCurrentSession().createQuery(sqlQuerydejob).list();
+						         
+								 for(DeJob d :deJobs){
+									 d.setStatus(1);
+									 getSessionFactory().getCurrentSession().update(d);
+								 }
+	     			        }	
+			        }
+			         
+				}
+		}
 
 }
