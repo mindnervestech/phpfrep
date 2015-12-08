@@ -106,7 +106,7 @@
   margin-top: -4px;
   margin-bottom: 0px;
   padding-right: 5px;
-  font-size: 9px;
+  font-size: 10px;
   width: 320px;
   float: left;
 }
@@ -152,6 +152,11 @@
 li.active>a {
 	color: #F0AD4E !important;
 }
+
+li.inactive {
+	background-color: darkgray;
+}
+
 
 #rpt_table_wrapper {
 	font-size: 12px !important;
@@ -227,16 +232,16 @@ body {
 	<button class="btn btn-default btn-xs" style="float: right;" ng-click="back()">Back to report</button>
 </div> -->
 <div ng-hide="expanded" role="tabpanel">
- <ul class="nav nav-tabs" role="tablist">
+ <ul class="nav nav-pills" role="tablist">
     <!-- <button data-ng-repeat="rpt in reportMDs" ng-click="showReport(rpt);selectedIndex = $index;" ng-class="$index==selectedIndex?'active':''">{{rpt.name}} - Show</button> -->
-    <li role="presentation" ng-repeat="rpt in reportMDs" id="tab{{$index}}" ng-click="showReport(rpt);currenttab = 'other';" class="{{$index==0?'active':''}}"><span ng-if="$index==0" ng-init="showReport(rpt);"></span><a href="#custom-search" aria-controls="saved-search" role="tab" data-toggle="tab"><span ></span>{{rpt.name}}</a></li>
-    <li role="presentation" ng-click="showPivotFun();currenttab = 'pivot';"><a href="#custom-search" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Pivot View</a></li>
+    <li role="presentation" ng-repeat="rpt in reportMDs" id="tab{{$index}}" ng-click="showReport(rpt);currenttab = 'other';" ng-class="$index==0?'active':'inactive'"><span ng-if="$index==0" ng-init="showReport(rpt);"></span><a href="#custom-search" aria-controls="saved-search" role="tab" data-toggle="tab"><span ></span>{{rpt.name}}</a></li>
+    <li role="presentation" ng-click="showPivotFun();currenttab = 'pivot';" ng-class="selectedIndex==reportMDs.length?'active':'inactive'"><a href="#custom-search" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Pivot View</a></li>
     <!-- <li role="presentation" id="custom-search-tab" ng-click="currenttab = 'search'"><a href="#custom-search" ng-click="backBtn=true" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-search"></span> Search</a></li> -->
   	  
   </ul>
 
   <!--   -->
-  <div  class="tab-content">
+  <div  class="tab-content" style="background-color: lightgrey;">
     <div role="tabpanel" class="tab-pane active" id="custom-search">
 		   <form >
 		    <div style="margin-bottom: 1px;" sf-schema="reportTemplate.jsonSchema" sf-form="reportTemplate.jsonForm" 

@@ -588,6 +588,7 @@
 		          columns: decorateColumns(attrs.aaColumns) ,
 		          data:scope.$eval(attrs.aaData)
 		        });
+		    	$(element).find('thead').css("background","darkgray");
 		      }
 		    });
 
@@ -682,7 +683,7 @@
 		    	existingHead.remove();
 		    	$(element).empty();
 		    	$(element).append($("#tableHeaderTmp1").find('thead').clone());  
-		        
+		    	$("#tableHeaderTmp1").find('thead').css("background","darkgray");
 		    	window.oTable1 = $(element).dataTable({
 		          sDom: '<"clear">TlfCrtip',
 		          pageLength: 1000,
@@ -705,9 +706,9 @@
 		          columns: decorateColumns(attrs.aaColumns) ,
 		          data:scope.$eval(attrs.aaData)
 		        });
+		    	$(element).find('thead').css("background","darkgray");
 		      }
 		    });
-
 		    
 		  }
 		  return {
