@@ -149,12 +149,14 @@
   font-size: 10px;
 }
 
-li.active>a {
-	color: #F0AD4E !important;
+li.active {
+	/* color: #F0AD4E !important;
+ */	
+ background-color: lightgray !important;
 }
 
 li.inactive {
-	background-color: darkgray;
+	background-color: darkgray !important;
 }
 
 
@@ -174,7 +176,7 @@ li.inactive {
 	background-color: #dfe5e9;
 } */
 .nav-tabs>li.active>a {
-	background-color: #2B2E33 !important;
+	background-color: #lightgrey !important;
     color: #dadada !important;
 }
 .nav-tabs>button.active {
@@ -232,7 +234,7 @@ body {
 	<button class="btn btn-default btn-xs" style="float: right;" ng-click="back()">Back to report</button>
 </div> -->
 <div ng-hide="expanded" role="tabpanel">
- <ul class="nav nav-pills" role="tablist">
+ <ul class="nav nav-tabs" role="tablist">
     <!-- <button data-ng-repeat="rpt in reportMDs" ng-click="showReport(rpt);selectedIndex = $index;" ng-class="$index==selectedIndex?'active':''">{{rpt.name}} - Show</button> -->
     <li role="presentation" ng-repeat="rpt in reportMDs" id="tab{{$index}}" ng-click="showReport(rpt);currenttab = 'other';" ng-class="$index==0?'active':'inactive'"><span ng-if="$index==0" ng-init="showReport(rpt);"></span><a href="#custom-search" aria-controls="saved-search" role="tab" data-toggle="tab"><span ></span>{{rpt.name}}</a></li>
     <li role="presentation" ng-click="showPivotFun();currenttab = 'pivot';" ng-class="selectedIndex==reportMDs.length?'active':'inactive'"><a href="#custom-search" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Pivot View</a></li>
@@ -246,8 +248,9 @@ body {
 		   <form >
 		    <div style="margin-bottom: 1px;" sf-schema="reportTemplate.jsonSchema" sf-form="reportTemplate.jsonForm" 
 		         sf-model="reportTemplate.model">
+		         
 		     </div>
-		    
+		   
 		    <button ng-show="showExcButton" class="btn btn-primary btn-xs" type="button"  ng-click="runReport(1)">
 		    	Execute
 		    </button>
