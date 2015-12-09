@@ -3,7 +3,7 @@
 /* Header */
 .navbar-inverse {background-color: #2B2E33;border-bottom: none} 
 .navbar-center {color:#bebebe}
-.navbar-inverse .navbar-brand {background: url('../../img/fracts header.jpg') no-repeat center; width: 330px;
+.navbar-inverse .navbar-brand { width: 90%;
     margin-top: 0%;
     height: 48px;}
 .sidebar-toggle {color:#ADADAD;border-right:none} 
