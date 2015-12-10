@@ -236,8 +236,8 @@ body {
 <div ng-hide="expanded" role="tabpanel">
  <ul class="nav nav-tabs" role="tablist">
     <!-- <button data-ng-repeat="rpt in reportMDs" ng-click="showReport(rpt);selectedIndex = $index;" ng-class="$index==selectedIndex?'active':''">{{rpt.name}} - Show</button> -->
-    <li role="presentation" ng-repeat="rpt in reportMDs" id="tab{{$index}}" ng-click="showReport(rpt);currenttab = 'other';" ng-class="$index==0?'active':'inactive'"><span ng-if="$index==0" ng-init="showReport(rpt);"></span><a href="#custom-search" aria-controls="saved-search" role="tab" data-toggle="tab"><span ></span>{{rpt.name}}</a></li>
-    <li role="presentation" ng-click="showPivotFun();currenttab = 'pivot';" ng-class="selectedIndex==reportMDs.length?'active':'inactive'"><a href="#custom-search" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Pivot View</a></li>
+    <li role="presentation" ng-repeat="rpt in reportMDs" id="tab{{$index}}" class = "inactive" ng-click="showReport(rpt);currenttab = 'other';" ng-class="$index==0?'active':'inactive'"><span ng-if="$index==0" ng-init="showReport(rpt);"></span><a href="#custom-search" aria-controls="saved-search" role="tab" data-toggle="tab"><span ></span>{{rpt.name}}</a></li>
+    <li role="presentation" ng-click="showPivotFun();currenttab = 'pivot';" id="tab5"   ng-class="$index==0?'active':'inactive'"><a href="#custom-search" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Pivot View</a></li>
     <!-- <li role="presentation" id="custom-search-tab" ng-click="currenttab = 'search'"><a href="#custom-search" ng-click="backBtn=true" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-search"></span> Search</a></li> -->
   	  
   </ul>
