@@ -223,6 +223,11 @@ body {
 	background-color: red !important ;
 }
 
+
+.gridClass{
+ -webkit-column-count: 3;
+ -webkit-column-gap: 5px;
+}
 </style>
 </head>
 
@@ -236,8 +241,8 @@ body {
 <div ng-hide="expanded" role="tabpanel">
  <ul class="nav nav-tabs" role="tablist">
     <!-- <button data-ng-repeat="rpt in reportMDs" ng-click="showReport(rpt);selectedIndex = $index;" ng-class="$index==selectedIndex?'active':''">{{rpt.name}} - Show</button> -->
-    <li role="presentation" ng-repeat="rpt in reportMDs" id="tab{{$index}}" class = "inactive" ng-click="showReport(rpt);currenttab = 'other';" ng-class="$index==0?'active':'inactive'"><span ng-if="$index==0" ng-init="showReport(rpt);"></span><a href="#custom-search" aria-controls="saved-search" role="tab" data-toggle="tab"><span ></span>{{rpt.name}}</a></li>
-    <li role="presentation" ng-click="showPivotFun();currenttab = 'pivot';" id="tab5"   ng-class="$index==0?'active':'inactive'"><a href="#custom-search" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Pivot View</a></li>
+    <li role="presentation" ng-repeat="rpt in reportMDs" id="tab{{$index}}" class = "inactive" ng-click="showReport(rpt);currenttab = 'other';setIndex($index);" ng-class="$index==0?'active':'inactive'"><span ng-if="$index==0" ng-init="showReport(rpt);"></span><a href="#custom-search" aria-controls="saved-search" role="tab" data-toggle="tab"><span ></span>{{rpt.name}}</a></li>
+    <li role="presentation" ng-click="showPivotFun();currenttab = 'pivot';setIndex($index);" id="tab5"   ng-class="$index==0?'active':'inactive'"><a href="#custom-search" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-stats"></span> Pivot View</a></li>
     <!-- <li role="presentation" id="custom-search-tab" ng-click="currenttab = 'search'"><a href="#custom-search" ng-click="backBtn=true" aria-controls="custom-search" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-search"></span> Search</a></li> -->
   	  
   </ul>
@@ -251,7 +256,7 @@ body {
 		         
 		     </div>
 		   
-		    <button ng-show="showExcButton" class="btn btn-primary btn-xs" type="button"  ng-click="runReport(1)">
+		    <button ng-show="showExcButton" class="btn btn-primary btn-xs" type="button"  ng-click="runReport(1);showAdvertorialReport();">
 		    	Execute
 		    </button>
 		  </form>
@@ -369,6 +374,70 @@ body {
     </div>
     	
     </div>
+    
+       
+     <div role="tabpanel" class="tab-pane active" id="table-view1">
+			
+		<!-- <div class="btn-group pull-right">
+			<button ng-if="!isSavedTemplateTable" class="btn btn-primary" ng-click="openTemplateModal(1)" style="margin-right: 2px;font-size: 12px;">Save as template</button>
+			<button class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown">
+			<i class="fa fa-bars"></i> Export</button>
+			<ul class="dropdown-menu " role="menu">
+				<li><a href="#" onclick="$('#rpt_table').tableExport({type:'excel',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/xls.png" width="24px"> XLS</a></li>
+				<li><a href="#" onclick="$('#rpt_table').tableExport({type:'doc',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/word.png" width="24px"> Word</a></li>
+				<li><a href="#" onclick="$('#rpt_table').tableExport({type:'pdf',pdfFontSize:'7',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/pdf.png" width="24px"> PDF</a></li>
+				<li><a href="#" onclick="$('#rpt_table').tableExport({type:'csv',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/csv.png" width="24px"> CSV</a></li>
+				<li><a href="#" onclick="$('#rpt_table').tableExport({type:'xml',escape:'false'});"> <img src="/webapp/report/vendor/export/icons/xml.png" width="24px"> XML</a></li>
+				<li class="divider"></li>
+			</ul>
+		</div> -->
+	
+		<!-- DataTable Container -->
+		<table id="rpt_table" class="table-condensed table table-hover table-striped table-bordered" >
+	        
+	    </table>
+
+			<div class="col-md-12">
+				<div class="col-md-3" ng-repeat="report in reportData" class="">
+					<div class="col-xs-6 col-sm-4 col-md-3" style="min-width: 100%;">
+						<div class="panel panel-default">
+							<div class="panel-body"
+								style="max-height: 385px; min-height: 385px;">
+								<div class="thmb">
+									<div class="thmb-prev">
+										<div class="thumbnail"
+											style="max-height: 280px; min-height: 280px; min-width: 185px;">
+											<img
+												src="/webapp/getParentImageThumb?id={{report['parentId']}}"
+												class="img-responsive" ng-click = "openParentImage(report['parentId'])" alt=""
+												style="min-height: 198px !important; max-height: 198px !important" />
+											<div style="width: 100% !important">
+												{{report["Publication"]}}</div>
+											<div class="thumbnail-actions">
+												<small class="text-muted pull-left"
+													style="margin-top: -40px;"></small> <br /> <small
+													class="text-muted pull-left" style="margin-top: -40px;">
+												</small> &nbsp; <br /> <br /> <small class="text-muted pull-left"
+													style="margin-top: -40px;">Issue Date:
+													{{report["Issue Date"]}}</small> <br /> <small
+													class="text-muted pull-left" style="margin-top: -40px;">
+													On :{{report["TransDt"]}}</small> <small
+													style="font-weight: bold; font-size: 12px;">{{report["Headline"]}}</small>
+											</div>
+
+										</div>
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+    
   
 </div>
 

@@ -355,7 +355,46 @@
         	$scope.pivotTab = true;
         	$scope.runReport(1);
         };
-		$scope.runReport = function (option) {
+        
+        $scope.showAdvertorialReport = function(index){
+        	if($scope.TabIndex == 0 || angular.isUndefined($scope.TabIndex)){
+        		$("#table-view1").show();
+        		$("#table-view").hide();
+        	}else{
+        		$("#table-view1").hide();
+        		$("#table-view").show();
+        	}
+        }
+        
+        $scope.TabIndex;
+        $scope.setIndex = function(index){
+        	$scope.TabIndex  = index	
+        }
+        
+        $scope.openParentImage = function(id){
+        	$scope.option = 2;
+        	if($scope.option == 1) {
+        		$http.get('/webapp/getParentImage?parentImageId='+id).success(function(data){
+        			$("#parent-img").attr("src","/files/fracts_files/images/parent/"+data);
+        			$("#parent-popup").css("height",window.screen.availHeight+"px");
+        			$("#parent-popup").modal({backdrop:"static"});
+        			$(".modal-backdrop").removeClass("modal-backdrop");
+        		});
+        	} else {
+        		$http.get('/webapp/getParentImage?parentImageId='+id).success(function(data){
+        			$("#imgcrp").attr("src","/files/fracts_files/images/parent/"+data);
+        			$("#parent-zoom-popup-title").text("Parent Image");
+        			$("#parent-zoom-popup").css("height",(window.screen.availHeight-170)+"px");
+        			$("#imgcrp").css("height",(window.screen.availHeight-300)+"px")
+        			$("#parent-zoom-popup").modal({backdrop:"static"});
+        			$(".modal-backdrop").removeClass("modal-backdrop");
+        		});
+        	}
+        }
+        
+
+        
+        $scope.runReport = function (option) {
 			$scope.isAnyActiveReport = false;
 			$scope.lastQueryExecuted = option;
 			var obj;
