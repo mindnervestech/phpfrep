@@ -16,12 +16,12 @@
 	<f:loadBundle var="global"
 			basename="/com/obs/brs/properties/Application"></f:loadBundle>
 </h:head>
-
 <f:metadata>
 	<f:event type="preRenderView" listener="#{userBean.loadErrorMessage}" />
 	<f:viewParam name="errormessage" value="#{userBean.errormessage}" />
 	<f:event type="preRenderView" listener="#{userBean.loadSubscriberUserInfo}" />
 </f:metadata>
+
 <h:body>
 	<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 		xmlns:f="http://java.sun.com/jsf/core"
@@ -29,14 +29,14 @@
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:t="http://myfaces.apache.org/tomahawk"
 		xmlns:p="http://primefaces.org/ui">
-		<h:form style="margin:0;heigth:10px;">
+		<h:form style="margin:0;height:35px;">
 		<header id="header">  <nav
-			class="navbar navbar-inverse navbar-fixed-top" style="height: 50px;" role="navigation">
+			class="navbar navbar-inverse navbar-fixed-top" style="height: 75px;" role="navigation">
 		<div class="container-fluid" style="background-color:black;height: 100%;">
 			
-			<div class="navbar-header" style="height: 100%;width: 85%;">
+			<div class="navbar-header" style="height: 100%;width: 100%;">
 			
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
+				<!--  <button type="button" class="navbar-toggle" data-toggle="collapse"
 					data-target="#sidebar">
 					<span class="sr-only">Toggle navigation</span> <span
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
@@ -44,50 +44,56 @@
 				</button>
 				<a id="menu-medium" class="sidebar-toggle tooltips" style="padding-right: 20px;"> <i
 					class="fa fa-outdent"></i>
-				</a> 
+				</a> -->
 				<p:commandLink action="#{userBean.subscriberLogoNavigation}" styleClass="navbar-brand"
-							immediate="true" style="height: 100%;width:96%;padding:0;">
+							immediate="true" style="height: 100%;width:99%;padding:0;">
 							<img src="#{request.contextPath}/assets/img/fracts-header.jpg" class="nav navbar-nav header-menu" style="width: 100%;height: 100%;"/>
 			    </p:commandLink>
-			    
-			</div>
-			<div class="navbar-collapse collapse" >
+			    <div class="navbar-collapse collapse" style="position: relative;top:33px;">
 			
-				<!-- BEGIN TOP NAVIGATION MENU -->
-				<ul class="nav navbar-nav pull-right header-menu">
-					<!-- BEGIN NOTIFICATION DROPDOWN -->
-					<!-- END NOTIFICATION DROPDOWN -->
-					<!-- BEGIN MESSAGES DROPDOWN -->
-					<li class="dropdown" id="messages-header">
-					
-				</li>
+					<!-- BEGIN TOP NAVIGATION MENU -->
+					<ul class="nav navbar-nav pull-right header-menu">
+						<!-- BEGIN NOTIFICATION DROPDOWN -->
+						<!-- END NOTIFICATION DROPDOWN -->
+						<!-- BEGIN MESSAGES DROPDOWN -->
+						<li class="dropdown" id="messages-header">
+						
+					</li>
 				
-					<!-- END MESSAGES DROPDOWN -->
-					<!-- BEGIN USER DROPDOWN -->
-					<li class="dropdown" id="user-header"><a href="#"
-						class="dropdown-toggle c-white" data-toggle="dropdown"
-						data-hover="dropdown" data-close-others="true"><span
-							class="username"><h:outputText value="#{userBean.loginSubscriberUser.firstName}"/></span> <i
-							class="fa fa-angle-down p-r-10"></i>
-					</a>
-						<ul class="dropdown-menu">
-							<li><h:commandLink action="#{userBean.subscriberProfile}" styleClass="btn btn-primary">
-									<i class="glyph-icon flaticon-account"></i> My Profile
-													</h:commandLink></li>
-							<li class="dropdown-footer clearfix"><a href="javascript:;"
-								class="toggle_fullscreen" title="Fullscreen"> <i
-									class="glyph-icon flaticon-fullscreen3"></i>
-							</a> <h:commandLink action="#{userBean.logout}" title="Logout">
-									<i class="fa fa-power-off"></i>
-								</h:commandLink></li>
-						</ul></li>
-					<!-- END USER DROPDOWN -->
+						<!-- END MESSAGES DROPDOWN -->
+						<!-- BEGIN USER DROPDOWN -->
+						<li class="dropdown" id="user-header"><a href="#"
+							class="dropdown-toggle c-white" data-toggle="dropdown"
+							data-hover="dropdown" data-close-others="true"><i
+								class="fa fa-angle-down p-r-10"></i>
+						</a>
+							<ul class="dropdown-menu">
+								<li><h:commandLink action="#{userBean.subscriberProfile}" styleClass="btn btn-primary">
+										<i class="glyph-icon flaticon-account"></i><span
+								class="username"><h:outputText value="#{userBean.loginSubscriberUser.firstName}"/></span> 
+														</h:commandLink></li>
+								<li class="dropdown-footer clearfix"><a href="javascript:;"
+									class="toggle_fullscreen" title="Fullscreen"> <i
+										class="glyph-icon flaticon-fullscreen3"></i>
+								</a> <h:commandLink action="#{userBean.logout}" title="Logout">
+										<i class="fa fa-power-off"></i>
+									</h:commandLink></li>
+							</ul></li>
+						<!-- END USER DROPDOWN -->
 
-				</ul>
+					</ul>
 				<!-- END TOP NAVIGATION MENU -->
+			</div>
 			</div>
 		</div>
 		</nav> </header>
+		<style>
+		@media (min-width: 480px) {
+			.navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
+    			margin-left: -26px;
+			}
+		}
+	</style>
 		</h:form>
 	</ui:composition>
 </h:body>

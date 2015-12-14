@@ -5,12 +5,12 @@
 		xmlns:ui="http://java.sun.com/jsf/facelets"
 		xmlns:t="http://myfaces.apache.org/tomahawk"
 		xmlns:p="http://primefaces.org/ui">
-		<h:form style="margin:0;heigth:10px;">
+		<h:form style="margin:0;height:35px;">
 		<header id="header">  <nav
-			class="navbar navbar-inverse navbar-fixed-top" style="height: 50px;" role="navigation">
+			class="navbar navbar-inverse navbar-fixed-top" style="height: 75px;" role="navigation">
 		<div class="container-fluid" style="background-color:black;height: 100%;">
-			<div class="navbar-header" style="height: 100%;width: 85%;">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
+			<div class="navbar-header" style="height: 100%;width: 100%;">
+				<!--  <button type="button" class="navbar-toggle" data-toggle="collapse"
 					data-target="#sidebar">
 					<span class="sr-only">Toggle navigation</span> <span
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
@@ -18,13 +18,12 @@
 				</button>
 				<a id="menu-large" class="sidebar-toggle tooltips" style="padding-right: 20px;"> <i
 					class="fa fa-outdent"></i>
-				</a> 
-				<p:commandLink action="#{userBean.logoNavigation}" style="height: 100%;width:96%;padding:0;" styleClass="navbar-brand"
+				</a> -->
+				<p:commandLink action="#{userBean.logoNavigation}" style="height: 100%;width:99%;padding:0;" styleClass="navbar-brand"
 							immediate="true">
 							<img src="#{request.contextPath}/assets/img/fracts-header.jpg" class="nav navbar-nav header-menu" style="width: 100%;height: 100%;"/>
-						</p:commandLink>
-			</div>
-			<div class="navbar-collapse collapse" >
+				</p:commandLink>
+				<div class="navbar-collapse collapse" style="position: relative;top:33px;">
 				<!-- BEGIN TOP NAVIGATION MENU -->
 				<ul class="nav navbar-nav pull-right header-menu">
 					<!-- BEGIN NOTIFICATION DROPDOWN -->
@@ -36,13 +35,13 @@
 					<!-- BEGIN USER DROPDOWN -->
 					<li class="dropdown" id="user-header"><a href="#"
 						class="dropdown-toggle c-white" data-toggle="dropdown"
-						data-hover="dropdown" data-close-others="true"><span
-							class="username"><h:outputText value="#{userBean.loginUser.firstName}"/></span> <i
+						data-hover="dropdown" data-close-others="true"><i
 							class="fa fa-angle-down p-r-10"></i>
 					</a>
 						<ul class="dropdown-menu">
 							<li><h:commandLink action="#{userBean.userProfile}" styleClass="btn btn-primary">
-									<i class="glyph-icon flaticon-account"></i> My Profile
+									<i class="glyph-icon flaticon-account"></i> <span
+							class="username"><h:outputText value="#{userBean.loginUser.firstName}"/></span>
 													</h:commandLink></li>
 							<li class="dropdown-footer clearfix"><a href="javascript:;"
 								class="toggle_fullscreen" title="Fullscreen"> <i
@@ -56,8 +55,16 @@
 				</ul>
 				<!-- END TOP NAVIGATION MENU -->
 			</div>
+			</div>
 		</div>
 		</nav> </header>
+		<style>
+			@media (min-width: 480px) {
+				.navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
+    				margin-left: -26px;
+				}
+			}
+		</style>
 		</h:form>
 	</ui:composition>
 
