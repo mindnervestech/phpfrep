@@ -398,15 +398,15 @@ body {
 	    </table>
 
 			<div class="col-md-12">
-				<div class="col-md-3" ng-repeat="report in reportData" class="">
-					<div class="col-xs-6 col-sm-4 col-md-3" style="min-width: 100%;">
+				<div class="col-md-2" ng-repeat="report in reportData" class="" style="padding: 5px;">
+					<div class="col-md-12" style="min-width: 100%;padding:0px;">
 						<div class="panel panel-default">
-							<div class="panel-body"
+							<div class=""
 								style="max-height: 385px; min-height: 385px;">
 								<div class="thmb">
 									<div class="thmb-prev">
 										<div class="thumbnail"
-											style="max-height: 280px; min-height: 280px; min-width: 185px;">
+											style="max-height: 280px; min-height: 280px; min-width: 165px;">
 											<img
 												src="/webapp/getParentImageThumb?id={{report['parentId']}}"
 												class="img-responsive" ng-click = "openParentImage(report['parentId'])" alt=""
@@ -424,18 +424,13 @@ body {
 													On :{{report["TransDt"]}}</small> <small
 													style="font-weight: bold; font-size: 12px;">{{report["Headline"]}}</small>
 											</div>
-
 										</div>
-
 									</div>
-
 								</div>
 							</div>
 						</div>
 					</div>
-
-				</div>
-			</div>
+				</div>			</div>
 		</div>
     
   
