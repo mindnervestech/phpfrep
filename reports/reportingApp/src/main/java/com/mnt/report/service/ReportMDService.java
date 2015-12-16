@@ -108,7 +108,7 @@ public class ReportMDService {
 		System.out.println("query:"+query);
 		List<Long> ids = new ArrayList<Long>();
 		SearchResponse response = client.prepareSearch("fracts").setTypes("DataEntry").setQuery(QueryBuilders.queryString(query)
-				.defaultField("ocrText")).execute().actionGet();
+				.defaultField("ocrText")).setSize(1000).execute().actionGet();
 		 for (SearchHit hit : response.getHits().getHits()) {
 		        Long id = Long.parseLong(hit.getId());
 		        ids.add(id);
