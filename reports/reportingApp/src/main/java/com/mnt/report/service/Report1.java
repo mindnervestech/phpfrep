@@ -22,7 +22,8 @@ import org.springframework.jdbc.core.RowMapper;
 public class Report1 {
 	private static final String Y = "Publication";
 	private static final String X = "Dates";
-
+	public static String Y_VALUE = "";
+	
 	public static JSONObject  main(List<RowColValue> rowColValues) {
 		
 		//Collections.sort(rowColValues);
@@ -43,7 +44,7 @@ public class Report1 {
 		Set<String> yAxis = new HashSet<String>();
 		Map<String, RowColValue> valueHolder = new HashMap<String, RowColValue>();
 		List<Column> column  = new ArrayList<Column>();
-		column.add(new Column(Y,Y)); //(0,0)
+		column.add(new Column(Y,Y_VALUE)); //(0,0)
 		
 		Map<String,Float> xSum = new HashMap<String, Float>();
 		Map<String,Float> ySum = new HashMap<String, Float>();

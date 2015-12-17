@@ -163,7 +163,7 @@ public class ParentImageDAO implements IParentImageDAO{
 								List<DeJob>  deJobs = getSessionFactory().getCurrentSession().createQuery(sqlQuerydejob).list();
 						         
 								 for(DeJob d :deJobs){
-									 d.setStatus(1);
+									 d.setStatus(2);
 									 getSessionFactory().getCurrentSession().update(d);
 								 }
 	     			        }	

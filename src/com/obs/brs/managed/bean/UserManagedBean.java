@@ -2442,10 +2442,10 @@ implements Serializable
 				sessionManager.setUserInSession(SessionManager.LOGINSUBSCRIBERUSER,subscriberUser);
 				sessionManager.setSessionAttributeInSession(SessionManager.LOGINSUBSCRIBERUSER, subscriberUser);
 				if(subscriberUser.getIsActive() && subscriberUser.getUserType().getUserType().equals("Subscriber Admin")){
-					returnPage = MANAGE_SUBSCRIBER_USER;
+					returnPage = SEARCHREPORTVIEW;
 				}
 				else if(subscriberUser.getIsActive() && subscriberUser.getUserType().getUserType().equals("Subscriber RegularUser")){
-					returnPage = MANAGE_SUBSCRIBER_USER;
+					returnPage = SEARCHREPORTVIEW;
 				}
 				return returnPage;
 			}

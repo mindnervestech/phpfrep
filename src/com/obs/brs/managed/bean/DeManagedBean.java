@@ -277,7 +277,7 @@ public class DeManagedBean implements Serializable{
 	
 	private Map<Long, Boolean> selectedIds = new HashMap<Long, Boolean>();
 	  public Map<Long, Boolean> getSelectedIds() {
-		  System.out.println("selectedIds : "+selectedIds.size());
+		  //System.out.println("selectedIds : "+selectedIds.size());
 	    return selectedIds;
 	  }
 	
