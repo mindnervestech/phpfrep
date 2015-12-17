@@ -383,14 +383,17 @@ public class ReportMDService {
 						return Report3.main(rs);
 					}
 					if(java.toString().equalsIgnoreCase("report1")) {
-						JSONArray columns = ((JSONArray)new JSONParser().parse(mdResult.get("columns").toString()));
+						/*JSONArray columns = ((JSONArray)new JSONParser().parse(mdResult.get("columns").toString()));
+						System.out.println(columns.size());
 						for(int i=0; i < columns.size(); i++) {
 							JSONObject object = (JSONObject)columns.get(i);
+							System.out.println(i+" : "+object.get("data"));
 							if(((String)object.get("data")).equalsIgnoreCase("Publication")) {
 								Report1.Y_VALUE = object.get("name").toString();
+								break;
 							}
-						}
-						
+						}*/
+						//System.out.println("after loop");
 						List<Report1.RowColValue> rs = namedJdbcTemplate.query(mdResult.get("query").toString(),
 								parameters,new Report1.RowColValue(adUnit));
 						return Report1.main(rs);
