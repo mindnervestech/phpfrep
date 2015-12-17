@@ -92,6 +92,9 @@
 			$("#loading").show();
 			$http.get('/webapp/reports/md',{params:{'subscriberId':$scope.subscriberId,'userId':$scope.userId}}).success(function(resp){
 				$scope.reportMDs = resp;
+				if(resp.length > 0) {
+					$scope.description = resp[0].description;
+				}
 				if(!$scope.isReportSaved) {
 					$('#tab0').click();
 				}
@@ -126,6 +129,7 @@
 			$scope.reportTemplate.jsonForm = report.jsonForm;
 			$scope.reportTemplate.jsonSchema = report.jsonSchema;
 			$scope.showPivot = report.isJava;
+			$scope.description = report.description;
 			setTimeout(function(){
 				/*$('[name=DC_AD_ORIENTATION]').unbind();
 				$('[name=DC_AD_SECTION]').unbind();
@@ -391,7 +395,6 @@
         		});
         	}
         }
-        
 
         
         $scope.runReport = function (option) {
@@ -452,8 +455,12 @@
 					});
 					$scope.isAnyActiveReport = false;
 				} else if($scope.isSavedTemplateTable) {
-					$scope.reportData = data.data;
-					$scope.dtColumns = data.columns;
+					if($scope.description == "advertorial") {
+						$scope.gridData = data.data;
+					} else {
+						$scope.reportData = data.data;
+						$scope.dtColumns = data.columns;
+					}
 					$('a[href="#table-view"]').click();
 					$("#pivot-table-output").hide();
 					$('a[href="#pivot-view"]').parent().hide();
@@ -465,8 +472,12 @@
 				} else {
 					$('a[href="#pivot-view"]').parent().show();
 					$('a[href="#table-view"]').parent().show();
-					$scope.reportData = data.data;
-					$scope.dtColumns = data.columns;
+					if($scope.description == "advertorial") {
+						$scope.gridData = data.data;
+					} else {
+						$scope.reportData = data.data;
+						$scope.dtColumns = data.columns;
+					}					
 					$('a[href="#table-view"]').click();
 					var parent = $("#pivot-table-output").parent();
 					$("#pivot-table-output").remove();
