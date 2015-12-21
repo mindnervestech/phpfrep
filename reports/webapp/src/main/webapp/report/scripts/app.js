@@ -413,7 +413,7 @@
 		}
 		executeReport = function(obj) {
 			$("#loading").show();
-			$http.get('/webapp/report/run',{params:{filter:obj}}).success(function(data){
+			$http.post('/webapp/report/run',{params:{filter:obj}}).success(function(data){
 				$("#loading").hide();
 				if(data.company) {
 					$scope.isCompanyDetail = true;

@@ -318,7 +318,7 @@ public class ReportMDService {
 		return resp;
 	}
 	
-    @RequestMapping(value="/report/run",method=RequestMethod.GET)
+    @RequestMapping(value="/report/run",method=RequestMethod.POST)
     @ResponseBody
     public JSONObject runReports(@RequestParam String filter) {
     	JSONObject resp = new JSONObject();
