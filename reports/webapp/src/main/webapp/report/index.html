@@ -420,11 +420,11 @@ body {
 											</div>
 											<div class="thumbnail-actions font-13">
 												<div class="row pad-top-2">
-													<div class="col-md-6 col-lg-6">
-														<small class="text-muted pull-left">Magazine</small>
+													<div class="col-md-6 col-lg-5">
+														<small class="text-muted pull-left">Magazine <small  ng-if="report['STATUS'] == 2 "  style="color:red;">*</small></small>
 													</div>
-													<div class="col-md-6 col-lg-6" style="padding-left: 0;">
-														<small class="text-muted pull-left">{{report["PUBLICATION_TITLE"]}}</small>
+													<div class="col-md-6 col-lg-7" style="padding-left: 0;">
+														<small class="text-muted pull-left">{{report["PUBLICATION_TITLE"]}} &nbsp;{{report["ID"]}}</small>
 													</div>
 												</div>
 												<div class="row pad-top-2">

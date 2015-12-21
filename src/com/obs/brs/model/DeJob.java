@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * 
@@ -35,6 +36,9 @@ public class DeJob implements Serializable{
 	private Boolean isActive;
 	private ParentImage parentImage;
 	private int status;
+	@Transient
+	private String isCompleted;
+	private boolean isRender;
 	/**
 	 * Get de_data Id
 	 * 
@@ -163,6 +167,22 @@ public class DeJob implements Serializable{
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getIsCompleted() {
+		return isCompleted;
+	}
+
+	public void setIsCompleted(String isCompleted) {
+		this.isCompleted = isCompleted;
+	}
+
+	public boolean isRender() {
+		return isRender;
+	}
+
+	public void setRender(boolean isRender) {
+		this.isRender = isRender;
 	}
 
 }

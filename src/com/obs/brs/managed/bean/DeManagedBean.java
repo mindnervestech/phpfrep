@@ -3356,6 +3356,19 @@ public class DeManagedBean implements Serializable{
 			}else{
 				deJobList.addAll(getDeService().getDeJobBySeachCriteria(this.searchText));	
 			}
+			for(DeJob job : deJobList) {
+				List<DataEntry> dataEntries = getDeService().getImagesByJobid(job.getId());
+				List<ChildImage> childImages = getChildImageService().getChildImagesByParent(job.getParentImage().getId());
+				long compleated = 0;
+				for(DataEntry data : dataEntries){
+					if(data.getDeCompany() != null){
+						compleated++;
+					}
+				}
+				job.setIsCompleted(compleated+"/"+childImages.size());			
+				job.setRender(compleated == childImages.size());
+			}
+			
 			Collections.reverse(deJobList);
 		}
 		
