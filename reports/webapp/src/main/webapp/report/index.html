@@ -257,11 +257,36 @@ body {
   <div  class="tab-content" style="background-color: lightgrey;">
     <div role="tabpanel" class="tab-pane active" id="custom-search">
 		   <form >
-		    <div style="margin-bottom: 1px;" sf-schema="reportTemplate.jsonSchema" sf-form="reportTemplate.jsonForm" 
+		    <div id= "plugin" style="margin-bottom: 1px;" sf-schema="reportTemplate.jsonSchema" sf-form="reportTemplate.jsonForm" 
 		         sf-model="reportTemplate.model">
 		         
 		     </div>
-		   
+		    <div id="notPlugnin" style="margin-bottom: 1;">
+		       <div class="col-md-3">
+		       		<div class="row" ng-repeat=" p in publications" > <div class="col-md-9">{{p.name}}</div> <div class="col-md-3"><input type="checkbox" ng-model="selectedPublications[$index]" value = "{{p.value}}" ng-change="getPublicationYear();"></div></div>
+		       </div>
+		       <div class="col-md-2">
+		       		<div class="row"><label>Year</label></div>
+		       		<div class="row">
+		       			<select ng-model="storyboard.PUBLICATION_YEAR" style="width: 100px;" ng-change="getYearData()">
+		       				<option ng-repeat="y in years" value="{{y}}">{{y}}</option>
+		       			</select>
+		       		</div>
+		       </div>
+             
+               <div class="col-md-2">
+ 	                <div class="row"><label>Month</label></div>
+		       		<div class="row">
+		       			<select ng-model="storyboard.PUBLICATION_MONTH" style="width: 100px;" ng-change="getMonthData()">
+		       				<option ng-repeat="m in months" value="{{m.value}}">{{m.name}}</option>
+		       			</select>
+		       		</div>
+		       	</div>
+		        <div class="col-md-3">
+ 	                <div class="row"><label>Issue Date</label></div>
+		       		<div class="row" style="cursor: pointer;" ng-click="getDatePublication(d)" ng-repeat="d in days"><a>{{d}}</a></div>
+		       	</div> 
+		    </div>
 		    <button ng-show="showExcButton" class="btn btn-primary btn-xs" type="button"  ng-click="runReport(1);showAdvertorialReport();">
 		    	Execute
 		    </button>

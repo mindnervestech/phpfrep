@@ -99,6 +99,8 @@
 					$('#tab0').click();
 				}
 				$("#loading").hide();
+				$scope.currenttab = 'other';
+				$scope.isAnyActiveReport = true;
 			});
 		};
 		
@@ -122,71 +124,146 @@
 		$scope.showExcButton = false;
 		$scope.isAnyActiveReport= false;
 		$scope.showReport = function (report) {
-			$scope.backBtn = true;
-			$scope.isAnyActiveReport = false;
-			$scope.isSavedTemplate = false;
-			$scope.isSavedTemplateTable = false;
-			$scope.reportTemplate.jsonForm = report.jsonForm;
-			$scope.reportTemplate.jsonSchema = report.jsonSchema;
-			$scope.showPivot = report.isJava;
-			$scope.description = report.description;
-			setTimeout(function(){
-				/*$('[name=DC_AD_ORIENTATION]').unbind();
-				$('[name=DC_AD_SECTION]').unbind();
-				$('[name=DC_AD_TYPE]').unbind();
-				$('[name=DC_AD_SIZE]').unbind();
-				$('[name=DC_JOB_DENSITY]').unbind();
-				$('[name=DC_AD_CATEGORY]').unbind();
-				$('[name=DC_SEARCH_ADVERTISER_TYPE]').unbind();
-				$('[name=DC_ADVERTISER_TYPE]').unbind();
-				$('[name=DC_PUBLICATION_TITLE]').unbind();*/
+			
+			if(report.isPlugin == 1) {
+				
+				$("#notPlugnin").hide();
+				$("plugnin").show();
+				
+				$scope.backBtn = true;
+				$scope.isAnyActiveReport = false;
+				$scope.isSavedTemplate = false;
+				$scope.isSavedTemplateTable = false;
+				$scope.reportTemplate.jsonForm = report.jsonForm;
+				$scope.reportTemplate.jsonSchema = report.jsonSchema;
+				$scope.showPivot = report.isJava;
+				$scope.description = report.description;
+				setTimeout(function(){
+					/*$('[name=DC_AD_ORIENTATION]').unbind();
+					$('[name=DC_AD_SECTION]').unbind();
+					$('[name=DC_AD_TYPE]').unbind();
+					$('[name=DC_AD_SIZE]').unbind();
+					$('[name=DC_JOB_DENSITY]').unbind();
+					$('[name=DC_AD_CATEGORY]').unbind();
+					$('[name=DC_SEARCH_ADVERTISER_TYPE]').unbind();
+					$('[name=DC_ADVERTISER_TYPE]').unbind();
+					$('[name=DC_PUBLICATION_TITLE]').unbind();*/
 				
 				
 				
-				/*$('[name=DC_AD_SECTION]').prop("checked", true);
-				$('[name=DC_AD_ORIENTATION]').prop("checked", true);
-				$('[name=DC_AD_TYPE]').prop("checked", true);
-				$('[name=DC_AD_SIZE]').prop("checked", true);
-				$('[name=DC_JOB_DENSITY]').prop("checked", true);
-				$('[name=DC_AD_CATEGORY]').prop("checked", true);
-				$('[name=DC_SEARCH_ADVERTISER_TYPE]').prop("checked", true);
-				$('[name=DC_ADVERTISER_TYPE]').prop("checked", true);
-				$('[name=DC_PUBLICATION_TITLE]').prop("checked", true);
-				$('[name=DC_SUBSCRIBER_TERRITORY]').prop("checked", true);*/
+					/*$('[name=DC_AD_SECTION]').prop("checked", true);
+					$('[name=DC_AD_ORIENTATION]').prop("checked", true);
+					$('[name=DC_AD_TYPE]').prop("checked", true);
+					$('[name=DC_AD_SIZE]').prop("checked", true);
+					$('[name=DC_JOB_DENSITY]').prop("checked", true);
+					$('[name=DC_AD_CATEGORY]').prop("checked", true);
+					$('[name=DC_SEARCH_ADVERTISER_TYPE]').prop("checked", true);
+					$('[name=DC_ADVERTISER_TYPE]').prop("checked", true);
+					$('[name=DC_PUBLICATION_TITLE]').prop("checked", true);
+					$('[name=DC_SUBSCRIBER_TERRITORY]').prop("checked", true);*/
 				
-				var d = new Date();
-				var fd = d.getMonth()>3 ? d.getMonth()-4 : d.getMonth()+8;
-				//$('[name=fromdatemm]').val(fd>9?fd:"0"+fd);
-				//$('[name=fromdateyy]').val(d.getMonth()>3 ? d.getFullYear() : d.getFullYear()-1);
-				//$('[name=todatemm]').val(d.getMonth()>9?d.getMonth():"0"+d.getMonth());
-				//$('[name=todateyy]').val(d.getFullYear());
-				$scope.$apply(function(){
-					$scope.reportTemplate.model.fromdatemm = d.getMonth()>3 ? d.getMonth()-4 : d.getMonth()+8;
-					$scope.reportTemplate.model.fromdateyy = d.getMonth()>3 ? d.getFullYear() : d.getFullYear()-1;
-					$scope.reportTemplate.model.todatemm = d.getMonth();
-					$scope.reportTemplate.model.todateyy = d.getFullYear();
-				});
+					var d = new Date();
+					var fd = d.getMonth()>3 ? d.getMonth()-4 : d.getMonth()+8;
+					//$('[name=fromdatemm]').val(fd>9?fd:"0"+fd);
+					//$('[name=fromdateyy]').val(d.getMonth()>3 ? d.getFullYear() : d.getFullYear()-1);
+					//$('[name=todatemm]').val(d.getMonth()>9?d.getMonth():"0"+d.getMonth());
+					//$('[name=todateyy]').val(d.getFullYear());
+					$scope.$apply(function(){
+						$scope.reportTemplate.model.fromdatemm = d.getMonth()>3 ? d.getMonth()-4 : d.getMonth()+8;
+						$scope.reportTemplate.model.fromdateyy = d.getMonth()>3 ? d.getFullYear() : d.getFullYear()-1;
+						$scope.reportTemplate.model.todatemm = d.getMonth();
+						$scope.reportTemplate.model.todateyy = d.getFullYear();
+					});	
 				
 				
-			},1500);
-			//$scope.reportTemplate.model = {};
-			$scope.showExcButton = true;
-			$scope.currenttab = 'other';
-			$('#custom-search-tab a').click();
-			if(report.pivotConfig!=null) {
-				$scope.pivotConfig = report.pivotConfig;
-				$scope.searchConfig = JSON.parse(report.searchCriteria);
-				$scope.isSavedTemplate = true;
-				$scope.runReport(2);
-				$scope.expanded = true;
-			} else if(report.searchCriteria!=null) {
-				$scope.searchConfig = JSON.parse(report.searchCriteria);
-				$scope.isSavedTemplateTable = true;
-				$scope.runReport(2);
-				$scope.expanded = true;
+				},1500);
+				//$scope.reportTemplate.model = {};
+				$scope.showExcButton = true;
+				$scope.currenttab = 'other';
+				$('#custom-search-tab a').click();
+				if(report.pivotConfig!=null) {
+					$scope.pivotConfig = report.pivotConfig;
+					$scope.searchConfig = JSON.parse(report.searchCriteria);
+					$scope.isSavedTemplate = true;
+					$scope.runReport(2);
+					$scope.expanded = true;
+				} else if(report.searchCriteria!=null) {
+					$scope.searchConfig = JSON.parse(report.searchCriteria);
+					$scope.isSavedTemplateTable = true;
+					$scope.runReport(2);
+					$scope.expanded = true;
+				} else {
+					$scope.reportTemplate.model.id = report.id;
+				}
 			} else {
-				$scope.reportTemplate.model.id = report.id;
+				$("#notPlugnin").show();
+				$("plugnin").hide();
+				$scope.storyboard = {
+					DC_PUBLICATION_TITLE:[],
+					PUBLICATION_YEAR:"",
+					PUBLICATION_MONTH:"",
+					PUBLICATION_DATE:"",
+					id:report.id
+				};
+					
+				$scope.publications;
+				$http.get('/webapp/getAllPublication').success(function(data){
+	        		$scope.publications = data;
+	        		for(var i = 0; i < data.length; i++) {
+	        			$scope.selectedPublications[i++] = false;
+	        		}
+	        	});		
 			}
+		};
+		$scope.years = [];
+		$scope.months = [];
+		$scope.days = [];
+		$scope.selectedPublications = [];
+		$scope.getPublicationYear = function() {
+			$scope.storyboard.DC_PUBLICATION_TITLE = [];
+			for (var i = 0; i < $scope.selectedPublications.length; i++) {
+				if($scope.selectedPublications[i]) {
+					$scope.storyboard.DC_PUBLICATION_TITLE.push($scope.publications[i].value);
+				}
+			}
+			if ($scope.storyboard.DC_PUBLICATION_TITLE.length > 0) {
+				$http.post('/webapp/getAllPublicationData',$scope.storyboard).success(function(data){
+					$scope.years = data.years;
+					$scope.gridData = data.reports;
+				});
+			} else {
+				$scope.gridData = [];
+				$scope.years = [];
+				$scope.months = [];
+				$scope.days = [];
+			}
+			$scope.storyboard.PUBLICATION_YEAR = "";
+			$scope.storyboard.PUBLICATION_MONTH = "";
+			$scope.storyboard.PUBLICATION_DATE = "";
+		};
+		
+		$scope.getYearData = function() {
+			$scope.storyboard.PUBLICATION_MONTH = "";
+			$scope.storyboard.PUBLICATION_DATE = "";
+			$http.post('/webapp/get-year-publication',$scope.storyboard).success(function(data) {
+				$scope.months = data.months;
+				$scope.gridData = data.reports;
+			});
+		};
+		
+		$scope.getMonthData = function() {
+			$scope.storyboard.PUBLICATION_DATE = "";
+			$http.post('/webapp/get-month-publication',$scope.storyboard).success(function(data) {
+				$scope.days = data.days;
+				$scope.gridData = data.reports;
+			});
+		};
+		
+		$scope.getDatePublication = function(date) {
+			$scope.storyboard.PUBLICATION_DATE = date;
+			$http.post('/webapp/get-date-publication',$scope.storyboard).success(function(data) {
+				$scope.gridData = data.reports;
+			});
 		};
 		
 		var dateFormat =       $.pivotUtilities.derivers.dateFormat;

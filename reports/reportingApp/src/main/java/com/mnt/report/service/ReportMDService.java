@@ -7,12 +7,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -81,6 +84,7 @@ public class ReportMDService {
 		sectionMap.put("CL", "644");
 		sectionMap.put("OT", "1033");
 	}
+	private static String[] monthsStr = {"January","Febuary","March","April","May","June","July","August","September","October","November","December"};
 
 	private static String localpath = "/usr/local/apache-tomcat-7.0.34/webapps"+File.separator+"files"+File.separator+"fracts_files"+File.separator+"images"+File.separator;
 	
@@ -444,6 +448,164 @@ public class ReportMDService {
     	return new FileSystemResource(new File(filePath));
     }
     
+    @RequestMapping(value="/getAllPublication",method=RequestMethod.GET)
+    public @ResponseBody List<SelectItem> getAllPublication() {
+    	List<Map<String,Object>> mdResult = jt.queryForList("Select DN_ID,DC_PUBLICATION_TITLE from tbl_publication where DC_PUBLICATION_TYPE =" + 2);
+    	List<SelectItem> selectItems = new ArrayList<ReportMDService.SelectItem>();
+    
+    	for(Map<String,Object> m:  mdResult){
+    		SelectItem selectItem = new SelectItem();
+			selectItem.name = m.get("DC_PUBLICATION_TITLE").toString();
+			selectItem.value = (m.get("DN_ID").toString());
+			selectItems.add(selectItem);
+    	}
+        return selectItems;
+    }
+    
+    @RequestMapping(value="/getAllPublicationData",method=RequestMethod.POST)
+    public @ResponseBody Map getAllpublicationData(@RequestBody String filter) {
+    	JSONObject jsonObject = null;
+    	Map<String,Object> map = new HashMap();
+    	Map<String, Object> parameters = new HashMap<String, Object>(); 
+    	try {
+    		Calendar cal = Calendar.getInstance();
+			jsonObject = (JSONObject)new JSONParser().parse(filter);
+			List<Map<String,Object>> mdResult = getParentImageData(filter);
+	    	Set<String> years =  new HashSet<String>();
+	    	for(Map<String,Object> m:  mdResult){
+	    		cal.setTime((Date)m.get("ISSUE_DATE"));
+				String year = cal.get(Calendar.YEAR)+"";
+				years.add(year);
+	    	}
+	    	map.put("years", years);
+	    	map.put("reports", mdResult);
+    	} catch(Exception e) {}
+        return map;
+    }
+    
+    @RequestMapping(value="/get-year-publication",method=RequestMethod.POST)
+    public @ResponseBody Map getYearPublication(@RequestBody String filter) {
+    	JSONObject jsonObject = null;
+    	Map<String,Object> map = new HashMap();
+    	Map<String, Object> parameters = new HashMap<String, Object>(); 
+    	try {
+    		Calendar cal = Calendar.getInstance();
+			jsonObject = (JSONObject)new JSONParser().parse(filter);
+			List<Map<String,Object>> mdResult = getParentImageData(filter);
+	    	Set<SelectItem> months =  new HashSet<SelectItem>();
+	    	Set<String> buffer = new HashSet<String>();
+	    	for(Map<String,Object> m:  mdResult) {
+	    		SelectItem item = new SelectItem();
+	    		cal.setTime((Date)m.get("ISSUE_DATE"));
+	    		if ( buffer.add((cal.get(Calendar.MONTH)+1)+"") ) {
+	    			item.name = monthsStr[cal.get(Calendar.MONTH)];
+	    			item.value = (cal.get(Calendar.MONTH)+1)+"";
+					months.add(item);
+	    		}
+	    	}
+	    	map.put("months", months);
+	    	map.put("reports", mdResult);
+    	} catch(Exception e) {}
+        return map;
+    }
+    
+    @RequestMapping(value="/get-month-publication",method=RequestMethod.POST)
+    public @ResponseBody Map getMonthPublication(@RequestBody String filter) {
+    	JSONObject jsonObject = null;
+    	Map<String,Object> map = new HashMap();
+    	Map<String, Object> parameters = new HashMap<String, Object>(); 
+    	try {
+    		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    		Calendar cal = Calendar.getInstance();
+			jsonObject = (JSONObject)new JSONParser().parse(filter);
+			List<Map<String,Object>> mdResult = getParentImageData(filter);
+	    	Set<String> days =  new HashSet<String>();
+	    	for(Map<String,Object> m:  mdResult){
+	    		try {
+	    			days.add(df.format((Date)m.get("ISSUE_DATE")));
+	    		} catch(Exception e) {}
+	    	}
+	    	map.put("days", days);
+	    	map.put("reports", mdResult);
+    	} catch(Exception e) {}
+        return map;
+    }
+     
+    @RequestMapping(value="/get-date-publication",method=RequestMethod.POST)
+    public @ResponseBody Map getDatePublication(@RequestBody String filter) {
+    	JSONObject jsonObject = null;
+    	Map<String,Object> map = new HashMap();
+    	Map<String, Object> parameters = new HashMap<String, Object>(); 
+    	try {
+    		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    		Calendar cal = Calendar.getInstance();
+			jsonObject = (JSONObject)new JSONParser().parse(filter);
+			List<Map<String,Object>> mdResult = getParentImageData(filter);
+	    	Set<String> days =  new HashSet<String>();
+	    	for(Map<String,Object> m:  mdResult){
+	    		try {
+	    			days.add(df.format((Date)m.get("ISSUE_DATE")));
+	    		} catch(Exception e) {}
+	    	}
+	    	map.put("reports", mdResult);
+    	} catch(Exception e) {}
+        return map;
+    }
+    
+    private List getParentImageData(String filter) {
+    	List<Map<String, Object>> rs = null;
+    	try {
+			JSONObject jsonObject = (JSONObject)new JSONParser().parse(filter);
+			Long id = Long.parseLong(jsonObject.get("id").toString());
+			Map<String,Object> mdResult = jt.queryForMap("Select query from reportmd where id =" + id);
+			String query = mdResult.get("query").toString();	
+			String[] namedParameters =  query.split(":");
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			
+			// This is imp to set all named params to null 
+			for(String param : namedParameters) {
+				for(int i = 0 ; i < param.length() ; i++) {
+					if(param.charAt(i) == ' ' || param.charAt(i) == ')' || param.charAt(i) == '\n' || param.charAt(i) == '\t'|| param.charAt(i) == '\r') {
+						parameters.put(param.substring(0, i), null);
+						break;
+					}
+				}
+			}
+			
+			for(Object key : jsonObject.keySet()){
+				Object value = jsonObject.get(key);
+				if (value instanceof String) {
+					if(!((String) value).isEmpty()) {
+						System.out.println("key :"+key.toString());
+						System.out.println("value :"+value.toString());
+						parameters.put(key.toString(), value);
+					}
+				}
+				if (value instanceof Long || value instanceof Integer || value instanceof Double || value instanceof Float) {
+					System.out.println("key :"+key.toString());
+					System.out.println("value :"+value.toString());
+					parameters.put(key.toString(), value);
+				}
+				if (value instanceof JSONArray) {
+					JSONArray jsonArray = (JSONArray) value;
+				    int len = jsonArray.size();
+				    if(len > 0) {
+				      List<String> inValues = new ArrayList<String>();
+				      System.out.println("key :"+key.toString());
+				      for (int i=0;i<len;i++){ 
+				    	  System.out.println("value :"+jsonArray.get(i).toString());
+				    	  inValues.add(jsonArray.get(i).toString());
+				      }
+				      parameters.put(key.toString()+"in", inValues);
+				      parameters.put(key.toString(), "");
+				    }
+				}
+			}
+			rs = namedJdbcTemplate.queryForList(mdResult.get("query").toString(),parameters);
+    	}catch (Exception e) {}
+    	return rs;
+    }
+    
     @RequestMapping(value="/deleteReport",method=RequestMethod.GET)
     @ResponseBody
     @Transactional
@@ -488,6 +650,8 @@ public class ReportMDService {
 				reportMD.jsonSchema = ((JSONObject)new JSONParser().parse(arg0.getString("jsonSchema")));
 				reportMD.name = (arg0.getString("name"));
 				reportMD.description = (arg0.getString("description"));
+				reportMD.isPlugin = (arg0.getInt("isPlugin"));
+				
 				//System.out.println("jkds:"+arg0.getString("pivotConfig"));
 				if(arg0.getString("pivotConfig")!=null) 
 					reportMD.pivotConfig = ((JSONObject)new JSONParser().parse(arg0.getString("pivotConfig")));
@@ -927,6 +1091,7 @@ public class ReportMDService {
 		public String isJava;
 		public Long id;
 		public Integer order;
+		public Integer isPlugin;
 	}
 	
 	public static class ReportTemplateVM {
