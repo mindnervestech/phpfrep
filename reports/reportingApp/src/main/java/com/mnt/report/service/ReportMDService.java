@@ -429,7 +429,7 @@ public class ReportMDService {
 					JSONArray hiddenpivotcol = ((JSONArray)new JSONParser().parse(mdResult.get("hiddenpivotcol").toString()));
 					resp.put("hiddenpivotcol",hiddenpivotcol);
 			}
-			if(id == 19l) {
+			if(id == 19l && jsonObject.get("DN_DECOMPANY_ID") != null) {
 				Map<String,Object> companyMap= jt.queryForMap("Select DC_COMPANY_NAME as 'companyName',DC_ADDRESS_LINE_1 as 'addressLine1',DC_COUNTRY as 'country' from tbl_de_company where DN_ID =" + Long.parseLong(jsonObject.get("DN_DECOMPANY_ID").toString().replace("[","").replace("]","")));
 				resp.put("company",companyMap);
 			}

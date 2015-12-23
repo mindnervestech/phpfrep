@@ -257,11 +257,11 @@ body {
   <div  class="tab-content" style="background-color: lightgrey;">
     <div role="tabpanel" class="tab-pane active" id="custom-search">
 		   <form >
-		    <div id= "plugin" style="margin-bottom: 1px;" sf-schema="reportTemplate.jsonSchema" sf-form="reportTemplate.jsonForm" 
+		    <div id= "plugin" style="margin-bottom: 1px;" class="row" sf-schema="reportTemplate.jsonSchema" sf-form="reportTemplate.jsonForm" 
 		         sf-model="reportTemplate.model">
 		         
 		     </div>
-		    <div id="notPlugnin" style="margin-bottom: 1;">
+		    <div id="notPlugnin" style="margin-bottom: 1;" class="row">
 		       <div class="col-md-3">
 		       		<div class="row" ng-repeat=" p in publications" > <div class="col-md-9">{{p.name}}</div> <div class="col-md-3"><input type="checkbox" ng-model="selectedPublications[$index]" value = "{{p.value}}" ng-change="getPublicationYear();"></div></div>
 		       </div>
@@ -333,8 +333,9 @@ body {
     
   </div>
 </div><!-- Tab Panel 1 End -->
-<div ng-show="isCompanyDetail" class="row" style="padding: 0px 20px; font-weight: bold;">
-	Company Name : <span id="companyName"></span><span id="addressLine1"></span><span id="country"></span>
+<div class="row" style="padding: 0px 20px; font-weight: bold;">
+	<div class="col-md-8"><div ng-show="isCompanyDetail" class="row">Company Name : <span id="companyName"></span><span id="addressLine1"></span><span id="country"></span></div></div>
+	<div class="col-md-4" ng-show="backButton"><button ng-click="runReport(1);" class="btn btn-primary pull-right">Back to reports</button></div>
 </div>
 <div ng-show="isAnyActiveReport && currenttab == 'pivot'">
 	<div>

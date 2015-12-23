@@ -124,7 +124,8 @@
 		$scope.showExcButton = false;
 		$scope.isAnyActiveReport= false;
 		$scope.showReport = function (report) {
-			
+			$scope.isCompanyDetail = false;
+			$scope.backButton = false;
 			if(report.isPlugin == 1) {
 				
 				$("#notPlugnin").hide();
@@ -441,7 +442,7 @@
         	if($scope.TabIndex == 0 || angular.isUndefined($scope.TabIndex)){
         		$("#table-view1").show();
         		$("#table-view").hide();
-        	}else{
+        	} else{
         		$("#table-view1").hide();
         		$("#table-view").show();
         	}
@@ -449,7 +450,16 @@
         
         $scope.TabIndex;
         $scope.setIndex = function(index){
-        	$scope.TabIndex  = index	
+        	$scope.TabIndex  = index;
+        	if(index == 0) {
+        		$("#notPlugnin").show();
+        		$("#plugin").hide();
+        		$scope.showExcButton = false;
+        	} else {
+        		$scope.showExcButton = true;
+        		$("#notPlugnin").hide();
+        		$("#plugin").show();
+        	}
         }
         
         $scope.openParentImage = function(id){
@@ -478,6 +488,8 @@
 			$scope.isAnyActiveReport = false;
 			$scope.lastQueryExecuted = option;
 			var obj;
+			$scope.backButton = false;
+			$scope.isCompanyDetail = false;
 			if(option==2) {
 				obj = $scope.searchConfig;
 			} else {
@@ -488,10 +500,16 @@
 			
 			executeReport(obj);
 		}
+        $scope.backButton = false;
 		executeReport = function(obj) {
 			$("#loading").show();
 			$http.post('/webapp/report/run',obj).success(function(data){
 				$("#loading").hide();
+				if( obj.id == 19 ) {
+					$scope.backButton = true;
+				} else {
+					$scope.backButton = false;
+				}
 				if(data.company) {
 					$scope.isCompanyDetail = true;
 					if(data.company.companyName) {

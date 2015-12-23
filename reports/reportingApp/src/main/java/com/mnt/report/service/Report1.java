@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.jdbc.core.RowMapper;
 
 public class Report1 {
@@ -163,7 +164,14 @@ public class Report1 {
 			colValue.setPublication(rs.getString(Y));
 			
 			colValue.setSumm(Float.valueOf(df.format(rs.getFloat(adUnit))));
-			colValue.setIds(rs.getString("ids"));
+			JSONObject jsonObject = null;
+			try {
+				jsonObject = (JSONObject)new JSONParser().parse(rs.getString("ids"));
+				jsonObject.put("adtype", adUnit);
+				colValue.setIds(jsonObject.toJSONString());
+			} catch(Exception e){
+				colValue.setIds(rs.getString("ids"));
+			}
 			return colValue;
 		}
 		
