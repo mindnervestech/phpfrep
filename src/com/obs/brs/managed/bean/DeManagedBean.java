@@ -2656,10 +2656,47 @@ public class DeManagedBean implements Serializable{
 	/**
 	 * save cropped image from temp path
 	 */
-	public void saveCroppedImage(){
+	public String saveCroppedImage(){
 		currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
+		
+		String imgID = facesUtils.getRequestParameterMap("imgId");
+		if(imgID != null) {
+			try {
+				//read image to crop and getting file extension
+				File f=new File(imageBasePath+CommonProperties.getParentImagePath()+imgID+"/"+parentImage.getImageName());
+				String fileName=f.getName();
+				String[] split = fileName.split("\\.");
+				String ext = split[split.length - 1];
+				//URL f= getClass().getResource(imageBasePath+CommonProperties.getParentImagePath()+imgId+"/"+parentImage.getImageName());
+				//draw image based on cropped co ordinates
+
+				BufferedImage bi = ImageIO.read(f);
+
+				//save cropped area as new image file
+				new File(imageBasePath+CommonProperties.getTempPath()+currentUser.getId()).mkdirs();
+				int random = (int)(double)((Math.random()*(double)1000));
+				File newFile=new File(imageBasePath+CommonProperties.getTempPath()+currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName());
+				try{
+					ImageIO.write(bi,"jpg",newFile );
+					//set image to page
+					croppedImageName = currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName();
+					//RequestContext.getCurrentInstance().execute("PF('dlg1').show()");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+		}
+		
+		System.out.println("IMG ID: "+imgID);
 		String sourcePath = imageBasePath+CommonProperties.getTempPath()+croppedImageName;
 		String targetPath = imageBasePath+CommonProperties.getChildImagePath()+parentImage.getId();
+		System.out.println("parentImage.getId(): "+parentImage.getId());
+		System.out.println("croppedImageName: "+croppedImageName);
 		try{
 			if(parentImage!=null){
 				File cropFile = new File(sourcePath);
@@ -2700,7 +2737,8 @@ public class DeManagedBean implements Serializable{
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		//return null;
+		
+		return  "/pages/de/gallery.xhtml" ;
 	}
 
 	/**

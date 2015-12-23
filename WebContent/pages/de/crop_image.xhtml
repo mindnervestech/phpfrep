@@ -162,16 +162,17 @@
 									<h:commandLink update="imgcrp_div" ajax="true"
 										styleClass="btn btn-primary m-10 f-left" style="background-color: #ccc;border-color: #ccc;" action="#{userBean.redirctMenuLink}">
 										<f:param name="menuId" value="6" />
-										Back</h:commandLink>
-									<h:commandLink update="imgcrp_div" ajax="true"
-										styleClass="btn btn-primary m-10" style="    background-color: #327832;" action="#{deBean.takeFullImageAsChild}">
-										<f:param name="imgId" value="#{deBean.parentImage.id}" />
-										<i class="fa fa-crop p-r-10"></i>Take full image as child</h:commandLink>
+										<i class = "glyphicon glyphicon-arrow-left"></i></h:commandLink>
 									
 									<h:commandLink update="imgcrp_div" ajax="true"
-										styleClass="btn btn-primary m-10" action="#{deBean.cropping}">
+										styleClass="btn btn-primary m-10" style="width: 30%;" action="#{deBean.cropping}">
 										<f:param name="imgId" value="#{deBean.parentImage.id}" />
 										<i class="fa fa-crop p-r-10"></i>Make crop</h:commandLink>
+
+									<h:commandLink update="imgcrp_div" ajax="true"
+										styleClass="btn btn-primary m-10" style="    background-color: #327832;" action="#{deBean.saveCroppedImage}">
+										<f:param name="imgId" value="#{deBean.parentImage.id}" />
+										<i class="fa fa-crop p-r-10"></i>Whole</h:commandLink>
 										
 								</ul>
 
