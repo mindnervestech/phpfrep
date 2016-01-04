@@ -27,13 +27,13 @@ public class DemoServiceBasicUsageFixedDelay
 	@ManagedProperty(value ="#{DeService}")
 	IDeService deService;
     
-	@Scheduled(fixedDelay = 5000)
+	@Scheduled(fixedDelay = 3600000)
     //@Scheduled(fixedRate = 5000)
     public void demoServiceMethod(){
-    	//System.out.println("Method executed at every 5 seconds. Current time is :: "+ new Date());
+    	System.out.println("Method executed at every 5 seconds. Current time is :: "+ new Date());
     	try {
     		List<DataEntry> croppedJobs = deService.getCropedImagesJobs();
-    		//System.out.println("croppedJobs :"+croppedJobs.size());
+    		System.out.println("croppedJobs :"+croppedJobs.size());
     		List<DataEntry> liveJobs = deService.getLiveDeData();
     		
     		for(DataEntry dc : croppedJobs){
@@ -58,7 +58,7 @@ public class DemoServiceBasicUsageFixedDelay
     				try {
     					
     					if(scores.get(scores.size()-2).getScore() >= .6){
-    						//deService.saveOcrTextResult(ocr);	
+    						deService.saveOcrTextResult(ocr);	
     					}
     					
     					ocr = new OcrTextMatchResult();
@@ -67,7 +67,7 @@ public class DemoServiceBasicUsageFixedDelay
     					ocr.setLiveJobScore(scores.get(scores.size()-2).getScore());
     					
     					if(scores.get(scores.size()-2).getScore() >= .6){
-        					//deService.saveOcrTextResult(ocr);	
+        					deService.saveOcrTextResult(ocr);	
         				}
         					
     				} catch(Exception e){
