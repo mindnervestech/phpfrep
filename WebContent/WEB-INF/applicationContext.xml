@@ -1,5 +1,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xmlns:task="http://www.springframework.org/schema/task"
+	 xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:tx="http://www.springframework.org/schema/tx" 
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -7,13 +9,17 @@ http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/tx 
 http://www.springframework.org/schema/tx/spring-tx.xsd
 http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context.xsd">
-
+http://www.springframework.org/schema/context/spring-context.xsd
+ http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+<task:annotation-driven />
 <context:component-scan base-package="com.obs.brs"/>
 
  	<context:component-scan base-package="com.obs.brs.service"/>
 	
 	<!-- Service Declaration -->
+	<bean id="demoServiceBasicUsageFixedDelay" class="com.obs.brs.service.DemoServiceBasicUsageFixedDelay"/>
+
 	<bean id="MessageService" class="com.obs.brs.messages.MessagesService"/>
 	<bean id="UserService" class="com.obs.brs.service.UserService">
 		<property name="userDAO" ref="UserDAO" />
@@ -87,6 +93,7 @@ http://www.springframework.org/schema/context/spring-context.xsd">
 				<value>com.obs.brs.model.States</value>
 				<value>com.obs.brs.model.DeletedImage</value>
 				<value>com.obs.brs.model.Territory</value>
+				<value>com.obs.brs.model.OcrTextMatchResult</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

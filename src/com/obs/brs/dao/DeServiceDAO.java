@@ -1,14 +1,19 @@
 package com.obs.brs.dao;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.SessionFactory;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.obs.brs.controller.ScoreData;
 import com.obs.brs.model.DeCompany;
 import com.obs.brs.model.DeJob;
 import com.obs.brs.model.DataEntry;
+import com.obs.brs.model.OcrTextMatchResult;
 import com.obs.brs.model.ParentImage;
 import com.obs.brs.session.manager.SessionManager;
 
@@ -507,5 +512,101 @@ public class DeServiceDAO implements IDeServiceDAO {
 		List <DataEntry> deChildList = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.isDeleted=0 and  m.childImage.id in (:ids)").setParameterList("ids", ids).list();
 		return deChildList;
 	}
+	
+	@Override
+	public List<DataEntry> getLiveDeData() {
+		HashSet<Integer> ids = new HashSet<>();
+		ids.add(Integer.parseInt("1"));
+		ids.add(Integer.parseInt("2"));
+		List <DeJob> deChildList = getSessionFactory().getCurrentSession().createQuery("From DeJob as m where m.status in (:ids)").setParameterList("ids", ids).list();
+		HashSet <Long> idss = new HashSet<>();
+	
+		for(DeJob d : deChildList){
+			idss.add(d.getId());
+		}
+		
+		List <DataEntry> deChildLiveList = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.deJobid.id in (:idss)").setParameterList("idss", idss).list();
+		return deChildLiveList;
+	}
 
+	@Override
+	public List<DataEntry> getCropedImagesJobs() {
+		HashSet<Integer> ids = new HashSet<>();
+		ids.add(Integer.parseInt("0"));
+		/*ids.add(Integer.parseInt("2"));*/
+		List <DeJob> deChildList = getSessionFactory().getCurrentSession().createQuery("From DeJob as m where m.status in (:ids)").setParameterList("ids", ids).list();
+		HashSet <Long> idss = new HashSet<>();
+	
+		for(DeJob d : deChildList){
+			idss.add(d.getId());
+		}
+		
+		List <DataEntry> deChildLiveList = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.deJobid.id in (:idss)").setParameterList("idss", idss).list();
+		return deChildLiveList;
+	}
+	
+	@Override
+	@Transactional
+	public void saveOcrTextResult(OcrTextMatchResult ocr) {
+		/*List <OcrTextMatchResult> ocrTextMatchResultList = getSessionFactory().getCurrentSession().createQuery("From OcrTextMatchResult as m ").list();
+		System.out.println("Crp id"+croppedJobID +"Live: "+liveJobId);
+		int id = getSessionFactory().getCurrentSession().createSQLQuery(
+						    "INSERT INTO tbl_ocr_text_match_result  (DC_CROPPED_JOBID, DC_LIVE_JOBID, "
+						    + " DC_LIVE_JOB_SCORE ) VALUES (?, ?, ? )")
+						    		.setParameter(0, croppedJobID)
+						    	    .setParameter(1, liveJobId)
+						    	    .setParameter(2,  score)
+						    	    .executeUpdate();*/
+		   getSessionFactory().getCurrentSession().save(ocr);
+	}
+	
+	@Override
+	public List<ScoreData> getDeoByReleavance() {
+		System.out.println("here in xyz");
+		List<ScoreData> scoreDatas = new ArrayList<ScoreData>();
+		
+		List <OcrTextMatchResult> ocrTextMatchResultList = getSessionFactory().getCurrentSession().createQuery("From OcrTextMatchResult as m ").list();
+		HashSet<Long> idss = new HashSet<>();
+		for(OcrTextMatchResult o :ocrTextMatchResultList){
+			idss.add(o.getCroppedData());
+		}
+		
+		System.out.println("Data In file : "+idss);
+	
+		for(Long o1 : idss){
+			HashSet<Long>  id = new HashSet<>();
+		    id.add(o1);
+			
+		    List<DataEntry> dataEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:id) and m.deCompany IS NULL").setParameterList("id", id).list();
+			if(o1 == 3811l) {
+				System.out.println("3811 size"+dataEntries.size());
+			}
+		    System.out.println("id : "+o1);
+			if(dataEntries.size() > 0) {
+				String 	SQL = "From OcrTextMatchResult as m where m.croppedData ='"+o1+"'";
+				List <OcrTextMatchResult>  ocrTextMatchResultSubList=  getSessionFactory().getCurrentSession().createQuery(SQL).list();
+			
+				HashSet<Long>  sublistIds = new HashSet<>();
+		   
+				for(OcrTextMatchResult subList : ocrTextMatchResultSubList){
+		    		sublistIds.add(subList.getLiveData());
+		    	}
+				
+				List<DataEntry> dataSubEntries = new ArrayList<>();
+		
+				if(sublistIds.size() != 0){
+					dataSubEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:sublistIds)").setParameterList("sublistIds", sublistIds).list();
+			    	
+		    	}
+		    	ScoreData results = new ScoreData();
+		    	results.dEntry = dataEntries.get(0);
+		    	results.dataEntry = dataSubEntries;
+		    	scoreDatas.add(results);
+		    
+			}
+		 }
+		System.out.println("size:"+scoreDatas.size());
+		return scoreDatas;
+	}
+	
 }

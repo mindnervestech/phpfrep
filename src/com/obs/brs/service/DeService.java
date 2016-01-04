@@ -1,14 +1,18 @@
 package com.obs.brs.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.obs.brs.controller.ScoreData;
 import com.obs.brs.dao.IDeServiceDAO;
 import com.obs.brs.model.DataEntry;
 import com.obs.brs.model.DeCompany;
 import com.obs.brs.model.DeJob;
+import com.obs.brs.model.OcrTextMatchResult;
 import com.obs.brs.model.ParentImage;
 
 /**
@@ -425,7 +429,28 @@ public class DeService implements IDeService{
 	public List<DataEntry> getDataEntryByChildImageIds(Set<Long> ids) {
 		return getDeServiceDAO().getDataEntryByChildImageIds(ids);
 	}
+	
+	@Transactional
+    public  List<DataEntry> getLiveDeData() {
+		return getDeServiceDAO().getLiveDeData();
+    }
+	@Override
+	public List<DataEntry> getCropedImagesJobs() {
+		// TODO Auto-generated method stub
+		return getDeServiceDAO().getCropedImagesJobs();
+	}
 
-
+	@Transactional
+	public void saveOcrTextResult(OcrTextMatchResult ocr) {
+		// TODO Auto-generated method stub
+	     getDeServiceDAO().saveOcrTextResult(ocr);	
+	}
+	@Transactional
+	public List<ScoreData> getDeoByReleavance() {
+		// TODO Auto-generated method stub
+	    return  getDeServiceDAO().getDeoByReleavance();	
+	}
+	
+	
 
 }

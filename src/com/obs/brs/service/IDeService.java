@@ -4,9 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.obs.brs.controller.ScoreData;
 import com.obs.brs.model.DataEntry;
 import com.obs.brs.model.DeCompany;
 import com.obs.brs.model.DeJob;
+import com.obs.brs.model.OcrTextMatchResult;
 import com.obs.brs.model.ParentImage;
 
 public interface IDeService {
@@ -283,4 +285,9 @@ public interface IDeService {
 	
 	public void updateParentImage(ParentImage parentImage);
 	public List<DataEntry> getDataEntryByChildImageIds(Set<Long> ids);
+	public List<DataEntry> getLiveDeData();
+	public List<DataEntry>	getCropedImagesJobs();
+	public void saveOcrTextResult(OcrTextMatchResult ocr);
+
+	public List<ScoreData> getDeoByReleavance();
 }
