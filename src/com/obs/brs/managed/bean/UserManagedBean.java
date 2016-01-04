@@ -1418,6 +1418,10 @@ implements Serializable
 		case 14: 
 			redirectLink = "/pages/region/admin_manage_region.xhtml";
 			break;
+		case 15: 
+			redirectLink = "/pages/de/ocr_releavance.xhtml";
+			break;
+		
 		}
 		this.sessionManager.setSessionAttributeInSession("pageChanged", "1");
 		return redirectLink;

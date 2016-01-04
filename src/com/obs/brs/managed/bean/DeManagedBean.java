@@ -46,7 +46,9 @@ import org.apache.myfaces.custom.datascroller.ScrollerActionEvent;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.springframework.expression.spel.ast.OpNE;
+import org.springframework.scheduling.annotation.Scheduled;
 
+import com.obs.brs.controller.ScoreData;
 import com.obs.brs.messages.IMessagesService;
 import com.obs.brs.model.ChildImage;
 import com.obs.brs.model.Country;
@@ -120,7 +122,8 @@ public class DeManagedBean implements Serializable{
 	private static final String RETURN_CHILD_IMAGE = "returnchildImage";
 	private static final String LIST_PUBLICATION = "listpublication";
 	private static final String QCJOBBYJOURNAL = "view_qcjob_by_journal";
-
+	
+	private List<ScoreData> dataEntries = new ArrayList<ScoreData>();
 	private Map<Long, Boolean> checkedDe = new HashMap<Long, Boolean>();
 	private Map<Long, Boolean> checkedQc = new HashMap<Long, Boolean>();
 	private long id;
@@ -163,6 +166,8 @@ public class DeManagedBean implements Serializable{
 	User currentUser;
 	List<DeJob> deJobList;
 	List<ParentImage> parentImageList = new ArrayList<ParentImage>();
+	List<ScoreData> deReleavanceImageList = new ArrayList<ScoreData>();
+
 	List<ChildImage> childImageList = new ArrayList<ChildImage>();
 	List<DataEntry> childImagesDataList = new ArrayList<DataEntry>();
 	List<ChildImage> currentParentsChild = new ArrayList<ChildImage>();
@@ -272,9 +277,26 @@ public class DeManagedBean implements Serializable{
 	private List<String> duplicateNames;
 	private String iframeUrl;
 	private int count = 1;
+	private long liveStatusId;
 
+	private long[] liveStatusArr;
 	
-	
+	public long[] getLiveStatusArr() {
+		return liveStatusArr;
+	}
+
+	public void setLiveStatusArr(long[] liveStatusArr) {
+		this.liveStatusArr = liveStatusArr;
+	}
+
+	public long getLiveStatusId() {
+		return liveStatusId;
+	}
+
+	public void setLiveStatusId(long liveStatusId) {
+		this.liveStatusId = liveStatusId;
+	}
+
 	private Map<Long, Boolean> selectedIds = new HashMap<Long, Boolean>();
 	  public Map<Long, Boolean> getSelectedIds() {
 		  //System.out.println("selectedIds : "+selectedIds.size());
@@ -2285,6 +2307,18 @@ public class DeManagedBean implements Serializable{
 		}
 	}
 	
+	public List<ScoreData> getDeReleavanceImageList() {
+		if(deReleavanceImageList == null || deReleavanceImageList.isEmpty()) {
+			deReleavanceImageList = deService.getDeoByReleavance();
+			liveStatusArr = new long[deReleavanceImageList.size()];
+		}
+		return deReleavanceImageList;
+	}
+
+	public void setDeReleavanceImageList(List<ScoreData> deReleavanceImageList) {
+		this.deReleavanceImageList = deReleavanceImageList;
+	}
+	
 	/**
 	 * Get Parent Image List 
 	 * 
@@ -2695,8 +2729,6 @@ public class DeManagedBean implements Serializable{
 		System.out.println("IMG ID: "+imgID);
 		String sourcePath = imageBasePath+CommonProperties.getTempPath()+croppedImageName;
 		String targetPath = imageBasePath+CommonProperties.getChildImagePath()+parentImage.getId();
-		System.out.println("parentImage.getId(): "+parentImage.getId());
-		System.out.println("croppedImageName: "+croppedImageName);
 		try{
 			if(parentImage!=null){
 				File cropFile = new File(sourcePath);
@@ -3372,6 +3404,23 @@ public class DeManagedBean implements Serializable{
 		return null;
 	}
 
+	public String showImage (){
+		String parentId = facesUtils.getRequestParameterMap("parentId");
+ 		String parentImage = facesUtils.getRequestParameterMap("parentImg");
+		String childId = facesUtils.getRequestParameterMap("childId");
+		String childImage = facesUtils.getRequestParameterMap("childImg");
+		System.out.println("Child Id "+childId);
+		
+		System.out.println("parent id: "+parentId);
+		this.parentImageId = Long.parseLong(parentId);
+		this.parentImageName = parentImage;
+		this.childImageName = childImage;
+		this.childImageId = Long.parseLong(childId);
+		
+		return null;
+	
+	}
+	
 	/**
 	 * Get CompanyUser List
 	 * 
@@ -4087,6 +4136,66 @@ public List<String> getcompaniesId(String query) {
 			}
 		}
 		getParentImageList().set(i, image);
+	}
+	
+	public void makeLiveByScore(int index) {
+		DataEntry dataEntry = null;
+		ScoreData scoreData = this.deReleavanceImageList.get(index);
+		System.out.println("------- index -----"+index);
+		System.out.println("------- liveStatusId -----"+this.liveStatusArr[index]);
+		for(DataEntry d : scoreData.dataEntry ) {
+			System.out.println("id in dataentries :"+d.getId());
+			if(d.getId() == this.liveStatusArr[index]) {
+				dataEntry = d;
+				break;
+			}
+		}
+		
+		DataEntry mainEntry = scoreData.getdEntry();
+		mainEntry.setAdCategory(dataEntry.getAdCategory());
+		mainEntry.setAddColumn(dataEntry.getAddColumn());
+		mainEntry.setAdHeadLine(dataEntry.getAdHeadLine());
+		mainEntry.setAdOrientation(dataEntry.getAdCategory());
+		mainEntry.setAdSize(dataEntry.getAdSize());
+		mainEntry.setAdvertiserType(dataEntry.getAdvertiserType());
+		mainEntry.setContactInfo(dataEntry.getContactInfo());
+		mainEntry.setCurrency(dataEntry.getCurrency());
+		mainEntry.setEndCurrencyRange(dataEntry.getEndCurrencyRange());
+		mainEntry.setIsProcessedOcr(0);
+		mainEntry.setJobDensity(dataEntry.getJobDensity());
+		mainEntry.setLandingPageURL(dataEntry.getLandingPageURL());
+		mainEntry.setOcrText(dataEntry.getOcrText());
+		mainEntry.setStartCurrencyRange(dataEntry.getStartCurrencyRange());
+		mainEntry.setDeCompany(dataEntry.getDeCompany());
+		mainEntry.setSearchValueAdvertisertype(dataEntry.getSearchValueAdvertisertype());
+		deService.updateDataEntry(mainEntry);
+		List<DataEntry> dataEntries = getDeService().getImagesByJobid(mainEntry.getDeJobid().getId());
+		System.out.println("size before : "+this.deReleavanceImageList.size());
+		if(dataEntries.size() == 1) {
+			mainEntry.getDeJobid().setStatus(dataEntry.getDeJobid().getStatus());
+			deService.updateDeJob(mainEntry.getDeJobid());
+			mainEntry.getParentImage().setStatus(2);
+			deService.updateParentImage(mainEntry.getParentImage());
+			this.deReleavanceImageList.remove(scoreData);
+		} else {
+			System.out.println("here in ");
+			int completed = 0;
+			for(DataEntry data : dataEntries){
+				if(data.getDeCompany() != null){
+					completed++;
+				}
+			}
+			System.out.println("completed ------ "+completed);
+			System.out.println("total ------ "+dataEntries.size());
+			if(completed == dataEntries.size()) {
+				mainEntry.getDeJobid().setStatus(dataEntry.getDeJobid().getStatus());
+				deService.updateDeJob(mainEntry.getDeJobid());
+				mainEntry.getParentImage().setStatus(2);
+				deService.updateParentImage(mainEntry.getParentImage());
+				this.deReleavanceImageList.remove(scoreData);
+			}
+		}
+		System.out.println("size after : "+this.deReleavanceImageList.size());
 	}
 	
 	public void hideValueNext(AjaxBehaviorEvent event) {
