@@ -294,21 +294,12 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																							<div class="row m-5 f_l">
 																								<div style="font-weight: bold; float: left">Job ID : <h:outputText value="#{val.dEntry.id}"></h:outputText></div>
 																								<div class="f_l p-l-10">
-																									 <p:commandLink action="#{deBean.showImage}"
-																											rendered="#{not empty val.dEntry.parentImage.publicationTitle}" ajax="true"
-																											oncomplete="PF('dlg').show();"  id="edit"
-																											update=":dlgform:basicDialog">
-																									 <img style="height: 160px; width:145px" 
+																									<a id="#{val.dEntry.parentImage.id}" onclick = "enlargeImage(#{val.dEntry.parentImage.id});" href = "#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{val.dEntry.parentImage.id}/#{val.dEntry.childImage.id}/#{val.dEntry.childImage.imageName}" title="#{val.dEntry.childImage.imageName}">
+																									
+																									 <img  style="height: 160px; width:145px" 
 																										src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{val.dEntry.parentImage.id}/#{val.dEntry.childImage.id}/#{val.dEntry.childImage.imageName}"
 																										class="img-responsive m-10" alt="" />
-																										
-																											<f:param name="parentId" value="#{val.dEntry.parentImage.id}" />
-																											<f:param name="childImg" value="#{val.dEntry.childImage.imageName}" />
-																											<f:param name="parentImg" value="#{val.dEntry.parentImage.imageName}" />
-																											<f:param name="childId" value="#{val.dEntry.childImage.id}" />
-																										
-																											<p:tooltip for="edit" showEffect="fade" value="View Image" />
-																										</p:commandLink>
+																									 </a>
 																										
 																								</div>
 																							</div>
@@ -330,20 +321,12 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																						<div class="p-0 f_l">
 																							<div class="row m-5 f_l">
 																								<div style="font-weight: bold; float: left">Live Job ID #{val.dataEntry.indexOf(v)+1} : <h:outputText value="#{v.id}"></h:outputText></div>
-																								<div class="f_l p-l-10">
-																									  <p:commandLink action="#{deBean.showImage}"
-																											rendered="#{not empty v.parentImage.publicationTitle}" ajax="true"
-																											oncomplete="PF('dlgchild').show();"  id="edit"
-																											update=":dlgchildform:basicDialog">
-																									  <img style="height: 160px; width:145px" 
-																										src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{v.parentImage.id}/#{v.childImage.id}/#{v.childImage.imageName}"
-																										class="img-responsive m-10" alt="" />
-																											<f:param name="parentId" value="#{v.parentImage.id}" />
-																											<f:param name="childImg" value="#{v.childImage.imageName}" />
-																											<f:param name="parentImg" value="#{v.parentImage.imageName}" />
-																											<f:param name="childId" value="#{v.childImage.id}" />
-																											<p:tooltip for="edit" showEffect="fade" value="View Image" />
-																										</p:commandLink>
+																								<div class="f_l p-l-10 fancybox">
+																								    <a id="#{v.parentImage.id}" onclick = "enlargeImage(#{v.parentImage.id});" href = "#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{v.parentImage.id}/#{v.childImage.id}/#{v.childImage.imageName}" title="#{v.childImage.imageName}">
+																									  <img  style="height: 160px; width:145px" 
+																									   src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{v.parentImage.id}/#{v.childImage.id}/#{v.childImage.imageName}"
+																									   class="img-responsive m-10" alt="" />
+																									</a>
 																							   </div>
 																							</div>
 																						</div>
@@ -463,11 +446,11 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 			});
 		}
 		
-		
 	    $(document).ready(function() {
+	    	
 			$(".sidebar-nav > li").removeClass();
 			$("#menu6").addClass("current active");
-			
+			$(".fancybox").fancybox();
 		});
 	    
 	    function selectAllCheckBox(){
@@ -480,7 +463,16 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 	    	$('.checkbox').removeAttr('checked');
 	    }
 	    
+	    function enlargeImage(id){
 	    
+	    	 $("#"+id).fancybox({
+	             helpers: {
+	                 title : {
+	                     type : 'float'
+	                 }
+	             }
+	         });
+	    }
 
 	    </script>
 	<!-- BEGIN MANDATORY SCRIPTS -->
@@ -518,6 +510,24 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 	<script src="#{request.contextPath}/assets/js/customValidation.js"></script>
 	<script
 		src="#{request.contextPath}/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+	<!-- Add jQuery library -->
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
+	<!-- Add mousewheel plugin (this is optional) -->
+	<script type="text/javascript" src="#{request.contextPath}/assets/plugins/fancybox/source/jquery.mousewheel-3.0.6.pack.js"></script>
+	
+	<!-- Add fancyBox -->
+	<link rel="stylesheet" href="#{request.contextPath}/assets/plugins/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+	<script type="text/javascript" src="#{request.contextPath}/assets/plugins/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+	
+	<!-- Optionally add helpers - button, thumbnail and/or media -->
+	<link rel="stylesheet" href="#{request.contextPath}/assets/plugins/fancybox/source/jquery.fancybox-buttons.css?v=1.0.5" type="text/css" media="screen" />
+	<script type="text/javascript" src="#{request.contextPath}/assets/plugins/fancybox/source/jquery.fancybox-buttons.js?v=1.0.5"></script>
+	<script type="text/javascript" src="#{request.contextPath}/assets/plugins/fancybox/source/jquery.fancybox-media.js?v=1.0.6"></script>
+	
+	<link rel="stylesheet" href="#{request.contextPath}/assets/plugins/fancybox/source/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css" media="screen" />
+	<script type="text/javascript" src="#{request.contextPath}/assets/plugins/fancybox/source/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+	
 </h:body>
 </html>
 
