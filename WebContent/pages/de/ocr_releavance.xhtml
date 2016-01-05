@@ -289,7 +289,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																			<div class="col-md-3">
 																				<div class="col-md-8 p-0">
 																					
-																					<div class="col-md-2 p-0">
+																					<div class="col-md-12 p-0">
 																						<div class="p-0 f_l">
 																							<div class="row m-5 f_l">
 																								<div style="font-weight: bold; float: left">Job ID : <h:outputText value="#{val.dEntry.id}"></h:outputText></div>
@@ -326,7 +326,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																			
 																			<div class="col-md-6">
 																				<div class="col-md-12 p-0">
-																					<div class="col-md-2 p-0">
+																					<div class="col-md-12 p-0">
 																						<div class="p-0 f_l">
 																							<div class="row m-5 f_l">
 																								<div style="font-weight: bold; float: left">Live Job ID #{val.dataEntry.indexOf(v)+1} : <h:outputText value="#{v.id}"></h:outputText></div>
@@ -338,9 +338,9 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																									  <img style="height: 160px; width:145px" 
 																										src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{v.parentImage.id}/#{v.childImage.id}/#{v.childImage.imageName}"
 																										class="img-responsive m-10" alt="" />
-																											<f:param name="parentId" value="#{val.dEntry.parentImage.id}" />
+																											<f:param name="parentId" value="#{v.parentImage.id}" />
 																											<f:param name="childImg" value="#{v.childImage.imageName}" />
-																											<f:param name="parentImg" value="#{val.dEntry.parentImage.imageName}" />
+																											<f:param name="parentImg" value="#{v.parentImage.imageName}" />
 																											<f:param name="childId" value="#{v.childImage.id}" />
 																											<p:tooltip for="edit" showEffect="fade" value="View Image" />
 																										</p:commandLink>
