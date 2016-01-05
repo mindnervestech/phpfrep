@@ -581,7 +581,10 @@ public class DeServiceDAO implements IDeServiceDAO {
 			if(o1 == 3811l) {
 				System.out.println("3811 size"+dataEntries.size());
 			}
-		    System.out.println("id : "+o1);
+		  
+			System.out.println("id : "+o1);
+			System.out.println("dataEntries.size() : "+dataEntries.size());
+			
 			if(dataEntries.size() > 0) {
 				String 	SQL = "From OcrTextMatchResult as m where m.croppedData ='"+o1+"'";
 				List <OcrTextMatchResult>  ocrTextMatchResultSubList=  getSessionFactory().getCurrentSession().createQuery(SQL).list();
