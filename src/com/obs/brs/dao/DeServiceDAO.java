@@ -576,9 +576,10 @@ public class DeServiceDAO implements IDeServiceDAO {
 		for(Long o1 : idss){
 			HashSet<Long>  id = new HashSet<>();
 		    id.add(o1);
+		    //and m.deCompany IS NULL
+		    List<DataEntry> dataEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:id)").setParameterList("id", id).list();
 			
-		    List<DataEntry> dataEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:id) and m.deCompany IS NULL").setParameterList("id", id).list();
-			if(o1 == 3811l) {
+		    if(o1 == 3811l) {
 				System.out.println("3811 size"+dataEntries.size());
 			}
 		  
