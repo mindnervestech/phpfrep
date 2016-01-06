@@ -2308,7 +2308,7 @@ public class DeManagedBean implements Serializable{
 	}
 	
 	public List<ScoreData> getDeReleavanceImageList() {
-		if(deReleavanceImageList == null || deReleavanceImageList.isEmpty()) {
+		if(deReleavanceImageList == null || deReleavanceImageList.isEmpty() ||deReleavanceImageList.size() == 1) {
 			deReleavanceImageList = deService.getDeoByReleavance();
 			liveStatusArr = new long[deReleavanceImageList.size()];
 		}
