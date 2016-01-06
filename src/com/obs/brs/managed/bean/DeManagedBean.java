@@ -5656,4 +5656,14 @@ public List<String> getcompaniesId(String query) {
 		buildParentImageList();
 		selectedIds = new HashMap<Long, Boolean>();
 	}
+	public void makeLiveAsNotDuplicateByScore(String id){
+		
+		
+	
+		
+		getParentImageService().updateOcrTextIDDupDetails(id);	
+		//getDeReleavanceImageList();
+		
+	}
+	
 }

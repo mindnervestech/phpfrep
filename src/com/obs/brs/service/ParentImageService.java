@@ -97,6 +97,14 @@ public class ParentImageService implements IParentImageService {
 		 getParentImageDAO().updateParentImageStatusLiveById(selectedIds);
 	}
 	
+	
+	@Override
+	@Transactional(readOnly=false)
+	public void updateOcrTextIDDupDetails(String id) {
+		// TODO Auto-generated method stub
+		 getParentImageDAO().updateOcrTextIDDupDetails(id);
+	}
+	
 
 
 }

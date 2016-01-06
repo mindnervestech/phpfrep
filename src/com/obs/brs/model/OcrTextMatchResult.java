@@ -40,6 +40,20 @@ public class OcrTextMatchResult implements Serializable{
 	@Column(name="DC_LIVE_JOB_SCORE")
 	private float liveJobScore;
 	
+
+	@Column(name="DC_IS_DUPLICATE")
+	private boolean isDuplicate;
+	
+	
+	public boolean isDuplicate() {
+		return isDuplicate;
+	}
+
+	public void setDuplicate(boolean isDuplicate) {
+		this.isDuplicate = isDuplicate;
+	}
+
+
 	public long getId() {
 		return Id;
 	}

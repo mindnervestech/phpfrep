@@ -342,6 +342,15 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																			</h:selectOneMenu>
 																			<p:commandButton action="#{deBean.makeLiveByScore(deBean.deReleavanceImageList.indexOf(val))}" styleClass="btn btn" oncomplete="location.reload()" style="margin-left: 22%;" value="MakeLive" ajax="true">
 			 																</p:commandButton>
+			 															
+			 																<p:commandButton   action="#{deBean.makeLiveAsNotDuplicateByScore(val.dEntry.id)}" 
+			 																	onstart="if(confirmDelete())return true; else return false;"
+			 																	styleClass="btn btn"  oncomplete="location.reload()" 
+			 																	style="margin-left: 22%;margin-top:2%;width:62%;" 
+			 																	value="Mark Not Duplicate" ajax="true">
+			 																</p:commandButton>
+			 																
+			 																
 																		</div>
 																	</div>
 																</div>
@@ -425,7 +434,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 	</style>
 	<script type="text/javascript">
 		function confirmDelete() {
-			if (confirm('Are you sure, you want to delete the Image?'))
+			if (confirm('Are you sure, you want to delete the Job?'))
 				return true;
 			else
 				return false;

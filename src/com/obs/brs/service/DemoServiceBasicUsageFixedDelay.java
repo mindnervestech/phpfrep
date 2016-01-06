@@ -33,7 +33,7 @@ public class DemoServiceBasicUsageFixedDelay
     	System.out.println("Method executed at every 1 hour. Current time is :: "+ new Date());
     	try {
     		List<DataEntry> croppedJobs = deService.getCropedImagesJobs();
-    		System.out.println("croppedJobs :"+croppedJobs.size());
+    		//System.out.println("croppedJobs :"+croppedJobs.size());
     		List<DataEntry> liveJobs = deService.getLiveDeData();
     		
     		for(DataEntry dc : croppedJobs){
@@ -55,6 +55,7 @@ public class DemoServiceBasicUsageFixedDelay
     				ocr.setCroppedData((dc.getId()));
     				ocr.setLiveData(scores.get(scores.size()-1).getId());
     				ocr.setLiveJobScore(scores.get(scores.size()-1).getScore());
+    				ocr.setDuplicate(false);
     				try {
     					
     					if(scores.get(scores.size()-2).getScore() >= .6){
@@ -65,7 +66,7 @@ public class DemoServiceBasicUsageFixedDelay
     					ocr.setCroppedData((dc.getId()));
     					ocr.setLiveData(scores.get(scores.size()-2).getId());
     					ocr.setLiveJobScore(scores.get(scores.size()-2).getScore());
-    					
+    					ocr.setDuplicate(false);
     					if(scores.get(scores.size()-2).getScore() >= .6){
         					deService.saveOcrTextResult(ocr);	
         				}
@@ -73,7 +74,6 @@ public class DemoServiceBasicUsageFixedDelay
     				} catch(Exception e){
     					e.printStackTrace();
     				}
-    				
     				
     			/*	System.out.println("JoId: "+dc.getId());
     				System.out.println("Score0: "+scores.get(scores.size()-1).getScore() + "Id 1 : " +scores.get(scores.size()-1).getId());

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.hibernate.SessionFactory;
 
 import com.obs.brs.model.DeJob;
+import com.obs.brs.model.OcrTextMatchResult;
 import com.obs.brs.model.ParentImage;
 
 /**
@@ -171,5 +172,18 @@ public class ParentImageDAO implements IParentImageDAO{
 			         
 				}
 		}
-
-}
+	
+	public void updateOcrTextIDDupDetails(String id) {
+			// TODO Auto-generated method stub
+			//System.out.println("not dup id  : "+id);
+			String sqlQuery = "from OcrTextMatchResult ";
+        	long idss = Long.parseLong(id);
+        	sqlQuery = sqlQuery + " where croppedData ="+idss;
+		    List<OcrTextMatchResult> ocrTextMatchResults = getSessionFactory().getCurrentSession().createQuery(sqlQuery).list();
+		   // System.out.println("size dup id list: "+ocrTextMatchResults.size());
+		    for(OcrTextMatchResult o : ocrTextMatchResults){
+		    	o.setDuplicate(true);
+		    	getSessionFactory().getCurrentSession().update(o);
+		    }
+		}
+	}

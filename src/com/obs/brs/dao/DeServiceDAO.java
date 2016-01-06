@@ -548,16 +548,19 @@ public class DeServiceDAO implements IDeServiceDAO {
 	@Override
 	@Transactional
 	public void saveOcrTextResult(OcrTextMatchResult ocr) {
-		/*List <OcrTextMatchResult> ocrTextMatchResultList = getSessionFactory().getCurrentSession().createQuery("From OcrTextMatchResult as m ").list();
-		System.out.println("Crp id"+croppedJobID +"Live: "+liveJobId);
-		int id = getSessionFactory().getCurrentSession().createSQLQuery(
-						    "INSERT INTO tbl_ocr_text_match_result  (DC_CROPPED_JOBID, DC_LIVE_JOBID, "
-						    + " DC_LIVE_JOB_SCORE ) VALUES (?, ?, ? )")
-						    		.setParameter(0, croppedJobID)
-						    	    .setParameter(1, liveJobId)
-						    	    .setParameter(2,  score)
-						    	    .executeUpdate();*/
-		   getSessionFactory().getCurrentSession().save(ocr);
+		boolean isExists = false;
+		
+		List <OcrTextMatchResult> ocrTextMatchResultList = getSessionFactory().getCurrentSession().createQuery("From OcrTextMatchResult as m ").list();
+		
+		for(OcrTextMatchResult o : ocrTextMatchResultList){
+			if(o.getCroppedData() == ocr.getCroppedData() && o.getLiveData() == ocr.getLiveData() ){
+				isExists = true;
+			}	
+		}
+		
+		if(isExists == false){
+		  getSessionFactory().getCurrentSession().save(ocr);	
+		}
 	}
 	
 	@Override
@@ -568,10 +571,12 @@ public class DeServiceDAO implements IDeServiceDAO {
 		List <OcrTextMatchResult> ocrTextMatchResultList = getSessionFactory().getCurrentSession().createQuery("From OcrTextMatchResult as m ").list();
 		HashSet<Long> idss = new HashSet<>();
 		for(OcrTextMatchResult o :ocrTextMatchResultList){
-			idss.add(o.getCroppedData());
+			if(o.isDuplicate() == false){
+				idss.add(o.getCroppedData());	
+			}
 		}
 		
-		System.out.println("Data In file : "+idss);
+		//System.out.println("Data In file : "+idss);
 	
 		for(Long o1 : idss){
 			HashSet<Long>  id = new HashSet<>();
@@ -580,12 +585,11 @@ public class DeServiceDAO implements IDeServiceDAO {
 		    List<DataEntry> dataEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:id)").setParameterList("id", id).list();
 			
 		    if(o1 == 3811l) {
-				System.out.println("3811 size"+dataEntries.size());
+				//System.out.println("3811 size"+dataEntries.size());
 			}
 		  
-			System.out.println("id : "+o1);
-			System.out.println("dataEntries.size() : "+dataEntries.size());
-			
+			//System.out.println("id : "+o1);
+			//System.out.println("dataEntries.size() : "+dataEntries.size());
 			if(dataEntries.size() > 0) {
 				String 	SQL = "From OcrTextMatchResult as m where m.croppedData ='"+o1+"'";
 				List <OcrTextMatchResult>  ocrTextMatchResultSubList=  getSessionFactory().getCurrentSession().createQuery(SQL).list();
@@ -602,6 +606,7 @@ public class DeServiceDAO implements IDeServiceDAO {
 					dataSubEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:sublistIds)").setParameterList("sublistIds", sublistIds).list();
 			    	
 		    	}
+				
 		    	ScoreData results = new ScoreData();
 		    	results.dEntry = dataEntries.get(0);
 		    	results.dataEntry = dataSubEntries;
@@ -609,7 +614,7 @@ public class DeServiceDAO implements IDeServiceDAO {
 		    
 			}
 		 }
-		System.out.println("size:"+scoreDatas.size());
+		//System.out.println("size:"+scoreDatas.size());
 		return scoreDatas;
 	}
 	
