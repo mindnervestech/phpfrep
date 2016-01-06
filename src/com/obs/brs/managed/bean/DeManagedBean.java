@@ -5657,10 +5657,6 @@ public List<String> getcompaniesId(String query) {
 		selectedIds = new HashMap<Long, Boolean>();
 	}
 	public void makeLiveAsNotDuplicateByScore(String id){
-		
-		
-	
-		
 		getParentImageService().updateOcrTextIDDupDetails(id);	
 		//getDeReleavanceImageList();
 		

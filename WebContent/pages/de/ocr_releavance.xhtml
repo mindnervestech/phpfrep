@@ -340,11 +340,12 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																				styleClass="form-control" value="#{deBean.liveStatusArr[deBean.deReleavanceImageList.indexOf(val)]}">
 																				<f:selectItems value="#{val.dataEntry}" var="v" itemLabel="#{v.id}" itemValue="#{v.id}" />
 																			</h:selectOneMenu>
-																			<p:commandButton action="#{deBean.makeLiveByScore(deBean.deReleavanceImageList.indexOf(val))}" styleClass="btn btn" oncomplete="location.reload()" style="margin-left: 22%;" value="MakeLive" ajax="true">
+																			<p:commandButton action="#{deBean.makeLiveByScore(deBean.deReleavanceImageList.indexOf(val))}" 
+																				styleClass="btn btn" oncomplete="location.reload()" 
+																				style="margin-left: 22%;" value="MakeLive" ajax="true">
 			 																</p:commandButton>
 			 															
 			 																<p:commandButton   action="#{deBean.makeLiveAsNotDuplicateByScore(val.dEntry.id)}" 
-			 																	onstart="if(confirmDelete())return true; else return false;"
 			 																	styleClass="btn btn"  oncomplete="location.reload()" 
 			 																	style="margin-left: 22%;margin-top:2%;width:62%;" 
 			 																	value="Mark Not Duplicate" ajax="true">
