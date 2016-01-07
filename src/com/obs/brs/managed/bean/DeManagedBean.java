@@ -2040,6 +2040,7 @@ public class DeManagedBean implements Serializable{
 									File image=new File(imageBasePath+CommonProperties.getParentImagePath()+this.parentImageId+"/"+this.parentImageName);
 									ImageIO.scanForPlugins();
 									String result = new Ocr().doOCR(image);
+									System.out.println("result: "+result);
 									if(result != null){
 										this.ocrText = result;
 									}
@@ -2052,6 +2053,7 @@ public class DeManagedBean implements Serializable{
 									File image=new File(imageBasePath+CommonProperties.getChildImagePath()+this.parentImageId+"/"+this.childImageId+"/"+dataEntry.getChildImage().getImageName());
 									ImageIO.scanForPlugins();
 									String result = new Ocr().doOCR(image);
+									System.out.println("result: "+result);
 									if(result != null){
 										this.ocrText = result;
 									}
