@@ -585,11 +585,11 @@ public class DeServiceDAO implements IDeServiceDAO {
 		    List<DataEntry> dataEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:id) and m.deCompany IS NULL").setParameterList("id", id).list();
 			
 		    if(o1 == 3811l) {
-				//System.out.println("3811 size"+dataEntries.size());
+			  System.out.println("3811 size"+dataEntries.size());
 			}
 		  
-			//System.out.println("id : "+o1);
-			//System.out.println("dataEntries.size() : "+dataEntries.size());
+			System.out.println("id : "+o1);
+			System.out.println("dataEntries.size() : "+dataEntries.size());
 			if(dataEntries.size() > 0) {
 				String 	SQL = "From OcrTextMatchResult as m where m.croppedData ='"+o1+"'";
 				List <OcrTextMatchResult>  ocrTextMatchResultSubList=  getSessionFactory().getCurrentSession().createQuery(SQL).list();
@@ -606,6 +606,7 @@ public class DeServiceDAO implements IDeServiceDAO {
 					dataSubEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:sublistIds)").setParameterList("sublistIds", sublistIds).list();
 			    	
 		    	}
+				System.out.println("data Sun entries: "+dataSubEntries.size());
 				
 		    	ScoreData results = new ScoreData();
 		    	results.dEntry = dataEntries.get(0);
