@@ -2526,6 +2526,22 @@ public class DeManagedBean implements Serializable{
 					//set image to page
 					croppedImageName = currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName();
 					RequestContext.getCurrentInstance().execute("PF('dlg1').show();$('div[id*=\"basicDialog\"]').css('top','10px')");
+					try {
+						ImageIO.scanForPlugins();
+						String result = new Ocr().doOCR(newFile);
+						System.out.println("result: "+result);
+						if(result != null){
+							DeJob deJob = 	deService.getDeJobByParentImageId(parentImage.getId());
+							DataEntry entry = new DataEntry();
+							entry.setOcrText(result); 
+							entry.setDeJobid(deJob);
+							entry.setParentImage(parentImage);
+							entry.setChildImage(childImage);
+							deService.addDataEntry(entry);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -2979,25 +2995,25 @@ public class DeManagedBean implements Serializable{
 										parentImage.setSection(sectionTitle);
 										parentImage.setPage(this.page);
 										parentImageService.updateParentImage(parentImage);
-										DeJob deJob = 	deService.getDeJobByParentImageId(parentImage.getId());
-										if(deJob != null){
-											deJob.setParentImage(parentImage);
-											deJob.setCreated_by(currentUser);
-											deJob.setCreated_On(new Date());
-											deJob.setIsActive(true);
-											deJob.setIsDeleted(false);
-											deService.updateDeJob(deJob);
-										}
-										else{
-											deJob = new  DeJob();
-											deJob.setParentImage(parentImage);
-											deJob.setCreated_by(currentUser);
-											deJob.setIsActive(true);
-											deJob.setCreated_On(new Date());
-											deJob.setIsDeleted(false);
-											deService.addDeJob(deJob);
-										}
 										messageService.messageInformation(null, " Publication has been Updated  Successfully.");
+									}
+									DeJob deJob = 	deService.getDeJobByParentImageId(parentImage.getId());
+									if(deJob != null){
+										deJob.setParentImage(parentImage);
+										deJob.setCreated_by(currentUser);
+										deJob.setCreated_On(new Date());
+										deJob.setIsActive(true);
+										deJob.setIsDeleted(false);
+										deService.updateDeJob(deJob);
+									}
+									else{
+										deJob = new  DeJob();
+										deJob.setParentImage(parentImage);
+										deJob.setCreated_by(currentUser);
+										deJob.setIsActive(true);
+										deJob.setCreated_On(new Date());
+										deJob.setIsDeleted(false);
+										deService.addDeJob(deJob);
 									}
 								}
 							}else{
