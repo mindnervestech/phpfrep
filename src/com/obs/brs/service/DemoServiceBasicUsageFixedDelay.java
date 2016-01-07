@@ -37,6 +37,7 @@ public class DemoServiceBasicUsageFixedDelay
     		List<DataEntry> liveJobs = deService.getLiveDeData();
     		System.out.println("Live jobs: "+liveJobs.size());
     		for(DataEntry dc : croppedJobs){
+    			System.out.println("Pid: "+dc.getParentImage().getId() + "OCR: "+dc.getOcrText());
     			if(dc.getOcrText() != null){
     				List<Score> scores = new ArrayList<>();
     				for(DataEntry d : liveJobs){
