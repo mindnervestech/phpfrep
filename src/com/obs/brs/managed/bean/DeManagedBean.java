@@ -279,13 +279,13 @@ public class DeManagedBean implements Serializable{
 	private int count = 1;
 	private long liveStatusId;
 
-	private long[] liveStatusArr;
+	private Long[] liveStatusArr;
 	
-	public long[] getLiveStatusArr() {
+	public Long[] getLiveStatusArr() {
 		return liveStatusArr;
 	}
 
-	public void setLiveStatusArr(long[] liveStatusArr) {
+	public void setLiveStatusArr(Long[] liveStatusArr) {
 		this.liveStatusArr = liveStatusArr;
 	}
 
@@ -2310,7 +2310,7 @@ public class DeManagedBean implements Serializable{
 	public List<ScoreData> getDeReleavanceImageList() {
 		if(deReleavanceImageList == null || deReleavanceImageList.isEmpty() ) {
 			deReleavanceImageList = deService.getDeoByReleavance();
-			liveStatusArr = new long[deReleavanceImageList.size()];
+			liveStatusArr = new Long[deReleavanceImageList.size()];
 		}
 		return deReleavanceImageList;
 	}
