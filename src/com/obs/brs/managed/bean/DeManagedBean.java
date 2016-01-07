@@ -5657,9 +5657,28 @@ public List<String> getcompaniesId(String query) {
 		selectedIds = new HashMap<Long, Boolean>();
 	}
 	public void makeLiveAsNotDuplicateByScore(String id){
+        System.out.println("makeLiveAsNotDuplicateByScore method");
 		getParentImageService().updateOcrTextIDDupDetails(id);	
 		//getDeReleavanceImageList();
 		
 	}
+	
+	public void testMethod(){
+		System.out.println("testMethod");
+	}
+	
+	/*public void selectAllparentImages(){
+		for (Map.Entry<Long, Boolean> entry : selectedIds.entrySet()) {
+		
+			if(selectedIds.containsKey(entry.getKey())){
+	        	selectedIds.put(entry.getKey(), true);
+	           }  
+	    	}
+		
+		   for (Map.Entry<Long, Boolean> entry : selectedIds.entrySet()) {
+	           System.out.println("value after  changed:  "+entry.getValue());
+	    	}	
+	}*/
+	
 	
 }
