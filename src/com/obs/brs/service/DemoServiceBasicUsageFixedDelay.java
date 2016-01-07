@@ -59,7 +59,7 @@ public class DemoServiceBasicUsageFixedDelay
     				ocr.setDuplicate(false);
     				try {
     					
-    					if(scores.get(scores.size()-2).getScore() >= .0){
+    					if(scores.get(scores.size()-1).getScore() >= .5){
     						deService.saveOcrTextResult(ocr);	
     					}
     					
@@ -69,7 +69,7 @@ public class DemoServiceBasicUsageFixedDelay
     					ocr.setLiveJobScore(scores.get(scores.size()-2).getScore());
     					ocr.setDuplicate(false);
     					System.out.println("scores.size()-1" +(scores.size()-1));
-    					if(scores.get(scores.size()-2).getScore() >= .6){
+    					if(scores.get(scores.size()-2).getScore() >= .5){
         					deService.saveOcrTextResult(ocr);	
         				}
         					
