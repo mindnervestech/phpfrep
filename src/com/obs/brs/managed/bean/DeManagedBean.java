@@ -2732,6 +2732,23 @@ public class DeManagedBean implements Serializable{
 					ImageIO.write(bi,"jpg",newFile );
 					//set image to page
 					croppedImageName = currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName();
+					try {
+						ImageIO.scanForPlugins();
+						String result = new Ocr().doOCR(newFile);
+						System.out.println("result: "+result);
+						if(result != null){
+							DeJob deJob = 	deService.getDeJobByParentImageId(parentImage.getId());
+							DataEntry entry = new DataEntry();
+							entry.setOcrText(result); 
+							entry.setDeJobid(deJob);
+							entry.setParentImage(parentImage);
+							entry.setChildImage(childImage);
+							deService.addDataEntry(entry);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
 					//RequestContext.getCurrentInstance().execute("PF('dlg1').show()");
 				} catch (Exception e) {
 					e.printStackTrace();
