@@ -80,6 +80,10 @@ public class ChildImageService implements IChildImageService{
 	public List<ChildImage> getChildImagesByParent(long parentId) {
 		return getChildImageDAO().getChildImagesByParent(parentId);
 	}
+	@Override
+	public List<ChildImage> getAllChildImageNotInList(List<Long> ids) {
+		return getChildImageDAO().getAllChildImageNotInList(ids);
+	}
 	
 
 }

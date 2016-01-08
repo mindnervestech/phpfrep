@@ -83,6 +83,12 @@ public class ChildImageDAO implements IChildImageDAO{
 		List<ChildImage> list = getSessionFactory().getCurrentSession().createQuery("from ChildImage as c where c.parentImage.id="+parentId).list();
 		return list;
 	}
+
+	@Override
+	public List<ChildImage> getAllChildImageNotInList(List<Long> ids) {
+		List<ChildImage> childImages = getSessionFactory().getCurrentSession().createQuery("from ChildImage as c where c.id not in (:ids)").setParameterList("ids", ids).list();
+		return childImages;
+	}
 	
 
 }

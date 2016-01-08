@@ -44,4 +44,6 @@ public interface IChildImageDAO {
 	 * 
 	 */
 	public List<ChildImage> getChildImagesByParent(long parentId);
+	
+	List<ChildImage> getAllChildImageNotInList(List<Long> ids);
 }

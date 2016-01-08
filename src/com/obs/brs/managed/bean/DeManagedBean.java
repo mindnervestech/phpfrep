@@ -5711,5 +5711,32 @@ public List<String> getcompaniesId(String query) {
 	    	}	
 	}*/
 	
-	
+	public void processChild() {
+		List<DataEntry> dataEntries = deService.getDataEntry();
+		List<Long> ids = new ArrayList<Long>(dataEntries.size());
+		for(DataEntry d : dataEntries) {
+			if(d.getChildImage() != null) {
+				ids.add(d.getChildImage().getId());
+			}
+		}
+		System.out.println("size :"+ids.size());
+		List<ChildImage> childImages = childImageService.getAllChildImageNotInList(ids);
+		System.out.println("childImages :"+childImages.size());
+		for(ChildImage childImage :childImages) {
+			DataEntry entry = new DataEntry();
+			entry.setChildImage(childImage);
+			entry.setParentImage(childImage.getParentImage());
+			entry.setDeJobid(deService.getDeJobByParentImageId(childImage.getParentImage().getId()));
+			try {
+				File image=new File(imageBasePath+CommonProperties.getChildImagePath()+childImage.getParentImage().getId()+"/"+childImage.getId()+"/"+childImage.getImageName());
+				ImageIO.scanForPlugins();
+				String result = new Ocr().doOCR(image);
+				System.out.println("result: "+result);
+				entry.setOcrText(result);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			deService.addDataEntry(entry);
+		}
+	}
 }

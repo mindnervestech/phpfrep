@@ -45,6 +45,8 @@ public interface IChildImageService {
 	 */
 	public List<ChildImage> getChildImage();
 	
+	public List<ChildImage> getAllChildImageNotInList(List<Long> ids);
+	
 	/**
 	 * Get ChildImage List from parent id
 	 * 
