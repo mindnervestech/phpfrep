@@ -31,6 +31,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -461,6 +462,83 @@ public class ReportMDService {
     	}
         return selectItems;
     }
+    
+    @RequestMapping(value="/getAllDeJobs",method=RequestMethod.GET)
+    public @ResponseBody void  getAllDeJobs() {
+    	List<Map<String,Object>> dejobs = jt.queryForList("Select * from tbl_de_job");
+    	System.out.println("Dejobs: "+dejobs.size());
+    	final Map<Long ,Long> map = new HashMap<Long, Long>();
+    	
+    	MapSqlParameterSource parameters = new MapSqlParameterSource();
+    	List<Long> idss = new ArrayList<Long>();
+    	String idParent = new String();
+    	
+    	for(Map<String,Object> m:  dejobs){
+			idss.add(Long.parseLong(m.get("DN_PARENT_IMAGE_ID").toString()));
+			map.put(Long.parseLong(m.get("DN_PARENT_IMAGE_ID").toString()), Long.parseLong(m.get("DN_CREATED_BY").toString()));
+			idParent += m.get("DN_PARENT_IMAGE_ID").toString()+",";
+    	}
+    	
+    	if(!idParent.isEmpty()) {
+    		idParent = idParent.substring(0,idParent.length()-1);
+    	}
+    	
+    	parameters.addValue("ids", idss);
+    	
+    	System.out.println("Idsss: "+idss.size());      
+    	System.out.println("parameters: "+parameters);
+    	
+    	List<Map<String,Object>> parentJobsNotDejob = jt.queryForList("Select * from tbl_parent_image where DN_ID not in ("+idParent+")");
+    	System.out.println("parentJobsNotDejob: "+parentJobsNotDejob.size());
+
+    	for(final Map<String,Object> m :  parentJobsNotDejob){
+    		map.put(Long.parseLong(m.get("DN_ID").toString()), Long.parseLong(m.get("DN_CREATED_BY").toString()));
+    	}
+    	
+    	for(final Map<String,Object> m :  parentJobsNotDejob){
+    		
+    		System.out.println("DN ID toString(); "+m.get("DN_ID").toString());
+    		KeyHolder keyHolder=new GeneratedKeyHolder();
+			jt.update(new PreparedStatementCreator(){
+		    public PreparedStatement createPreparedStatement( Connection connection) throws SQLException {
+		      PreparedStatement ps=connection.prepareStatement("Insert into tbl_de_job"
+		      		+ "(DD_CREATED_ON,DN_CREATED_BY,"
+		      		+ "DD_DELETED_ON,DN_DELETED_BY,"
+		      		+ "DB_DELETED,DN_PARENT_IMAGE_ID,"
+		      		+ "DB_ACTIVE,DN_STATUS,"
+		      		+ "isCompleted,render) values(?,?,?,?,?,?,?,?,?,?)",new String[]{"id"});
+		      int index=1;
+		     //DD_CREATED_ON
+		      ps.setDate(index++,new java.sql.Date(new Date().getTime()));
+		      //DD_CREATED BY
+		      ps.setLong(index++,Long.parseLong(m.get("DN_CREATED_BY").toString()));
+		     //DD_DELETED_ON
+		      ps.setNull(index++,java.sql.Types.NULL);
+		      //DD_DELETED_BY
+		      ps.setNull(index++, java.sql.Types.NULL);//Null(index++, (Long)null );
+		      //DB_DELETED
+		      ps.setInt(index++, 0);
+		      //DN_PARENT_IMAGE_ID
+		      String pid = m.get("DN_ID").toString();
+		      ps.setLong(index++, Long.parseLong(pid));
+		      //DB_ACTIVE
+		      ps.setInt(index++, 1);
+		      //DN_STATUS
+		      ps.setInt(index++, 1);
+		      //isCompleted
+		      ps.setNull(index++, java.sql.Types.NULL);
+		      //render
+		      ps.setInt(index++, 0);
+		      return ps;
+		    }
+		  }
+		,keyHolder);
+    		
+    	}
+    	
+    	
+    }
+    
     
     @RequestMapping(value="/getAllPublicationData",method=RequestMethod.POST)
     public @ResponseBody Map getAllpublicationData(@RequestBody String filter) {
