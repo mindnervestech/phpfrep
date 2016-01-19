@@ -565,7 +565,6 @@ public class DeServiceDAO implements IDeServiceDAO {
 	
 	@Override
 	public List<ScoreData> getDeoByReleavance() {
-		System.out.println("here in xyz");
 		List<ScoreData> scoreDatas = new ArrayList<ScoreData>();
 		
 		List <OcrTextMatchResult> ocrTextMatchResultList = getSessionFactory().getCurrentSession().createQuery("From OcrTextMatchResult as m ").list();
@@ -583,14 +582,8 @@ public class DeServiceDAO implements IDeServiceDAO {
 		    id.add(o1);
 		    //
 		    List<DataEntry> dataEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:id) and m.deCompany IS NULL").setParameterList("id", id).list();
-			
-		    if(o1 == 3811l) {
-			  System.out.println("3811 size"+dataEntries.size());
-			}
 		  
-			System.out.println("id : "+o1);
-			System.out.println("dataEntries.size() : "+dataEntries.size());
-			if(dataEntries.size() > 0) {
+		    if(dataEntries.size() > 0) {
 				String 	SQL = "From OcrTextMatchResult as m where m.croppedData ='"+o1+"'";
 				List <OcrTextMatchResult>  ocrTextMatchResultSubList=  getSessionFactory().getCurrentSession().createQuery(SQL).list();
 			
@@ -603,10 +596,8 @@ public class DeServiceDAO implements IDeServiceDAO {
 				List<DataEntry> dataSubEntries = new ArrayList<>();
 		
 				if(sublistIds.size() != 0){
-					dataSubEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:sublistIds)").setParameterList("sublistIds", sublistIds).list();
-			    	
+					dataSubEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:sublistIds)").setParameterList("sublistIds", sublistIds).list();			    	
 		    	}
-				System.out.println("data Sun entries: "+dataSubEntries.size());
 				
 		    	ScoreData results = new ScoreData();
 		    	results.dEntry = dataEntries.get(0);

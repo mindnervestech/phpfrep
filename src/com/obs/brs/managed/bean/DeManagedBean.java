@@ -270,9 +270,13 @@ public class DeManagedBean implements Serializable{
 	private Integer selectedCompanyId;
 	private boolean isFilter = true;
 	private Integer pages[];
+	private Integer pagesOcr[];
 	private int pageRange = 10;
+	private int pageRangeOcr = 4;
 	private int reviewPageRange = 3;
 	private String totalStr;
+	private String totalStrOcr;
+	
 	private Set<String> duplicateFileNames;
 	private List<String> duplicateNames;
 	private String iframeUrl;
@@ -289,6 +293,23 @@ public class DeManagedBean implements Serializable{
 		this.liveStatusArr = liveStatusArr;
 	}
 
+	public int getPageRangeOcr() {
+		return pageRangeOcr;
+	}
+
+	public void setPageRangeOcr(int pageRangeOcr) {
+		this.pageRangeOcr = pageRangeOcr;
+	}
+	public Integer[] getPagesOcr() {
+		//HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		loadPaginationOcr();
+		return pagesOcr;
+	}
+
+	public void setPagesOcr(Integer[] pagesOcr) {
+		this.pagesOcr = pagesOcr;
+	}
+	
 	public long getLiveStatusId() {
 		return liveStatusId;
 	}
@@ -311,6 +332,20 @@ public class DeManagedBean implements Serializable{
 		this.count = count;
 	}
 
+	public String getTotalStrOcr() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append((this.imageOffsetOcr/this.imagePerPageOcr)+1);
+		buffer.append("/");
+		buffer.append(((this.deReleavanceImageList.size()/this.imagePerPageOcr)+1));
+		return buffer.toString();
+		
+	}
+
+	public void setTotalStrOcr(String totalStrOcr) {
+		this.totalStrOcr = totalStrOcr;
+	}
+
+	
 	private static Map<String,String> titleMap = new HashMap<String,String>(6);
 	private static Map<String,String> sectionMap = new HashMap<String,String>(4);
 	static {
@@ -391,6 +426,19 @@ public class DeManagedBean implements Serializable{
         }
 	}
 	
+	/** load pagination for the ocr text**/
+	private void loadPaginationOcr() {
+		int totalRows = this.getDeReleavanceImageList().size();
+		int currentPage = (this.imageOffsetOcr/this.imagePerPageOcr)+1;
+        int totalPages = (totalRows / this.imagePerPageOcr) + ((totalRows % this.imagePerPageOcr != 0) ? 1 : 0);
+        int pagesLength = Math.min(pageRangeOcr, totalPages);
+        pagesOcr = new Integer[pagesLength];
+        int firstPage = Math.min(Math.max(0, currentPage - (pageRangeOcr / 2)), totalPages - pagesLength);
+        for (int i = 0; i < pagesLength; i++) {
+            pagesOcr[i] = ++firstPage;
+        }
+	}
+	
 	private void loadReviewPagination() {
 		int totalRows = this.getDeJobListBySeachCriteria().size();
 		int currentPage = (this.reviewPageOffset/this.getRowsPerPage())+1;
@@ -410,6 +458,10 @@ public class DeManagedBean implements Serializable{
 		}
 		if(origRequest.getRequestURI().indexOf("gallery")!=-1) {
 			loadPagination();
+		}
+		System.out.println("origRequest.getRequestURI(): "+origRequest.getRequestURI());
+		if(origRequest.getRequestURI().indexOf("ocr_releavance")!=-1) {
+			loadPaginationOcr();
 		}
 		return pages;
 	}
@@ -610,7 +662,43 @@ public class DeManagedBean implements Serializable{
 	private int childImagePerPage = 20;
 	private int childImageOffset = 0;
 	private int reviewPageOffset = 0;
+	private int imagePerPageOcr = 20;
+	private int imageOffsetOcr;
 	
+	public int getImageOffsetOcr() {
+		
+		try{
+			Object offset = sessionManager.getSessionAttribute(SessionManager.IMAGEOFFSET);
+			if(offset!=null){
+				imageOffsetOcr = Integer.valueOf(offset.toString());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return imageOffsetOcr;
+	}
+
+	public void setImageOffsetOcr(int imageOffsetOcr) {
+		this.imageOffsetOcr = imageOffsetOcr;
+	}
+
+	public int getImagePerPageOcr() {
+		
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGEOCR); 
+			if(rowsPerPage!=null){
+				imagePerPageOcr = Integer.valueOf(rowsPerPage.toString());
+			}
+		}catch(Exception e){
+		}
+		return imagePerPageOcr;
+	}
+
+	public void setImagePerPageOcr(int imagePerPageOcr) {
+		this.imagePerPageOcr = imagePerPageOcr;
+	}
+
 	public int getChildImagePerPage() {
 		return childImagePerPage;
 	}
@@ -4751,6 +4839,20 @@ public List<String> getcompaniesId(String query) {
 		sessionManager.setSessionAttributeInSession(SessionManager.IMAGEPERPAGE, perPage);
 		loadPagination();
 	}
+	
+	
+	/**
+	 * 
+	 * @param event
+	 */
+	public void localImageChangedOcr(ValueChangeEvent event)	
+	{ 
+		count  = 1;
+		String perPage = event.getNewValue().toString();
+		imagePerPageOcr = Integer.parseInt(perPage);
+		sessionManager.setSessionAttributeInSession(SessionManager.IMAGEPERPAGEOCR, perPage);
+		loadPaginationOcr();
+	}
 	/**
 	 * pagination method for next page 
 	 */
@@ -4768,6 +4870,25 @@ public List<String> getcompaniesId(String query) {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * pagination method for next page 
+	 */
+	public void nxtPageOcr(){
+		count  = 1;
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGEOCR); 
+			//System.out.println("rowsPerPage"+rowsPerPage);
+			if(rowsPerPage!=null){
+				imagePerPageOcr = Integer.valueOf(rowsPerPage.toString());
+			}
+			imageOffsetOcr +=Integer.valueOf(imagePerPageOcr);
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSETOCR, imageOffsetOcr);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * for previous page
 	 */
@@ -4787,6 +4908,26 @@ public List<String> getcompaniesId(String query) {
 		}
 	}
 	
+	/**
+	 * for previous page Ocr releavance
+	 */
+	public void prevPageOcr(){
+		count  = 1;
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGEOCR);
+			if(rowsPerPage!=null){
+				imagePerPageOcr = Integer.valueOf(rowsPerPage.toString());
+			}
+			if(imageOffsetOcr>1)
+				imageOffsetOcr = imageOffsetOcr - Integer.valueOf(imagePerPageOcr);
+			
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSETOCR, imageOffsetOcr);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public void gotoPage() {
 		count  = 1;
 		int page = Integer.valueOf(facesUtils.getRequestParameterMap("page"));
@@ -4798,6 +4939,22 @@ public List<String> getcompaniesId(String query) {
 			imageOffset = (page-1) * imagePerPage;
 			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSET, imageOffset);
 			loadPagination();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void gotoPageOcr() {
+		count  = 1;
+		int page = Integer.valueOf(facesUtils.getRequestParameterMap("page"));
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGEOCR);
+			if(rowsPerPage!=null){
+				imagePerPageOcr = Integer.valueOf(rowsPerPage.toString());
+			}
+			imageOffsetOcr = (page-1) * imagePerPageOcr;
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSETOCR, imageOffsetOcr);
+			loadPaginationOcr();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -4839,6 +4996,28 @@ public List<String> getcompaniesId(String query) {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * for first page record for ocr releavance
+	 */
+	
+	public void firstPageOcr(){
+		count =1;
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGEOCR);
+			if(rowsPerPage!=null){
+				imagePerPage = Integer.valueOf(rowsPerPage.toString());
+			}
+			if(imageOffsetOcr > 1)
+				imageOffsetOcr = 0;
+			
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSETOCR, imageOffsetOcr);
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * for first page record
 	 */
@@ -4882,6 +5061,46 @@ public List<String> getcompaniesId(String query) {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * for first page record
+	 */
+	public void lastPageOcr(){
+		count  = 1;
+		try{
+			int listSize = 0;
+			int pagecount;
+			int remainder;
+			FacesUtils facesUtils = new FacesUtils();
+			String catagory=facesUtils.getRequestParameterMap("type");
+			// parent image list
+			if( getDeReleavanceImageList() != null && deReleavanceImageList.size()>0 )
+			{
+				listSize = deReleavanceImageList.size();
+			}
+			
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGEOCR); 
+			if(rowsPerPage!=null)
+			{
+				imagePerPageOcr = Integer.valueOf(rowsPerPage.toString());
+			}
+			pagecount=(listSize/Integer.valueOf(imagePerPageOcr));
+			remainder=(listSize%Integer.valueOf(imagePerPageOcr));
+			if(pagecount>0 && remainder >0)
+			{
+				imageOffsetOcr =listSize-(listSize%Integer.valueOf(imagePerPageOcr));
+			}
+			else
+			{
+				imageOffsetOcr =listSize-(Integer.valueOf(imagePerPageOcr));
+			}
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSETOCR, imageOffsetOcr);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	
 	/**
 	 * pagination method for next page 
@@ -5656,6 +5875,36 @@ public List<String> getcompaniesId(String query) {
 				}
 			});
 		}
+	}
+
+	public static void main(String[] arr) {
+		String test = "140201CL";
+		for(String a:test.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)")) {
+			System.out.println(a);
+		}
+		//int input1[] = {2,4,5,6,3,4,8,9};
+		//int input2 = 8;
+		//System.out.println(test(input1,input2));
+	}
+	public static int test(int[] input1,int input2) {
+		int firstSelection = 0;
+    	int secondSelection = 0;
+    	boolean isFirst = true;
+    	boolean isSecond = false;
+        for(int i=0;i<input1.length-1;i++) {
+        	if(input1[i]<input1[i+1]) {
+        		if(isFirst) {
+        			firstSelection += input1[i+1] - input1[i];
+        		} else if(!isSecond) {
+        			secondSelection += input1[i+1] - input1[i];
+        		}
+        	} else {
+        		if(isFirst)
+        			isSecond = false;
+        		isFirst = false;
+        	}
+        }
+        return firstSelection+secondSelection;
 	}
 
 	public boolean isDuplicate() {

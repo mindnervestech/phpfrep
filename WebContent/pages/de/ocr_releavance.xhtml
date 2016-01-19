@@ -238,7 +238,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 	<f:viewParam name="msgWarnLabel" value="#{deBean.msgWarnLabel}" />
 	<f:event type="preRenderView" listener="#{deBean.loadMessage}" />
 	<f:viewParam name="img" value="#{deBean.id}" />
-	<f:event type="preRenderView" listener="#{deBean.loadAllPublicationInfo}"    />
+	
 </f:metadata>
 <h:body data-page="file_upload" >
 	<ui:include src="/pages/header_admin.xhtml" />
@@ -272,10 +272,55 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 												rendered="#{empty deBean.deReleavanceImageList}" />
 											<t:div id="div_photo_list"
 												rendered="#{not empty deBean.deReleavanceImageList}">
-												
+													<t:div styleClass="pull-right"
+														rendered="#{((fn:length(deBean.deReleavanceImageList) > (deBean.imagePerPageOcr)) and (deBean.imageOffsetOcr == 0)) or ((deBean.imageOffsetOcr > 0))}" style="margin-bottom: 0.5%;width:50%;">
+														<ul class="pagination pagination-right"
+															style="margin: 0px; border: 0px solid #ccc;">
+															<li style="padding: 0px;"><p:commandLink
+																	disabled="true"
+																	rendered="#{((deBean.imageOffsetOcr/deBean.imagePerPageOcr)+1) ==1}">	First
+																			</p:commandLink> <p:commandLink ajax="true" action="#{deBean.firstPageOcr}"
+																	update="div_photo_list"
+																	rendered="#{((deBean.imageOffsetOcr/deBean.imagePerPageOcr)+1)>1}"> First
+																			</p:commandLink></li>
+															<li style="font-size: 13px;padding: 0px;"><p:commandLink
+																	disabled="true"
+																	rendered="#{((deBean.imageOffsetOcr/deBean.imagePerPageOcr)+1) ==1}">	&#60;
+																			</p:commandLink> <p:commandLink ajax="true" action="#{deBean.prevPageOcr}"
+																	update="div_photo_list"
+																	rendered="#{((deBean.imageOffsetOcr/deBean.imagePerPageOcr)+1) >1}"> &#60;
+																			</p:commandLink></li>
+															<c:forEach id="userSearchResults" var="page" items="#{deBean.pagesOcr}" >
+                              									<li style="padding: 0px;">
+																	<p:commandLink value="#{page}" ajax="true" action="#{deBean.gotoPageOcr}"
+                									                 rendered="#{page != (deBean.imageOffsetOcr/deBean.imagePerPageOcr)+1}" update="div_photo_list">
+                									               <f:param name="page" value="#{page}" />
+                									               </p:commandLink>
+                												<h:outputText value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                              										rendered="#{page == (deBean.imageOffsetOcr/deBean.imagePerPageOcr)+1}" />                              									
+                              									</li>
+            												</c:forEach>
+															<li style="font-size: 13px;padding: 0px;"><p:commandLink ajax="true"
+																	action="#{deBean.nxtPageOcr}" update="div_photo_list"
+																	rendered="#{fn:length(deBean.deReleavanceImageList) > (deBean.imageOffsetOcr+deBean.imagePerPageOcr)}">&#62;															
+																			</p:commandLink> <p:commandLink disabled="true"
+																	rendered="#{(fn:length(deBean.deReleavanceImageList) &lt; (deBean.imageOffsetOcr+deBean.imagePerPageOcr)) or(fn:length(deBean.deReleavanceImageList) == (deBean.imageOffsetOcr+deBean.imagePerPageOcr))}">&#62;
+																			</p:commandLink></li>
+															<li style="padding: 0px;"><p:commandLink
+																	ajax="true" action="#{deBean.lastPageOcr}"
+																	update="div_photo_list"
+																	rendered="#{fn:length(deBean.deReleavanceImageList) > (deBean.imageOffsetOcr+deBean.imagePerPageOcr)}">Last
+																	<f:param name="type" value="parent" />
+																</p:commandLink> <p:commandLink disabled="true"
+																	rendered="#{(fn:length(deBean.deReleavanceImageList) &lt; (deBean.imageOffsetOcr+deBean.imagePerPageOcr)) or(fn:length(deBean.deReleavanceImageList) == (deBean.imageOffsetOcr+deBean.imagePerPageOcr))}">Last
+																			</p:commandLink></li>
+															<li><span style="padding: 0px;font-size: 14px;color:#000;"><h:outputText value="#{deBean.totalStrOcr}"/></span></li>
+														</ul>
+													</t:div>
 												<ui:repeat var="val" value="#{deBean.deReleavanceImageList}"
-													rendered="#{not empty deBean.deReleavanceImageList}"
-													varStatus="status">
+													rendered="#{not empty deBean.deReleavanceImageList}" id= "dt_orgList" offset="#{deBean.imageOffsetOcr}"
+													varStatus="status" 
+													size="#{deBean.imagePerPageOcr-1}">
                                                
 													<div class="col-xs-12 col-sm-12 col-md-12">
 														<div class="panel panel-default">
@@ -359,6 +404,66 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 														</div>
 													</div>
 												</ui:repeat>
+												<div style="clear: both;">
+													<t:div rendered="#{ fn:length(deBean.deReleavanceImageList) > 20}">
+														<label style="width: 6%; margin-left: 15px;"
+															class="pull-left"> <h:selectOneMenu
+																styleClass="form-control" value="#{deBean.imagePerPageOcr}"
+																valueChangeListener="#{deBean.localImageChangedOcr}"
+																onchange="this.form.submit()">
+																<f:selectItem itemLabel="6" itemValue="6" />
+																<f:selectItem itemLabel="20" itemValue="20" />
+																<f:selectItem itemLabel="40" itemValue="40" />
+																<f:selectItem itemLabel="60" itemValue="60" />
+															</h:selectOneMenu>
+														</label>
+													</t:div>
+													<t:div styleClass="pull-right"
+														rendered="#{((fn:length(deBean.deReleavanceImageList) > (deBean.imagePerPageOcr)) and (deBean.imageOffsetOcr == 0)) or ((deBean.imageOffsetOcr > 0))}" style="margin-bottom: 0.5%;width:50%;">
+														<ul class="pagination pagination-right"
+															style="margin: 0px; border: 0px solid #ccc;">
+															<li style="padding: 0px;"><p:commandLink
+																	disabled="true"
+																	rendered="#{((deBean.imageOffsetOcr/deBean.imagePerPageOcr)+1) ==1}">	First
+																			</p:commandLink> <p:commandLink ajax="true" action="#{deBean.firstPageOcr}"
+																	update="div_photo_list"
+																	rendered="#{((deBean.imageOffsetOcr/deBean.imagePerPageOcr)+1)>1}"> First
+																			</p:commandLink></li>
+															<li style="font-size: 13px;padding: 0px;"><p:commandLink
+																	disabled="true"
+																	rendered="#{((deBean.imageOffsetOcr/deBean.imagePerPageOcr)+1) ==1}">	&#60;
+																			</p:commandLink> <p:commandLink ajax="true" action="#{deBean.prevPageOcr}"
+																	update="div_photo_list"
+																	rendered="#{((deBean.imageOffsetOcr/deBean.imagePerPageOcr)+1) >1}"> &#60;
+																			</p:commandLink></li>
+															<c:forEach id="userSearchResults" var="page" items="#{deBean.pagesOcr}" >
+                              									<li style="padding: 0px;">
+																	<p:commandLink value="#{page}" ajax="true" action="#{deBean.gotoPageOcr}"
+                									                 rendered="#{page != (deBean.imageOffsetOcr/deBean.imagePerPageOcr)+1}" update="div_photo_list">
+                									               <f:param name="page" value="#{page}" />
+                									               </p:commandLink>
+                												<h:outputText value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                              										rendered="#{page == (deBean.imageOffsetOcr/deBean.imagePerPageOcr)+1}" />                              									
+                              									</li>
+            												</c:forEach>
+															<li style="font-size: 13px;padding: 0px;"><p:commandLink ajax="true"
+																	action="#{deBean.nxtPageOcr}" update="div_photo_list"
+																	rendered="#{fn:length(deBean.deReleavanceImageList) > (deBean.imageOffsetOcr+deBean.imagePerPageOcr)}">&#62;															
+																			</p:commandLink> <p:commandLink disabled="true"
+																	rendered="#{(fn:length(deBean.deReleavanceImageList) &lt; (deBean.imageOffsetOcr+deBean.imagePerPageOcr)) or(fn:length(deBean.deReleavanceImageList) == (deBean.imageOffsetOcr+deBean.imagePerPageOcr))}">&#62;
+																			</p:commandLink></li>
+															<li style="padding: 0px;"><p:commandLink
+																	ajax="true" action="#{deBean.lastPageOcr}"
+																	update="div_photo_list"
+																	rendered="#{fn:length(deBean.deReleavanceImageList) > (deBean.imageOffsetOcr+deBean.imagePerPageOcr)}">Last
+																	<f:param name="type" value="parent" />
+																</p:commandLink> <p:commandLink disabled="true"
+																	rendered="#{(fn:length(deBean.deReleavanceImageList) &lt; (deBean.imageOffsetOcr+deBean.imagePerPageOcr)) or(fn:length(deBean.deReleavanceImageList) == (deBean.imageOffsetOcr+deBean.imagePerPageOcr))}">Last
+																			</p:commandLink></li>
+															<li><span style="padding: 0px;font-size: 14px;color:#000;"><h:outputText value="#{deBean.totalStrOcr}"/></span></li>
+														</ul>
+													</t:div>
+												</div>
 											</t:div>
 										</div>
 									</div>

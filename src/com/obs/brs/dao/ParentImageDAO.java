@@ -175,12 +175,12 @@ public class ParentImageDAO implements IParentImageDAO{
 	
 	public void updateOcrTextIDDupDetails(String id) {
 			// TODO Auto-generated method stub
-			System.out.println("not dup id  : "+id);
+			//System.out.println("not dup id  : "+id);
 			String sqlQuery = "from OcrTextMatchResult ";
         	long idss = Long.parseLong(id);
         	sqlQuery = sqlQuery + " where croppedData ="+idss;
 		    List<OcrTextMatchResult> ocrTextMatchResults = getSessionFactory().getCurrentSession().createQuery(sqlQuery).list();
-		     System.out.println("size dup id list: "+ocrTextMatchResults.size());
+		   // System.out.println("size dup id list: "+ocrTextMatchResults.size());
 		    for(OcrTextMatchResult o : ocrTextMatchResults){
 		    	o.setDuplicate(true);
 		    	getSessionFactory().getCurrentSession().update(o);

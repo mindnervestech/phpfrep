@@ -33,11 +33,11 @@ public class DemoServiceBasicUsageFixedDelay
     	System.out.println("Method executed at every 1 hour. Current time is :: "+ new Date());
     	try {
     		List<DataEntry> croppedJobs = deService.getCropedImagesJobs();
-    		System.out.println("croppedJobs :"+croppedJobs.size());
+    		//System.out.println("croppedJobs :"+croppedJobs.size());
     		List<DataEntry> liveJobs = deService.getLiveDeData();
-    		System.out.println("Live jobs: "+liveJobs.size());
+    		//System.out.println("Live jobs: "+liveJobs.size());
     		for(DataEntry dc : croppedJobs){
-    			System.out.println("Pid: "+dc.getParentImage().getId() + "OCR: "+dc.getOcrText());
+    			//System.out.println("Pid: "+dc.getParentImage().getId() + "OCR: "+dc.getOcrText());
     			if(dc.getOcrText() != null){
     				List<Score> scores = new ArrayList<>();
     				for(DataEntry d : liveJobs){
@@ -68,7 +68,7 @@ public class DemoServiceBasicUsageFixedDelay
     					ocr.setLiveData(scores.get(scores.size()-2).getId());
     					ocr.setLiveJobScore(scores.get(scores.size()-2).getScore());
     					ocr.setDuplicate(false);
-    					System.out.println("scores.size()-1" +(scores.size()-1));
+    					//System.out.println("scores.size()-1" +(scores.size()-1));
     					if(scores.get(scores.size()-2).getScore() >= .5){
         					deService.saveOcrTextResult(ocr);	
         				}
