@@ -27,6 +27,7 @@ public class SessionManager implements Serializable{
 	public static final String REPORTCURRENTITEMID = "report_current_item_id";
 	public static final String REPORTCURRENTJOURNALID = "report_current_journal_id";
 	public static final String IMAGEPERPAGE 		= "imagePerPage";
+	public static final String IMAGEPERPAGEOCR 		= "imagePerPageOcr";
 	public static final String CHILDIMAGEPERPAGE 		= "childImagePerPage";
 	public static final String PUBLICATIONID 		= "publicationId";
 	public static final String JOBSTATUS 			= "jobStatusGot";
@@ -34,6 +35,7 @@ public class SessionManager implements Serializable{
 	public static String CHILDIMAGEID 			= "child_image_id";
 	public static final String CREATEDBYDEO = "createdByDeo";
 	public static final String IMAGEOFFSET = "image_offset";
+	public static final String IMAGEOFFSETOCR = "image_offset_ocr";
 	public static final String TERRITORYSUCCESS = "territorysuccess";
 	public static SessionManager getMyInstatnce(){
 		if(sessionManager == null){
