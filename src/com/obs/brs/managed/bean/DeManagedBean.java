@@ -351,6 +351,7 @@ public class DeManagedBean implements Serializable{
 	static {
 		titleMap.put("natus", "1084");
 		titleMap.put("natuk", "1085");
+		titleMap.put("natgbl", "1086");
 		titleMap.put("newus", "520");
 		titleMap.put("newuk", "521");
 		titleMap.put("cell", "522");
@@ -3012,9 +3013,12 @@ public class DeManagedBean implements Serializable{
 						if(sourcePathImage != null){
 							ParentImage parentImage = new ParentImage();
 							String filename = files[i].getName();
+							String orgFilename = files[i].getName();
+							System.out.println("before orgFilename: "+orgFilename);
 							String[] split = filename.split("\\.");
 							extension = split[split.length - 1];
 							String file=split[split.length - 2];
+							orgFilename = file+"."+extension;
 							file=file.replaceAll(" ", "_");
 							filename=file+"."+extension;
 							if(extension.equalsIgnoreCase("jpeg") || extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("gif")){
@@ -3053,8 +3057,26 @@ public class DeManagedBean implements Serializable{
 								Integer year = null;
 								if(filename != null && !filename.isEmpty()) {
 									String[] arr = filename.split("_");
-									if(arr.length==3) {
-										publicationTitle = titleMap.get(arr[0]);
+									
+									System.out.println("arr file  name len: "+arr.length);
+									if(arr.length==4 || arr.length==3) {
+										if(arr[0].contains("nat")) {
+											if(arr.length == 4){
+												String ver = arr[3].split("\\.")[0];
+												if(ver.equalsIgnoreCase("A")) {
+													publicationTitle = titleMap.get("natus");
+												} else if(ver.equalsIgnoreCase("B")) {
+													publicationTitle = titleMap.get("natuk");
+												} else {
+													publicationTitle = titleMap.get("natgbl");
+												}
+											} else {
+												publicationTitle = titleMap.get("natgbl");
+											}
+										} else {
+											publicationTitle = titleMap.get(arr[0]);
+										}
+										this.page = arr[2];
 										String[] arr1  = arr[1].split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
 										try {
 											if(arr1.length==2) {
@@ -3075,7 +3097,6 @@ public class DeManagedBean implements Serializable{
 										} catch(Exception e) {
 											e.printStackTrace();
 										}
-										this.page = arr[2].split("\\.")[0];
 									}
 									if(publicationTitle != null && !publicationTitle.isEmpty()){
 										publication = userService.getPublicationById(Integer.valueOf(publicationTitle));

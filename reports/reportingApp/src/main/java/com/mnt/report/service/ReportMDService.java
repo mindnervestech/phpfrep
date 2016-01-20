@@ -76,6 +76,7 @@ public class ReportMDService {
 	static {
 		titleMap.put("natus", "1084");
 		titleMap.put("natuk", "1085");
+		titleMap.put("natgbl", "1086");
 		titleMap.put("newus", "520");
 		titleMap.put("newuk", "521");
 		titleMap.put("cell", "522");
@@ -673,6 +674,16 @@ public class ReportMDService {
 				      for (int i=0;i<len;i++){ 
 				    	  System.out.println("value :"+jsonArray.get(i).toString());
 				    	  inValues.add(jsonArray.get(i).toString());
+				    	  System.out.println("pub title :"+key.toString().equals("DC_PUBLICATION_TITLE"));
+				    	  System.out.println("value :"+jsonArray.get(i).toString().equals("1086"));
+				    	  if(key.toString().equals("DC_PUBLICATION_TITLE") && jsonArray.get(i).toString().equals("1086")) {
+				    		  if(!inValues.contains("1084")) {
+				    			  inValues.add("1084");
+				    		  }
+				    		  if(!inValues.contains("1085")) {
+				    			  inValues.add("1085");
+				    		  }
+				    	  }
 				      }
 				      parameters.put(key.toString()+"in", inValues);
 				      parameters.put(key.toString(), "");
