@@ -3060,7 +3060,7 @@ public class DeManagedBean implements Serializable{
 									
 									System.out.println("arr file  name len: "+arr.length);
 									if(arr.length==4 || arr.length==3) {
-										if(arr[0].contains("nat")) {
+										if(arr[0].contains("newsci")) {
 											if(arr.length == 4){
 												String ver = arr[3].split("\\.")[0];
 												if(ver.equalsIgnoreCase("A")) {
