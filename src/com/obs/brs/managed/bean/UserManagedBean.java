@@ -1421,6 +1421,9 @@ implements Serializable
 		case 15: 
 			redirectLink = "/pages/de/ocr_releavance.xhtml";
 			break;
+		case 16: 
+			redirectLink = "/pages/de/newscigallary.xhtml";
+			break;
 		
 		}
 		this.sessionManager.setSessionAttributeInSession("pageChanged", "1");

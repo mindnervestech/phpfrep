@@ -166,6 +166,8 @@ public class DeManagedBean implements Serializable{
 	User currentUser;
 	List<DeJob> deJobList;
 	List<ParentImage> parentImageList = new ArrayList<ParentImage>();
+	List<ParentImage> parentImageListfornewSci = new ArrayList<>();
+
 	List<ScoreData> deReleavanceImageList = new ArrayList<ScoreData>();
 
 	List<ChildImage> childImageList = new ArrayList<ChildImage>();
@@ -271,20 +273,33 @@ public class DeManagedBean implements Serializable{
 	private boolean isFilter = true;
 	private Integer pages[];
 	private Integer pagesOcr[];
+	private Integer pagesNewSci[];
+	
 	private int pageRange = 10;
 	private int pageRangeOcr = 4;
+	private int pageRangeNewSci = 4;
+
 	private int reviewPageRange = 3;
 	private String totalStr;
 	private String totalStrOcr;
+	private String totalStrNewSci;
 	
 	private Set<String> duplicateFileNames;
 	private List<String> duplicateNames;
 	private String iframeUrl;
 	private int count = 1;
 	private long liveStatusId;
-
 	private Long[] liveStatusArr;
-	
+	private String selectedPub;
+
+	public String getSelectedPub() {
+		return selectedPub;
+	}
+
+	public void setSelectedPub(String selectedPub) {
+		this.selectedPub = selectedPub;
+	}
+
 	public Long[] getLiveStatusArr() {
 		return liveStatusArr;
 	}
@@ -300,6 +315,14 @@ public class DeManagedBean implements Serializable{
 	public void setPageRangeOcr(int pageRangeOcr) {
 		this.pageRangeOcr = pageRangeOcr;
 	}
+	
+	public int getPageRangeNewSci() {
+		return pageRangeNewSci;
+	}
+
+	public void setPageRangeNewSci(int pageRangeNewSci) {
+		this.pageRangeNewSci = pageRangeNewSci;
+	}
 	public Integer[] getPagesOcr() {
 		//HttpServletRequest origRequest = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		loadPaginationOcr();
@@ -309,6 +332,17 @@ public class DeManagedBean implements Serializable{
 	public void setPagesOcr(Integer[] pagesOcr) {
 		this.pagesOcr = pagesOcr;
 	}
+	
+	public Integer[] getPagesNewSci() {
+		loadPaginationNewSci();
+		
+		return pagesNewSci;
+	}
+
+	public void setPagesNewSci(Integer[] pagesNewSci) {
+		this.pagesNewSci = pagesNewSci;
+	}
+
 	
 	public long getLiveStatusId() {
 		return liveStatusId;
@@ -395,6 +429,19 @@ public class DeManagedBean implements Serializable{
 		return buffer.toString();
 	}
 	
+	public String getTotalStrNewSci() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append((this.imageOffsetnewSci/this.imagePerPageNewSci)+1);
+		buffer.append("/");
+		buffer.append(((this.parentImageListfornewSci.size()/this.imagePerPageNewSci)+1));
+		return buffer.toString();
+		
+	}
+
+	public void setTotalStrNewSci(String totalStrNewSci) {
+		this.totalStrNewSci = totalStrNewSci;
+	}
+	
 	public String getReviewPageTotal() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append((this.reviewPageOffset/this.getRowsPerPage())+1);
@@ -439,6 +486,21 @@ public class DeManagedBean implements Serializable{
             pagesOcr[i] = ++firstPage;
         }
 	}
+
+	
+	/** load pagination for the new sci text**/
+	private void loadPaginationNewSci() {
+		int totalRows = this.getParentImageListfornewSci().size();
+		int currentPage = (this.imageOffsetnewSci/this.imagePerPageNewSci)+1;
+        int totalPages = (totalRows / this.imagePerPageNewSci) + ((totalRows % this.imagePerPageNewSci != 0) ? 1 : 0);
+        int pagesLength = Math.min(pageRangeNewSci, totalPages);
+        pagesNewSci = new Integer[pagesLength];
+        int firstPage = Math.min(Math.max(0, currentPage - (pageRangeNewSci / 2)), totalPages - pagesLength);
+        for (int i = 0; i < pagesLength; i++) {
+            pagesNewSci[i] = ++firstPage;
+        }
+	}
+	
 	
 	private void loadReviewPagination() {
 		int totalRows = this.getDeJobListBySeachCriteria().size();
@@ -664,8 +726,28 @@ public class DeManagedBean implements Serializable{
 	private int childImageOffset = 0;
 	private int reviewPageOffset = 0;
 	private int imagePerPageOcr = 20;
-	private int imageOffsetOcr;
+	private int imagePerPageNewSci = 20;
+	private int imageOffsetOcr = 0;
+	private int imageOffsetnewSci = 0;
 	
+	public int getImageOffsetnewSci() {
+		try{
+			Object offset = sessionManager.getSessionAttribute(SessionManager.IMAGEOFFSETNEWSCI);
+			if(offset!=null){
+				imageOffsetnewSci = Integer.valueOf(offset.toString());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return imageOffsetnewSci;
+	}
+
+	public void setImageOffsetnewSci(int imageOffsetnewSci) {
+		this.imageOffsetnewSci = imageOffsetnewSci;
+	}
+	
+
 	public int getImageOffsetOcr() {
 		
 		try{
@@ -700,6 +782,22 @@ public class DeManagedBean implements Serializable{
 		this.imagePerPageOcr = imagePerPageOcr;
 	}
 
+	public int getImagePerPageNewSci() {
+		
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGENEWSCI); 
+			if(rowsPerPage!=null){
+				imagePerPageNewSci = Integer.valueOf(rowsPerPage.toString());
+			}
+		}catch(Exception e){
+		}
+		return imagePerPageNewSci;
+	}
+
+	public void setImagePerPageNewSci(int imagePerPageNewSci) {
+		this.imagePerPageNewSci = imagePerPageNewSci;
+	}
+	
 	public int getChildImagePerPage() {
 		return childImagePerPage;
 	}
@@ -2429,6 +2527,96 @@ public class DeManagedBean implements Serializable{
 		System.out.println("deBean : filterParentImages :" + (System.currentTimeMillis() - start)/1000);
 	}
 
+	
+	
+	/**
+	 * Get Parent Image List 
+	 * 
+	 * @return List - ParentImage 
+	 */
+	private List<ParentImage> buildParentImageListForNewSci() {
+		long start = System.currentTimeMillis();
+		parentImageListfornewSci  = new ArrayList<ParentImage>();
+		Set<String> duplicateNames = new HashSet<String>();
+		if(this.duplicateNames==null) {
+			this.duplicateNames = new ArrayList<String>();
+		} else {
+			this.duplicateNames.clear();
+		}
+		if(filterParentImage != null){
+			parentImageListfornewSci.addAll(getParentImageService().getParentImageForSciByFilter(filterParentImage));
+			for(ParentImage image : parentImageListfornewSci){
+				if(!duplicateNames.add(image.getImageName())) {
+					if(!this.duplicateNames.contains(image.getImageName()))
+						this.duplicateNames.add(image.getImageName());
+				}
+				List<ChildImage> childImages = getChildImageService().getChildImagesByParent(image.getId());
+				image.childImageList.addAll(childImages);
+				if(childImages.size() == 0){
+					image.ableToDone = false;
+					continue;
+				} else {
+					Set<Long> set = new HashSet<Long>(childImages.size());
+					for(ChildImage childImage : childImages){
+						set.add(childImage.getId());
+					}
+					List<DataEntry> entries = deService.getDataEntryByChildImageIds(set);
+					List<Long> idsAdded = new ArrayList<Long>(set.size()); 
+					if(entries != null) {
+						for(DataEntry entry:entries) {
+							for(ChildImage childImage : image.childImageList){
+								if(entry.getChildImage().getId() == childImage.getId()) {
+									if(entry.getDeCompany()!=null) {
+										childImage.setIsCompleted("complete");
+									} else {
+										childImage.setIsCompleted("incomplete");
+									}
+									idsAdded.add(childImage.getId());
+									break;
+								}
+							}
+						}
+						for(ChildImage childImage : image.childImageList){
+							if(!idsAdded.contains(childImage.getId())) {
+								childImage.setIsCompleted("incomplete");
+							}
+						}
+					}
+				} 
+				/*for(ChildImage childImage : childImages){
+					DataEntry entry = deService.getDataEntryByChildImageId(childImage.getId());
+					if(entry != null) {
+						if(entry.getDeCompany() == null){
+							image.ableToDone = false;
+							break;
+						}
+					}
+				}*/
+				
+			}
+			
+			Collections.reverse(parentImageListfornewSci);
+		}
+
+		System.out.println("buildParentImageList :" + (System.currentTimeMillis() - start)/1000);
+		List<ParentImage> plfinal =  new ArrayList<ParentImage>();
+
+		for(ParentImage pi : parentImageListfornewSci){
+        	if(pi.getImageName() != null){
+        		String []imgnamearr = pi.getImageName().split("_");
+        		System.out.println("imgnamearr[imgnamearr.length -1]: "+imgnamearr[imgnamearr.length -1] );	
+        		String pubtype = imgnamearr[imgnamearr.length -1].split("\\.")[0];
+        		if(pubtype.equalsIgnoreCase("A") || pubtype.equalsIgnoreCase("B") || pubtype.equalsIgnoreCase("C")){
+        				
+        		}else{
+        		  plfinal.add(pi);
+        		}
+        	}
+        }
+
+        return plfinal;
+	}
+	
 	/**
 	 * Get Parent Image List 
 	 * 
@@ -2507,7 +2695,23 @@ public class DeManagedBean implements Serializable{
 		}
 		return parentImageList;
 	}
+	
+	public List<ParentImage> getParentImageListfornewSci() {
+		if(parentImageListfornewSci == null || parentImageListfornewSci.size() ==0) {
+			parentImageListfornewSci = buildParentImageListForNewSci();
+		}
+	
+		return parentImageListfornewSci;
+	}
 
+	public void setParentImageListfornewSci(
+			List<ParentImage> parentImageListfornewSci) {
+		this.parentImageListfornewSci = parentImageListfornewSci;
+	}
+
+	
+	
+	
 	/**
 	 * Get Child Image List 
 	 * 
@@ -3064,9 +3268,9 @@ public class DeManagedBean implements Serializable{
 											if(arr.length == 4){
 												String ver = arr[3].split("\\.")[0];
 												if(ver.equalsIgnoreCase("A")) {
-													publicationTitle = titleMap.get("natus");
+													publicationTitle = titleMap.get("newus");
 												} else if(ver.equalsIgnoreCase("B")) {
-													publicationTitle = titleMap.get("natuk");
+													publicationTitle = titleMap.get("newuk");
 												} else {
 													publicationTitle = titleMap.get("natgbl");
 												}
@@ -3194,6 +3398,59 @@ public class DeManagedBean implements Serializable{
 		return "/pages/de/gallery.xhtml?msgLabel="+this.msgLabel+"&msgFormat="+this.msgFormat+"&faces-redirect=true&msgWarnLabel="+this.msgWarnLabel;
 	}
 
+	/**
+	 * 
+	 * @param event
+	 */
+	public void updateParentImageByPub(ValueChangeEvent event){ 
+			//assign new value to localeCode
+			this.selectedPub  = event.getNewValue().toString();
+	}
+	
+	public void updateparentImagePubById(String id){
+		ParentImage p = parentImageService.getParentImageById(Long.parseLong(id));
+		if(selectedPub.equalsIgnoreCase("US") ){
+	    	String publicationTitle = new String();
+	    	publicationTitle = titleMap.get("newus");
+	    	if(publicationTitle != null && !publicationTitle.isEmpty()){
+	    		Publication publication = userService.getPublicationById(Integer.valueOf(publicationTitle));
+	    		p.setPublicationTitle(publication);
+	    	}	
+	    
+		}else if(selectedPub.equalsIgnoreCase("UK")){
+	    	publicationTitle = titleMap.get("newuk");
+	    
+	    	if(publicationTitle != null && !publicationTitle.isEmpty()){
+	    		Publication publication = userService.getPublicationById(Integer.valueOf(publicationTitle));
+	    		p.setPublicationTitle(publication);
+	    	}
+	    
+		}else if(selectedPub.equalsIgnoreCase("GBL")){
+	    	publicationTitle = titleMap.get("natgbl");
+	    	
+	    	if(publicationTitle != null && !publicationTitle.isEmpty()){
+	    		Publication publication = userService.getPublicationById(Integer.valueOf(publicationTitle));
+	    		p.setPublicationTitle(publication);
+	    	}
+	    }
+		
+	    String publicationName  =  p.getImageName();
+	    if(selectedPub.equalsIgnoreCase("US") ){
+		   String pubs[]=  p.getImageName().split("\\.");
+	    	publicationName = pubs[0]+"_"+"A"+"."+pubs[1];;   	
+	    }else if(selectedPub.equalsIgnoreCase("UK")){
+	    	String pubs[]=  p.getImageName().split("\\.");
+	    	publicationName = pubs[0]+"_"+"B"+"."+pubs[1];
+	    }else if(selectedPub.equalsIgnoreCase("GBL")){
+	    	String pubs[]=  p.getImageName().split("\\.");
+	    	publicationName = pubs[0]+"_"+"C"+"."+pubs[1];
+	    }
+	   
+	    p.setImageName(publicationName);
+	    parentImageService.updateParentImage(p);
+		
+	}
+	
 	public void loadMessage(ComponentSystemEvent event)
 	{
 		if(com.obs.brs.utils.StringUtility.isNotEmpty(this.msgLabel) && this.msgFormat==0)
@@ -4875,6 +5132,22 @@ public List<String> getcompaniesId(String query) {
 		loadPaginationOcr();
 	}
 	/**
+	 * 
+	 * @param event
+	 */
+	public void localImageChangedNewSci(ValueChangeEvent event)	
+	{ 
+		count  = 1;
+		String perPage = event.getNewValue().toString();
+		imagePerPageNewSci = Integer.parseInt(perPage);
+		sessionManager.setSessionAttributeInSession(SessionManager.IMAGEPERPAGENEWSCI, perPage);
+		loadPaginationNewSci();
+	}
+	
+	
+	
+	
+	/**
 	 * pagination method for next page 
 	 */
 	public void nxtPage(){
@@ -4911,6 +5184,26 @@ public List<String> getcompaniesId(String query) {
 	}
 	
 	/**
+	 * pagination method for next page 
+	 */
+	public void nxtPageNewSci(){
+		count  = 1;
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGENEWSCI); 
+			//System.out.println("rowsPerPage"+rowsPerPage);
+			if(rowsPerPage!=null){
+				imagePerPageNewSci = Integer.valueOf(rowsPerPage.toString());
+			}
+			
+			imageOffsetnewSci +=Integer.valueOf(imagePerPageNewSci);
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSETNEWSCI, imageOffsetnewSci);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
 	 * for previous page
 	 */
 	public void prevPage(){
@@ -4924,6 +5217,27 @@ public List<String> getcompaniesId(String query) {
 				imageOffset = imageOffset - Integer.valueOf(imagePerPage);
 			
 			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSET, imageOffset);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * for previous page
+	 */
+	public void prevPageNewSci(){
+		
+		count  = 1;
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGENEWSCI);
+			if(rowsPerPage!=null){
+				imagePerPageNewSci = Integer.valueOf(rowsPerPage.toString());
+			}
+			if(imageOffsetnewSci>1)
+				imageOffsetnewSci = imageOffsetnewSci - Integer.valueOf(imagePerPageNewSci);
+			
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSETNEWSCI, imageOffsetnewSci);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -4981,6 +5295,28 @@ public List<String> getcompaniesId(String query) {
 		}
 	}
 	
+	public void gotoPageNewSci() {
+		System.out.println("in  gotoPageNewSci");
+		count  = 1;
+		int page = Integer.valueOf(facesUtils.getRequestParameterMap("page"));
+		
+		System.out.println("page: "+page);
+		try{
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGENEWSCI);
+			
+			if(rowsPerPage!=null){
+				imagePerPageNewSci = Integer.valueOf(rowsPerPage.toString());
+			}
+
+			imageOffsetnewSci = (page-1) * imagePerPageNewSci;
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSETNEWSCI, imageOffsetnewSci);
+			loadPaginationNewSci();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public void changeParentImages() {
 		if(this.duplicate) {
 			List<ParentImage> images = new ArrayList<ParentImage>();
@@ -5017,6 +5353,31 @@ public List<String> getcompaniesId(String query) {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	/**
+	 * for first page record
+	 */
+	public void firstPageNewSci(){
+			count =1;
+			try{
+				Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGENEWSCI);
+				if(rowsPerPage!=null){
+					imagePerPageNewSci = Integer.valueOf(rowsPerPage.toString());
+				}
+				if(imageOffsetnewSci > 1)
+					imageOffsetnewSci = 0;
+				
+				sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSETNEWSCI, imageOffsetnewSci);
+
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		
+		
+	}
+	
+	
 	
 	/**
 	 * for first page record for ocr releavance
@@ -5116,6 +5477,46 @@ public List<String> getcompaniesId(String query) {
 				imageOffsetOcr =listSize-(Integer.valueOf(imagePerPageOcr));
 			}
 			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSETOCR, imageOffsetOcr);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * for first page record
+	 */
+	public void lastPageNewSci(){
+		count  = 1;
+		try{
+			int listSize = 0;
+			int pagecount;
+			int remainder;
+			FacesUtils facesUtils = new FacesUtils();
+			String catagory=facesUtils.getRequestParameterMap("type");
+			// parent image list
+			if( getParentImageListfornewSci() != null && parentImageListfornewSci.size()>0 )
+			{
+				listSize = parentImageListfornewSci.size();
+			}
+			
+			Object rowsPerPage = sessionManager.getSessionAttribute(SessionManager.IMAGEPERPAGENEWSCI); 
+			if(rowsPerPage!=null)
+			{
+				imagePerPageNewSci = Integer.valueOf(rowsPerPage.toString());
+			}
+			pagecount=(listSize/Integer.valueOf(imagePerPageNewSci));
+			remainder=(listSize%Integer.valueOf(imagePerPageNewSci));
+			if(pagecount>0 && remainder >0)
+			{
+				imageOffsetnewSci =listSize-(listSize%Integer.valueOf(imagePerPageNewSci));
+			}
+			else
+			{
+				imageOffsetnewSci =listSize-(Integer.valueOf(imagePerPageNewSci));
+			}
+			sessionManager.setSessionAttributeInSession(SessionManager.IMAGEOFFSETNEWSCI, imageOffsetnewSci);
 		}
 		catch(Exception e){
 			e.printStackTrace();

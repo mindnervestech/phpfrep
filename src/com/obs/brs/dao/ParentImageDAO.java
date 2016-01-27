@@ -96,6 +96,26 @@ public class ParentImageDAO implements IParentImageDAO{
 	}
 
 	@Override
+	public List<ParentImage> getParentImageForSciByFilter(String val) {
+		String sqlQuery = "from ParentImage";
+		String pub = "newsci";
+		int filter = Integer.parseInt(val);
+		if(filter == 1){
+			sqlQuery = sqlQuery + " where status = '1'";
+		} else if(filter == 2){
+			sqlQuery = sqlQuery + " where status = '0'";
+		}else{
+			
+			sqlQuery = sqlQuery + " where status != '2' and imageName like :pub";
+		}
+		
+		List<ParentImage> list = getSessionFactory().getCurrentSession().createQuery(sqlQuery).setParameter("pub", "%"+ pub +"%").list();
+		return list;
+	}
+
+	
+	
+	@Override
 	public ParentImage getParentImageByName(String name) {
 		List<ParentImage> list = getSessionFactory().getCurrentSession().createQuery("from ParentImage where imageName=?").setParameter(0, name).list();
 		if(list.isEmpty())

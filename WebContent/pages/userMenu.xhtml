@@ -61,6 +61,14 @@
 								<span class="sidebar-text"> OCR Relevance</span>
 								<f:param name="menuId" value="15" />
 							</h:commandLink></li>
+							
+							<li id="menu16"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								<i class="glyphicon glyphicon-globe"></i>
+								<span class="sidebar-text"> new Scientist Gallary</span>
+								<f:param name="menuId" value="16" />
+							</h:commandLink></li>
 								<li id="menu8"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
@@ -129,6 +137,8 @@
 			document.getElementById("menu12").setAttribute("class", "current active");
 		else if (menuval == "15")
 			document.getElementById("menu15").setAttribute("class", "current active");
+		else if (menuval == "16")
+			document.getElementById("menu16").setAttribute("class", "current active");
 
 		else if (menuval == "111")
 			document.getElementById("menu111").setAttribute("class", "");

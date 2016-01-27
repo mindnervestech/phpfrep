@@ -79,6 +79,13 @@ public class ParentImageService implements IParentImageService {
 	public List<ParentImage> getParentImageByFilter(String filter){
 		return getParentImageDAO().getParentImageByFilter(filter);
 	}
+	
+	
+	@Override
+	public List<ParentImage> getParentImageForSciByFilter(String filter){
+		return getParentImageDAO().getParentImageForSciByFilter(filter);
+	}
+	
 	@Override
 	public ParentImage getParentImageByName(String name) {
 		return getParentImageDAO().getParentImageByName(name);
