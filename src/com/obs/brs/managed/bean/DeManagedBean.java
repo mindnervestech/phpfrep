@@ -3806,6 +3806,84 @@ public class DeManagedBean implements Serializable{
 		return null;
 	}
 
+	private long parentImgIdOcr;
+	public long getParentImgIdOcr() {
+		return parentImgIdOcr;
+	}
+
+	public void setParentImgIdOcr(long parentImgIdOcr) {
+		this.parentImgIdOcr = parentImgIdOcr;
+	}
+
+	public String getParentImgChildImgNameOcr() {
+		return parentImgChildImgNameOcr;
+	}
+
+	public void setParentImgChildImgNameOcr(String parentImgChildImgNameOcr) {
+		this.parentImgChildImgNameOcr = parentImgChildImgNameOcr;
+	}
+
+	public long getParentImgChildIdOcr() {
+		return parentImgChildIdOcr;
+	}
+
+	public void setParentImgChildIdOcr(long parentImgChildIdOcr) {
+		this.parentImgChildIdOcr = parentImgChildIdOcr;
+	}
+
+	private String  parentImgChildImgNameOcr;
+	private long parentImgChildIdOcr;
+	
+	
+	
+	public long getParentParId() {
+		return parentParId;
+	}
+
+	public void setParentParId(long parentParId) {
+		this.parentParId = parentParId;
+	}
+
+	public long getParentParChildId() {
+		return parentParChildId;
+	}
+
+	public void setParentParChildId(long parentParChildId) {
+		this.parentParChildId = parentParChildId;
+	}
+
+	public String getParentParChildName() {
+		return parentParChildName;
+	}
+
+	public void setParentParChildName(String parentParChildName) {
+		this.parentParChildName = parentParChildName;
+	}
+
+	private long parentParId;
+	private long parentParChildId;
+	private String parentParChildName;
+	
+    public String callOcrRelvancePopup(){
+    	
+		FacesUtils facesUtils = new FacesUtils();
+	    parentImgChildIdOcr = Long.parseLong(facesUtils.getRequestParameterMap("parentImgChildIdOcr"));
+	    parentImgChildImgNameOcr = facesUtils.getRequestParameterMap("parentImgChildImgNameOcr");
+	    parentImgIdOcr =Long.parseLong (facesUtils.getRequestParameterMap("parentImgIdOcr"));
+    
+	    parentParId = Long.parseLong(facesUtils.getRequestParameterMap("parentParId"));
+	    parentParChildName = facesUtils.getRequestParameterMap("parentParChildName");
+	    parentParChildId =Long.parseLong (facesUtils.getRequestParameterMap("parentParChildId"));
+	    
+	    System.out.println("parentParId: "+parentParId);
+	    System.out.println("parentParChildName; "+parentParChildName);
+	    System.out.println("parentImgChildIdOcr: "+parentImgChildIdOcr);
+    	System.out.println("parentImgChildImgNameOcr: "+parentImgChildImgNameOcr);
+    	System.out.println("parentImgIdOcr: "+parentImgIdOcr);
+    	
+	    return null;
+    }	
+	
 	public String showImage (){
 		String parentId = facesUtils.getRequestParameterMap("parentId");
  		String parentImage = facesUtils.getRequestParameterMap("parentImg");

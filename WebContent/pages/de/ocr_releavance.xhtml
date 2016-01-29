@@ -59,12 +59,17 @@
 	overflow: auto;
 	padding: 0.5em 1em;
 	position: relative;
-	width: 44%;
+	width: 100% ;
 	height: 350px;
 }
 
+.ui-dialog.ui-widget-content{
+	width:64% !important;
+
+}
+
 .col-md-6 {
-	width: 60%;
+	width: 49%;
 }
 
 .text-muted {
@@ -98,9 +103,7 @@ td,th {
 	padding-left: 30px;
 }
 
-.col-md-6 {
-	width: 70% !important;
-}
+
 
 .issueDay td,th {
 	padding: 1px 13.3px 0 8px;
@@ -196,6 +199,16 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
     width: 100px;
     height: 100px; 
 }
+
+.ui-dialog .ui-widget .ui-widget-content .ui-corner-all .ui-shadow .ui-draggable .ui-overlay-visible{
+	width: 64%;
+    height: auto;
+    left: 0px;
+    top: 0px;
+    visibility: visible;
+    z-index: 1002;
+}
+
 #childImg{
 	max-height: 100%;
 }
@@ -360,19 +373,28 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																				varStatus="s">
 																			<div class = "col-md-3">
 																			
-																			<div class="col-md-6">
+																			<div class="col-md-6" style="width:100% !important;">
 																				<div class="col-md-12 p-0">
 																					<div class="col-md-12 p-0">
 																						<div class="p-0 f_l">
 																							<div class="row m-5 f_l">
 																								<div style="font-weight: bold; float: left">Live Job ID #{val.dataEntry.indexOf(v)+1} : <h:outputText value="#{v.id}"></h:outputText></div>
-																								<div class="f_l p-l-10 fancybox">
-																								    <a id="#{v.parentImage.id}" onclick = "enlargeImage(#{v.parentImage.id});" href = "#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{v.parentImage.id}/#{v.childImage.id}/#{v.childImage.imageName}" title="#{v.childImage.imageName}">
+																								
+																								    <p:commandLink action="#{deBean.callOcrRelvancePopup()}"
+																										rendered="#{not empty v.parentImage.id}"
+																										ajax="true" oncomplete="PF('dlg').show();" 
+																										update=":dlgform:basicDialog">
+																										<f:param name="parentImgIdOcr" value="#{v.parentImage.id}" />
+																										<f:param name="parentImgChildIdOcr" value="#{v.childImage.id}" />
+																										<f:param name="parentImgChildImgNameOcr" value="#{v.childImage.imageName}" />
+																										<f:param name="parentParId" value="#{val.dEntry.parentImage.id}" />
+																										<f:param name="parentParChildId" value="#{val.dEntry.childImage.id}" />
+																										<f:param name="parentParChildName" value="#{val.dEntry.childImage.imageName}" />
 																									  <img  style="height: 240px; width:213px" 
 																									   src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{v.parentImage.id}/#{v.childImage.id}/#{v.childImage.imageName}"
 																									   class="img-responsive m-10" alt="" />
-																									</a>
-																							   </div>
+																									
+																									</p:commandLink>
 																							</div>
 																						</div>
 																					</div>
@@ -478,24 +500,33 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 			<!-- END MAIN CONTENT -->
 		</h:form>
 		<h:form id="dlgform">
-			<h:inputHidden value="#{deBean.id}" />
 			<div id="main-content">
 				<div class="page-title">
 					<i class="icon-custom-left"></i>
 				</div>
 				<div class="row">
-							<div class="col-md-12" style="width:44%">
-								<p:dialog id="basicDialog" style="width:44% !important;" widgetVar="dlg" draggable="true"
-									resizable="false" header="#{deBean.childImageName}"
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="row">
+								<p:dialog id="basicDialog" widgetVar="dlg" draggable="true"
+									resizable="false"  header="#{deBean.parentImgChildImgNameOcr}"
 									visible="#{facesContext.postback and facesContext.validationFailed}">
 									
-									<div class="col-md-4" style=" display: inline-block;">
+									<div class="col-md-6 f_l p-t-10 " style="height: 500px; scroll: overflow;">
 										<img style="height: 475px; width: 100%;" 
-										src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImageId}/#{deBean.childImageId}/#{deBean.childImageName}"></img>
+										src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentParId}/#{deBean.parentParChildId}/#{deBean.parentParChildName}"></img>
+									</div>
+							
+									<div class="col-md-6 f_l p-t-10 " style="height: 500px; scroll: overflow;">
+										<img style="height: 475px; width: 100%;" 
+										src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImgIdOcr}/#{deBean.parentImgChildIdOcr}/#{deBean.parentImgChildImgNameOcr}"></img>
 																										
 									</div>
+								
 								</p:dialog>
-							</div>
+							 </div>
+						  </div>
+						</div>
 				</div>
 			</div>
 		</h:form>
@@ -546,19 +577,6 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 
 		}
 		
-		function validationPage(){
-			$('#dlgform\\:txt_page').keyup(function() {
-			    $('span.error-keyup-1').hide();
-			    var inputVal = $(this).val();
-			    var numericReg = /^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/;
-			    var romanNum1 = /^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/;
-			    var romanNum2 = /^M{0,4}(cm|cd|d?c{0,3})(xc|xl|l?x{0,3})(iv|iv|v?i{0,3})$/;
-			    var pageNumber = /([\w][\d]|[\d][\w])/;
-			    if(!(numericReg.test(inputVal) || romanNum1.test(inputVal) || romanNum2.test(inputVal)  || pageNumber.test(inputVal))) {
-			        $(this).after('<span class="error error-keyup-1">Numeric characters only.</span>');
-			    }
-			});
-		}
 		
 	    $(document).ready(function() {
 	    	
@@ -624,9 +642,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 	<script src="#{request.contextPath}/assets/js/customValidation.js"></script>
 	<script
 		src="#{request.contextPath}/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
-	<!-- Add jQuery library -->
-	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-	
+
 	<!-- Add mousewheel plugin (this is optional) -->
 	<script type="text/javascript" src="#{request.contextPath}/assets/plugins/fancybox/source/jquery.mousewheel-3.0.6.pack.js"></script>
 	
