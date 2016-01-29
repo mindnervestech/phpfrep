@@ -513,12 +513,12 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 									visible="#{facesContext.postback and facesContext.validationFailed}">
 									
 									<div class="col-md-6 f_l p-t-10 " style="height: 500px; scroll: overflow;">
-										<img style="height: 475px; width: 100%;" 
+										<img style="height: 475px; max-width: 100%;" 
 										src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentParId}/#{deBean.parentParChildId}/#{deBean.parentParChildName}"></img>
 									</div>
 							
 									<div class="col-md-6 f_l p-t-10 " style="height: 500px; scroll: overflow;">
-										<img style="height: 475px; width: 100%;" 
+										<img style="height: 475px; max-width: 100%;" 
 										src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImgIdOcr}/#{deBean.parentImgChildIdOcr}/#{deBean.parentImgChildImgNameOcr}"></img>
 																										
 									</div>
