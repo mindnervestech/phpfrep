@@ -512,13 +512,13 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 									resizable="false"  header="#{deBean.parentImgChildImgNameOcr}"
 									visible="#{facesContext.postback and facesContext.validationFailed}">
 									
-									<div class="col-md-6 f_l p-t-10 " style="height: 500px; scroll: overflow;">
-										<img style="height: 475px; max-width: 100%;" 
+									<div class="col-md-6 f_l p-t-10 " style="scroll: overflow;">
+										<img style="height: auto; max-width: 100%;" 
 										src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentParId}/#{deBean.parentParChildId}/#{deBean.parentParChildName}"></img>
 									</div>
 							
-									<div class="col-md-6 f_l p-t-10 " style="height: 500px; scroll: overflow;">
-										<img style="height: 475px; max-width: 100%;" 
+									<div class="col-md-6 f_l p-t-10 " style="scroll: overflow;">
+										<img style="height: auto; max-width: 100%;" 
 										src="#{global['baseURL']}#{global['imageContextPath']}#{global['childImagePath']}#{deBean.parentImgIdOcr}/#{deBean.parentImgChildIdOcr}/#{deBean.parentImgChildImgNameOcr}"></img>
 																										
 									</div>
