@@ -335,7 +335,8 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 													varStatus="status" 
 													size="#{deBean.imagePerPageOcr-1}">
                                                
-													<div class="col-xs-12 col-sm-12 col-md-12">
+													<div class="col-xs-12 col-sm-12 col-md-12"   id="containerDiv#{deBean.deReleavanceImageList.indexOf(val)}">
+												
 														<div class="panel panel-default">
 															<div class="panel-body"
 																style="height: 300px;">
@@ -408,13 +409,13 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																				<f:selectItems value="#{val.dataEntry}" var="v" itemLabel="#{v.id}" itemValue="#{v.id}" />
 																			</h:selectOneMenu>
 																			<p:commandButton action="#{deBean.makeLiveByScore(deBean.deReleavanceImageList.indexOf(val))}" 
-																				styleClass="btn btn" oncomplete="location.reload()" 
+																				styleClass="btn btn" oncomplete="makeDisabled(#{deBean.deReleavanceImageList.indexOf(val)})" 
 																				style="margin-left: 22%;" value="MakeLive" ajax="true">
 			 																</p:commandButton>
 			 															
 			 																<p:commandButton   action="#{deBean.makeLiveAsNotDuplicateByScore(val.dEntry.id,deBean.deReleavanceImageList.indexOf(val))}" 
 			 																	 
-			 																	styleClass="btn btn"  oncomplete="location.reload()" 
+			 																	styleClass="btn btn"  oncomplete="makeDisabled(#{deBean.deReleavanceImageList.indexOf(val)})" 
 			 																	style="margin-left: 22%;margin-top:2%;width:62%;" value="Mark Not Duplicate" ajax="true" >
 			 																</p:commandButton>
 			 																
@@ -606,6 +607,10 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 	         });
 	    }
 
+	    function makeDisabled(index) {
+	    	console.log(index);
+	    	$("#containerDiv"+index).hide();	    
+	    } 
 	    </script>
 	<!-- BEGIN MANDATORY SCRIPTS -->
 	<script
