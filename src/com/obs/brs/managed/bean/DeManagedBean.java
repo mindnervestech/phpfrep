@@ -6442,8 +6442,14 @@ public List<String> getcompaniesId(String query) {
 		selectedIds = new HashMap<Long, Boolean>();
 	}
 
-	public void makeLiveAsNotDuplicateByScore(String id){
+	public void makeLiveAsNotDuplicateByScore(String id,int index){
+	System.out.println("index: "+index);
 		getParentImageService().updateOcrTextIDDupDetails(id);	
+		System.out.println("id:"+id);
+		DataEntry dataEntry = null;
+		ScoreData scoreData = this.deReleavanceImageList.get(index);
+	    this.deReleavanceImageList.remove(scoreData);
+		
 		//getDeReleavanceImageList();
 	}
 	

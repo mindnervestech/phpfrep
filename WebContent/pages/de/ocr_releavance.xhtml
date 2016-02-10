@@ -412,10 +412,10 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																				style="margin-left: 22%;" value="MakeLive" ajax="true">
 			 																</p:commandButton>
 			 															
-			 																<p:commandButton   action="#{deBean.makeLiveAsNotDuplicateByScore(val.dEntry.id)}" 
-			 																	value="Mark Not Duplicate" ajax="true" 
+			 																<p:commandButton   action="#{deBean.makeLiveAsNotDuplicateByScore(val.dEntry.id,deBean.deReleavanceImageList.indexOf(val))}" 
+			 																	 
 			 																	styleClass="btn btn"  oncomplete="location.reload()" 
-			 																	style="margin-left: 22%;margin-top:2%;width:62%;" >
+			 																	style="margin-left: 22%;margin-top:2%;width:62%;" value="Mark Not Duplicate" ajax="true" >
 			 																</p:commandButton>
 			 																
 																		</div>
