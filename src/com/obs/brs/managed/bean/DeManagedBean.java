@@ -4675,6 +4675,10 @@ public List<String> getcompaniesId(String query) {
 				this.deReleavanceImageList.remove(scoreData);
 			}
 		}
+		
+		System.out.println("Score data dEntry Id: "+scoreData.getdEntry().getId());
+		//System.out.println("Score data dEntry Id: "+scoreData.);
+		getParentImageService().updateOcrTextIDDupDetails(String.valueOf(scoreData.getdEntry().getId()));
 		System.out.println("size after : "+this.deReleavanceImageList.size());
 	}
 	
