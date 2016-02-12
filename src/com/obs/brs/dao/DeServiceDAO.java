@@ -598,10 +598,17 @@ public class DeServiceDAO implements IDeServiceDAO {
 				if(sublistIds.size() != 0){
 					dataSubEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:sublistIds)").setParameterList("sublistIds", sublistIds).list();			    	
 		    	}
-				
-		    	ScoreData results = new ScoreData();
+				List<DataEntry> dataE = new ArrayList<>();
+				if(dataSubEntries.size() >=2){
+					
+					dataE.add(dataSubEntries.get(0));
+					dataE.add(dataSubEntries.get(1));
+				}else{
+					dataE.add(dataSubEntries.get(0));
+				}
+				ScoreData results = new ScoreData();
 		    	results.dEntry = dataEntries.get(0);
-		    	results.dataEntry = dataSubEntries;
+		    	results.dataEntry = dataE;
 		    	scoreDatas.add(results);
 		    
 			}
