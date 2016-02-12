@@ -410,14 +410,12 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																			</h:selectOneMenu>
 																			<p:commandButton action="#{deBean.makeLiveByScore(deBean.deReleavanceImageList.indexOf(val))}" 
 																				styleClass="btn btn" oncomplete="makeDisabled(#{deBean.deReleavanceImageList.indexOf(val)})"
-																				update="@all" 
-																				style="margin-left: 22%;" value="MakeLive" ajax="true">
+																				style="margin-left: 22%;" value="MakeLive" ajax="true" update="@all" >
 			 																</p:commandButton>
 			 															
 			 																<p:commandButton   action="#{deBean.makeLiveAsNotDuplicateByScore(val.dEntry.id,deBean.deReleavanceImageList.indexOf(val))}" 
-			 																	 update="@all"
 			 																	styleClass="btn btn"  oncomplete="makeDisabled(#{deBean.deReleavanceImageList.indexOf(val)})" 
-			 																	style="margin-left: 22%;margin-top:2%;width:62%;" value="Mark Not Duplicate" ajax="true" >
+			 																	style="margin-left: 22%;margin-top:2%;width:62%;" value="Mark Not Duplicate" ajax="true" update="@all"  >
 			 																</p:commandButton>
 			 																
 																		</div>
