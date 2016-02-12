@@ -3867,19 +3867,19 @@ public class DeManagedBean implements Serializable{
     public String callOcrRelvancePopup(){
     	
 		FacesUtils facesUtils = new FacesUtils();
-	    parentImgChildIdOcr = Long.parseLong(facesUtils.getRequestParameterMap("parentImgChildIdOcr"));
-	    parentImgChildImgNameOcr = facesUtils.getRequestParameterMap("parentImgChildImgNameOcr");
-	    parentImgIdOcr =Long.parseLong (facesUtils.getRequestParameterMap("parentImgIdOcr"));
+	    this.parentImgChildIdOcr = Long.parseLong(facesUtils.getRequestParameterMap("parentImgChildIdOcr"));
+	    this.parentImgChildImgNameOcr = facesUtils.getRequestParameterMap("parentImgChildImgNameOcr");
+	    this.parentImgIdOcr = Long.parseLong (facesUtils.getRequestParameterMap("parentImgIdOcr"));
     
-	    parentParId = Long.parseLong(facesUtils.getRequestParameterMap("parentParId"));
-	    parentParChildName = facesUtils.getRequestParameterMap("parentParChildName");
-	    parentParChildId =Long.parseLong (facesUtils.getRequestParameterMap("parentParChildId"));
+	    this.parentParId = Long.parseLong(facesUtils.getRequestParameterMap("parentParId"));
+	    this.parentParChildName = facesUtils.getRequestParameterMap("parentParChildName");
+	    this.parentParChildId = Long.parseLong (facesUtils.getRequestParameterMap("parentParChildId"));
 	    
-	    System.out.println("parentParId: "+parentParId);
-	    System.out.println("parentParChildName; "+parentParChildName);
-	    System.out.println("parentImgChildIdOcr: "+parentImgChildIdOcr);
-    	System.out.println("parentImgChildImgNameOcr: "+parentImgChildImgNameOcr);
-    	System.out.println("parentImgIdOcr: "+parentImgIdOcr);
+	    System.out.println("parentParId: "+this.parentParId);
+	    System.out.println("parentParChildName; "+this.parentParChildName);
+	    System.out.println("parentImgChildIdOcr: "+this.parentImgChildIdOcr);
+    	System.out.println("parentImgChildImgNameOcr: "+this.parentImgChildImgNameOcr);
+    	System.out.println("parentImgIdOcr: "+this.parentImgIdOcr);
     	
 	    return null;
     }	
@@ -4618,7 +4618,7 @@ public List<String> getcompaniesId(String query) {
 		getParentImageList().set(i, image);
 	}
 	
-	public void makeLiveByScore(int index) {
+	public String makeLiveByScore(int index) {
 		DataEntry dataEntry = null;
 		ScoreData scoreData = this.deReleavanceImageList.get(index);
 		System.out.println("------- index -----"+index);
@@ -4650,7 +4650,6 @@ public List<String> getcompaniesId(String query) {
 		mainEntry.setSearchValueAdvertisertype(dataEntry.getSearchValueAdvertisertype());
 		deService.updateDataEntry(mainEntry);
 		List<DataEntry> dataEntries = getDeService().getImagesByJobid(mainEntry.getDeJobid().getId());
-		System.out.println("size before : "+this.deReleavanceImageList.size());
 		if(dataEntries.size() == 1) {
 			mainEntry.getDeJobid().setStatus(dataEntry.getDeJobid().getStatus());
 			deService.updateDeJob(mainEntry.getDeJobid());
@@ -4665,8 +4664,11 @@ public List<String> getcompaniesId(String query) {
 					completed++;
 				}
 			}
+			
 			System.out.println("completed ------ "+completed);
+			
 			System.out.println("total ------ "+dataEntries.size());
+			
 			if(completed == dataEntries.size()) {
 				mainEntry.getDeJobid().setStatus(dataEntry.getDeJobid().getStatus());
 				deService.updateDeJob(mainEntry.getDeJobid());
@@ -4680,6 +4682,7 @@ public List<String> getcompaniesId(String query) {
 		//System.out.println("Score data dEntry Id: "+scoreData.);
 		getParentImageService().updateOcrTextIDDupDetails(String.valueOf(scoreData.getdEntry().getId()));
 		System.out.println("size after : "+this.deReleavanceImageList.size());
+		return null;
 	}
 	
 	public void hideValueNext(AjaxBehaviorEvent event) {

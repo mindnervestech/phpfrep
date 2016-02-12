@@ -383,8 +383,8 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																								
 																								    <p:commandLink action="#{deBean.callOcrRelvancePopup()}"
 																										rendered="#{not empty v.parentImage.id}"
-																										ajax="true" oncomplete="PF('dlg').show();" 
-																										update=":dlgform:basicDialog">
+																										oncomplete="PF('dlg').show();" 
+																										update=":dlgform:basicDialog" >
 																										<f:param name="parentImgIdOcr" value="#{v.parentImage.id}" />
 																										<f:param name="parentImgChildIdOcr" value="#{v.childImage.id}" />
 																										<f:param name="parentImgChildImgNameOcr" value="#{v.childImage.imageName}" />
@@ -409,12 +409,13 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 																				<f:selectItems value="#{val.dataEntry}" var="v" itemLabel="#{v.id}" itemValue="#{v.id}" />
 																			</h:selectOneMenu>
 																			<p:commandButton action="#{deBean.makeLiveByScore(deBean.deReleavanceImageList.indexOf(val))}" 
-																				styleClass="btn btn" oncomplete="makeDisabled(#{deBean.deReleavanceImageList.indexOf(val)})" 
+																				styleClass="btn btn" oncomplete="makeDisabled(#{deBean.deReleavanceImageList.indexOf(val)})"
+																				update="@all" 
 																				style="margin-left: 22%;" value="MakeLive" ajax="true">
 			 																</p:commandButton>
 			 															
 			 																<p:commandButton   action="#{deBean.makeLiveAsNotDuplicateByScore(val.dEntry.id,deBean.deReleavanceImageList.indexOf(val))}" 
-			 																	 
+			 																	 update="@all"
 			 																	styleClass="btn btn"  oncomplete="makeDisabled(#{deBean.deReleavanceImageList.indexOf(val)})" 
 			 																	style="margin-left: 22%;margin-top:2%;width:62%;" value="Mark Not Duplicate" ajax="true" >
 			 																</p:commandButton>
