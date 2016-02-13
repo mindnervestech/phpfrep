@@ -6450,13 +6450,15 @@ public List<String> getcompaniesId(String query) {
 	}
 
 	public String makeLiveAsNotDuplicateByScore(String id,int index){
-	System.out.println("index: "+index);
-		getParentImageService().updateOcrTextIDDupDetails(id);	
+		
+		System.out.println("index: "+index);
 		System.out.println("id:"+id);
-		DataEntry dataEntry = null;
+
+		getParentImageService().updateOcrTextIDDupDetails(id);	
 		ScoreData scoreData = this.deReleavanceImageList.get(index);
 	    this.deReleavanceImageList.remove(scoreData);
-		return null;
+
+	    return null;
 		//getDeReleavanceImageList();
 	}
 	
