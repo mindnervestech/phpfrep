@@ -99,27 +99,14 @@
 								<span class="sidebar-text">Manage Regions </span>
 								<f:param name="menuId" value="14" />
 							</h:commandLink></li>
-						<li id="menu17" title="Deduplication"><h:commandLink
-								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
-								<i class="glyphicon glyphicon-list-alt" style="margin-left:-4px;"></i>
-								<span class="sidebar-text">Ocr Relevance </span>
-								<f:param name="menuId" value="17" />
-							</h:commandLink></li>
-						<li id="menu18" title="Ocr Live Relevance"><h:commandLink
-								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
-								<i class="glyphicon glyphicon-check" style="margin-left:-4px;"></i>
-								<span class="sidebar-text">Ocr Live Relevance </span>
-								<f:param name="menuId" value="18" />
-							</h:commandLink></li>
-							<li id="menu19" title="Ocr Not Duplicate Relevance"><h:commandLink
-								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
-								<i class="glyphicon glyphicon-share" style="margin-left:-4px;"></i>
-								<span class="sidebar-text">Ocr Not Duplicate Relevance </span>
-								<f:param name="menuId" value="19" />
-							</h:commandLink></li>
+							<li id="menu15"><h:commandLink
+-								action="#{userBean.redirctMenuLink}"
+-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+-								<i class="glyphicon glyphicon-globe"></i>
+-								<span class="sidebar-text"> OCR Relevance</span>
+-								<f:param name="menuId" value="15" />
+-							</h:commandLink></li>
+						
 					</ul>
 				</div>
 				
