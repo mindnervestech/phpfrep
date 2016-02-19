@@ -99,9 +99,8 @@
 								<span class="sidebar-text">Manage Regions </span>
 								<f:param name="menuId" value="14" />
 							</h:commandLink></li>
-							<li id="menu15"><h:commandLink
--								action="#{userBean.redirctMenuLink}"
--								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+							<li id="menu15">
+							<h:commandLink action="#{userBean.redirctMenuLink}" rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
 -								<i class="glyphicon glyphicon-globe"></i>
 -								<span class="sidebar-text"> OCR Relevance</span>
 -								<f:param name="menuId" value="15" />
