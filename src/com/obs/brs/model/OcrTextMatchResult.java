@@ -1,6 +1,7 @@
 package com.obs.brs.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,6 +45,9 @@ public class OcrTextMatchResult implements Serializable{
 	@Column(name="DC_IS_DUPLICATE")
 	private boolean isDuplicate;
 	
+	@Column(name = "STATUS_CHANGED_DATE")
+	private Date statusChangedDate;
+	
 	
 	public boolean isDuplicate() {
 		return isDuplicate;
@@ -57,13 +61,11 @@ public class OcrTextMatchResult implements Serializable{
 	public long getId() {
 		return Id;
 	}
-
 	
 
 	public long getCroppedData() {
 		return croppedData;
 	}
-
 
 
 	public void setCroppedData(long croppedData) {
@@ -96,6 +98,14 @@ public class OcrTextMatchResult implements Serializable{
 
 	public void setId(long id) {
 		Id = id;
+	}
+
+	public Date getStatusChangedDate() {
+		return statusChangedDate;
+	}
+
+	public void setStatusChangedDate(Date statusChangedDate) {
+		this.statusChangedDate = statusChangedDate;
 	}
 
 	

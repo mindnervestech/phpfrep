@@ -50,6 +50,6 @@ public interface IParentImageDAO {
 
 	public void updateParentImageStatusById(Map<Long, Boolean> selectedIds);
 	public void updateParentImageStatusLiveById(Map<Long, Boolean> selectedIds);
-	public void updateOcrTextIDDupDetails(String id);
+	public void updateOcrTextIDDupDetails(String id, Long liveId);
 
 }

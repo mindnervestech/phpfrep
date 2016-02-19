@@ -107,9 +107,9 @@ public class ParentImageService implements IParentImageService {
 	
 	@Override
 	@Transactional(readOnly=false)
-	public void updateOcrTextIDDupDetails(String id) {
+	public void updateOcrTextIDDupDetails(String id, Long liveId) {
 		// TODO Auto-generated method stub
-		 getParentImageDAO().updateOcrTextIDDupDetails(id);
+		 getParentImageDAO().updateOcrTextIDDupDetails(id, liveId);
 	}
 	
 

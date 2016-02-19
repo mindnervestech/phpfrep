@@ -4680,7 +4680,7 @@ public List<String> getcompaniesId(String query) {
 		
 		System.out.println("Score data dEntry Id: "+scoreData.getdEntry().getId());
 		//System.out.println("Score data dEntry Id: "+scoreData.);
-		getParentImageService().updateOcrTextIDDupDetails(String.valueOf(scoreData.getdEntry().getId()));
+		getParentImageService().updateOcrTextIDDupDetails(String.valueOf(scoreData.getdEntry().getId()),liveStatusArr[index]);
 		System.out.println("size after : "+this.deReleavanceImageList.size());
 		return null;
 	}
@@ -6453,8 +6453,8 @@ public List<String> getcompaniesId(String query) {
 		
 		System.out.println("index: "+index);
 		System.out.println("id:"+id);
-
-		getParentImageService().updateOcrTextIDDupDetails(id);	
+		long selectedId = liveStatusArr[index];
+		getParentImageService().updateOcrTextIDDupDetails(id, selectedId);	
 		ScoreData scoreData = this.deReleavanceImageList.get(index);
 	    this.deReleavanceImageList.remove(scoreData);
 

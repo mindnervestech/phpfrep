@@ -1,5 +1,6 @@
 package com.obs.brs.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -193,16 +194,17 @@ public class ParentImageDAO implements IParentImageDAO{
 				}
 		}
 	
-	public void updateOcrTextIDDupDetails(String id) {
+	public void updateOcrTextIDDupDetails(String id, Long liveId) {
 			// TODO Auto-generated method stub
 			//System.out.println("not dup id  : "+id);
 			String sqlQuery = "from OcrTextMatchResult ";
         	long idss = Long.parseLong(id);
-        	sqlQuery = sqlQuery + " where croppedData ="+idss;
+        	sqlQuery = sqlQuery + " where croppedData ="+idss + " and liveData = "+liveId;
 		    List<OcrTextMatchResult> ocrTextMatchResults = getSessionFactory().getCurrentSession().createQuery(sqlQuery).list();
 		   // System.out.println("size dup id list: "+ocrTextMatchResults.size());
 		    for(OcrTextMatchResult o : ocrTextMatchResults){
 		    	o.setDuplicate(true);
+		    	o.setStatusChangedDate(new Date());
 		    	getSessionFactory().getCurrentSession().update(o);
 		    }
 		}

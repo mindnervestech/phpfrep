@@ -567,7 +567,7 @@ public class DeServiceDAO implements IDeServiceDAO {
 	public List<ScoreData> getDeoByReleavance() {
 		List<ScoreData> scoreDatas = new ArrayList<ScoreData>();
 		
-		List <OcrTextMatchResult> ocrTextMatchResultList = getSessionFactory().getCurrentSession().createQuery("From OcrTextMatchResult as m ").list();
+		List <OcrTextMatchResult> ocrTextMatchResultList = getSessionFactory().getCurrentSession().createQuery("From OcrTextMatchResult as m where m.statusChangedDate IS NULL ").list();
 		HashSet<Long> idss = new HashSet<>();
 		for(OcrTextMatchResult o :ocrTextMatchResultList){
 			if(o.isDuplicate() == false){

@@ -52,6 +52,6 @@ public interface IParentImageService {
 
 	public void updateParentImagesStatus(Map<Long, Boolean> selectedIds);
 	public void updateParentImagesStatusLive(Map<Long, Boolean> selectedIds);
-	public void updateOcrTextIDDupDetails(String id);
+	public void updateOcrTextIDDupDetails(String id,Long liveId);
 	
 }

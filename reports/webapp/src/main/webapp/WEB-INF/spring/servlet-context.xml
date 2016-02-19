@@ -16,6 +16,8 @@
 	<beans:import resource="classpath:conf/hibernate-context.xml"/>
 	<beans:import resource="classpath:spring/report-app-spring-context.xml"/>
 	<resources mapping="/report/**" location="/report/"/>
+	<resources mapping="/fracts/**" location="/fracts/"/>
+	<resources mapping="/assets/**" location="/assets/"/>
 	  <context:component-scan base-package="com.mnt.authentication.controller" />	  
   		<context:annotation-config />
   	<tx:annotation-driven  transaction-manager="transactionManager"/>
