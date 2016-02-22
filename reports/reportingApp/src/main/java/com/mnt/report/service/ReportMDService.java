@@ -852,7 +852,7 @@ public class ReportMDService {
 		Map<String,Object> mdResult = jt.queryForMap("select DC_IMAGENAME from tbl_parent_image where DN_ID ="+id);
 		String result = "";
 		if(mdResult!=null &&!mdResult.isEmpty()) {
-			result = imgPath+id+File.separator+mdResult.get("DC_IMAGENAME").toString();
+			result = imgPath+"parent"+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString();
 		}
 		return new FileSystemResource(result);
 	}
@@ -863,7 +863,7 @@ public class ReportMDService {
 		Map<String,Object> mdResult = jt.queryForMap("select DC_IMAGENAME,DN_PARENT_IMAGE_ID from tbl_child_image where DN_ID ="+id);
 		String result = "";
 		if(mdResult!=null &&!mdResult.isEmpty()) {
-			result = imgPath+mdResult.get("DN_PARENT_IMAGE_ID").toString()+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString();
+			result = imgPath+"child"+File.separator+mdResult.get("DN_PARENT_IMAGE_ID").toString()+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString();
 		}
 		return new FileSystemResource(result);
 	}
