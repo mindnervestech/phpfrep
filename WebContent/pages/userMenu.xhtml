@@ -12,28 +12,28 @@
             <div id="main-menu">
                 <ul class="sidebar-nav">
 						<!-- <li class="p-t-20"></li> -->
-						<li id="menu2"><h:commandLink
+						<li id="menu2" title="Manage Users"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{settingsBean.checkVisible(2) || userBean.loginUser.userType.userType=='Super Admin'}">
 								<i class="fa fa-user"></i>
 								<span class="sidebar-text">Manage Users</span>
 								<f:param name="menuId" value="2" />
 							</h:commandLink></li>
-						<li id="menu3"><h:commandLink
+						<li id="menu3" title="Manage Subscriber"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{settingsBean.checkVisible(3) || userBean.loginUser.userType.userType=='Super Admin'}">
 								<i class="fa fa-group" style="margin-left:-4px;"></i>
 								<span class="sidebar-text">Manage Subscriber </span>
 								<f:param name="menuId" value="3" />
 							</h:commandLink></li>
-								<li id="menu7"><h:commandLink
+								<li id="menu7" title="Manage Configurations"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{settingsBean.checkVisible(7) || userBean.loginUser.userType.userType=='Super Admin'}">
 								<i class="fa fa-group" style="margin-left:-4px;"></i>
 								<span class="sidebar-text">Manage Configurations </span>
 								<f:param name="menuId" value="7" />
 							</h:commandLink></li>
-						<li id="menu4"><h:commandLink
+						<li id="menu4" title="Transcription"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{settingsBean.checkVisible(4)}" id="transcription">
 								<i class="glyph-icon flaticon-frontend"></i>
@@ -41,13 +41,13 @@
 								<span class="sidebar-text">Transcription</span>
 								<f:param name="menuId" value="4" />
 							</h:commandLink></li>
-								<li id="menu5"><h:commandLink
+								<li id="menu5" title="Image Upload"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{settingsBean.checkVisible(5)}">
 								<i class="fa fa-cloud-upload"></i><span class="sidebar-text">Image upload</span>
 								<f:param name="menuId" value="5" />
 							</h:commandLink></li>
-							<li id="menu6"><h:commandLink
+							<li id="menu6" title="Gallery"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{settingsBean.checkVisible(6)}">
 								<i class="glyph-icon flaticon-gallery"></i>
@@ -62,7 +62,7 @@
 								<span class="sidebar-text"> new Scientist Gallary</span>
 								<f:param name="menuId" value="16" />
 							</h:commandLink></li>
-								<li id="menu8"><h:commandLink
+								<li id="menu8" title="Settings"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
 								<i class="fa fa-gear"></i>
@@ -70,7 +70,7 @@
 								<f:param name="menuId" value="8" />
 							</h:commandLink></li>
 							
-						 <li id="menu12"><h:commandLink
+						 <li id="menu12" title="Manage Company"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
 								<i class="glyphicon glyphicon-globe" style="margin-left:-4px;"></i>
@@ -78,21 +78,21 @@
 								<f:param name="menuId" value="12" />
 							</h:commandLink></li> 
 							
-							<li id="menu9"><h:commandLink
+							<li id="menu9" title="QC Job"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{userBean.loginUser.userType.userType=='Quality Check'}">
 								<i class="glyph-icon flaticon-frontend"></i>
 								<span class="sidebar-text">QC Job</span>
 								<f:param name="menuId" value="9" />
 							</h:commandLink></li>
-						<li id="menu13"><h:commandLink
+						<li id="menu13" title="Reports"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
 								<i class="fa fa-file" style="margin-left:-4px;"></i>
 								<span class="sidebar-text">Reports </span>
 								<f:param name="menuId" value="13" />
 							</h:commandLink></li>
-						<li id="menu14"><h:commandLink
+						<li id="menu14" title="Manage Regions"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
 								<i class="glyphicon glyphicon-globe" style="margin-left:-4px;"></i>
@@ -127,40 +127,45 @@
 		</h:form>
 	<!-- get value from activeMenuValue Label and set class to appropriate li tag-->
 	<script type="text/javascript">
-		var menuval = document.getElementById("menuForm:activeMenuValue").innerHTML;
-		if (menuval == "2")
-			document.getElementById("menu2").setAttribute("class", "current active");
-		else if (menuval == "3")
-			document.getElementById("menu3").setAttribute("class", "current active");
-		else if (menuval == "4")
-			document.getElementById("menu4").setAttribute("class", "current active");
-		else if (menuval == "5")
-			document.getElementById("menu5").setAttribute("class", "current active");
-		else if (menuval == "6")
-			document.getElementById("menu6").setAttribute("class", "current active");
-		else if (menuval == "7")
-			document.getElementById("menu7").setAttribute("class", "current active");
-		else if (menuval == "8")
-			document.getElementById("menu8").setAttribute("class", "current active");
-		else if (menuval == "9")
-			document.getElementById("menu9").setAttribute("class", "current active");
-		else if (menuval == "10")
-			document.getElementById("menu10").setAttribute("class", "current active");
-
-		else if (menuval == "12")
-			document.getElementById("menu12").setAttribute("class", "current active");
-		else if (menuval == "15")
-			document.getElementById("menu15").setAttribute("class", "current active");
-		else if (menuval == "16")
-			document.getElementById("menu16").setAttribute("class", "current active");
-
-		else if (menuval == "111")
-			document.getElementById("menu111").setAttribute("class", "");
-		else
-			document.getElementById("menu2").setAttribute("class", "current active");
-		
 		$(document).ready(function() {
 			$(document).tooltip();
+			var menuval = document.getElementById("menuForm:activeMenuValue").innerHTML;
+			if (menuval == "2")
+				document.getElementById("menu2").setAttribute("class", "current active");
+			else if (menuval == "3")
+				document.getElementById("menu3").setAttribute("class", "current active");
+			else if (menuval == "4")
+				document.getElementById("menu4").setAttribute("class", "current active");
+			else if (menuval == "5")
+				document.getElementById("menu5").setAttribute("class", "current active");
+			else if (menuval == "6")
+				document.getElementById("menu6").setAttribute("class", "current active");
+			else if (menuval == "7")
+				document.getElementById("menu7").setAttribute("class", "current active");
+			else if (menuval == "8")
+				document.getElementById("menu8").setAttribute("class", "current active");
+			else if (menuval == "9")
+				document.getElementById("menu9").setAttribute("class", "current active");
+			else if (menuval == "10")
+				document.getElementById("menu10").setAttribute("class", "current active");
+
+			else if (menuval == "12")
+				document.getElementById("menu12").setAttribute("class", "current active");
+			else if (menuval == "15")
+				document.getElementById("menu15").setAttribute("class", "current active");
+			else if (menuval == "16")
+				document.getElementById("menu16").setAttribute("class", "current active");
+			else if (menuval == "17") 
+				document.getElementById("menu17").setAttribute("class", "current active");
+			else if (menuval == "18")
+				document.getElementById("menu18").setAttribute("class", "current active");
+			else if (menuval == "19")
+				document.getElementById("menu19").setAttribute("class", "current active");
+
+			else if (menuval == "111")
+				document.getElementById("menu111").setAttribute("class", "");
+			else
+				document.getElementById("menu2").setAttribute("class", "current active");
 		});
 	</script>
 </ui:composition>

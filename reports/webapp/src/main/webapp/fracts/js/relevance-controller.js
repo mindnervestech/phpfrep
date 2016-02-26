@@ -78,6 +78,7 @@ app.controller('MainController',function($scope,$http) {
 		var selectedObj = $scope.relevanceData[index];
 		$scope.selectedCropImageId = selectedObj.childImageId;
 		$("#cropped-popup").modal();
+		$("#cropped-popup #cropped-img").prop('src',"/webapp/get-child-image?id="+$scope.selectedCropImageId);
 	};
 	
 	$scope.comparePopup = function(index, liveChildImageId) {
@@ -86,6 +87,8 @@ app.controller('MainController',function($scope,$http) {
 		$scope.selectedCropImageId = selectedObj.childImageId;
 		$scope.selectedLiveImageId = liveChildImageId;
 		$("#compare-popup").modal();
+		$("#compare-popup #cropped-img").prop('src',"/webapp/get-child-image?id="+$scope.selectedCropImageId);
+		$("#live-img").prop('src',"/webapp/get-child-image?id="+liveChildImageId);
 	};
 	
 	$scope.markAllLive = function() {
