@@ -1111,7 +1111,8 @@ implements Serializable
 					returnPage = MANAGE_QCJOB;
 				}
 				else if(user.getIsActive() && user.getUserType().getUserType().equals("Data Entry")){
-					returnPage = MANAGE_DATAENTRY;
+					this.sessionManager.setUserInSession("brs.menu", "17");
+					returnPage = "/pages/de/ocr_relevance_angular.xhtml";;
 				}
 				sessionManager.setSessionAttributeInSession("option", "4");
 				return returnPage;
@@ -1374,7 +1375,6 @@ implements Serializable
 
 	public String redirctMenuLink(){
 	 
-		
 		
 		String redirectLink = null;
 		FacesUtils facesUtils = new FacesUtils();

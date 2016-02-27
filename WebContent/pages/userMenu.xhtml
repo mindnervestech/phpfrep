@@ -33,24 +33,16 @@
 								<span class="sidebar-text">Manage Configurations </span>
 								<f:param name="menuId" value="7" />
 							</h:commandLink></li>
-						<li id="menu4" title="Transcription"><h:commandLink
-								action="#{userBean.redirctMenuLink}"
-								rendered="#{settingsBean.checkVisible(4)}" id="transcription">
-								<i class="glyph-icon flaticon-frontend"></i>
-								<!-- <p:tooltip for="transcription" showEffect="fade" value="Transcription" style="padding:10px;" /> -->
-								<span class="sidebar-text">Transcription</span>
-								<f:param name="menuId" value="4" />
-							</h:commandLink></li>
 								<li id="menu5" title="Image Upload"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{settingsBean.checkVisible(5)}">
 								<i class="fa fa-cloud-upload"></i><span class="sidebar-text">Image upload</span>
 								<f:param name="menuId" value="5" />
 							</h:commandLink></li>
-							<li id="menu6" title="Gallery"><h:commandLink
+							<li id="menu6" title="Cropping"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{settingsBean.checkVisible(6)}">
-								<i class="glyph-icon flaticon-gallery"></i>
+								<i class="glyphicon glyphicon-scissors"></i>
 								<span class="sidebar-text">Parent Image</span>
 								<f:param name="menuId" value="6" />
 							</h:commandLink></li>
@@ -58,7 +50,7 @@
 							<li id="menu16" title="Change Buckets"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
-								<i class="glyphicon glyphicon-edit"></i>
+								<i class="glyphicon glyphicon-warning-sign"></i>
 								<span class="sidebar-text"> new Scientist Gallary</span>
 								<f:param name="menuId" value="16" />
 							</h:commandLink></li>
@@ -99,27 +91,35 @@
 								<span class="sidebar-text">Manage Regions </span>
 								<f:param name="menuId" value="14" />
 							</h:commandLink></li>
-						<li id="menu17" title="Deduplication"><h:commandLink
+						<li id="menu17" title="Dedup"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
-								<i class="glyphicon glyphicon-list-alt" style="margin-left:-4px;"></i>
-								<span class="sidebar-text">Ocr Relevance </span>
+								<i class="glyphicon glyphicon-duplicate" style="margin-left:-4px;"></i>
+								<span class="sidebar-text">Dedup</span>
 								<f:param name="menuId" value="17" />
 							</h:commandLink></li>
-						<li id="menu18" title="Ocr Live Relevance"><h:commandLink
+						<li id="menu18" title="Dedup Match"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
 								<i class="glyphicon glyphicon-check" style="margin-left:-4px;"></i>
-								<span class="sidebar-text">Ocr Live Relevance </span>
+								<span class="sidebar-text">Dedup Match</span>
 								<f:param name="menuId" value="18" />
 							</h:commandLink></li>
-							<li id="menu19" title="Ocr Not Duplicate Relevance"><h:commandLink
+							<li id="menu19" title="Dedup No Match"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
 								<i class="glyphicon glyphicon-share" style="margin-left:-4px;"></i>
-								<span class="sidebar-text">Ocr Not Duplicate Relevance </span>
+								<span class="sidebar-text">Dedup No Match</span>
 								<f:param name="menuId" value="19" />
 							</h:commandLink></li>
+						<li id="menu4" title="Transcription"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{settingsBean.checkVisible(4)}" id="transcription">
+								<i class="glyphicon glyphicon-list-alt"></i>
+								<!-- <p:tooltip for="transcription" showEffect="fade" value="Transcription" style="padding:10px;" /> -->
+								<span class="sidebar-text">Transcription</span>
+								<f:param name="menuId" value="4" />
+								</h:commandLink></li>
 					</ul>
 				</div>
 				
@@ -128,45 +128,44 @@
 	<!-- get value from activeMenuValue Label and set class to appropriate li tag-->
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$(document).tooltip();
 			var menuval = document.getElementById("menuForm:activeMenuValue").innerHTML;
-			if (menuval == "2")
+			if (menuval == "2") {
 				document.getElementById("menu2").setAttribute("class", "current active");
-			else if (menuval == "3")
+			} else if (menuval == "3") {
 				document.getElementById("menu3").setAttribute("class", "current active");
-			else if (menuval == "4")
+			} else if (menuval == "4") {
 				document.getElementById("menu4").setAttribute("class", "current active");
-			else if (menuval == "5")
+			} else if (menuval == "5") {
 				document.getElementById("menu5").setAttribute("class", "current active");
-			else if (menuval == "6")
+			} else if (menuval == "6") {
 				document.getElementById("menu6").setAttribute("class", "current active");
-			else if (menuval == "7")
+			} else if (menuval == "7") {
 				document.getElementById("menu7").setAttribute("class", "current active");
-			else if (menuval == "8")
+			} else if (menuval == "8") {
 				document.getElementById("menu8").setAttribute("class", "current active");
-			else if (menuval == "9")
+			} else if (menuval == "9") {
 				document.getElementById("menu9").setAttribute("class", "current active");
-			else if (menuval == "10")
+			} else if (menuval == "10") {
 				document.getElementById("menu10").setAttribute("class", "current active");
-
-			else if (menuval == "12")
+			} else if (menuval == "12") {
 				document.getElementById("menu12").setAttribute("class", "current active");
-			else if (menuval == "15")
+			} else if (menuval == "15") {
 				document.getElementById("menu15").setAttribute("class", "current active");
-			else if (menuval == "16")
+			} else if (menuval == "16") {
 				document.getElementById("menu16").setAttribute("class", "current active");
-			else if (menuval == "17") 
+			} else if (menuval == "17") {
 				document.getElementById("menu17").setAttribute("class", "current active");
-			else if (menuval == "18")
+			} else if (menuval == "18") {
 				document.getElementById("menu18").setAttribute("class", "current active");
-			else if (menuval == "19")
+			} else if (menuval == "19") {
 				document.getElementById("menu19").setAttribute("class", "current active");
-
-			else if (menuval == "111")
+			} else if (menuval == "111") {
 				document.getElementById("menu111").setAttribute("class", "");
-			else
+			} else {
 				document.getElementById("menu2").setAttribute("class", "current active");
+			}
 		});
+		
 	</script>
 </ui:composition>
 
