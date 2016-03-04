@@ -377,12 +377,11 @@ input[type='checkbox'] {
 																						value="{{l.id}}"
 																						ng-selected="l.id == r.relevanceToBe">{{l.id}}</option>
 																				</select>
-																				<button class="btn btn" style="margin-left: 22%;"
-																					ng-click="markLive($index)">MarkLive</button>
+																				<button class="btn btn-primary" style="margin-top: 10px;font-size: 12px;"
+																					ng-click="markLive($index)">YES. Live record &num; above is a perfect match.</button>
 																				<button ng-click="markNotDuplicate($index)"
-																					class="btn btn" ng-init="showSelects($last)"
-																					style="margin-left: 22%; margin-top: 2%; width: 62%;">Mark
-																					Not Duplicate</button>
+																					class="btn btn-warning" ng-init="showSelects($last)"
+																					style="margin-top: 10px;font-size: 12px;">No identical matches displayed</button>
 																			</div>
 																		</div>
 																		<!-- loop for child or relevance end -->

@@ -97,7 +97,7 @@ public class FractsController {
 				"ocr.STATUS_CHANGED_DATE > '"+df.format(c.getTime())+"' and "+
 				"ocr.DC_IS_DUPLICATE = '1' and " +
 				"ocr.DC_CROPPED_JOBID = cropped.DN_ID and "+ 
-				"ocr.DC_LIVE_JOBID = live.DN_ID";
+				"ocr.DC_LIVE_JOBID = live.DN_ID order by ocr.STATUS_CHANGED_DATE desc";
 		List<Map<String,Object>> results =  jt.queryForList(query);
 		Map<Long,List<CroppedVM>> resMap = new HashMap<Long, List<CroppedVM>>();
 		List<CroppedVM> croppedVMs = new ArrayList<CroppedVM>();
@@ -141,7 +141,7 @@ public class FractsController {
 				"ocr.STATUS_CHANGED_DATE > '"+df.format(c.getTime())+"' and "+
 				"ocr.DC_IS_DUPLICATE = '0' and " +
 				"ocr.DC_CROPPED_JOBID = cropped.DN_ID and "+ 
-				"ocr.DC_LIVE_JOBID = live.DN_ID";
+				"ocr.DC_LIVE_JOBID = live.DN_ID order by ocr.STATUS_CHANGED_DATE desc";
 		List<Map<String,Object>> results =  jt.queryForList(query);
 		Map<Long,List<CroppedVM>> resMap = new HashMap<Long, List<CroppedVM>>();
 		List<CroppedVM> croppedVMs = new ArrayList<CroppedVM>();
