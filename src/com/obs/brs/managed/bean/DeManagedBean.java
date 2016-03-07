@@ -3027,7 +3027,7 @@ public class DeManagedBean implements Serializable{
 					ImageIO.write(bi,"jpg",newFile );
 					//set image to page
 					croppedImageName = currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName();
-					//RequestContext.getCurrentInstance().execute("PF('dlg1').show()");
+					RequestContext.getCurrentInstance().execute("PF('dlg1').show()");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
