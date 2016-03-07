@@ -1978,7 +1978,8 @@ public class DeManagedBean implements Serializable{
 			{
 				Object sessionObj = sessionManager.getSessionAttribute(SessionManager.EDITUSER);
 				int deJobId  = sessionObj!=null?((Integer)sessionObj).intValue():0;
-				DeJob deJob = 	deService.getDeJobById(deJobId);
+				//DeJob deJob = 	deService.getDeJobById(deJobId);
+				DeJob deJob = deService.getDeJobByParentImageId(deJobid);
 				if(deJob != null){
 					DataEntry dataEntry = deService.getDataEntryByParentImageId(deJob.getParentImage().getId());
 					List<ChildImage> childImageList=childImageService.getChildImagesByParent(deJob.getParentImage().getId());
@@ -2459,7 +2460,7 @@ public class DeManagedBean implements Serializable{
 		int imageId = Integer.valueOf(val!=null?val:"0");
 		if(imageId >0){
 			ParentImage parentImage = getParentImageService().getParentImageById(imageId);
-			parentImage.setStatus(1);
+			parentImage.setStatus(2);
 			getParentImageService().updateParentImage(parentImage);
 			parentImageList = new ArrayList<ParentImage>();
 		}
@@ -2818,7 +2819,7 @@ public class DeManagedBean implements Serializable{
 					ImageIO.write(bi,"jpg",newFile );
 					//set image to page
 					croppedImageName = currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName();
-					RequestContext.getCurrentInstance().execute("PF('dlg1').show();$('div[id*=\"basicDialog\"]').css('top','10px')");
+					//RequestContext.getCurrentInstance().execute("PF('dlg1').show();$('div[id*=\"basicDialog\"]').css('top','10px')");
 					try {
 						ImageIO.scanForPlugins();
 						String result = new Ocr().doOCR(newFile);
@@ -2835,6 +2836,7 @@ public class DeManagedBean implements Serializable{
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					saveCroppedImage();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -3090,7 +3092,7 @@ public class DeManagedBean implements Serializable{
 					}
 					new File(sourcePath).delete();
 					messageService.messageInformation(null, "Image cropped Successfully.");
-					RequestContext.getCurrentInstance().execute("PF('dlg1').hide()");
+					//RequestContext.getCurrentInstance().execute("PF('dlg1').hide()");
 					//return RETURN_CHILD_IMAGE;
 				}
 			}
@@ -3099,7 +3101,7 @@ public class DeManagedBean implements Serializable{
 			e.printStackTrace();
 		}
 		
-		return  "/pages/de/gallery.xhtml" ;
+		return  null ;
 	}
 
 	/**
