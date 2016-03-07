@@ -275,7 +275,7 @@ input[type='checkbox'] {
 	<div id="wrapper" data-ng-app="FractsApp"  style="padding-left: 0px;"
 		data-ng-controller="MainController" ng-init="init()">
 		<!-- BEGIN MAIN CONTENT -->
-		<form id="coords">
+		<form id="coords" ng-if="showRecords">
 			<input type="hidden" id="id"></input>
 			<div id="main-content">
 				<div class="panel-content">
@@ -406,6 +406,8 @@ input[type='checkbox'] {
 		</div>
 	<!-- END MAIN CONTENT -->
 	</form>
+	<div style="text-align: center;margin-top: 20px;" ng-if="!showRecords">No recods found.</div>
+	</div>
 	</div>
 	<div class="modal fade" tabindex="-1" role="dialog" id="cropped-popup">
   		<div class="modal-dialog">

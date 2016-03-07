@@ -4,11 +4,18 @@ app.controller('MainController',function($scope,$http) {
 	$scope.relevanceData = [];
 	var pageRange = 9;
 	$scope.lastPage = 0;
+	$scope.showRecords = true;
 	$scope.init = function() {
 		$http.get('/webapp/fracts/get-all-live-relevance-list').success(function(data) {
 			$scope.relevanceData = data;
-			$scope.lastPage = ($scope.relevanceData.length % $scope.pageSize > 0 ? Math.ceil($scope.relevanceData.length / $scope.pageSize) : Math.ceil($scope.relevanceData.length / $scope.pageSize))-1;
-			$scope.gotoPage(1);
+			if($scope.relevanceData.length == 0 ) {
+				$scope.showRecords = false;
+			} else {
+				$scope.lastPage = ($scope.relevanceData.length % $scope.pageSize > 0 ? Math.ceil($scope.relevanceData.length / $scope.pageSize) : Math.ceil($scope.relevanceData.length / $scope.pageSize))-1;
+				$scope.gotoPage(1);
+			}
+		}).error(function() {
+			$scope.showRecords = false;
 		});
 	};
 	$scope.gotoLastPage = function() {
