@@ -2841,7 +2841,6 @@ public class DeManagedBean implements Serializable{
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					saveCroppedImage();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -2854,7 +2853,7 @@ public class DeManagedBean implements Serializable{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return saveCroppedImage();
 	}
 	
 	public String editCompany() {
