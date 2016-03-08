@@ -3088,10 +3088,10 @@ public class DeManagedBean implements Serializable{
 					new File(targetPath).mkdirs();
 					IoUtils.copyImages(sourcePath,targetPath,filename);
 					try {	
-						Thumbnails.of(new File(targetPath+File.separator+imgId+File.separator+filename))
+						Thumbnails.of(new File(targetPath+File.separator+filename))
 			        	.size(200, 300).keepAspectRatio(true)
 			        	.outputFormat("jpg")
-			        	.toFile(targetPath+File.separator+imgId+File.separator+filename.split("\\.")[0]+"_thumb.jpg");
+			        	.toFile(targetPath+File.separator+filename.split("\\.")[0]+"_thumb.jpg");
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
