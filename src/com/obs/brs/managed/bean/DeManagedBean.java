@@ -2800,7 +2800,12 @@ public class DeManagedBean implements Serializable{
 				//URL f= getClass().getResource(imageBasePath+CommonProperties.getParentImagePath()+imgId+"/"+parentImage.getImageName());
 				//draw image based on cropped co ordinates
 				Image orig = ImageIO.read(f);
-
+				System.out.println("heigth : "+getCropHeight());
+				System.out.println("width : "+getCropWidth());
+				System.out.println("x1 : "+getCropX1());
+				System.out.println("x2 : "+getCropX2());
+				System.out.println("y1 : "+getCropY1());
+				System.out.println("y2 : "+getCropY2());
 				int transparency = ((BufferedImage) orig).getColorModel().getTransparency();
 				BufferedImage bi = new BufferedImage(Math.round(getCropWidth()), Math.round(getCropHeight()), transparency);
 				bi.createGraphics().drawImage(orig, 0, 0, 
@@ -2819,7 +2824,7 @@ public class DeManagedBean implements Serializable{
 					ImageIO.write(bi,"jpg",newFile );
 					//set image to page
 					croppedImageName = currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName();
-					RequestContext.getCurrentInstance().execute("PF('dlg1').show();$('div[id*=\"basicDialog\"]').css('top','10px')");
+					//RequestContext.getCurrentInstance().execute("PF('dlg1').show();$('div[id*=\"basicDialog\"]').css('top','10px')");
 					try {
 						ImageIO.scanForPlugins();
 						String result = new Ocr().doOCR(newFile);
@@ -2836,7 +2841,7 @@ public class DeManagedBean implements Serializable{
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					//saveCroppedImage();
+					saveCroppedImage();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -3027,7 +3032,7 @@ public class DeManagedBean implements Serializable{
 					ImageIO.write(bi,"jpg",newFile );
 					//set image to page
 					croppedImageName = currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName();
-					RequestContext.getCurrentInstance().execute("PF('dlg1').show()");
+					//RequestContext.getCurrentInstance().execute("PF('dlg1').show()");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
