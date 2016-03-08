@@ -2828,7 +2828,7 @@ public class DeManagedBean implements Serializable{
 					try {
 						ImageIO.scanForPlugins();
 						String result = new Ocr().doOCR(newFile);
-						System.out.println("result: "+result);
+						//System.out.println("result: "+result);
 						if(result != null){
 							DeJob deJob = 	deService.getDeJobByParentImageId(parentImage.getId());
 							DataEntry entry = new DataEntry();
@@ -3046,6 +3046,8 @@ public class DeManagedBean implements Serializable{
 		System.out.println("IMG ID: "+imgID);
 		String sourcePath = imageBasePath+CommonProperties.getTempPath()+croppedImageName;
 		String targetPath = imageBasePath+CommonProperties.getChildImagePath()+parentImage.getId();
+		System.out.println("src path :"+sourcePath);
+		System.out.println("target path :"+ targetPath);
 		try{
 			if(parentImage!=null){
 				File cropFile = new File(sourcePath);
@@ -3070,7 +3072,7 @@ public class DeManagedBean implements Serializable{
 						ImageIO.scanForPlugins();
 						File newFile=new File(imageBasePath+CommonProperties.getTempPath()+currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName());
 						String result = new Ocr().doOCR(newFile);
-						System.out.println("result: "+result);
+						//System.out.println("result: "+result);
 						if(result != null) {
 							DeJob deJob = deService.getDeJobByParentImageId(parentImage.getId());
 							DataEntry entry = new DataEntry();
