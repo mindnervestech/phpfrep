@@ -1978,8 +1978,8 @@ public class DeManagedBean implements Serializable{
 			{
 				Object sessionObj = sessionManager.getSessionAttribute(SessionManager.EDITUSER);
 				int deJobId  = sessionObj!=null?((Integer)sessionObj).intValue():0;
-				//DeJob deJob = 	deService.getDeJobById(deJobId);
-				DeJob deJob = deService.getDeJobByParentImageId(deJobid);
+				DeJob deJob = 	deService.getDeJobById(deJobId);
+				//DeJob deJob = deService.getDeJobByParentImageId(deJobid);
 				if(deJob != null){
 					DataEntry dataEntry = deService.getDataEntryByParentImageId(deJob.getParentImage().getId());
 					List<ChildImage> childImageList=childImageService.getChildImagesByParent(deJob.getParentImage().getId());
