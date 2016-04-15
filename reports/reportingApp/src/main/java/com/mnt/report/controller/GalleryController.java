@@ -1,10 +1,10 @@
 package com.mnt.report.controller;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
+
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,14 +26,11 @@ import java.util.Set;
 
 
 
-import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
-import javax.mail.Multipart;
 
 import net.coobird.thumbnailator.Thumbnails;
 
-import org.bouncycastle.mail.smime.handlers.multipart_signed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,15 +39,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import sun.misc.BASE64Decoder;
-import sun.util.locale.StringTokenIterator;
 
-import com.google.gson.Gson;
 import com.mnt.report.util.CommonUtils;
 
 
