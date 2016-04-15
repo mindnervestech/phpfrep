@@ -1653,7 +1653,7 @@
     // Styling Options
     baseClass: 'jcrop',
     addClass: null,
-    bgColor: 'transparent',
+    bgColor: 'black',
     bgOpacity: 0.6,
     bgFade: false,
     borderOpacity: 0.4,

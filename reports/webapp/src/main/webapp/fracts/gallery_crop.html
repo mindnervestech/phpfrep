@@ -1,0 +1,853 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<!-- BEGIN META SECTION -->
+<meta charset="utf-8" />
+<title>Fracts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="" name="description" />
+<meta content="themes-lab" name="author" />
+<link rel="shortcut icon" href="/webapp/assets/img/favicon.ico" />
+<link rel="apple-touch-icon" sizes="57x57"
+	href="/webapp/assets/img/apple-touch-icon-57x57.png" />
+<link rel="apple-touch-icon" sizes="60x60"
+	href="/webapp/assets/img/apple-touch-icon-60x60.png" />
+<link rel="apple-touch-icon" sizes="72x72"
+	href="/webapp/assets/img/apple-touch-icon-72x72.png" />
+<link rel="apple-touch-icon" sizes="76x76"
+	href="/webapp/assets/img/apple-touch-icon-76x76.png" />
+<link rel="icon" type="image/png"
+	href="/webapp/assets/img/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png"
+	href="/webapp/assets/img/favicon-16x16.png" sizes="16x16" />
+<link rel="manifest" href="/webapp/assets/img/manifest.json" />
+<link rel="mask-icon" href="/webapp/assets/img/safari-pinned-tab.svg"
+	color="#5bbad5" />
+<meta name="msapplication-TileColor" content="#da532c" />
+<meta name="theme-color" content="#ffffff" />
+
+<script
+	src="/webapp/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+<!-- END META SECTION -->
+<!-- BEGIN MANDATORY STYLE -->
+<link href="/webapp/assets/css/icons/icons.min.css" rel="stylesheet" />
+<link href="/webapp/assets/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/webapp/assets/css/ng-img-crop.css" rel="stylesheet" />
+<link href="/webapp/report/vendor/ng-dialog/ngDialog.min.css" rel="stylesheet" />
+<link href="/webapp/report/vendor/ng-dialog/ngDialog-theme-default.min.css" rel="stylesheet" />
+<link href="/webapp/report/vendor/ng-dialog/ngDialog-custom-width.css" rel="stylesheet" />
+<link href="/webapp/report/vendor/ng-dialog/ngDialog-theme-plain.min.css" rel="stylesheet" />
+<link href="/webapp/assets/plugins/jcrop/jquery.Jcrop.css" rel="stylesheet" />
+
+<link href="/webapp/assets/css/plugins.min.css" rel="stylesheet" />
+<link href="/webapp/assets/css/style.css" rel="stylesheet" />
+<link href="/webapp/assets/css/colors/color-dark.css" rel="stylesheet" />
+
+
+<!-- END  MANDATORY STYLE -->
+
+<script src="/webapp/assets/plugins/jquery-1.11.1.min.js"></script>
+
+<style>
+.cropArea {
+  background: #E4E4E4;
+  overflow: hidden;
+  width:500px;
+  height:350px;
+}
+
+.ui-dialog .ui-dialog-content {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	border: 0 none;
+	overflow: auto;
+	padding: 0.5em 1em;
+	position: relative;
+	width: 100%;
+	height: 350px;
+}
+
+
+.ui-dialog.ui-widget-content {
+	width: 64% !important;
+}
+
+.col-md-6 {
+	width: 49%;
+}
+
+.text-muted {
+	color: #999;
+}
+
+input {
+	font-size: 1em !important;
+	height: 37px;
+	width: 100%;
+}
+
+.thumbnail>.overlay>.thumbnail-actions {
+	text-align: left !important;
+	margin-top: -18px;
+}
+
+td,th {
+	padding: 1px 6px 0;
+}
+
+.ui-selectmanycheckbox label,.ui-selectoneradio label {
+	display: block;
+	margin-left: -8px;
+	margin-top: 4px;
+}
+
+.skin-section .list li {
+	position: relative;
+	padding-bottom: 0px !important;
+	padding-left: 30px;
+}
+
+.issueDay td,th {
+	padding: 1px 13.3px 0 8px;
+}
+
+.issueDayNext td,th {
+	padding: 1px 9.5px 0 8.1px;
+}
+
+.issueMonth td,th {
+	padding: 1px 24px 8px 8px;
+}
+
+.issueMonthNext td,th {
+	padding: 1px 22px 8px 8px;
+}
+
+.issueYear td,th {
+	padding: 1px 6.8px 8px;
+}
+
+.issueDayNextThird td,th {
+	padding: 1px 8.9px 0 8.1px;
+}
+
+.issueDayNextFour td,th {
+	padding: 1px 13.5px 0 8.1px;
+}
+
+<!--
+Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
+	font-size: 18px;
+}
+
+.ui-dialog.ui-widget-content .ui-dialog-content {
+	padding: 0px;
+	font-size: 11px;
+}
+
+.pagination li {
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	background-color: #FFFFFF;
+	border-color: #DDDDDD;
+	border-image: none;
+	border-style: solid;
+	border-width: 1px 1px 1px 1px;
+	float: left;
+	line-height: 18px;
+	padding: 0px 12px;
+	text-decoration: none;
+	margin: 0px;
+}
+
+.pagination>li:hover {
+	background-color: #e4e7ea;
+}
+
+.media-header .pull-right {
+	background-color: #fff;
+	color: #fff;
+	padding: 10px;
+}
+
+.templatemo_one_col {
+	width: 585px;
+	margin: 0 0 10px 0;
+}
+
+.templatemo_one_col img {
+	float: left;
+	margin: 0 10px 10px 0;
+}
+
+.btn {
+	width: 115px;
+	padding: 2px 10px;
+}
+
+.thumbnail {
+	margin-bottom: 0px;
+}
+
+.panel {
+	margin-bottom: 5px;
+}
+
+.media-manager .panel-body {
+	padding: 7px;
+}
+
+.childImg {
+	margin: 2px;
+	border-radius: 5px;
+	width: 100px;
+	height: 100px;
+}
+
+.ui-dialog .ui-widget .ui-widget-content .ui-corner-all .ui-shadow .ui-draggable .ui-overlay-visible
+	{
+	width: 64%;
+	height: auto;
+	left: 0px;
+	top: 0px;
+	visibility: visible;
+	z-index: 1002;
+}
+
+#childImg {
+	max-height: 100%;
+}
+
+.complete {
+	border: 2px solid #8AC007;
+}
+
+.incomplete {
+	border: 2px solid #D9534F;
+}
+
+.col8half {
+	width: 70.833333333333333333333333%;
+}
+
+.col1half {
+	width: 12.5%;
+}
+
+.pagination
+>
+li
+:has
+ 
+(>
+b
+ 
+)
+{
+background
+:
+ 
+gray
+;
+
+
+}
+.pagination>li>b {
+	position: relative;
+	float: left;
+	padding: 6px 12px;
+	margin-left: -1px;
+	line-height: 1.428571429;
+	color: #428bca;
+	text-decoration: none;
+	background-color: #fff;
+}
+
+.save-icon {
+	background: url('/webapp/assets/img/save.jpg');
+	height: 20px;
+	width: 20px;
+}
+
+.pagination>li {
+	padding: 0;
+}
+.modal-header .close {
+    margin-top: -10px;
+}
+.icheckbox_flat-blue {
+	position: relative;
+	top: -150px;
+	left: -22px;
+}
+input[type='checkbox'] {
+	height: 20px;
+}
+</style>
+</head>
+<body style="margin-top: 0px;">
+	<div id="wrapper" data-ng-app="FractsApp"  style="padding-left: 0px;"
+		data-ng-controller="MainController" ng-init="init()">
+		<!-- BEGIN MAIN CONTENT -->
+<!-- copy peste start-->        
+        <div id="coords">
+<!--  start of main content -->
+  		  <div id="main-content">
+  		    <div class="panel-content">
+  		    	<div class="row media-manager">
+  		    	      <ul class="media-header" style="margin-right: 0px;">
+  		    	      	  <li class="pull-right" style="margin-top: -19px;padding: 4px 10px;">
+	  		    	      <select class="form-control select-element" name="select" id="select" ng-model="select"  ng-change="updateData(select)" style="height: 34px;margin-top: -1px;">    
+	                        	<option value="0" selected="selected">All</option>
+	                        	<option value="1">Done</option>
+	                        	<option value="2">UnDone</option>
+						  </select>
+					     </li>
+					    </ul> 
+					  
+	  		    	  <div class = "col-md-7" style="float:right; margin: -17px;">
+		  		    	   	<button class="btn btn-default" ng-click="selectAll()">Select All</button>
+		  		    	   	<button class="btn btn-default" ng-click="deselectAll()" style="margin-left:1%;">Deselect All</button>
+		  		    	   	<button class="btn btn-default" ng-click="moveTo()" style="margin-left:1%;width: 174px;">Move to Transcription</button>
+		  		    	   	<button class="btn btn-default" ng-click="advertorial()" style="margin-left:1%;">Advertorial</button>
+					  </div>	
+  		    		<ul id="myTab2" class="nav nav-tabs nav-dark">
+							<li class="active"><a href="#tab1" data-toggle="tab" style=" margin-top: -23px;padding-top: 1px;"><i
+									class="glyphicon glyphicon-th-list"></i> List View </a></li>
+							<li><a href="#tab2" data-toggle="tab" style=" margin-top: -23px;padding-top: 1px;"><i
+									class="glyphicon glyphicon glyphicon-th"></i> Grid View </a></li>
+					</ul>
+					<div id="myTabContent" class="tab-content" style="float: left;width: 100%;">
+					<!-- start of first tab -->
+						<div class="tab-pane fade in active" id="tab1">
+							<div class="tab_border p-0">
+								<div class="col-sm-12">
+									<div class="row">
+									    <span ng-if="parentList.size==0" style="margin-left:100px">No Image found</span>
+										
+										<div id="div_photo_list" >
+											<!-- <div style="width: 44%;">
+												Duplicated Images :
+												<div ng-repeat="di in duplicateImageList">
+													<span style="color:red;float: left;">{{di.DC_IMAGENAME}},</span>
+												</div>
+												
+											</div> -->
+											
+											 <div  style="width: 10%;">
+											    <a href="#" ng-show="status" ng-click="getDuplicateImage()"> Show Duplicate</a>
+												<a href=""  ng-hide="status" ng-click="init()"> Show All</a>
+																											    
+												<!-- <button class="btn btn-default" ng-click="getDuplicateImage()">Show Duplicate</button>
+												<p:commandLink update="div_photo_list" rendered="#{deBean.duplicate}" ajax="true" action="#{deBean.changeParentImages}">Show Duplicate</p:commandLink>
+													<p:commandLink update="div_photo_list" rendered="#{not deBean.duplicate}" ajax="true" action="#{deBean.changeParentImages}">Show All</p:commandLink> -->
+											</div> 
+											<div styleClass="pull-right" style="margin-bottom: 0.5%; float: right;">
+												<ul class="pagination pagination-right" style="margin: 0px; border: 0px solid #ccc;">
+													<li style="padding: 0px;" ng-click="currentPage = 0;"><a>First</a></li>
+													<li ng-click="gotoPrev()"><a>&#60;</a></li>
+													<li ng-repeat="p in pages"
+													    ng-class="currentPage == (p-1) ? 'active' : ''"
+														ng-click="gotoPage(p)"><a>{{p}}</a></li>
+													<li ng-click="gotoNext()"><a>&#62;</a></li>
+													<li ng-click="gotoLastPage()"><a>Last</a></li>
+													<li><span
+														style="padding: 0px; font-size: 14px; color: #000;">{{currentPage+1}}/{{lastPage+1}}</span></li>
+												</ul>
+											</div>
+											 <div ng-repeat="list in allImageList | startFrom:currentPage*pageSize | limitTo:pageSize track by $index">
+											 	 <div class = "col-md-1">
+											 	 	<input class="chackboxclass" value="{{list.DN_ID}}" type="checkbox" ng-model="ids[list.DN_ID]"  name="selectInput">
+											 	 </div>
+												 <div class="col-xs-12 col-sm-12 col-md-12">
+													<div class="panel panel-default">
+														<div class="panel-body" style="height: 224px;">
+															<div class="thmb">
+																<div class="thmb-prev">
+																	<div class="thumbnail"
+																		style="height: 210px;">
+																		<div class="col-md-2">
+																		      <img style="height: 190px; width:145px" 
+																						ng-src="/webapp/get-all-parent-image?id={{list.DN_ID}}"
+																						class="img-responsive m-10" alt="" /> 
+																	    </div>
+																	    <div class="col-md-9 col8half">
+																			<div class="col-md-12 p-0">
+																				
+																				<div class="col-md-2 p-0">
+																					<div class="p-0 f_l">
+																						<div class="row m-5 f_l">
+																							<div style="font-weight: bold; float: left">Job ID :</div>
+																							<div class="f_l p-l-10">
+																								<span>{{list.DN_ID}}</span>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-4_5">
+																					<div class="p-0 f_l">
+																						<div class="row m-5 f_l">
+																							<div style="font-weight: bold; float: left">Image Name :</div>
+																							<div class="f_l p-l-10">
+																								<span>{{list.DC_IMAGENAME}}</span>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-3 p-0">
+																					<div class="p-0 f_l">
+																						<div class="row m-5 f_l">
+																							<div style="font-weight: bold; float: left">Issue
+																							Date :</div>
+																							<div class="f_l p-l-10">
+																								<span>{{list.DD_ISSUE_DATE | date : 'MMM,dd,yyyy'}}</span>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-2_5">
+																					<div class="p-0 f_l">
+																						<div class="row m-5 f_l">
+																							<div style="font-weight: bold; float: left">Section
+																							:</div>
+																							<div class="f_l p-l-10">
+    																							<span>{{list.DC_SECTION}}</span>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																			<div class="col-md-12 p-0">
+																				<div class="col-md-2 p-0">
+																					<div class="p-0 f_l">
+																						<div class="row m-5 f_l">
+																							<div style="font-weight: bold; float: left">Child
+																							Images :</div>
+																							<div class="f_l p-l-10">
+																								<span>{{list.listVm.length}}</span>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-5 p-0">
+																					<div class="p-0 f_l">
+																						<div class="row m-5 f_l">
+																							<div style="font-weight: bold; float: left">Publication
+																							:</div>
+																							<div class="f_l p-l-10">
+																							 	<span>{{list.DC_PUBLICATION_TITLE}}</span>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-2 p-0">
+																					<div class="p-0 f_l">
+																						<div class="row m-5 f_l">
+																							<div style="font-weight: bold; float: left">Page
+																							:</div>
+																							<div class="f_l p-l-10">
+																							<span>{{list.DC_PAGE}}</span>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-3 p-0">
+																					<div class="p-0 f_l">
+																						<div class="row m-5 f_l">
+																							<div style="font-weight: bold; float: left">Comment :
+																						   </div>
+																							<div styleClass="f_l p-l-10" style="float:left;">
+																								 <!-- <span>{{list.DC_SECTION_SPECIAL_TOPIC}}</span>
+																								 <span>{{list.DC_SECTION_SPECIAL_REGIONAL}}</span> -->
+																								 <span> {{list.DC_SECTION_OTHER}}</span>
+																								
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																			
+																			<div class="col-md-12 p-0">
+																				<div class="col-md-10 p-0" style="height: 100px;">
+																					<div ng-repeat="la in list.listVm |limitTo:4">
+																						<div 
+																							class="incomplete thumbnail childImg"
+																							style="float: left; padding:2px;">
+																             				    <img  id="childImg"
+																										style="display: block;"
+																										ng-src="/webapp/get-all-child-image?cid={{la.DN_ID}}&pid={{list.DN_ID}}&iname={{la.DC_IMAGENAME}}" /> 
+																							<div class="overlay"
+																								style="height: 18%; height: 15%;">
+																								<div class="thumbnail-actions" style="  margin-top: -8px;">
+																									<small class="text-muted pull-center" style="margin-left: 30px;">
+																										
+																										<a href="#" ng-click="deleteChileImage(la.DN_ID)">Delete
+																										</a>
+																										
+																										<!-- <p:commandLink
+																											action="#{deBean.deleteChildImage}"
+																											update="@form" ajax="true" style="color:#fff;  padding-left: 30px;"
+																											onstart="if(confirmDelete())return true; else return false;">
+																											<f:param name="childImgId" value="#{child.id}" />
+																											Delete
+																										</p:commandLink> -->
+																									</small>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-2 p-0">
+																					<input type="text" ng-model="list.DC_SECTION_OTHER"/>
+																					<button class="btn btn-default" ng-click="saveComment($index,pageSize,currentPage,list.DN_ID,list.DC_SECTION_OTHER)" style="margin: 5px;">save</button>
+																					
+																				</div>
+																			</div>
+																			<div class="col-md-12 p-0">
+																				<div class="p-0 f_l">
+																					<div class="row m-5 f_l">
+																						<div style="font-weight: bold; float: left">Image
+																							Height :</div>
+																						<div class="f_l p-l-10">
+																							<span>{{list.DC_HEIGHT}}</span>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="p-0 f_l">
+																					<div class="row m-5 f_l">
+																						<div style="font-weight: bold; float: left">Image
+																							Width :</div>
+																						<div class="f_l p-l-10">
+																							<span>{{list.DC_WIDTH}}</span>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="p-0 f_l">
+																					<div class="row m-5 f_l">
+																						<div style="font-weight: bold; float: left">Uploaded
+																						On :</div>
+																						<div class="f_l p-l-10">
+																							<span>{{list.DD_CREATED_ON | date : 'MMM,dd yyyy'}}</span>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="p-0 f_l">
+																					<div class="row m-5 f_l">
+																						<div style="font-weight: bold; float: left">Uploaded
+																							By :</div>
+																						<div class="f_l p-l-10">
+																							<span>{{list.CREATED_BY}}</span>				
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-1 m-t-10 col1half">
+																			<button class="btn btn-warning" ng-click="openEditImageForm($index,pageSize,currentPage,list.DN_ID,list.DC_IMAGENAME)" style="margin: 10px;">Edit</button>	
+																		    <button class="btn btn-warning" ng-click="cropImage($index,pageSize,currentPage,list.DN_ID,list.imageUrl)" style="margin: 10px;">Crop Parent</button>
+																			<button class="btn btn-warning" ng-click="deleteParentImage($index,pageSize,currentPage,list.DN_ID)" style="margin: 10px;">Delete</button>
+																			<h3><span ng-show="list.duplicate" style="margin: 15px;color:red">Duplicate</span></h3>
+																				
+																		</div>
+																		
+																	</div>	
+																</div>
+																<div
+																	style="width: 228px; height: 28px; word-wrap: break-word; display: none;">
+																	<h5 class="media-title">
+																		
+																	</h5>
+																</div>
+															</div> 
+														</div>
+													</div>
+												 </div>		
+											 </div>		
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+<!-- end of first tab -->
+						<div class="tab-pane fade in" id="tab2">
+								<div class="tab_border p-0">
+									<div class="col-sm-12">
+										<div class="row">
+											<!-- <h:outputLabel style="margin-left:100px" value="No Image found"
+												rendered="#{empty deBean.parentImageList}" /> -->
+											<div>
+													
+												<div ng-repeat="list in allImageList">	
+												<!-- <ui:repeat var="val" value="#{deBean.parentImageList}"
+													rendered="#{not empty deBean.parentImageList}"
+													size="#{deBean.imagePerPage-1}" offset="#{deBean.imageOffset}"
+													varStatus="status"> -->
+													
+													<div class="col-xs-6 col-sm-4 col-md-3">
+														<div class="panel panel-default">
+															<div class="panel-body"
+																style="max-height: 385px; min-height: 385px;">
+																<div class="thmb">
+																	<div class="thmb-prev">
+																		<div class="thumbnail"
+																			style="max-height: 280px; min-height: 280px;">
+																			
+																			
+																			<!-- <div class="overlay"
+																				style="margin-top: 236px; height: 47%;">
+																				<div class="thumbnail-actions">
+																					<small class="text-muted pull-left"
+																						style="margin-top: -40px;"><h:outputText
+																							style="color:#fff;"
+																							value="#{val.publicationTitle.publicationTitle}">
+																						</h:outputText></small> <br /> <small class="text-muted pull-left"
+																						style="margin-top: -40px;">
+																						<div style="width: 147px !important">
+																							<h:outputText style="color:#fff;" value="Section:">
+																							</h:outputText>
+																							&nbsp;
+																							<h:outputText style="color:#fff;"
+																								value="#{val.section.publicationTitle}">
+																							</h:outputText>
+																							
+																							
+																						</div>
+																						
+																					</small> &nbsp; <small class="text-muted pull-right"
+																						style="margin-top: -40px; margin-right: 10px;">
+																						<h:outputText style="color:#fff;" value="Page:" />&nbsp;<h:outputText
+																							style="color:#fff;" value="#{val.page}">
+																						</h:outputText>
+																					</small> <br /> <br /> <small class="text-muted pull-left"
+																						style="margin-top: -40px;"> <h:outputText
+																							style="color:#fff;" value="Issue Date:" />&nbsp;<h:outputText
+																							style="color:#fff;" value="#{val.issueDate}">
+																							<f:convertDateTime pattern="MMM dd, yyyy" />
+																						</h:outputText></small> <br /> <small class="text-muted pull-left"
+																						    style="margin-top: -40px;"><h:outputText
+																							style="color:#fff;" value="On:" />&nbsp;<h:outputText
+																							style="color:#fff;" value="#{val.createdOn}">
+																							<f:convertDateTime pattern="MMM dd, yyyy" />
+																						</h:outputText></small> <br /> <small class="text-muted pull-left"
+																						style="margin-top: -40px;"> <h:commandLink
+																							action="#{deBean.callChildPage}" style="color:#fff;">
+																							<f:param name="img" value="#{val.id}" />
+																					        View
+																	</h:commandLink></small> 
+			
+																	<small class="text-muted pull-right"
+																						style="margin-top: -40px; margin-right: 10px;"><h:commandLink
+																							action="#{deBean.deleteParentImage}" update="@all"
+																							style="color:#fff;"
+																							onclick="if(confirmDelete())return true; else return false;">
+																							<f:param name="imgId" value="#{val.id}" />
+																						Delete
+																				</h:commandLink></small>
+																				</div>
+																			</div> -->
+																			
+																			
+																			<!-- <img style="max-height: 280px;"
+																				src="/webapp/get-all-parent-image?id={{list.DN_ID}}"
+																				class="img-responsive" alt="" /> -->
+																		</div>
+			
+																	</div>
+																	<div
+																		style="width: 228px; height: 28px; word-wrap: break-word;">
+																		<h5 class="media-title">
+																			<a href="#">{{list.DC_IMAGENAME}}</a>
+																			<!-- <h:commandLink action="#{deBean.callChildPage}">
+																				<f:param name="img" value="#{val.id}" />#{val.imageName}
+																	        </h:commandLink> -->
+																		</h5>
+																		<small class="text-muted pull-left"
+																						style="margin-top: 0px;">
+																					<span >Uploaded By:</span>
+																					<span >{{CREATED_BY}}</span>	
+																						<!--  <h:outputText
+																							style="" value="Upload By:" />&nbsp;
+																						<h:outputText
+																							value="#{val.createdBy.firstName}"
+																							style="">
+																						</h:outputText> -->
+																		</small>
+																	</div>
+																	<br/> 
+																	<br/> 
+																	<small class="text-muted pull-left"
+																		style="margin-top: -12px;width:75%;"> 
+																		
+																		<a href=""><i class="fa fa-plus"></i></a>
+																		<span style="margin-left: 30%;">Child Images: {{list.listVm.length}}</span>
+																		<!-- <p:commandLink
+																			action="#{deBean.callPublication}"
+																			rendered="#{empty val.publicationTitle}" ajax="true"
+																			oncomplete="PF('dlg').show();"  id="add"
+																			update=":dlgform:basicDialog">
+																			<f:param name="parentImg" value="#{val.id}" />
+																			<i class="fa fa-plus"></i>
+																			<p:tooltip for="add" showEffect="fade" value="Add Tag" />
+																		</p:commandLink>
+																		 <p:commandLink action="#{deBean.callPublication}"
+																			rendered="#{not empty val.publicationTitle}" ajax="true"
+																			oncomplete="PF('dlg').show();"  id="edit"
+																			update=":dlgform:basicDialog">
+																			<i class="fa fa-edit"></i>
+																			<f:param name="parentImg" value="#{val.id}" />
+																			<p:tooltip for="edit" showEffect="fade" value="Edit Tag" />
+																		</p:commandLink>
+																		<h:outputText value="Child Images: #{fn:length(deBean.getChildImageListCount(val.id))}" style="margin-left: 30%;" />
+																		 -->
+																	</small> 
+																	<small class="text-muted pull-right"
+																		style="margin-top: -12px;">
+																		<a href="#"><i class="fa fa-crop p-r-10" style="font-size: 14px;"></i></a>
+																		<!-- <h:commandLink
+																			rendered="#{not empty val.publicationTitle}"
+																			action="#{deBean.callCrop}" id="crop">
+																			<f:param name="img" value="#{val.id}" />
+																			<i class="fa fa-crop p-r-10" style="font-size: 14px;"></i>
+																			<p:tooltip for="crop" showEffect="fade" value="Crop" />
+																		</h:commandLink>  -->
+																	</small>
+																</div>
+															</div>
+														</div>
+													</div>
+			
+												</div>
+												<div style="clear: both;">
+													<div rendered="#{ fn:length(deBean.parentImageList) > 20}">
+														<label style="width: 6%; margin-left: 15px;"
+															class="pull-left"> 
+																<select class="form-control select-element" name="select" id="select" ng-model="select"  ng-change="updateData(select)">
+	                        										<option value="0" selected="selected">6</option>
+	                        										<option value="1">20</option>
+	                        										<option value="2">40</option>
+	                        										<option value="2">60</option>
+						  										</select>
+															<!-- <h:selectOneMenu
+																styleClass="form-control" value="#{deBean.imagePerPage}"
+																id="imagePerPage"
+																valueChangeListener="#{deBean.localImageChanged}"
+																onchange="this.form.submit()">
+																<f:selectItem itemLabel="6" itemValue="6" />
+																<f:selectItem itemLabel="20" itemValue="20" />
+																<f:selectItem itemLabel="40" itemValue="40" />
+																<f:selectItem itemLabel="60" itemValue="60" />
+															</h:selectOneMenu> -->
+														</label>
+													</div>
+												<!-- 	<t:div styleClass="pull-right"
+														rendered="#{((fn:length(deBean.parentImageList) > (deBean.imagePerPage)) and (deBean.imageOffset == 0)) or ((deBean.imageOffset > 0))}">
+														<ul class="pagination pagination-right"
+															style="margin: 0px; border: 1px solid #ccc;">
+															<li style="padding-bottom: 5px;"><p:commandLink
+																	disabled="true"
+																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) ==1}">	First
+																			</p:commandLink> <p:commandLink ajax="true" action="#{deBean.firstPage}"
+																	update="div_photo_list"
+																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1)>1}"> First
+																			</p:commandLink></li>
+															<li style="font-size: 13px;"><p:commandLink
+																	disabled="true"
+																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) ==1}">	&#60;
+																			</p:commandLink> <p:commandLink ajax="true" action="#{deBean.prevPage}"
+																	update="div_photo_list"
+																	rendered="#{((deBean.imageOffset/deBean.imagePerPage)+1) >1}"> &#60;
+																			</p:commandLink></li>
+															<li class="active"><a href="#"> <h:outputText
+																		value="#{(deBean.imageOffset/deBean.imagePerPage)+1}">
+																		<f:converter converterId="javax.faces.Integer" />
+																	</h:outputText></a></li>
+															<li style="font-size: 13px;"><p:commandLink ajax="true"
+																	action="#{deBean.nxtPage}" update="div_photo_list"
+																	rendered="#{fn:length(deBean.parentImageList) > (deBean.imageOffset+deBean.imagePerPage)}">&#62;															
+																			</p:commandLink> <p:commandLink disabled="true"
+																	rendered="#{(fn:length(deBean.parentImageList) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.parentImageList) == (deBean.imageOffset+deBean.imagePerPage))}">&#62;
+																			</p:commandLink></li>
+															<li style="padding-bottom: 5px;"><p:commandLink
+																	ajax="true" action="#{deBean.lastPage}"
+																	update="div_photo_list"
+																	rendered="#{fn:length(deBean.parentImageList) > (deBean.imageOffset+deBean.imagePerPage)}">Last
+																	<f:param name="type" value="parent" />
+																</p:commandLink> <p:commandLink disabled="true"
+																	rendered="#{(fn:length(deBean.parentImageList) &lt; (deBean.imageOffset+deBean.imagePerPage)) or(fn:length(deBean.parentImageList) == (deBean.imageOffset+deBean.imagePerPage))}">Last
+																			</p:commandLink></li>
+														</ul>
+													</t:div> -->
+													
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>						
+<!--end of second tab  -->						
+						
+					</div>
+					
+  		    	</div>
+  		    </div>
+  		  </div>  	
+ <!-- end of main content -->        
+        </div>
+<!-- copy peste end-->
+</div>	
+<style>
+.col-md-4_5 {
+	width: 76.5%;
+}
+
+.col-md-2_5 {
+	width: 100.83%;
+}
+</style>
+	<!-- BEGIN MANDATORY SCRIPTS -->
+	<script src="/webapp/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script src="/webapp/assets/plugins/jcrop/jquery.Jcrop.js"></script>
+	<!-- <script src="/webapp/assets/plugins/jquery-migrate-1.2.1.min.js"></script> -->
+	<script src="/webapp/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script src="/webapp/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<!-- <script
+		src="/webapp/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script> -->
+	<!-- <script
+		src="/webapp/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script> -->
+	<!-- <script src="/webapp/assets/plugins/icheck/icheck.min.js"></script> -->
+	<!-- <script
+		src="/webapp/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script> -->
+	<script src="/webapp/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script src="/webapp/assets/plugins/nprogress/nprogress.min.js"></script>
+	<!-- <script
+		src="/webapp/assets/plugins/charts-sparkline/sparkline.min.js"></script> -->
+	<script src="/webapp/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<!-- <script
+		src="/webapp/assets/plugins/numerator/jquery-numerator.js"></script> -->
+	<script src="/webapp/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<!-- END MANDATORY SCRIPTS -->
+	<script src="/webapp/assets/js/customValidation.js"></script>
+	<script
+		src="/webapp/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+
+	<!-- Add fancyBox -->
+	<link rel="stylesheet"
+		href="/webapp/assets/plugins/fancybox/source/jquery.fancybox.css?v=2.1.5"
+		type="text/css" media="screen" />
+	<script type="text/javascript"
+		src="/webapp/assets/plugins/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+	<script type="text/javascript" src="/webapp/report/app/js/libs/angular.js"></script>
+	<script type="text/javascript" src="/webapp/report/app/js/libs/angular-ui-router.js">
+	<script type="text/javascript" src='/webapp/assets/js/ng-img-crop.js'></script>
+	<script src='/webapp/report/vendor/bootbox/bootbox.min.js'></script>
+	<script src='/webapp/report/vendor/ng-dialog/ngDialog.min.js'></script>
+	
+	<script type="text/javascript" src="/webapp/fracts/js/gallery-app.js"></script>
+	<script type="text/javascript" src="/webapp/fracts/js/gallery-controller.js"></script>
+	<script src="/webapp/assets/js/application.js"></script>
+</body>
+</html>

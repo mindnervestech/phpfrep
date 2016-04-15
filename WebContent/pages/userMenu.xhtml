@@ -120,6 +120,13 @@
 								<span class="sidebar-text">Transcription</span>
 								<f:param name="menuId" value="4" />
 								</h:commandLink></li>
+						<li id="menu26" title="Cropping Image"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								<i class="glyphicon glyphicon-scissors"></i>
+								<span class="sidebar-text">Parent Image Crop</span>
+								<f:param name="menuId" value="26" />
+							</h:commandLink></li>		
 					</ul>
 				</div>
 				
@@ -159,6 +166,8 @@
 				document.getElementById("menu18").setAttribute("class", "current active");
 			} else if (menuval == "19") {
 				document.getElementById("menu19").setAttribute("class", "current active");
+			} else if (menuval == "26") {
+				document.getElementById("menu26").setAttribute("class", "current active");
 			} else if (menuval == "111") {
 				document.getElementById("menu111").setAttribute("class", "");
 			} else {

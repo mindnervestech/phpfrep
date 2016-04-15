@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+
 @Controller
 @RequestMapping(value="/fracts")
 public class FractsController {
@@ -61,19 +63,36 @@ public class FractsController {
 			Long croppedId = Long.valueOf(map.get("croppedId").toString());
 			if(resMap.get(croppedId) != null) {
 				CroppedVM liveVM = new CroppedVM();
-				liveVM.id = Long.valueOf(map.get("liveId").toString());
-				liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
+				if(map.get("liveId")!=null){
+					liveVM.id = Long.valueOf(map.get("liveId").toString());
+				}
+			//	liveVM.id = Long.valueOf(map.get("liveId").toString());
+				if(map.get("liveChildImageId")!=null){
+					liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
+				}
+			//	liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
 				if( resMap.get(croppedId).size() < 2 ) {  
 					resMap.get(croppedId).add(liveVM); 
 				}
 			} else {
 				CroppedVM croppedVM = new CroppedVM();
 				croppedVM.id = croppedId;
-				croppedVM.childImageId = Long.valueOf(map.get("croppedChildImageId").toString());
+				System.out.println("befor exception");
+				if(map.get("croppedChildImageId")!=null){
+					croppedVM.childImageId = Long.valueOf(map.get("croppedChildImageId").toString());
+				}
+			//	croppedVM.childImageId = Long.valueOf(map.get("croppedChildImageId").toString());
+				
 				List<CroppedVM> relevanceList = new ArrayList<CroppedVM>();
 				CroppedVM liveVM = new CroppedVM();
-				liveVM.id = Long.valueOf(map.get("liveId").toString());
-				liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
+				if(map.get("liveId")!=null){
+					liveVM.id = Long.valueOf(map.get("liveId").toString());
+				}
+			//	liveVM.id = Long.valueOf(map.get("liveId").toString());
+				if(map.get("liveChildImageId")!=null){
+					liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
+				}
+			//	liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
 				relevanceList.add(liveVM);
 				resMap.put(croppedId, relevanceList);
 				croppedVM.revelanceList = relevanceList;

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="no-js sidebar-large" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<!-- BEGIN META SECTION -->
+	<meta charset="utf-8" />
+	<title>Fracts</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta content="" name="description" />
+	<meta content="themes-lab" name="author" />
+	<link rel="shortcut icon" href="#{request.contextPath}/assets/img/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="57x57" href="#{request.contextPath}/assets/img/apple-touch-icon-57x57.png" />
+	<link rel="apple-touch-icon" sizes="60x60" href="#{request.contextPath}/assets/img/apple-touch-icon-60x60.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="#{request.contextPath}/assets/img/apple-touch-icon-72x72.png" />
+	<link rel="apple-touch-icon" sizes="76x76" href="#{request.contextPath}/assets/img/apple-touch-icon-76x76.png" />
+	<link rel="icon" type="image/png" href="#{request.contextPath}/assets/img/favicon-32x32.png" sizes="32x32" />
+	<link rel="icon" type="image/png" href="#{request.contextPath}/assets/img/favicon-16x16.png" sizes="16x16" />
+	<link rel="manifest" href="#{request.contextPath}/assets/img/manifest.json" />
+	<link rel="mask-icon" href="#{request.contextPath}/assets/img/safari-pinned-tab.svg" color="#5bbad5" />
+	<meta name="msapplication-TileColor" content="#da532c" />
+	<meta name="theme-color" content="#ffffff" />
+
+	<script
+		src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<!-- END META SECTION -->
+	<!-- BEGIN MANDATORY STYLE -->
+	<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/plugins.min.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/style.css"
+		rel="stylesheet" />
+	<link href="#{request.contextPath}/assets/css/colors/color-dark.css" rel="stylesheet"  />
+	<!-- END  MANDATORY STYLE -->
+	
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	
+	<f:loadBundle var="global"
+		basename="/com/obs/brs/properties/Application"></f:loadBundle>
+	<style>
+
+.ui-dialog .ui-dialog-content {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	border: 0 none;
+	overflow: auto;
+	padding: 0.5em 1em;
+	position: relative;
+	width: 100% ;
+	height: 350px;
+}
+
+.ui-dialog.ui-widget-content{
+	width:64% !important;
+
+}
+
+.col-md-6 {
+	width: 49%;
+}
+
+.text-muted {
+	color: #999;
+}
+
+input {
+	font-size: 1em !important;
+	height: 37px;
+	width: 100%;
+}
+
+.thumbnail>.overlay>.thumbnail-actions {
+	text-align: left !important;
+	margin-top: -18px;
+}
+
+td,th {
+	padding: 1px 6px 0;
+}
+
+.ui-selectmanycheckbox label,.ui-selectoneradio label {
+	display: block;
+	margin-left: -8px;
+	margin-top: 4px;
+}
+
+.skin-section .list li {
+	position: relative;
+	padding-bottom: 0px !important;
+	padding-left: 30px;
+}
+
+
+
+.issueDay td,th {
+	padding: 1px 13.3px 0 8px;
+}
+
+.issueDayNext td,th {
+	padding: 1px 9.5px 0 8.1px;
+}
+
+.issueMonth td,th {
+	padding: 1px 24px 8px 8px;
+}
+
+.issueMonthNext td,th {
+	padding: 1px 22px 8px 8px;
+}
+
+.issueYear td,th {
+	padding: 1px 6.8px 8px;
+}
+
+.issueDayNextThird td,th {
+	padding: 1px 8.9px 0 8.1px;
+}
+
+.issueDayNextFour td,th {
+	padding: 1px 13.5px 0 8.1px;
+}
+
+
+<!--
+Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
+	font-size: 18px;
+}
+
+.ui-dialog.ui-widget-content .ui-dialog-content {
+	padding: 0px;
+	font-size: 11px;
+}
+
+.pagination li {
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	background-color: #FFFFFF;
+	border-color: #DDDDDD;
+	border-image: none;
+	border-style: solid;
+	border-width: 1px 1px 1px 1px;
+	float: left;
+	line-height: 18px;
+	padding: 0px 12px;
+	text-decoration: none;
+	margin: 0px;
+}
+
+.pagination>li:hover {
+	background-color: #e4e7ea;
+}
+.media-header .pull-right {
+	background-color: #fff;
+	color: #fff;
+	padding: 10px;
+}
+
+.templatemo_one_col {
+	width: 585px;
+	margin: 0 0 10px 0;
+}
+
+.templatemo_one_col img {
+	float: left;
+	margin: 0 10px 10px 0;
+}
+
+.btn{
+  	width: 115px;
+	padding: 2px 10px;
+}
+
+.thumbnail{
+	 margin-bottom: 0px;
+}
+.panel {
+	margin-bottom: 5px;
+}
+.media-manager .panel-body {
+  padding: 7px;
+}
+.childImg {
+	margin: 2px;
+    border-radius: 5px;
+    width: 100px;
+    height: 100px; 
+}
+
+.ui-dialog .ui-widget .ui-widget-content .ui-corner-all .ui-shadow .ui-draggable .ui-overlay-visible{
+	width: 64%;
+    height: auto;
+    left: 0px;
+    top: 0px;
+    visibility: visible;
+    z-index: 1002;
+}
+
+#childImg{
+	max-height: 100%;
+}
+.complete{
+	border: 2px solid #8AC007;
+}
+.incomplete{
+	border: 2px solid #D9534F;
+}
+.col8half {
+	width: 70.833333333333333333333333%;
+}
+.col1half {
+	width: 12.5%;
+}
+.pagination>li:has(> b) {
+	background: gray;
+}
+
+.pagination>li>b {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.428571429;
+    color: #428bca;
+    text-decoration: none;
+    background-color: #fff;
+}
+.save-icon {
+	background: url('#{request.contextPath}/assets/img/save.jpg');
+	height: 20px;
+	width: 20px;
+}
+</style>
+</h:head>
+<f:metadata>
+	<f:viewParam name="msgFormat" value="#{deBean.msgFormat}" />
+	<f:viewParam name="msgLabel" value="#{deBean.msgLabel}" />
+	<f:viewParam name="msgWarnLabel" value="#{deBean.msgWarnLabel}" />
+	<f:event type="preRenderView" listener="#{deBean.loadMessage}" />
+	<f:viewParam name="img" value="#{deBean.id}" />
+	
+</f:metadata>
+<h:body data-page="file_upload" >
+	<ui:include src="/pages/header_admin.xhtml" />
+	<div id="wrapper" data-ng-app="myApp"  data-ng-controller="controller">
+		<ui:include src="/pages/userMenu.xhtml" />
+		<iframe src="/webapp/fracts/gallery_crop.html" style="width: 100%;height: 100%;"></iframe>
+	
+	</div>
+	<!-- END WRAPPER -->
+	<style>
+	
+	.col-md-4_5{
+		width:76.5%;
+	}
+	
+	.col-md-2_5{
+		width:100.83%;
+	}
+	
+	</style>
+	<script type="text/javascript">
+		function confirmDelete() {
+			if (confirm('Are you sure, you want to delete the Job?'))
+				return true;
+			else
+				return false;
+
+		}
+		
+		
+	    $(document).ready(function() {
+	    	
+	    	var body = document.body, html = document.documentElement;
+	    	var height = Math.max(body.scrollHeight, body.offsetHeight, 
+	    			html.clientHeight, html.scrollHeight, html.offsetHeight);
+	    	$("body iframe").height(height-75);
+	    	
+			//$(".sidebar-nav > li").removeClass();
+			//$("#menu6").addClass("current active");
+			$(".fancybox").fancybox();
+		});
+	    
+	    function selectAllCheckBox(){
+	    	$('.icheckbox_flat-blue').addClass('checked');
+	    	$('.checkbox').attr('checked','checked');
+	    }
+	    
+	    function deSelectAllCheckBox (){
+	    	$('.icheckbox_flat-blue').removeClass('checked');
+	    	$('.checkbox').removeAttr('checked');
+	    }
+	    
+	    function enlargeImage(id){
+	    
+	    	 $("#"+id).fancybox({
+	             helpers: {
+	                 title : {
+	                     type : 'float'
+	                 }
+	             }
+	         });
+	    }
+
+	    function makeDisabled(index) {
+	    	console.log(index);
+	    	$("#containerDiv"+index).hide();	    
+	    } 
+	    </script>
+	<!-- BEGIN MANDATORY SCRIPTS -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/icheck/icheck.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/nprogress/nprogress.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/charts-sparkline/sparkline.min.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/breakpoints/breakpoints.min.js"></script>
+	<!-- <script
+		src="#{request.contextPath}/assets/plugins/numerator/jquery-numerator.js"></script> -->
+	<script
+		src="#{request.contextPath}/assets/plugins/jquery.cookie.min.js"
+		type="text/javascript"></script>
+	<!-- END MANDATORY SCRIPTS -->
+	<script src="#{request.contextPath}/assets/js/application.js"></script>
+	<script src="#{request.contextPath}/assets/js/customValidation.js"></script>
+	<script
+		src="#{request.contextPath}/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+
+	<!-- Add fancyBox -->
+	<link rel="stylesheet" href="#{request.contextPath}/assets/plugins/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+	<script type="text/javascript" src="#{request.contextPath}/assets/plugins/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+		
+</h:body>
+</html>
+
