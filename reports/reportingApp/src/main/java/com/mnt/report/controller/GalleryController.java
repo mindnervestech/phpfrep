@@ -643,6 +643,7 @@ public class GalleryController {
 				section=jt.queryForObject(sql22, String.class);
 				imagesVM.setDC_SECTION(section);
 			}
+			
 			if(pImage.get("DC_SECTION_OTHER")!=null){
 				imagesVM.setDC_SECTION_OTHER(pImage.get("DC_SECTION_OTHER").toString());
 			}
