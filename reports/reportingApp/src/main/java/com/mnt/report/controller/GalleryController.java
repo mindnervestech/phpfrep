@@ -596,6 +596,14 @@ public class GalleryController {
 				imagesVM.setDN_STATUS(Integer.parseInt(pImage.get("DN_STATUS").toString()));
 			}
 			
+			String publicationTitle=null;
+			if(pImage.get("DC_PUBLICATION_TITLE")!=null){
+				String sql11="select t.DC_PUBLICATION_TITLE from tbl_publication t where t.DN_ID="+pImage.get("DC_PUBLICATION_TITLE").toString();
+				publicationTitle=jt.queryForObject(sql11, String.class);
+				imagesVM.setDC_PUBLICATION_TITLE(publicationTitle);
+				
+			}
+			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 			Object d=pImage.get("DD_ISSUE_DATE");
 			if(d!=null){
@@ -624,8 +632,16 @@ public class GalleryController {
 				imagesVM.setCREATED_BY(pImage.get("DC_FIRSTNAME").toString());
 			}
 			
-			if(pImage.get("DC_SECTION")!=null){
+			/*if(pImage.get("DC_SECTION")!=null){
 				imagesVM.setDC_SECTION(pImage.get("DC_SECTION").toString());
+			}*/
+			
+
+			String section=null;
+			if(pImage.get("DC_SECTION")!=null){
+				String sql22="select t.DC_PUBLICATION_TITLE from tbl_publication t where t.DN_ID="+pImage.get("DC_SECTION").toString();
+				section=jt.queryForObject(sql22, String.class);
+				imagesVM.setDC_SECTION(section);
 			}
 			if(pImage.get("DC_SECTION_OTHER")!=null){
 				imagesVM.setDC_SECTION_OTHER(pImage.get("DC_SECTION_OTHER").toString());
@@ -642,6 +658,10 @@ public class GalleryController {
 			}
 			if(pImage.get("DC_WIDTH")!=null){
 				imagesVM.setDC_WIDTH(pImage.get("DC_WIDTH").toString());
+			}
+			
+			if(pImage.get("DC_PAGE")!=null){
+				imagesVM.setDC_PAGE(pImage.get("DC_PAGE").toString());
 			}
 			
 			imagesVM.setImageUrl(url+Long.parseLong(pImage.get("DN_ID").toString()));
