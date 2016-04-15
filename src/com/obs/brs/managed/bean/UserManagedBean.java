@@ -1433,6 +1433,9 @@ implements Serializable
 		case 19:
 			redirectLink = "/pages/de/ocr_relevance_not_duplicate_angular.xhtml";
 			break;
+		case 26:
+			redirectLink = "/pages/de/gallery_crop_angular.xhtml";
+			break;	
 		
 		}
 		this.sessionManager.setSessionAttributeInSession("pageChanged", "1");
