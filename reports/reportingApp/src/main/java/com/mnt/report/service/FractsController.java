@@ -60,7 +60,7 @@ public class FractsController {
 		Map<Long,List<CroppedVM>> resMap = new HashMap<Long, List<CroppedVM>>();
 		List<CroppedVM> croppedVMs = new ArrayList<CroppedVM>();
 		for(Map<String, Object> map : results) {
-			Long croppedId = Long.valueOf(map.get("croppedId").toString());
+			long croppedId = Long.valueOf(map.get("croppedId").toString());
 			if(resMap.get(croppedId) != null) {
 				CroppedVM liveVM = new CroppedVM();
 				if(map.get("liveId")!=null){
@@ -281,8 +281,8 @@ public class FractsController {
 	}
 	
 	public static class CroppedVM {
-		public Long id;
-		public Long childImageId;
+		public long id;
+		public long childImageId;
 		public List<CroppedVM> revelanceList;
 	}
 }
