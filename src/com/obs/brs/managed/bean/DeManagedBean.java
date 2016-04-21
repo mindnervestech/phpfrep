@@ -60,6 +60,7 @@ import com.obs.brs.model.ParentImage;
 import com.obs.brs.model.Publication;
 import com.obs.brs.model.States;
 import com.obs.brs.model.User;
+import com.obs.brs.service.ChildImageService;
 import com.obs.brs.service.DeService;
 import com.obs.brs.service.IChildImageService;
 import com.obs.brs.service.IDeService;
@@ -3079,7 +3080,7 @@ public class DeManagedBean implements Serializable{
 							entry.setOcrText(result); 
 							entry.setDeJobid(deJob);
 							entry.setParentImage(parentImage);
-							entry.setChildImage(childImage);
+							entry.setChildImage(fetchChildImageById(imgId));
 							deService.addDataEntry(entry);
 						}
 					} catch (Exception e) {
@@ -3108,6 +3109,12 @@ public class DeManagedBean implements Serializable{
 		}
 		
 		return  null ;
+	}
+
+	private ChildImage fetchChildImageById(Long childImageId) {
+		
+		ChildImage childImage	= childImageService.getChildImageById(childImageId);
+		return childImage;
 	}
 
 	/**
