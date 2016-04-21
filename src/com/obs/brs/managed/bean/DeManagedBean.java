@@ -2836,7 +2836,7 @@ public class DeManagedBean implements Serializable{
 							entry.setOcrText(result); 
 							entry.setDeJobid(deJob);
 							entry.setParentImage(parentImage);
-							entry.setChildImage(childImage);
+							entry.setChildImage(fetchChildImageById(Long.parseLong(imgId)));
 							deService.addDataEntry(entry);
 						}
 					} catch (Exception e) {
