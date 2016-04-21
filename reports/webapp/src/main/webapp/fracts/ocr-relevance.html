@@ -330,7 +330,7 @@ input[type='checkbox'] {
 																								<div style="font-weight: bold; float: left">
 																									Job ID : <span>{{r.id}}</span>
 																								</div>
-																								<div class="f_l p-l-10">{{r.childImageId}}
+																								<div class="f_l p-l-10">
 																									<a ng-click="openCroppedPopup($index)"> <img
 																										style="height: 240px; width: 213px"
 																										src="/webapp/get-child-image?id={{r.childImageId}}"
@@ -355,7 +355,7 @@ input[type='checkbox'] {
 																							<div class="p-0 f_l">
 																								<div class="row m-5 f_l">
 																									<div style="font-weight: bold; float: left">
-																										Live Job ID {{$index+1}} : <span>{{l.id}}   : {{l.childImageId}}</span>
+																										Live Job ID {{$index+1}} : <span>{{l.id}}  </span>
 																									</div>
 																									<a ng-click="comparePopup($parent.$index,l.childImageId)"> <img class="img-responsive m-10" alt=""
 																										src="/webapp/get-child-image?id={{l.childImageId}}"
