@@ -2826,7 +2826,7 @@ public class DeManagedBean implements Serializable{
 					//set image to page
 					croppedImageName = currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName();
 					RequestContext.getCurrentInstance().execute("PF('dlg1').show();$('div[id*=\"basicDialog\"]').css('top','10px')");
-					try {
+					/*try {
 						ImageIO.scanForPlugins();
 						String result = new Ocr().doOCR(newFile);
 						System.out.println("result: "+result);
@@ -2843,7 +2843,7 @@ public class DeManagedBean implements Serializable{
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
-					}
+					}*/
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -3074,8 +3074,8 @@ public class DeManagedBean implements Serializable{
 					childImage.setId(imgId);
 					try {
 						ImageIO.scanForPlugins();
-						File newFile=new File(imageBasePath+CommonProperties.getTempPath()+currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName());
-						String result = new Ocr().doOCR(newFile);
+						//File newFile=new File(imageBasePath+CommonProperties.getTempPath()+currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName());
+						String result = new Ocr().doOCR(cropFile);
 						System.out.println("result: "+result);
 						if(result != null) {
 							DeJob deJob = deService.getDeJobByParentImageId(parentImage.getId());
