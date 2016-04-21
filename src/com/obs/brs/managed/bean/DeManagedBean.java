@@ -2829,14 +2829,16 @@ public class DeManagedBean implements Serializable{
 					try {
 						ImageIO.scanForPlugins();
 						String result = new Ocr().doOCR(newFile);
-						//System.out.println("result: "+result);
+						System.out.println("result: "+result);
+						
 						if(result != null){
 							DeJob deJob = 	deService.getDeJobByParentImageId(parentImage.getId());
 							DataEntry entry = new DataEntry();
 							entry.setOcrText(result); 
 							entry.setDeJobid(deJob);
 							entry.setParentImage(parentImage);
-							entry.setChildImage(fetchChildImageById(Long.parseLong(imgId)));
+							System.out.println("childImage on cropping:" + childImage);
+							entry.setChildImage(childImage);
 							deService.addDataEntry(entry);
 						}
 					} catch (Exception e) {
@@ -3053,6 +3055,7 @@ public class DeManagedBean implements Serializable{
 			if(parentImage!=null){
 				File cropFile = new File(sourcePath);
 				if(cropFile.isFile()){
+					System.out.println("Saving parent image");
 					int random = (int)(double)((Math.random()*(double)1000));
 					String filename = "crp_"+random+"_"+parentImage.getImageName();
 					ChildImage childImage = new ChildImage();
@@ -3073,7 +3076,7 @@ public class DeManagedBean implements Serializable{
 						ImageIO.scanForPlugins();
 						File newFile=new File(imageBasePath+CommonProperties.getTempPath()+currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName());
 						String result = new Ocr().doOCR(newFile);
-						//System.out.println("result: "+result);
+						System.out.println("result: "+result);
 						if(result != null) {
 							DeJob deJob = deService.getDeJobByParentImageId(parentImage.getId());
 							DataEntry entry = new DataEntry();
@@ -3112,8 +3115,9 @@ public class DeManagedBean implements Serializable{
 	}
 
 	private ChildImage fetchChildImageById(Long childImageId) {
-		
+		System.out.println("fetchChildImageById " + childImageId);
 		ChildImage childImage	= childImageService.getChildImageById(childImageId);
+		System.out.println("fetchChildImageById object " + childImage);
 		return childImage;
 	}
 
