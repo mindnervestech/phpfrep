@@ -546,6 +546,10 @@ public class GalleryController {
 	@ResponseBody
 	public void deleteParentImage(@PathVariable("id") String id,@PathVariable("userId") String userId){
 		
+		System.out.println("in delete parent image");
+		System.out.println("login user is "+userId);
+		
+		System.out.println("user id is"+id);
 		
 		String sqlparent="select * from tbl_parent_image t where t.DN_ID="+id+" limit 1";
 		Map<String,Object> results =  jt.queryForMap(sqlparent);
@@ -583,8 +587,14 @@ public class GalleryController {
 		
 		System.out.println("in delete child image");
 		System.out.println("userId"+userId);
+		
+		System.out.println("id is "+id);
 		String sqlchild="select * from tbl_child_image t where t.DN_ID="+id+" limit 1";
 		Map<String,Object> results =  jt.queryForMap(sqlchild);
+		
+		System.out.println("object id is"+results.get("DN_ID").toString());
+		
+		
         String imageid=null;
         String imageName=null;
         String deletedBy=userId;
@@ -598,12 +608,16 @@ public class GalleryController {
         	imageName=results.get("DC_IMAGENAME").toString();
         }
 		
+        System.out.println("before insert row");
 		String sqldeteteChild="insert into tbl_deleted_image (DN_ID,DN_IMAGEID,DC_IMAGENAME,DN_DELETED_BY,DD_DELETED_ON,DB_ISCHILD) VALUES('"+imageid+"','"+imageid+"','"+imageName+"','"+deletedBy+"',now(),'1')";
 		jt.execute(sqldeteteChild);
+		System.out.println("delete row created");
 		
 		
 		String sql="DELETE from tbl_child_image  where DN_ID="+id;
 		jt.execute(sql);
+		
+		System.out.println("deleted from child table ");
 		
 		String sqldeletededata="delete FROM tbl_de_data  where DN_CHILD_IMAGE_ID="+id;
 		jt.execute(sqldeletededata);

@@ -861,13 +861,12 @@ public class ReportMDService {
 	public FileSystemResource getAllParentImageImg(@RequestParam("id") Long id) {
 		
 		System.out.println("in get-all-parent-image....api");
-		System.out.println("id id "+id);
 		Map<String,Object> mdResult = jt.queryForMap("select DC_IMAGENAME from tbl_parent_image where DN_ID ="+id);
 		String result = "";
 		if(mdResult!=null &&!mdResult.isEmpty()) {
-			System.out.println("in query");
+			
 			result = fullImagePath+"parent"+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString();
-			System.out.println("result is "+result);
+			
 		}
 		return new FileSystemResource(result);
 	}
@@ -875,15 +874,9 @@ public class ReportMDService {
 	@RequestMapping(value="/get-all-child-image",method=RequestMethod.GET)
 	@ResponseBody
 	public FileSystemResource getAllChildImageImg(@RequestParam("cid") Long cid,@RequestParam("pid") Long pid, @RequestParam("iname") String iname ) {
-		/*Map<String,Object> mdResult = jt.queryForMap("select DN_ID,DC_IMAGENAME from tbl_child_image where DN_ID ="+id);
-		String result = "";
-		if(mdResult!=null &&!mdResult.isEmpty()) {
-			result = fullImagePath+"child"+File.separator+id+File.separator+mdResult.get("DN_PARENT_IMAGE_ID").toString()+File.separator+id+File.separator+id+File.separator+id+File.separator+mdResult.get("DC_IMAGENAME").toString();
-			result = fullImagePath+"child"+File.separator+id+File.separator+mdResult.get("DN_ID").toString()+File.separator+mdResult.get("DC_IMAGENAME").toString();
-		}*/
-	    System.out.println("child is "+cid+" parent is "+pid+" image name "+iname);
+		
 		String result=fullImagePath+"child"+File.separator+pid+File.separator+cid+File.separator+iname;
-		System.out.println(result+" result path");
+		
 		return new FileSystemResource(result);
 		
 	}

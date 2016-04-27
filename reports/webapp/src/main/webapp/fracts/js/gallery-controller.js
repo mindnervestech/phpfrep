@@ -184,7 +184,14 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 	$scope.deleteChileImage=function(index,pagesize,currentpage,parentId,childId,childIndex,imageUrl,imageName){
 		console.log("in delete child image");
 
-		
+		console.log('parent index',index);
+		console.log('pagesize',pagesize);
+		console.log('currentpage',currentpage);
+		console.log('parentId',parentId);
+		console.log('childId',childId);
+		console.log('childIndex',childIndex);
+		console.log('imageUrl',imageUrl);
+		console.log('imageName',imageName);
 		
 		var childIdTodelete =parseInt(index) +parseInt(currentpage) * parseInt(pagesize);
 		console.log('childIdTodelete',childIdTodelete);
