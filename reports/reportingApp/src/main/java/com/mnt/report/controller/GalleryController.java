@@ -17,7 +17,6 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 
 import net.coobird.thumbnailator.Thumbnails;
-
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
@@ -435,9 +434,12 @@ public class GalleryController {
     	String jobId=jt.queryForObject(sqlforjobId, String.class);
     	System.out.println("job id id "+jobId);
     		
-    	String result =doOCR(thumbFile);
     	
-    //	String hedline=null;
+    	File chilFile = new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName);
+    	System.out.println("path is "+chilFile.getAbsolutePath());
+    	String result =doOCR(chilFile);
+    	System.out.println("path is "+chilFile.getAbsolutePath());
+        System.out.println("ocr result is "+result); 
     	
     	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+cropImageVm.getId()+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
     	jt.execute(sqlforupdatededata);
@@ -512,7 +514,11 @@ public class GalleryController {
     	String jobId=jt.queryForObject(sqlforjobId, String.class);
     	System.out.println("job id id "+jobId);
     	
-    	String result = new Ocr().doOCR(thumbFile);
+    	File childImage = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
+    	System.out.println("child image path is "+childImage.getAbsolutePath());
+    	
+    	
+    	String result = new Ocr().doOCR(childImage);
 		
     	
     	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+imageId+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
