@@ -434,13 +434,8 @@ public class GalleryController {
     	String sqlforjobId="select t.DN_ID from tbl_de_job t where t.DN_PARENT_IMAGE_ID="+cropImageVm.getId()+" limit 1";
     	String jobId=jt.queryForObject(sqlforjobId, String.class);
     	System.out.println("job id id "+jobId);
-    	
-    	String result=null;
-    	try {
-    		result = new Ocr().doOCR(thumbFile);
-		} catch (Exception e) {
-			System.out.println("problane in ocr result");
-		}
+    		
+    	String result =doOCR(thumbFile);
     	
     //	String hedline=null;
     	
@@ -455,6 +450,23 @@ public class GalleryController {
        return cropVm;
        
 	}
+
+	private String doOCR(File thumbFile) {
+		  
+		System.out.println("in ocr result");
+				String result = null;
+				try {
+					if(thumbFile.exists()){
+						Tesseract instance = Tesseract.getInstance();
+						result = instance.doOCR(thumbFile);
+					}
+				} catch (TesseractException e) {
+					e.printStackTrace();
+					System.err.println(e.getMessage());
+				}
+				return result;
+	}
+
 
 	@RequestMapping(value="/save_whole_crop_image", method=RequestMethod.POST)
 	@ResponseBody
@@ -500,14 +512,8 @@ public class GalleryController {
     	String jobId=jt.queryForObject(sqlforjobId, String.class);
     	System.out.println("job id id "+jobId);
     	
-    	
-    	String result=null;
-    	
-    	try {
-    	 result = new Ocr().doOCR(thumbFile);
-		} catch (Exception e) {
-			System.out.println("problame in ocr result");
-		}
+    	String result = new Ocr().doOCR(thumbFile);
+		
     	
     	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+imageId+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
     	jt.execute(sqlforupdatededata);
