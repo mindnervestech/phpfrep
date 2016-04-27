@@ -25,6 +25,25 @@
 <link rel="manifest" href="/webapp/assets/img/manifest.json" />
 <link rel="mask-icon" href="/webapp/assets/img/safari-pinned-tab.svg"
 	color="#5bbad5" />
+	
+	
+<link rel="shortcut icon" href="assets/img/favicon.png" />
+<script
+	src="#{request.contextPath}/assets/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+<!-- END PAGE LEVEL STYLE -->
+
+<link href="#{request.contextPath}/assets/css/icons/icons.min.css"
+	rel="stylesheet" />
+<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link href="#{request.contextPath}/assets/css/plugins_new.min.css"
+	rel="stylesheet" />
+
+<link href="#{request.contextPath}/assets/css/my_style.css"
+	rel="stylesheet" />
+<link href="#{request.contextPath}/assets/css/colors/color-dark.css"
+	rel="stylesheet" />	
+	
 <meta name="msapplication-TileColor" content="#da532c" />
 <meta name="theme-color" content="#ffffff" />
 
@@ -40,7 +59,8 @@
 <link href="/webapp/report/vendor/ng-dialog/ngDialog-custom-width.css" rel="stylesheet" />
 <link href="/webapp/report/vendor/ng-dialog/ngDialog-theme-plain.min.css" rel="stylesheet" />
 <link href="/webapp/assets/plugins/jcrop/jquery.Jcrop.css" rel="stylesheet" />
-
+<link href="/webapp/assets/css/pnotify.custom.css" rel="stylesheet" />
+<link href="/webapp/assets/css/custom.css" rel="stylesheet" />
 <link href="/webapp/assets/css/plugins.min.css" rel="stylesheet" />
 <link href="/webapp/assets/css/style.css" rel="stylesheet" />
 <link href="/webapp/assets/css/colors/color-dark.css" rel="stylesheet" />
@@ -207,6 +227,18 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 	height: 100px;
 }
 
+.rotate{
+  vertical-align:top;
+  margin-top:38px;
+  width:99px;height:31px;
+  transform:rotate(7deg);
+  -ms-transform:rotate(-90deg); /* IE 9 */
+  -moz-transform:rotate(-90deg); /* Firefox */
+  -webkit-transform:rotate(-90deg); /* Safari and Chrome */
+  -o-transform:rotate(-90deg); /* Opera */
+  }
+
+
 .ui-dialog .ui-widget .ui-widget-content .ui-corner-all .ui-shadow .ui-draggable .ui-overlay-visible
 	{
 	width: 64%;
@@ -294,25 +326,28 @@ input[type='checkbox'] {
 		<!-- BEGIN MAIN CONTENT -->
 <!-- copy peste start-->        
         <div id="coords">
+        	<div ng-show="loading" class="loading" style="width:40px;height:40px;left:50%;top:50%;position:fixed;z-index:10"><img src="/webapp/assets/img/loader32.gif" ></div>
+        	
 <!--  start of main content -->
   		  <div id="main-content">
   		    <div class="panel-content">
   		    	<div class="row media-manager">
   		    	      <ul class="media-header" style="margin-right: 0px;">
   		    	      	  <li class="pull-right" style="margin-top: -19px;padding: 4px 10px;">
-	  		    	      <select class="form-control select-element" name="select" id="select" ng-model="select"  ng-change="updateData(select)" style="height: 34px;margin-top: -1px;">    
+	  		    	      <select class="btn btn-default" name="select" id="select" ng-model="select"  ng-change="updateData(select)" style="height: 30px;width:130px; margin-top: -1px;">    
 	                        	<option value="0" selected="selected">All</option>
 	                        	<option value="1">Done</option>
 	                        	<option value="2">UnDone</option>
+	                        	<!-- <option value="2">UnDone</option> -->
 						  </select>
 					     </li>
 					    </ul> 
 					  
-	  		    	  <div class = "col-md-7" style="float:right; margin: -17px;">
+	  		    	  <div class = "col-md-8" style="float:right; margin: -17px;">
 		  		    	   	<button class="btn btn-default" ng-click="selectAll()">Select All</button>
 		  		    	   	<button class="btn btn-default" ng-click="deselectAll()" style="margin-left:1%;">Deselect All</button>
-		  		    	   	<button class="btn btn-default" ng-click="moveTo()" style="margin-left:1%;width: 174px;">Move to Transcription</button>
-		  		    	   	<button class="btn btn-default" ng-click="advertorial()" style="margin-left:1%;">Advertorial</button>
+		  		    	   	<button class="btn btn-primary" ng-click="moveTo()" style="margin-left: 9%;margin-right: 58px;width: 243px;">Move to Transcription</button>
+		  		    	   	<button class="btn btn-default" ng-click="Advertorial()" style="margin-left:1%;">Advertorial</button>
 					  </div>	
   		    		<ul id="myTab2" class="nav nav-tabs nav-dark">
 							<li class="active"><a href="#tab1" data-toggle="tab" style=" margin-top: -23px;padding-top: 1px;"><i
@@ -320,6 +355,7 @@ input[type='checkbox'] {
 							<li><a href="#tab2" data-toggle="tab" style=" margin-top: -23px;padding-top: 1px;"><i
 									class="glyphicon glyphicon glyphicon-th"></i> Grid View </a></li>
 					</ul>
+					
 					<div id="myTabContent" class="tab-content" style="float: left;width: 100%;">
 					<!-- start of first tab -->
 						<div class="tab-pane fade in active" id="tab1">
@@ -360,7 +396,7 @@ input[type='checkbox'] {
 											</div>
 											 <div ng-repeat="list in allImageList | startFrom:currentPage*pageSize | limitTo:pageSize track by $index">
 											 	 <div class = "col-md-1">
-											 	 	<input class="chackboxclass" value="{{list.DN_ID}}" type="checkbox" ng-model="ids[list.DN_ID]"  name="selectInput">
+											 	 	
 											 	 </div>
 												 <div class="col-xs-12 col-sm-12 col-md-12">
 													<div class="panel panel-default">
@@ -372,8 +408,9 @@ input[type='checkbox'] {
 																		<div class="col-md-2">
 																		      <img style="height: 190px; width:145px" 
 																						ng-src="/webapp/get-all-parent-image?id={{list.DN_ID}}"
-																						class="img-responsive m-10" alt="" /> 
+																						class="img-responsive m-10" ng-click="cropImage($index,pageSize,currentPage,list.DN_ID,list.imageUrl)" alt="" /> 
 																	    </div>
+																		
 																	    <div class="col-md-9 col8half">
 																			<div class="col-md-12 p-0">
 																				
@@ -425,7 +462,7 @@ input[type='checkbox'] {
 																					<div class="p-0 f_l">
 																						<div class="row m-5 f_l">
 																							<div style="font-weight: bold; float: left">Child
-																							Images :</div>
+																							Image:</div>
 																							<div class="f_l p-l-10">
 																								<span>{{list.listVm.length}}</span>
 																							</div>
@@ -471,8 +508,21 @@ input[type='checkbox'] {
 																			</div>
 																			
 																			<div class="col-md-12 p-0">
-																				<div class="col-md-10 p-0" style="height: 100px;">
-																					<div ng-repeat="la in list.listVm |limitTo:4">
+																			    <div class="col-md-1 p-0" style="height: 100px;">
+																					 
+																					 <button class="rotate btn btn-warning" ng-click="cropImage($index,pageSize,currentPage,list.DN_ID,list.imageUrl)" style=" margin-left: -58px;">Crop Parent</button>
+																					 
+																					 
+																				</div>
+																				<div class="col-md-8 p-0" style="height: 100px;">
+																						
+																						<div class="col-md-1" style="margin-left:-51px">
+																							<input class="chackboxclass" value="{{$index}}" type="checkbox" ng-model="ids[list.DN_ID]"  name="selectInput" style="width:20px; margin-top:37px;">
+																						</div>
+																						
+																						
+																						<div class="col-md-11" style="margin-left:-13px">
+																						<div ng-repeat="la in list.listVm |limitTo:4" track by $index>
 																						<div 
 																							class="incomplete thumbnail childImg"
 																							style="float: left; padding:2px;">
@@ -484,7 +534,7 @@ input[type='checkbox'] {
 																								<div class="thumbnail-actions" style="  margin-top: -8px;">
 																									<small class="text-muted pull-center" style="margin-left: 30px;">
 																										
-																										<a href="#" ng-click="deleteChileImage(la.DN_ID)">Delete
+																										<a href="#" ng-click="deleteChileImage($parent.$index,pageSize,currentPage,list.DN_ID,la.DN_ID,$index,list.imageUrl,la.DC_IMAGENAME)">Delete
 																										</a>
 																										
 																										<!-- <p:commandLink
@@ -499,10 +549,11 @@ input[type='checkbox'] {
 																							</div>
 																						</div>
 																					</div>
+																					</div>
 																				</div>
 																				<div class="col-md-2 p-0">
-																					<input type="text" ng-model="list.DC_SECTION_OTHER"/>
-																					<button class="btn btn-default" ng-click="saveComment($index,pageSize,currentPage,list.DN_ID,list.DC_SECTION_OTHER)" style="margin: 5px;">save</button>
+																					<input type="text" ng-model="imageComment"/>
+																					<button class="btn btn-default" ng-click="saveComment($index,pageSize,currentPage,list.DN_ID,imageComment)" style="margin: 5px;">save</button>
 																					
 																				</div>
 																			</div>
@@ -546,9 +597,13 @@ input[type='checkbox'] {
 																			</div>
 																		</div>
 																		<div class="col-md-1 m-t-10 col1half">
-																			<button class="btn btn-warning" ng-click="openEditImageForm($index,pageSize,currentPage,list.DN_ID,list.DC_IMAGENAME)" style="margin: 10px;">Edit</button>	
-																		    <button class="btn btn-warning" ng-click="cropImage($index,pageSize,currentPage,list.DN_ID,list.imageUrl)" style="margin: 10px;">Crop Parent</button>
-																			<button class="btn btn-warning" ng-click="deleteParentImage($index,pageSize,currentPage,list.DN_ID)" style="margin: 10px;">Delete</button>
+																			
+																		  <!--   <button class="btn btn-warning" ng-click="cropImage($index,pageSize,currentPage,list.DN_ID,list.imageUrl)" style="margin: 10px;">Crop Parent</button> -->
+																			<a href="#" ng-click="deleteParentImage($index,pageSize,currentPage,list.DN_ID)" style="float:right;"><i><span class="glyphicon glyphicon-remove"style="font-size: 25px;color:red"></span></i>
+																			</a>
+																			
+																			<button class="btn btn-primary" ng-click="openEditImageForm($index,pageSize,currentPage,list.DN_ID,list.DC_IMAGENAME)" style="margin: 10px;">Edit</button>	
+																			
 																			<h3><span ng-show="list.duplicate" style="margin: 15px;color:red">Duplicate</span></h3>
 																				
 																		</div>
@@ -813,6 +868,7 @@ input[type='checkbox'] {
 	<!-- <script src="/webapp/assets/plugins/jquery-migrate-1.2.1.min.js"></script> -->
 	<script src="/webapp/assets/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
 	<script src="/webapp/assets/plugins/bootstrap/bootstrap.min.js"></script>
+	<script src="/webapp/assets/js/pnotify.custom.js"></script>
 	<!-- <script
 		src="/webapp/assets/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script> -->
 	<!-- <script
@@ -841,13 +897,15 @@ input[type='checkbox'] {
 	<script type="text/javascript"
 		src="/webapp/assets/plugins/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 	<script type="text/javascript" src="/webapp/report/app/js/libs/angular.js"></script>
-	<script type="text/javascript" src="/webapp/report/app/js/libs/angular-ui-router.js">
-	<script type="text/javascript" src='/webapp/assets/js/ng-img-crop.js'></script>
+	<script type="text/javascript" src="/webapp/report/app/js/libs/angular-ui-router.js"></script>
+	<script type="text/javascript" src="/webapp/assets/js/ng-img-crop.js"></script>
 	<script src='/webapp/report/vendor/bootbox/bootbox.min.js'></script>
 	<script src='/webapp/report/vendor/ng-dialog/ngDialog.min.js'></script>
 	
 	<script type="text/javascript" src="/webapp/fracts/js/gallery-app.js"></script>
 	<script type="text/javascript" src="/webapp/fracts/js/gallery-controller.js"></script>
 	<script src="/webapp/assets/js/application.js"></script>
+
+
 </body>
 </html>

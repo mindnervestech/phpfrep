@@ -128,6 +128,8 @@ public class DeManagedBean implements Serializable{
 	private Map<Long, Boolean> checkedDe = new HashMap<Long, Boolean>();
 	private Map<Long, Boolean> checkedQc = new HashMap<Long, Boolean>();
 	private long id;
+	
+	private long liginUserId;
 	private long companyId;
 	private String companyName;
 	private String companyURL;
@@ -292,6 +294,16 @@ public class DeManagedBean implements Serializable{
 	private long liveStatusId;
 	private Long[] liveStatusArr;
 	private String selectedPub;
+	public long getLiginUserId() {
+		User user = (User)this.sessionManager.getSessionAttribute("login_user");
+		liginUserId=user.getId();
+		return liginUserId;
+	}
+
+	public void setLiginUserId() {
+		User user = (User)this.sessionManager.getSessionAttribute("login_user");
+		liginUserId = user.getId();
+	}
 
 	public String getSelectedPub() {
 		return selectedPub;

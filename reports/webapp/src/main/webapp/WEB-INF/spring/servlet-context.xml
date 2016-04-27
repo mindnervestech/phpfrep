@@ -39,7 +39,9 @@
     <beans:property name="sessionFactory" ref="sessionFactory"/>
   </beans:bean>
   
-	
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    	<beans:property name="maxUploadSize" value="50000000"/>
+	</beans:bean>
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->

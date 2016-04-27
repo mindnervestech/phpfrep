@@ -248,15 +248,17 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 	<f:viewParam name="msgLabel" value="#{deBean.msgLabel}" />
 	<f:viewParam name="msgWarnLabel" value="#{deBean.msgWarnLabel}" />
 	<f:event type="preRenderView" listener="#{deBean.loadMessage}" />
-	<f:viewParam name="img" value="#{deBean.id}" />
+	<f:viewParam name="img" id="loginuserid" value="#{deBean.id}" />
 	
 </f:metadata>
 <h:body data-page="file_upload" >
 	<ui:include src="/pages/header_admin.xhtml" />
+	<h:inputHidden id ="x1" value="#{deBean.id}" />
+	<h:inputHidden id ="x2" value="#{deBean.liginUserId}" />
+	
 	<div id="wrapper" data-ng-app="myApp"  data-ng-controller="controller">
 		<ui:include src="/pages/userMenu.xhtml" />
-		<iframe src="/webapp/fracts/gallery_crop.html" style="width: 100%;height: 100%;"></iframe>
-	
+	 <iframe id="myIframe" src="" style="width: 100%;height: 100%;"></iframe>
 	</div>
 	<!-- END WRAPPER -->
 	<style>
@@ -270,7 +272,11 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 	}
 	
 	</style>
+
 	<script type="text/javascript">
+			var loginUserId = $('#x2').val();
+			$('#myIframe').attr('src',
+					"/webapp/fracts/gallery_crop.html?param1=" + loginUserId);
 		function confirmDelete() {
 			if (confirm('Are you sure, you want to delete the Job?'))
 				return true;
@@ -278,40 +284,41 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 				return false;
 
 		}
-		
-		
-	    $(document).ready(function() {
-	    	
-	    	var body = document.body, html = document.documentElement;
-	    	var height = Math.max(body.scrollHeight, body.offsetHeight, 
-	    			html.clientHeight, html.scrollHeight, html.offsetHeight);
-	    	$("body iframe").height(height-75);
-	    	
-			//$(".sidebar-nav > li").removeClass();
-			//$("#menu6").addClass("current active");
-			$(".fancybox").fancybox();
-		});
-	    
-	    function selectAllCheckBox(){
-	    	$('.icheckbox_flat-blue').addClass('checked');
-	    	$('.checkbox').attr('checked','checked');
-	    }
-	    
-	    function deSelectAllCheckBox (){
-	    	$('.icheckbox_flat-blue').removeClass('checked');
-	    	$('.checkbox').removeAttr('checked');
-	    }
-	    
-	    function enlargeImage(id){
-	    
-	    	 $("#"+id).fancybox({
-	             helpers: {
-	                 title : {
-	                     type : 'float'
-	                 }
-	             }
-	         });
-	    }
+
+		$(document).ready(
+				function() {
+
+					var body = document.body, html = document.documentElement;
+					var height = Math.max(body.scrollHeight, body.offsetHeight,
+							html.clientHeight, html.scrollHeight,
+							html.offsetHeight);
+					$("body iframe").height(height - 75);
+
+					//$(".sidebar-nav > li").removeClass();
+					//$("#menu6").addClass("current active");
+					$(".fancybox").fancybox();
+				});
+
+		function selectAllCheckBox() {
+			$('.icheckbox_flat-blue').addClass('checked');
+			$('.checkbox').attr('checked', 'checked');
+		}
+
+		function deSelectAllCheckBox() {
+			$('.icheckbox_flat-blue').removeClass('checked');
+			$('.checkbox').removeAttr('checked');
+		}
+
+		function enlargeImage(id) {
+
+			$("#" + id).fancybox({
+				helpers : {
+					title : {
+						type : 'float'
+					}
+				}
+			});
+		}
 
 	    function makeDisabled(index) {
 	    	console.log(index);

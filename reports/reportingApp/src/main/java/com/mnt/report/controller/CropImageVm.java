@@ -12,9 +12,16 @@ public class CropImageVm {
 	public String h;
 	public String imageName;
 	public long childId;
+	public long loginUserId;
 	
 	
 	
+	public long getLoginUserId() {
+		return loginUserId;
+	}
+	public void setLoginUserId(long loginUserId) {
+		this.loginUserId = loginUserId;
+	}
 	public String getImageName() {
 		return imageName;
 	}

@@ -1,10 +1,9 @@
 package com.mnt.report.controller;
 
 import java.awt.image.BufferedImage;
-
 import java.io.File;
 import java.io.IOException;
-
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,21 +14,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
-
-
-
-
-
-
-
-
-
-
-
 import javax.imageio.ImageIO;
 
 import net.coobird.thumbnailator.Thumbnails;
+
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,6 +44,9 @@ import com.mnt.report.util.CommonUtils;
 @Controller
 @RequestMapping("/gallery")
 public class GalleryController {
+	
+	DecimalFormat decimalFormat=new DecimalFormat("#.##");
+	
 	@Autowired
     private JdbcTemplate jt;
 	
@@ -412,10 +405,11 @@ public class GalleryController {
 		int w1=w.intValue();
 		int h1=h.intValue();
 		
+		
 		String sqlImagName="select DC_IMAGENAME from tbl_parent_image where DN_ID="+cropImageVm.getId();
 		String imageName=jt.queryForObject(sqlImagName, String.class);
 		  
-		String sqlcreate="INSERT INTO tbl_child_image (DN_PARENT_IMAGE_ID) VALUES("+cropImageVm.getId()+")";
+		String sqlcreate="INSERT INTO tbl_child_image (DN_PARENT_IMAGE_ID,DN_CREATED_BY) VALUES('"+cropImageVm.getId()+"','"+cropImageVm.getLoginUserId()+"')";
 		jt.execute(sqlcreate);
 		
 		long childid=util.getMaxId(jt, "tbl_child_image");
@@ -429,29 +423,49 @@ public class GalleryController {
 //		Thumbnails.of(croppedImage).size(w, h).toFile(file);
     	Thumbnails.of(croppedImage).size(w1, h1).toFile(thumbFile);
     	
-    	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now() where DN_ID="+childid;
-		jt.execute(updateSql);
+    	String heightCM=decimalFormat.format(((double)h1/96)*2.54*0.9575);
+		String widthCM=decimalFormat.format(((double)w1/96)*2.54*0.9575);	
     	
-       CropImageVm cropVm=new CropImageVm();
-       cropVm.setId(cropImageVm.getId());
-       cropVm.setChildId(childid);
-       cropVm.setImageName(fileimageName);
-       
+    	
+    	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now(),DC_HEIGHT='"+heightCM+"',DC_WIDTH='"+widthCM+"' where DN_ID="+childid;
+    	jt.execute(updateSql);
+
+    	
+    	String sqlforjobId="select t.DN_ID from tbl_de_job t where t.DN_PARENT_IMAGE_ID="+cropImageVm.getId()+" limit 1";
+    	String jobId=jt.queryForObject(sqlforjobId, String.class);
+    	System.out.println("job id id "+jobId);
+    	
+    	String result=null;
+    	try {
+    		result = new Ocr().doOCR(thumbFile);
+		} catch (Exception e) {
+			System.out.println("problane in ocr result");
+		}
+    	
+    //	String hedline=null;
+    	
+    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+cropImageVm.getId()+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
+    	jt.execute(sqlforupdatededata);
+    		
+    	CropImageVm cropVm=new CropImageVm();
+    	cropVm.setId(cropImageVm.getId());
+    	cropVm.setChildId(childid);
+    	cropVm.setImageName(fileimageName);
+
        return cropVm;
        
 	}
-	
-	
-	@RequestMapping(value="/save_whole_crop_image/{id}", method=RequestMethod.GET)
-	@ResponseBody
-	public CropImageVm SaveWholeCropImage(@PathVariable("id") String id) throws IOException{
-		System.out.println("in SaveWholeCropImage..........");
-		Long imageId=Long.parseLong(id);
 
-		String sqlImagName="select DC_IMAGENAME from tbl_parent_image where DN_ID="+id;
+	@RequestMapping(value="/save_whole_crop_image", method=RequestMethod.POST)
+	@ResponseBody
+	public CropImageVm SaveWholeCropImage(@RequestBody CropImageVm cropImageVm) throws IOException{
+		System.out.println("in SaveWholeCropImage..........,");
+		Long imageId=Long.parseLong(cropImageVm.getId().toString());
+
+		String sqlImagName="select DC_IMAGENAME from tbl_parent_image where DN_ID="+imageId;
 		String imageName=jt.queryForObject(sqlImagName, String.class);
 		  
-		String sqlcreate="INSERT INTO tbl_child_image (DN_PARENT_IMAGE_ID) VALUES("+id+")";
+		String sqlcreate="INSERT INTO tbl_child_image (DN_PARENT_IMAGE_ID,DN_CREATED_BY) VALUES("+imageId+",'"+cropImageVm.getLoginUserId()+"')";
 		jt.execute(sqlcreate);
 		
 		long childid=util.getMaxId(jt, "tbl_child_image");
@@ -470,10 +484,34 @@ public class GalleryController {
 //		Thumbnails.of(croppedImage).size(w, h).toFile(file);
     	Thumbnails.of(croppedImage).size(width, height).toFile(thumbFile);
     	
-    	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now() where DN_ID="+childid;
+    	String heightCM=decimalFormat.format(((double)height/96)*2.54*0.9575);
+		String widthCM=decimalFormat.format(((double)width/96)*2.54*0.9575);	
+    	
+    	
+    	
+    	
+    	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now(),DC_HEIGHT='"+heightCM+"',DC_WIDTH='"+widthCM+"' where DN_ID="+childid;
 		jt.execute(updateSql);
         System.out.println("successfully created");
+        
+        
 
+    	String sqlforjobId="select t.DN_ID from tbl_de_job t where t.DN_PARENT_IMAGE_ID="+imageId+" limit 1";
+    	String jobId=jt.queryForObject(sqlforjobId, String.class);
+    	System.out.println("job id id "+jobId);
+    	
+    	
+    	String result=null;
+    	
+    	try {
+    	 result = new Ocr().doOCR(thumbFile);
+		} catch (Exception e) {
+			System.out.println("problame in ocr result");
+		}
+    	
+    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+imageId+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
+    	jt.execute(sqlforupdatededata);
+    	
         
         CropImageVm cropVm=new CropImageVm();
         cropVm.setId(imageId);
@@ -492,25 +530,76 @@ public class GalleryController {
         }
     }
 	
-	@RequestMapping(value="/delete_parent_image/{id}", method=RequestMethod.POST)
+	@RequestMapping(value="/delete_parent_image/{id}/{userId}", method=RequestMethod.POST)
 	@ResponseBody
-	public void deleteParentImage(@PathVariable("id") String id){
+	public void deleteParentImage(@PathVariable("id") String id,@PathVariable("userId") String userId){
 		
+		
+		String sqlparent="select * from tbl_parent_image t where t.DN_ID="+id+" limit 1";
+		Map<String,Object> results =  jt.queryForMap(sqlparent);
+        String imageid=null;
+        String imageName=null;
+        String deletedBy=userId;
+        if(results.get("DN_ID")!=null){
+        	imageid=results.get("DN_ID").toString();
+        }
+        if(results.get("DC_IMAGENAME")!=null){
+        	imageName=results.get("DC_IMAGENAME").toString();
+        }
+		
+		String sqldeteteChild="insert into tbl_deleted_image (DN_ID,DN_IMAGEID,DC_IMAGENAME,DN_DELETED_BY,DD_DELETED_ON,DB_ISCHILD) VALUES('"+id+"','"+id+"','"+imageName+"','"+deletedBy+"',now(),'0')";
+		jt.execute(sqldeteteChild);
 		
 		String sql="DELETE from tbl_child_image  where DN_PARENT_IMAGE_ID="+id;
 		jt.execute(sql);
 		
-		String sql1="DELETE from tbl_parent_image where DN_ID="+id;
-		jt.execute(sql1);
-	
+		String sqldeleteparentdedata="delete FROM tbl_de_data where DN_PARENT_IMAGE_ID="+id;
+		jt.execute(sqldeleteparentdedata);
+		
+		String sqldeleteDedata="delete from tbl_de_job where DN_PARENT_IMAGE_ID="+id;
+		jt.execute(sqldeleteDedata);
+		
+		String sqldeleteparent="delete from tbl_parent_image where DN_ID="+id;
+		jt.execute(sqldeleteparent);
 	}
 
-	@RequestMapping(value="/delete_child_image/{id}", method=RequestMethod.POST)
+	@RequestMapping(value="/delete_child_image/{id}/{userId}", method=RequestMethod.POST)
 	@ResponseBody
-	public void delete_child_image(@PathVariable("id") String id){
+	public void delete_child_image(@PathVariable("id") String id,@PathVariable("userId") String userId){
+		
+	
+		
+		System.out.println("in delete child image");
+		System.out.println("userId"+userId);
+		String sqlchild="select * from tbl_child_image t where t.DN_ID="+id+" limit 1";
+		Map<String,Object> results =  jt.queryForMap(sqlchild);
+        String imageid=null;
+        String imageName=null;
+        String deletedBy=userId;
+        if(results.get("DN_ID")!=null){
+        	imageid=results.get("DN_ID").toString();
+        }
+        if(results.get("DC_IMAGENAME")!=null){
+        	imageName=results.get("DC_IMAGENAME").toString();
+        }
+        if(results.get("DC_IMAGENAME")!=null){
+        	imageName=results.get("DC_IMAGENAME").toString();
+        }
+		
+		String sqldeteteChild="insert into tbl_deleted_image (DN_ID,DN_IMAGEID,DC_IMAGENAME,DN_DELETED_BY,DD_DELETED_ON,DB_ISCHILD) VALUES('"+imageid+"','"+imageid+"','"+imageName+"','"+deletedBy+"',now(),'1')";
+		jt.execute(sqldeteteChild);
+		
+		
 		String sql="DELETE from tbl_child_image  where DN_ID="+id;
 		jt.execute(sql);
-	
+		
+		String sqldeletededata="delete FROM tbl_de_data  where DN_CHILD_IMAGE_ID="+id;
+		jt.execute(sqldeletededata);
+		
+		
+		
+		
+		
 	}
 	
 	@RequestMapping(value="/move_to_transcription", method=RequestMethod.POST)
@@ -521,6 +610,22 @@ public class GalleryController {
 		for(IdVm liveVM : idVm) {
 			String sql="update tbl_parent_image m set m.DN_STATUS=2 where m.DN_ID="+liveVM.getId();
 			jt.execute(sql);	
+		}
+		System.out.println("record updated");
+	}
+	
+	@RequestMapping(value="/move_to_advertorial", method=RequestMethod.POST)
+	@ResponseBody
+	public void moveToAdvertorial(@RequestBody List<IdVm> idVm){
+		
+		System.out.println("in move to advertorial");
+		for(IdVm liveVM : idVm) {
+			String sql="update tbl_parent_image m set m.DN_STATUS=2 where m.DN_ID="+liveVM.getId();
+			jt.execute(sql);
+			
+			
+			String sqlForDeJob="update tbl_de_job set DN_STATUS=2 where DN_PARENT_IMAGE_ID="+liveVM.getId();
+			jt.execute(sqlForDeJob);
 		}
 		System.out.println("record updated");
 	}
