@@ -425,6 +425,14 @@ public class GalleryController {
     	String heightCM=decimalFormat.format(((double)h1/96)*2.54*0.9575);
 		String widthCM=decimalFormat.format(((double)w1/96)*2.54*0.9575);	
     	
+		ImageIO.write(croppedImage,"png",thumbFile );
+		
+		System.out.println("before ocr result");
+		
+		String result =doOCR(thumbFile);
+    	System.out.println("path is "+thumbFile.getAbsolutePath());
+        System.out.println("ocr result is "+result); 
+        System.out.println("after ocr result");
     	
     	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now(),DC_HEIGHT='"+heightCM+"',DC_WIDTH='"+widthCM+"' where DN_ID="+childid;
     	jt.execute(updateSql);
@@ -437,9 +445,9 @@ public class GalleryController {
     	
     	File chilFile = new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName);
     	System.out.println("path is "+chilFile.getAbsolutePath());
-    	String result =doOCR(chilFile);
-    	System.out.println("path is "+chilFile.getAbsolutePath());
-        System.out.println("ocr result is "+result); 
+    	
+    	
+    	
     	
     	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+cropImageVm.getId()+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
     	jt.execute(sqlforupdatededata);
