@@ -400,11 +400,11 @@ input[type='checkbox'] {
 											 	 </div>
 												 <div class="col-xs-12 col-sm-12 col-md-12">
 													<div class="panel panel-default">
-														<div class="panel-body" style="height: 224px;">
+														<div class="panel-body" style="">
 															<div class="thmb">
 																<div class="thmb-prev">
-																	<div class="thumbnail"
-																		style="height: 210px;">
+																	<div class="panel-body thumbnail"
+																		style="">
 																		<div class="col-md-2">
 																		      <img style="height: 190px; width:145px" 
 																						ng-src="/webapp/get-all-parent-image?id={{list.DN_ID}}"
@@ -514,7 +514,7 @@ input[type='checkbox'] {
 																					 
 																					 
 																				</div>
-																				<div class="col-md-8 p-0" style="height: 100px;">
+																				<div class="col-md-8 p-0">
 																						
 																						<div class="col-md-1" style="margin-left:-51px">
 																							<input class="chackboxclass" value="{{$index}}" type="checkbox" ng-model="ids[list.DN_ID]"  name="selectInput" style="width:20px; margin-top:37px;">
@@ -522,7 +522,7 @@ input[type='checkbox'] {
 																						
 																						
 																						<div class="col-md-11" style="margin-left:-13px">
-																						<div ng-repeat="la in list.listVm |limitTo:4" track by $index>
+																						<div ng-repeat="la in list.listVm" track by $index>
 																						<div 
 																							class="incomplete thumbnail childImg"
 																							style="float: left; padding:2px;">
@@ -536,14 +536,6 @@ input[type='checkbox'] {
 																										
 																										<a href="#" ng-click="deleteChileImage($parent.$index,pageSize,currentPage,list.DN_ID,la.DN_ID,$index,list.imageUrl,la.DC_IMAGENAME)">Delete
 																										</a>
-																										
-																										<!-- <p:commandLink
-																											action="#{deBean.deleteChildImage}"
-																											update="@form" ajax="true" style="color:#fff;  padding-left: 30px;"
-																											onstart="if(confirmDelete())return true; else return false;">
-																											<f:param name="childImgId" value="#{child.id}" />
-																											Delete
-																										</p:commandLink> -->
 																									</small>
 																								</div>
 																							</div>
@@ -603,7 +595,7 @@ input[type='checkbox'] {
 																			</a>
 																			
 																			<button class="btn btn-primary" ng-click="openEditImageForm($index,pageSize,currentPage,list.DN_ID,list.DC_IMAGENAME)" style="margin: 10px;">Edit</button>	
-																			
+																			<button class="btn btn-primary" ng-click="moveToTranscription($index,pageSize,currentPage,list.DN_ID)" style="margin: 10px;margin-left:-39%;width:169px">Move to Transcription</button>
 																			<h3><span ng-show="list.duplicate" style="margin: 15px;color:red">Duplicate</span></h3>
 																				
 																		</div>
@@ -738,36 +730,11 @@ input[type='checkbox'] {
 																		
 																		<a href=""><i class="fa fa-plus"></i></a>
 																		<span style="margin-left: 30%;">Child Images: {{list.listVm.length}}</span>
-																		<!-- <p:commandLink
-																			action="#{deBean.callPublication}"
-																			rendered="#{empty val.publicationTitle}" ajax="true"
-																			oncomplete="PF('dlg').show();"  id="add"
-																			update=":dlgform:basicDialog">
-																			<f:param name="parentImg" value="#{val.id}" />
-																			<i class="fa fa-plus"></i>
-																			<p:tooltip for="add" showEffect="fade" value="Add Tag" />
-																		</p:commandLink>
-																		 <p:commandLink action="#{deBean.callPublication}"
-																			rendered="#{not empty val.publicationTitle}" ajax="true"
-																			oncomplete="PF('dlg').show();"  id="edit"
-																			update=":dlgform:basicDialog">
-																			<i class="fa fa-edit"></i>
-																			<f:param name="parentImg" value="#{val.id}" />
-																			<p:tooltip for="edit" showEffect="fade" value="Edit Tag" />
-																		</p:commandLink>
-																		<h:outputText value="Child Images: #{fn:length(deBean.getChildImageListCount(val.id))}" style="margin-left: 30%;" />
-																		 -->
+																		
 																	</small> 
 																	<small class="text-muted pull-right"
 																		style="margin-top: -12px;">
 																		<a href="#"><i class="fa fa-crop p-r-10" style="font-size: 14px;"></i></a>
-																		<!-- <h:commandLink
-																			rendered="#{not empty val.publicationTitle}"
-																			action="#{deBean.callCrop}" id="crop">
-																			<f:param name="img" value="#{val.id}" />
-																			<i class="fa fa-crop p-r-10" style="font-size: 14px;"></i>
-																			<p:tooltip for="crop" showEffect="fade" value="Crop" />
-																		</h:commandLink>  -->
 																	</small>
 																</div>
 															</div>

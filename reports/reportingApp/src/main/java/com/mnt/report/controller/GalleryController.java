@@ -652,6 +652,19 @@ public class GalleryController {
 		System.out.println("record updated");
 	}
 	
+	@RequestMapping(value="/moveToTranscription_parent/{id}", method=RequestMethod.POST)
+	@ResponseBody
+	public void moveToTranscriptionParent(@PathVariable("id") String id){
+		System.out.println("in move to transcription parent");
+		
+			String sql="update tbl_parent_image m set m.DN_STATUS=2 where m.DN_ID="+id;
+			jt.execute(sql);
+			
+			String sqlforDejob="update tbl_de_job t set t.DN_STATUS=0 where t.DN_PARENT_IMAGE_ID="+id;
+			jt.execute(sqlforDejob);
+			
+	};
+	
 	@RequestMapping(value="/move_to_advertorial", method=RequestMethod.POST)
 	@ResponseBody
 	public void moveToAdvertorial(@RequestBody List<IdVm> idVm){

@@ -250,6 +250,27 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 		});
 	};
+	
+	
+	$scope.moveToTranscription=function(index,pagesize,currentpage,id){
+		 $scope.loading = true;
+		console.log("inmove to transcription ");
+		
+		console.log('index',index);
+		console.log('currentpage',currentpage);
+		console.log('pagesize',pagesize);
+		var number = (index) + (currentpage) * pagesize;
+		console.log('number ',number);
+		console.log('id',id);
+		$scope.allImageList.splice(number,1);
+		
+		$http.post('/webapp/gallery/moveToTranscription_parent/'+id).success(function(data){
+			 $scope.loading = false;
+		});
+		
+		
+		
+	};
 
 	$scope.changeDay=function(day){
 		$scope.day=day;
