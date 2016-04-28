@@ -14,8 +14,22 @@ public class CropImageVm {
 	public long childId;
 	public long loginUserId;
 	
+	public long DN_ID;
+	public String DC_IMAGENAME;
 	
 	
+	public long getDN_ID() {
+		return DN_ID;
+	}
+	public void setDN_ID(long dN_ID) {
+		DN_ID = dN_ID;
+	}
+	public String getDC_IMAGENAME() {
+		return DC_IMAGENAME;
+	}
+	public void setDC_IMAGENAME(String dC_IMAGENAME) {
+		DC_IMAGENAME = dC_IMAGENAME;
+	}
 	public long getLoginUserId() {
 		return loginUserId;
 	}

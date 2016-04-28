@@ -344,7 +344,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 		$http({url:'/webapp/gallery/save_crop_image',method:'POST',data: $scope.imagejsonData,cache: false,
 			contentType: "application/x-www-form-urlencoded"}).success(function(data) {
-				$scope.cropImageVm.push(data);
+			//	$scope.cropImageVm.push(data);
+				$scope.childImageArray.push(data);
 				$scope.loading = false;
 			});
 	};
@@ -400,6 +401,12 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		$scope.url=$scope.cropparentImageId+"&"+$scope.timeimilli;
 		var id=parentImageId;
 		$scope.cropImageVm=[];
+		
+		
+		$scope.childImageArray=[];
+		$scope.childImageArray=$scope.allImageList[$scope.imagenumberforcrop].listVm;
+		
+		
 		ngDialog.openConfirm({template: '/webapp/assets/templates/temp.html',
 			preCloseCallback:function(){
 				$http.get('/webapp/gallery/refresh_crop_image/'+id).success(function(data){

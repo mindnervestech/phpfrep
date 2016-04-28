@@ -425,12 +425,15 @@ public class GalleryController {
     	String heightCM=decimalFormat.format(((double)h1/96)*2.54*0.9575);
 		String widthCM=decimalFormat.format(((double)w1/96)*2.54*0.9575);	
     	
-		ImageIO.write(croppedImage,"png",thumbFile );
+		 File newChild = new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName); 
+    	  
+		
+		ImageIO.write(croppedImage,"png",newChild );
 		
 		System.out.println("before ocr result");
 		
-		String result =doOCR(thumbFile);
-    	System.out.println("path is "+thumbFile.getAbsolutePath());
+		String result =doOCR(newChild);
+    	System.out.println("path is "+newChild.getAbsolutePath());
         System.out.println("ocr result is "+result); 
         System.out.println("after ocr result");
     	
@@ -453,10 +456,13 @@ public class GalleryController {
     	jt.execute(sqlforupdatededata);
     		
     	CropImageVm cropVm=new CropImageVm();
-    	cropVm.setId(cropImageVm.getId());
+/*    	cropVm.setId(cropImageVm.getId());
     	cropVm.setChildId(childid);
     	cropVm.setImageName(fileimageName);
-
+*/
+    	
+    	cropVm.setDN_ID(childid);
+    	cropVm.setDC_IMAGENAME(fileimageName);
        return cropVm;
        
 	}
@@ -509,15 +515,20 @@ public class GalleryController {
     	String heightCM=decimalFormat.format(((double)height/96)*2.54*0.9575);
 		String widthCM=decimalFormat.format(((double)width/96)*2.54*0.9575);	
     	
-        ImageIO.write(croppedImage,"png",thumbFile );
+		File newthumbFile = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
+		
+        ImageIO.write(croppedImage,"png",newthumbFile );
 		
 		System.out.println("before ocr result");
 		
-		String result =doOCR(thumbFile);
+		String result =doOCR(newthumbFile);
+		
+		
     	
     	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now(),DC_HEIGHT='"+heightCM+"',DC_WIDTH='"+widthCM+"' where DN_ID="+childid;
 		jt.execute(updateSql);
         System.out.println("successfully created");
+        
         
         
 
