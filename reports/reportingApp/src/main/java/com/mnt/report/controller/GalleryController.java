@@ -428,7 +428,9 @@ public class GalleryController {
 		 File newChild = new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName); 
     	  
 		
-		ImageIO.write(croppedImage,"png",newChild );
+//		ImageIO.write(croppedImage,"png",newChild );
+		
+		BufferedImage image = ImageIO.read(newChild);
 		
 		System.out.println("before ocr result");
 		
@@ -517,7 +519,9 @@ public class GalleryController {
     	
 		File newthumbFile = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
 		
-        ImageIO.write(croppedImage,"png",newthumbFile );
+    //    ImageIO.write(croppedImage,"png",newthumbFile );
+		
+	//	BufferedImage image = ImageIO.read(newthumbFile);
 		
 		System.out.println("before ocr result");
 		
