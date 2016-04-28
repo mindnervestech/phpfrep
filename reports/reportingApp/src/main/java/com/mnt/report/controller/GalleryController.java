@@ -509,8 +509,11 @@ public class GalleryController {
     	String heightCM=decimalFormat.format(((double)height/96)*2.54*0.9575);
 		String widthCM=decimalFormat.format(((double)width/96)*2.54*0.9575);	
     	
-    	
-    	
+        ImageIO.write(croppedImage,"png",thumbFile );
+		
+		System.out.println("before ocr result");
+		
+		String result =doOCR(thumbFile);
     	
     	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now(),DC_HEIGHT='"+heightCM+"',DC_WIDTH='"+widthCM+"' where DN_ID="+childid;
 		jt.execute(updateSql);
@@ -526,7 +529,7 @@ public class GalleryController {
     	System.out.println("child image path is "+childImage.getAbsolutePath());
     	
     	
-    	String result = new Ocr().doOCR(childImage);
+    	
 		
     	
     	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+imageId+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
@@ -631,9 +634,6 @@ public class GalleryController {
 		jt.execute(sqldeletededata);
 		
 		
-		
-		
-		
 	}
 	
 	@RequestMapping(value="/move_to_transcription", method=RequestMethod.POST)
@@ -643,7 +643,11 @@ public class GalleryController {
 		System.out.println("in move to transcription");
 		for(IdVm liveVM : idVm) {
 			String sql="update tbl_parent_image m set m.DN_STATUS=2 where m.DN_ID="+liveVM.getId();
-			jt.execute(sql);	
+			jt.execute(sql);
+			
+			String sqlforDejob="update tbl_de_job t set t.DN_STATUS=0 where t.DN_PARENT_IMAGE_ID="+liveVM.getId();
+			jt.execute(sqlforDejob);
+			
 		}
 		System.out.println("record updated");
 	}
