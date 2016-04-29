@@ -436,7 +436,7 @@ public class GalleryController {
 		
 		String result =doOCR(newChild);
     	System.out.println("path is "+newChild.getAbsolutePath());
-        System.out.println("ocr result is "+result); 
+        //System.out.println("ocr result is "+result); 
         System.out.println("after ocr result");
     	
     	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now(),DC_HEIGHT='"+heightCM+"',DC_WIDTH='"+widthCM+"' where DN_ID="+childid;
