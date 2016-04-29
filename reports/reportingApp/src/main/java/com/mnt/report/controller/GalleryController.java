@@ -3,10 +3,12 @@ package com.mnt.report.controller;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,7 +24,9 @@ import net.sourceforge.tess4j.TesseractException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +41,7 @@ import sun.util.locale.StringTokenIterator;
 
 import com.google.gson.Gson;
 import com.mnt.report.util.CommonUtils;
+import com.mysql.jdbc.PreparedStatement;
 
 
 
@@ -411,7 +416,7 @@ public class GalleryController {
 		String sqlcreate="INSERT INTO tbl_child_image (DN_PARENT_IMAGE_ID,DN_CREATED_BY) VALUES('"+cropImageVm.getId()+"','"+cropImageVm.getLoginUserId()+"')";
 		jt.execute(sqlcreate);
 		
-		long childid=util.getMaxId(jt, "tbl_child_image");
+		final long childid=util.getMaxId(jt, "tbl_child_image");
 		int r = (int) (Math.random() * (1000 - 100)) + 100;
 		String fileimageName="crp_"+r+"_"+childid+".png";
 		createDir(fullImagePath,cropImageVm.getId(),childid);
@@ -422,8 +427,8 @@ public class GalleryController {
 //		Thumbnails.of(croppedImage).size(w, h).toFile(file);
     	Thumbnails.of(croppedImage).size(w1, h1).toFile(thumbFile);
     	
-    	String heightCM=decimalFormat.format(((double)h1/96)*2.54*0.9575);
-		String widthCM=decimalFormat.format(((double)w1/96)*2.54*0.9575);	
+    final String heightCM=decimalFormat.format(((double)h1/96)*2.54*0.9575);
+	final String widthCM=decimalFormat.format(((double)w1/96)*2.54*0.9575);	
     	
 		 File newChild = new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName); 
     	  
@@ -434,7 +439,7 @@ public class GalleryController {
 		
 		System.out.println("before ocr result");
 		
-		String result =doOCR(newChild);
+		final String result =doOCR(newChild);
     	System.out.println("path is "+newChild.getAbsolutePath());
         //System.out.println("ocr result is "+result); 
         System.out.println("after ocr result");
@@ -444,7 +449,7 @@ public class GalleryController {
 
     	
     	String sqlforjobId="select t.DN_ID from tbl_de_job t where t.DN_PARENT_IMAGE_ID="+cropImageVm.getId()+" limit 1";
-    	String jobId=jt.queryForObject(sqlforjobId, String.class);
+    	final String jobId=jt.queryForObject(sqlforjobId, String.class);
     	System.out.println("job id id "+jobId);
     		
     	
@@ -454,9 +459,47 @@ public class GalleryController {
     	
     	
     	
-    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+cropImageVm.getId()+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
+    	/*String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+cropImageVm.getId()+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
     	jt.execute(sqlforupdatededata);
-    		
+    	*/
+    	
+    	
+    	Calendar calendar = Calendar.getInstance();
+	    final java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
+    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LEGTNH,DC_WIDTH)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    	
+    	System.out.println("before prepare statement");
+    	
+    	final Long idChild=cropImageVm.getLoginUserId();
+    	final Long iddd=cropImageVm.getId();
+    	
+    	Boolean flag=jt.execute(sqlforupdatededata,new PreparedStatementCallback<Boolean>(){  
+    
+			@Override
+			public Boolean doInPreparedStatement(java.sql.PreparedStatement ps)
+					throws SQLException, DataAccessException {
+				ps.setString (1, "0");
+				ps.setString (2, result);
+				ps.setLong (3, childid);
+				ps.setLong(4, idChild);
+				ps.setDate(5, startDate);
+				ps.setLong(6, iddd);
+				ps.setString(7, jobId);
+				ps.setString(8, heightCM);
+				ps.setString(9, widthCM);
+	    	        return ps.execute(); 
+			}  
+    	    });
+    	
+    	System.out.println("after prepare statement");
+    	System.out.println("flag is.."+flag);
+    	
+    	
+    	
+    	
+    	
+    	
+    	
     	CropImageVm cropVm=new CropImageVm();
 /*    	cropVm.setId(cropImageVm.getId());
     	cropVm.setChildId(childid);
@@ -488,9 +531,9 @@ public class GalleryController {
 
 	@RequestMapping(value="/save_whole_crop_image", method=RequestMethod.POST)
 	@ResponseBody
-	public CropImageVm SaveWholeCropImage(@RequestBody CropImageVm cropImageVm) throws IOException{
+	public CropImageVm SaveWholeCropImage(@RequestBody final CropImageVm cropImageVm) throws IOException, SQLException, ClassNotFoundException{
 		System.out.println("in SaveWholeCropImage..........,");
-		Long imageId=Long.parseLong(cropImageVm.getId().toString());
+		final Long imageId=Long.parseLong(cropImageVm.getId().toString());
 
 		String sqlImagName="select DC_IMAGENAME from tbl_parent_image where DN_ID="+imageId;
 		String imageName=jt.queryForObject(sqlImagName, String.class);
@@ -498,7 +541,7 @@ public class GalleryController {
 		String sqlcreate="INSERT INTO tbl_child_image (DN_PARENT_IMAGE_ID,DN_CREATED_BY) VALUES("+imageId+",'"+cropImageVm.getLoginUserId()+"')";
 		jt.execute(sqlcreate);
 		
-		long childid=util.getMaxId(jt, "tbl_child_image");
+		final long childid=util.getMaxId(jt, "tbl_child_image");
 		
 		int r = (int) (Math.random() * (1000 - 100)) + 100;
 		String fileimageName="crp_"+r+"_"+childid+".png";
@@ -514,30 +557,27 @@ public class GalleryController {
 //		Thumbnails.of(croppedImage).size(w, h).toFile(file);
     	Thumbnails.of(croppedImage).size(width, height).toFile(thumbFile);
     	
-    	String heightCM=decimalFormat.format(((double)height/96)*2.54*0.9575);
-		String widthCM=decimalFormat.format(((double)width/96)*2.54*0.9575);	
+    	final String heightCM=decimalFormat.format(((double)height/96)*2.54*0.9575);
+		final String widthCM=decimalFormat.format(((double)width/96)*2.54*0.9575);	
     	
 		File newthumbFile = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
 		
     //    ImageIO.write(croppedImage,"png",newthumbFile );
 		
-	//	BufferedImage image = ImageIO.read(newthumbFile);
+		BufferedImage image = ImageIO.read(newthumbFile);
 		
 		System.out.println("before ocr result");
 		
-		String result =doOCR(newthumbFile);
+		final String result =doOCR(newthumbFile);
 		
 		
     	
     	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now(),DC_HEIGHT='"+heightCM+"',DC_WIDTH='"+widthCM+"' where DN_ID="+childid;
 		jt.execute(updateSql);
         System.out.println("successfully created");
-        
-        
-        
 
     	String sqlforjobId="select t.DN_ID from tbl_de_job t where t.DN_PARENT_IMAGE_ID="+imageId+" limit 1";
-    	String jobId=jt.queryForObject(sqlforjobId, String.class);
+    	final String jobId=jt.queryForObject(sqlforjobId, String.class);
     	System.out.println("job id id "+jobId);
     	
     	File childImage = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
@@ -545,12 +585,37 @@ public class GalleryController {
     	
     	
     	
-		
-    	
-    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+imageId+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
-    	jt.execute(sqlforupdatededata);
-    	
+    	/*String sqlforupdatededata1="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+imageId+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
+    	jt.execute(sqlforupdatededata1);
+    	*/
         
+    	Calendar calendar = Calendar.getInstance();
+	    final java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
+    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    	
+    	System.out.println("before prepare statement");
+    	
+    	Boolean flag=jt.execute(sqlforupdatededata,new PreparedStatementCallback<Boolean>(){  
+    
+			@Override
+			public Boolean doInPreparedStatement(java.sql.PreparedStatement ps)
+					throws SQLException, DataAccessException {
+				ps.setString (1, "0");
+				ps.setString (2, result);
+				ps.setLong (3, childid);
+				ps.setLong(4, cropImageVm.getLoginUserId());
+				ps.setDate(5, startDate);
+				ps.setLong(6, imageId);
+				ps.setString(7, jobId);
+				ps.setString(8, heightCM);
+				ps.setString(9, widthCM);
+	    	        return ps.execute(); 
+			}  
+    	    });
+    	System.out.println("after prepare statement");
+    	System.out.println("flag is.."+flag);
+    	
+    	
         CropImageVm cropVm=new CropImageVm();
         cropVm.setId(imageId);
         cropVm.setChildId(childid);
