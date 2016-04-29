@@ -466,7 +466,7 @@ public class GalleryController {
     	
     	Calendar calendar = Calendar.getInstance();
 	    final java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
-    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LEGTNH,DC_WIDTH)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     	
     	System.out.println("before prepare statement");
     	
