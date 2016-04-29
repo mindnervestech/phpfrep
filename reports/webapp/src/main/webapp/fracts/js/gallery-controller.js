@@ -387,9 +387,12 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			});
 
 	};
-	$scope.cropImage=function(index,pagesize,currentpage,parentImageId,imageUrl){
+	$scope.cropImage=function(index,pagesize,currentpage,parentImageId,imageUrl,imageName){
 		$scope.parentImageId=parentImageId;
-
+		
+		$scope.parentImageName=imageName;
+		console.log('$scope.parentImageName',$scope.parentImageName);
+		console.log('in image crop');
 		//	$window.location.href = '/webapp/fracts/crop_image.html';
 		$scope.imagenumberforcrop = (index) + (currentpage) * pagesize;
 		$scope.univercropId=$scope.imagenumberforcrop;
