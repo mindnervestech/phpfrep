@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,6 +61,40 @@ public class GalleryController {
 	@Value("${fullImagePath}")
 	String fullImagePath;
 	
+
+	@RequestMapping(value="/create_thumnail_images", method=RequestMethod.GET)
+	@ResponseBody
+	public void createThumbanail(){
+		
+		System.out.println("in create thumb images");
+		System.out.println("Method executed at every 1 hour. Current time is :: "+ new Date());
+		
+		String query = "select DN_ID,DC_IMAGENAME,DN_PARENT_IMAGE_ID from tbl_child_image";
+	//	String sqllike="select DN_ID,DC_IMAGENAME,DN_PARENT_IMAGE_ID from tbl_child_image where DC_IMAGENAME LIKE '%png' ";
+		List<Map<String,Object>> results =  jt.queryForList(query);
+	//	System.out.println("size o flist is "+results.size());
+		if(results.size()>0){
+			for (Map<String, Object> map : results) {
+				
+				File thumbFile = new File(fullImagePath+"/"+"child"+"/"+map.get("DN_PARENT_IMAGE_ID").toString()+"/"+map.get("DN_ID").toString()+"/"+map.get("DC_IMAGENAME"));
+		    //	System.out.println("thumbFile "+thumbFile.getAbsolutePath());
+		    	try {	
+					Thumbnails.of(new File(fullImagePath+"/"+"child"+"/"+map.get("DN_PARENT_IMAGE_ID").toString()+"/"+map.get("DN_ID").toString()+"/"+map.get("DC_IMAGENAME")))
+		        	.width(200).keepAspectRatio(true)
+		        	.outputFormat(map.get("DC_IMAGENAME").toString().split("\\.")[1])
+		        	.toFile(fullImagePath+"/"+"child"+"/"+map.get("DN_PARENT_IMAGE_ID").toString()+"/"+map.get("DN_ID").toString()+"/"+map.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb."+map.get("DC_IMAGENAME").toString().split("\\.")[1]);
+				} catch (IOException e1) {
+					System.out.println("problame to create thumnail");
+					e1.printStackTrace();
+					
+				}
+
+			}
+
+		}
+
+
+	}
 	
 	@RequestMapping(value="/parentlist", method=RequestMethod.GET)
 	@ResponseBody
@@ -284,6 +319,10 @@ public class GalleryController {
 					m++;
 				}	
 				imagesVM.setDC_IMAGENAME(pImage.get("DC_IMAGENAME").toString());
+				
+				String thumImageName=pImage.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+				imagesVM.setThumb(thumImageName);
+			   
 			}
 			if(pImage.get("DN_STATUS")!=null){
 				imagesVM.setDN_STATUS(Integer.parseInt(pImage.get("DN_STATUS").toString()));
@@ -367,7 +406,11 @@ public class GalleryController {
 					childVm.setDN_ID(Long.valueOf(map.get("DN_ID").toString()));
 				}
 				if(map.get("DC_IMAGENAME")!=null){
+				
 					childVm.setDC_IMAGENAME(map.get("DC_IMAGENAME").toString());
+					String thumChildImage=map.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+					childVm.setChildThumb(thumChildImage);
+				   
 				}
 				
 			    arrayList.add(childVm);
@@ -427,22 +470,36 @@ public class GalleryController {
 //		Thumbnails.of(croppedImage).size(w, h).toFile(file);
     	Thumbnails.of(croppedImage).size(w1, h1).toFile(thumbFile);
     	
-    final String heightCM=decimalFormat.format(((double)h1/96)*2.54*0.9575);
-	final String widthCM=decimalFormat.format(((double)w1/96)*2.54*0.9575);	
+    	System.out.println("befor thumbnail");
+    	try {	
+			Thumbnails.of(new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName))
+        	.width(200).keepAspectRatio(true)
+        	.outputFormat("jpg")
+        	.toFile(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName.split("\\.")[0]+"_thumb.jpg");
+		} catch (IOException e1) {
+			System.out.println("problame to create thumnail");
+			e1.printStackTrace();
+		}
+    	System.out.println("after thumbnail");
     	
-		 File newChild = new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName); 
+    	
+    	final String heightCM=decimalFormat.format(((double)h1/96)*2.54*0.9575);
+		final String widthCM=decimalFormat.format(((double)w1/96)*2.54*0.9575);	
+    	/*
+    	 File newChild = new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName); 
     	  
 		
 		ImageIO.write(croppedImage,"png",newChild );
 		
-		//BufferedImage image = ImageIO.read(newChild);
-		
 		System.out.println("before ocr result");
 		
-		final String result =doOCR(newChild);
+		String result =doOCR(newChild);
     	System.out.println("path is "+newChild.getAbsolutePath());
-        //System.out.println("ocr result is "+result); 
-        System.out.println("after ocr result");
+        System.out.println("ocr result is "+result); 
+        */
+		final String result="testing";
+		
+		System.out.println("after ocr result");
     	
     	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now(),DC_HEIGHT='"+heightCM+"',DC_WIDTH='"+widthCM+"' where DN_ID="+childid;
     	jt.execute(updateSql);
@@ -922,6 +979,9 @@ public class GalleryController {
 				}
 				if(map.get("DC_IMAGENAME")!=null){
 					childVm.setDC_IMAGENAME(map.get("DC_IMAGENAME").toString());
+					String thumChildImageName=map.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+				    childVm.setChildThumb(thumChildImageName);
+					
 				}
 				/*if(map.get("DN_PARENT_IMAGE_ID")!=null){
 					childVm.setDN_PARENT_IMAGE_ID(Long.parseLong(map.get("DN_PARENT_IMAGE_ID").toString()));
@@ -981,10 +1041,7 @@ public class GalleryController {
 					m++;
 				}	
 				imagesVM.setDC_IMAGENAME(pImage.get("DC_IMAGENAME").toString());
-				
 				String thumImageName=pImage.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
-				//System.out.println("thumImageName "+thumImageName);
-				
 				imagesVM.setThumb(thumImageName);
 			}
 			if(pImage.get("DN_STATUS")!=null){
@@ -1073,6 +1130,9 @@ public class GalleryController {
 				}
 				if(map.get("DC_IMAGENAME")!=null){
 					childVm.setDC_IMAGENAME(map.get("DC_IMAGENAME").toString());
+					String thumChildImageName=map.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+					childVm.setChildThumb(thumChildImageName);
+					
 				}
 				/*if(map.get("DN_PARENT_IMAGE_ID")!=null){
 					childVm.setDN_PARENT_IMAGE_ID(Long.parseLong(map.get("DN_PARENT_IMAGE_ID").toString()));

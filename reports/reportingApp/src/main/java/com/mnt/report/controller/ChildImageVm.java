@@ -11,7 +11,14 @@ public class ChildImageVm {
 	public String DC_WIDTH;
 	public String isCompleted;
 	public Long DN_PARENT_IMAGE_ID;
+	public String childThumb;
 	
+	public String getChildThumb() {
+		return childThumb;
+	}
+	public void setChildThumb(String childThumb) {
+		this.childThumb = childThumb;
+	}
 	public Long getDN_ID() {
 		return DN_ID;
 	}

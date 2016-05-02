@@ -28,8 +28,18 @@ public class ImagesVM {
 	public String dateissue;
 	
 	public String thumb;
+	public String thumbChild;
 	
-	
+	public String getThumbChild() {
+		return thumbChild;
+	}
+
+
+	public void setThumbChild(String thumbChild) {
+		this.thumbChild = thumbChild;
+	}
+
+
 	public String getThumb() {
 		return thumb;
 	}
