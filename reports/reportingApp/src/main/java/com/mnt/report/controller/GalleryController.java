@@ -485,19 +485,26 @@ public class GalleryController {
     	
     	final String heightCM=decimalFormat.format(((double)h1/96)*2.54*0.9575);
 		final String widthCM=decimalFormat.format(((double)w1/96)*2.54*0.9575);	
-    	/*
+    	
     	 File newChild = new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName); 
-    	  
-		
-		ImageIO.write(croppedImage,"png",newChild );
+    	  	
+	
 		
 		System.out.println("before ocr result");
 		
-		String result =doOCR(newChild);
-    	System.out.println("path is "+newChild.getAbsolutePath());
-        System.out.println("ocr result is "+result); 
-        */
-		final String result="testing";
+			
+    //    ImageIO.write(croppedImage,"png",newChild );
+		
+		BufferedImage image = ImageIO.read(newChild);
+		
+		System.out.println("before ocr result");
+		
+		final String result =doOCR(newChild);
+		
+		
+		
+        
+		//final String result="testing";
 		
 		System.out.println("after ocr result");
     	
