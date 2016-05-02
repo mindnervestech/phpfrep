@@ -27,6 +27,19 @@ public class ImagesVM {
 	public boolean duplicate;
 	public String dateissue;
 	
+	public String thumb;
+	
+	
+	public String getThumb() {
+		return thumb;
+	}
+
+
+	public void setThumb(String thumb) {
+		this.thumb = thumb;
+	}
+
+
 	public Long DN_PARENT_IMAGE_ID;
 	
 	public List<ChildImageVm> listVm = new ArrayList<ChildImageVm>();
