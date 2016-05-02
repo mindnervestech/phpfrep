@@ -48,7 +48,7 @@ import com.mysql.jdbc.PreparedStatement;
 @Controller
 @RequestMapping("/gallery")
 public class GalleryController {
-	
+	static { ImageIO.scanForPlugins(); }	
 	DecimalFormat decimalFormat=new DecimalFormat("#.##");
 	
 	@Autowired
@@ -433,9 +433,9 @@ public class GalleryController {
 		 File newChild = new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName); 
     	  
 		
-//		ImageIO.write(croppedImage,"png",newChild );
+		ImageIO.write(croppedImage,"png",newChild );
 		
-		BufferedImage image = ImageIO.read(newChild);
+		//BufferedImage image = ImageIO.read(newChild);
 		
 		System.out.println("before ocr result");
 		
