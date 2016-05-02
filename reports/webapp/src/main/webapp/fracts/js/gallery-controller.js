@@ -67,8 +67,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			$scope.dataForComment=data;
 
 
-			//	 console.log("in all data");
-			//    console.log($scope.allImageList);
+			   console.log("in all data");
+			   console.log($scope.allImageList);
 			//    console.log('lemgth is ',$scope.allImageList.length);
 			if($scope.allImageList.length == 0 ) {
 				$scope.showRecords = false;

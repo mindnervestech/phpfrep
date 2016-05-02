@@ -827,6 +827,10 @@ public class GalleryController {
 					m++;
 				}	
 				imagesVM.setDC_IMAGENAME(pImage.get("DC_IMAGENAME").toString());
+				
+				String thumImageName=pImage.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+				imagesVM.setThumb(thumImageName);
+				
 			}
 			if(pImage.get("DN_STATUS")!=null){
 				imagesVM.setDN_STATUS(Integer.parseInt(pImage.get("DN_STATUS").toString()));
@@ -977,6 +981,11 @@ public class GalleryController {
 					m++;
 				}	
 				imagesVM.setDC_IMAGENAME(pImage.get("DC_IMAGENAME").toString());
+				
+				String thumImageName=pImage.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+				//System.out.println("thumImageName "+thumImageName);
+				
+				imagesVM.setThumb(thumImageName);
 			}
 			if(pImage.get("DN_STATUS")!=null){
 				imagesVM.setDN_STATUS(Integer.parseInt(pImage.get("DN_STATUS").toString()));
