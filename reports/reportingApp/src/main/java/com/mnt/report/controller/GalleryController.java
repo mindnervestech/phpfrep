@@ -624,6 +624,20 @@ public class GalleryController {
 //		Thumbnails.of(croppedImage).size(w, h).toFile(file);
     	Thumbnails.of(croppedImage).size(width, height).toFile(thumbFile);
     	
+    	System.out.println("befor thumbnail");
+    	try {	
+			Thumbnails.of(new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName))
+        	.width(200).keepAspectRatio(true)
+        	.outputFormat("jpg")
+        	.toFile(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName.split("\\.")[0]+"_thumb.jpg");
+		} catch (IOException e1) {
+			System.out.println("problame to create thumnail");
+			e1.printStackTrace();
+		}
+    	
+    	
+    	
+    	
     	final String heightCM=decimalFormat.format(((double)height/96)*2.54*0.9575);
 		final String widthCM=decimalFormat.format(((double)width/96)*2.54*0.9575);	
     	
@@ -687,6 +701,9 @@ public class GalleryController {
         cropVm.setId(imageId);
         cropVm.setChildId(childid);
         cropVm.setImageName(fileimageName);
+       
+        String thumbimagename=fileimageName.split("\\.")[0]+"_thumb.jpg";
+    	cropVm.setChildThumb(thumbimagename);
         
         return cropVm;
         

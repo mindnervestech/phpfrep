@@ -351,7 +351,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 		$http({url:'/webapp/gallery/save_whole_crop_image',method:'POST',data: $scope.wholeimagejsonData,cache: false,
 			contentType: "application/x-www-form-urlencoded"}).success(function(data) {
-				$scope.cropImageVm.push(data);
+			//	$scope.cropImageVm.push(data);
+				$scope.childImageArray.push(data);
 				$scope.loading = false;
 			});
 		
