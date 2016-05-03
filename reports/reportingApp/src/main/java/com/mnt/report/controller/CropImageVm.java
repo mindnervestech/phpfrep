@@ -16,8 +16,15 @@ public class CropImageVm {
 	
 	public long DN_ID;
 	public String DC_IMAGENAME;
+	public String childThumb;
 	
 	
+	public String getChildThumb() {
+		return childThumb;
+	}
+	public void setChildThumb(String childThumb) {
+		this.childThumb = childThumb;
+	}
 	public long getDN_ID() {
 		return DN_ID;
 	}
