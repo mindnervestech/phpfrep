@@ -128,6 +128,35 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 	};
 //end of ng-init()
+	
+	
+	$scope.openChildImage=function(childid,parentId,imageName){
+		console.log("in open Child image");
+		$scope.childIdForDisplay=childid;
+		$scope.parentidForDisplay=parentId;
+		$scope.imageNameForDisplay=imageName;
+		
+		console.log('$scope.childIdForDisplay',$scope.childIdForDisplay);
+		console.log('$scope.childIdForDisplay',$scope.childIdForDisplay);
+		console.log('$scope.childIdForDisplay',$scope.childIdForDisplay);
+		console.log("in open child image");
+			 $('#myModal').modal('show');
+		
+	};
+	
+	$scope.openChildImagePopUp=function(childid,parentId,imageName){
+		
+		console.log("in open Child image");
+		$scope.childIdPop=childid;
+		$scope.parentidPop=parentId;
+		$scope.imageNamePop=imageName;
+		
+		console.log('$scope.childIdForDisplay',$scope.childIdPop);
+		console.log('$scope.childIdForDisplay',$scope.parentidPop);
+		console.log('$scope.childIdForDisplay',$scope.imageNamePop);
+		console.log("in open child image");
+			 $('#myModal1').modal('show');
+	};
 
 	$scope.cropImagePage=function(parentImageId,imageUrl){
 		console.log("in crop image page");
