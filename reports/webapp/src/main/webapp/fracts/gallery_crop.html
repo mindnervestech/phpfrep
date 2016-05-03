@@ -78,6 +78,11 @@
   height:350px;
 }
 
+.yourClass 
+{ cursor: pointer; 
+
+}
+
 .ui-dialog .ui-dialog-content {
 	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
 	border: 0 none;
@@ -352,8 +357,8 @@ input[type='checkbox'] {
   		    		<ul id="myTab2" class="nav nav-tabs nav-dark">
 							<li class="active"><a href="#tab1" data-toggle="tab" style=" margin-top: -23px;padding-top: 1px;"><i
 									class="glyphicon glyphicon-th-list"></i> List View </a></li>
-							<li><a href="#tab2" data-toggle="tab" style=" margin-top: -23px;padding-top: 1px;"><i
-									class="glyphicon glyphicon glyphicon-th"></i> Grid View </a></li>
+							<!-- <li><a href="#tab2" data-toggle="tab" style=" margin-top: -23px;padding-top: 1px;"><i
+									class="glyphicon glyphicon glyphicon-th"></i> Grid View </a></li> -->
 					</ul>
 					
 					<div id="myTabContent" class="tab-content" style="float: left;width: 100%;">
@@ -382,7 +387,7 @@ input[type='checkbox'] {
 													<p:commandLink update="div_photo_list" rendered="#{not deBean.duplicate}" ajax="true" action="#{deBean.changeParentImages}">Show All</p:commandLink> -->
 											</div> 
 											<div styleClass="pull-right" style="margin-bottom: 0.5%; float: right;">
-												<ul class="pagination pagination-right" style="margin: 0px; border: 0px solid #ccc;">
+												<ul class="pagination pagination-right yourClass" style="margin: 0px; border: 0px solid #ccc;">
 													<li style="padding: 0px;" ng-click="currentPage = 0;"><a>First</a></li>
 													<li ng-click="gotoPrev()"><a>&#60;</a></li>
 													<li ng-repeat="p in pages"

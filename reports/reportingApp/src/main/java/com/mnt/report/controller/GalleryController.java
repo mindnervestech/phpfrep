@@ -559,17 +559,8 @@ public class GalleryController {
     	System.out.println("flag is.."+flag);
     	
     	
-    	
-    	
-    	
-    	
-    	
     	CropImageVm cropVm=new CropImageVm();
-/*    	cropVm.setId(cropImageVm.getId());
-    	cropVm.setChildId(childid);
-    	cropVm.setImageName(fileimageName);
-*/
-    	
+
     	cropVm.setDN_ID(childid);
     	cropVm.setDC_IMAGENAME(fileimageName);
     	String thumbimagename=fileimageName.split("\\.")[0]+"_thumb.jpg";
@@ -697,12 +688,10 @@ public class GalleryController {
     	System.out.println("flag is.."+flag);
     	
     	
-        CropImageVm cropVm=new CropImageVm();
-        cropVm.setId(imageId);
-        cropVm.setChildId(childid);
-        cropVm.setImageName(fileimageName);
-       
-        String thumbimagename=fileimageName.split("\\.")[0]+"_thumb.jpg";
+    	CropImageVm cropVm=new CropImageVm();
+    	cropVm.setDN_ID(childid);
+    	cropVm.setDC_IMAGENAME(fileimageName);
+    	String thumbimagename=fileimageName.split("\\.")[0]+"_thumb.jpg";
     	cropVm.setChildThumb(thumbimagename);
         
         return cropVm;

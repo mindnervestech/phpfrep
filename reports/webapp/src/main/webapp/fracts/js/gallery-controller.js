@@ -1,9 +1,9 @@
 app.controller('MainController',function($scope,$state,$http,$filter,$window,$rootScope,ngDialog) {
 
 
-	
 
-	
+
+
 	//  $scope.imageUrl = "/webapp/get-all-parent-image?id=1862";
 	//	console.log('image url',$scope.imageUrl);
 	$scope.myImage='';
@@ -25,9 +25,6 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 	angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
 	console.log('$scope.myCroppedImage',$scope.myCroppedImage);
 
-
-
-
 	$scope.status = true;
 	$scope.pageSize = 20;
 	$scope.currentPage = 0;
@@ -38,9 +35,10 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 	$scope.allImageList=[];
 	$scope.ids = {};
 	$scope.dataForComment=[];
+
+
 	$scope.init=function(){
 		console.log("in init method");
-		
 		function getParamValue(paramName) {
 			var url = window.location.search.substring(1); //get rid of "?" in querystring
 			var qArray = url.split('&'); //get key-value pairs
@@ -53,10 +51,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		var param1 = getParamValue('param1');
 		$scope.loginUserId=param1;
 		console.log('login user is ',$scope.loginUserId);
-		
-		
-		
-		
+
+
 		$scope.loading = true;
 		$scope.parentList = [];
 
@@ -67,8 +63,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			$scope.dataForComment=data;
 
 
-			   console.log("in all data");
-			   console.log($scope.allImageList);
+			console.log("in all data");
+			console.log($scope.allImageList);
 			//    console.log('lemgth is ',$scope.allImageList.length);
 			if($scope.allImageList.length == 0 ) {
 				$scope.showRecords = false;
@@ -86,7 +82,6 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		$scope.duplicateImageList=[];
 		$http.get('/webapp/gallery/duplicateImageList').success(function(data){
 			$scope.duplicateImageList=data;
-
 
 		});
 
@@ -106,13 +101,10 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			$scope.tempSector.push($scope.publicationSector);
 		});
 
-		// $scope.simpleChainMatrix = [[0.5,0.5],[0.5,0.5]];
 		var date = new Date();
 		var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-		//	 console.log(lastDay);
 		var n1 = lastDay.getDay();
 		var n=31;
-		//	 console.log(n1);
 		$scope.main=[];
 		var temp=[];
 		var k=1;
@@ -133,10 +125,9 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			}
 
 		}
-		//	 console.log('main.....',$scope.main);
 
 	};
-
+//end of ng-init()
 
 	$scope.cropImagePage=function(parentImageId,imageUrl){
 		console.log("in crop image page");
@@ -148,7 +139,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 	};
 
-	
+
 	$scope.closeAll = function () {
 		console.log("close button");
 		  ngDialog.closeAll();
@@ -157,6 +148,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		
 	$scope.commentVar=[];
 	$scope.saveComment=function(index,pagesize,currentpage,pId,com){
+		$scope.loading = true;
 		console.log("in save comment");
 		$scope.number = parseInt(index) + parseInt(currentpage) * parseInt(pagesize);
 		console.log('$scope.number',$scope.number);
@@ -167,13 +159,31 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		};
 
 		$http({url:'/webapp/gallery/save_comment',method:'POST',data:$scope.json}).success(function(data) {
-			console.log("comment update successfully");
+			$scope.loading = false;
+			$(function(){
+				new PNotify({
+					title: 'Success Notice',
+					text: 'Comment Save Successfully'
 
-		});		
+				});
+			});
+		}).error(function() {
+			
+			$(function(){
+				new PNotify({
+					
+					title: 'failure Notice',
+					text: 'Failed'
+
+				});
+			});
+			
+		});
 
 	};
 
 	$scope.deleteChileImage=function(index,pagesize,currentpage,parentId,childId,childIndex,imageUrl,imageName){
+		$scope.loading = true;
 		console.log("in delete child image");
 
 		console.log('parent index',index);
@@ -184,13 +194,32 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		console.log('childIndex',childIndex);
 		console.log('imageUrl',imageUrl);
 		console.log('imageName',imageName);
-		
+
 		var childIdTodelete =parseInt(index) +parseInt(currentpage) * parseInt(pagesize);
 		console.log('childIdTodelete',childIdTodelete);
 		$scope.allImageList[childIdTodelete].listVm.splice(childIndex,1);
 		console.log('$scope.allImageList[childIdTodelete]',$scope.allImageList[childIdTodelete]);
-		
+
 		$http.post('/webapp/gallery/delete_child_image/'+childId+'/'+$scope.loginUserId).success(function(data){
+			$scope.loading = false;
+			$(function(){
+				new PNotify({
+					title: 'Success Notice',
+					text: 'Image Delete Successfully'
+
+				});
+			});
+			
+		}).error(function() {
+			
+			$(function(){
+				new PNotify({
+					
+					title: 'failure Notice',
+					text: 'Fail To Delete Image'
+
+				});
+			});
 			
 		});
 	};
@@ -226,7 +255,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		$scope.imageissueYear;
 		$scope.pageModel;
 		$scope.issueDate;
-
+		
 		$http.get('/webapp/gallery/edit_image_detail/'+id).success(function(data){
 			console.log("in edit image data ajax call");
 			$scope.editImageDetail=data;
@@ -242,12 +271,12 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 		});
 	};
-	
-	
+
+
 	$scope.moveToTranscription=function(index,pagesize,currentpage,id){
-		 $scope.loading = true;
+		$scope.loading = true;
 		console.log("inmove to transcription ");
-		
+
 		console.log('index',index);
 		console.log('currentpage',currentpage);
 		console.log('pagesize',pagesize);
@@ -255,13 +284,26 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		console.log('number ',number);
 		console.log('id',id);
 		$scope.allImageList.splice(number,1);
-		
+
 		$http.post('/webapp/gallery/moveToTranscription_parent/'+id).success(function(data){
-			 $scope.loading = false;
+			$scope.loading = false;
+			$(function(){
+				new PNotify({
+					title: 'Success Notice',
+					text: 'Successfully Done'
+
+				});
+			});
+		}).error(function() {
+			$(function(){
+				new PNotify({
+					title: 'failure Notice',
+					text: 'Failed'
+
+				});
+			});
+			
 		});
-		
-		
-		
 	};
 
 	$scope.changeDay=function(day){
@@ -283,8 +325,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		$scope.publicatioTitle=publicatioTitle;
 	};
 	$scope.saveEditImage=function(){
-	
-	    $scope.loading = true;
+
+		$scope.loading = true;
 		console.log("in save Edit immage");
 		$scope.updatedIssueDate=$scope.year+"-"+$scope.month+"-"+$scope.day;
 		$scope.newDate =new Date($scope.updatedIssueDate);
@@ -300,16 +342,35 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 				"section":$scope.section
 		};
 		$http({url:'/webapp/gallery/update_edited_image',method:'POST',data:$scope.editImageJson}).success(function(data) {
-		    $scope.loading = false;
-			console.log("update successfully");
-		});		
+			$scope.loading = false;
+			$(function(){
+				new PNotify({
+					title: 'Success Notice',
+					text: 'Update Successfully'
+
+				});
+			});
+			
+		}).error(function() {
+			
+			$(function(){
+				new PNotify({
+					
+					title: 'failure Notice',
+					text: 'Update Fail'
+
+				});
+			});
+			
+		});
 
 	};
 
 	$scope.cropImageVm=[];
 	$scope.myCrop=function(){
 		$scope.loading = true;
-	
+		console.log("in make crop function");
+		console.log('$scope.loginUserId',$scope.loginUserId);
 		$scope.x1= document.getElementById("x1").value;
 		$scope.x2= document.getElementById("x2").value;
 		$scope.y1= document.getElementById("y1").value;
@@ -336,9 +397,27 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 		$http({url:'/webapp/gallery/save_crop_image',method:'POST',data: $scope.imagejsonData,cache: false,
 			contentType: "application/x-www-form-urlencoded"}).success(function(data) {
-			//	$scope.cropImageVm.push(data);
+				//	$scope.cropImageVm.push(data);
 				$scope.childImageArray.push(data);
 				$scope.loading = false;
+				$(function(){
+					new PNotify({
+						title: 'Success Notice',
+						text: 'File Crop Successfully'
+
+					});
+				});
+			}).error(function() {
+				
+				$(function(){
+					new PNotify({
+						
+						title: 'failure Notice',
+						text: 'Fail To Crop File'
+
+					});
+				});
+				
 			});
 	};
 
@@ -354,9 +433,29 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			//	$scope.cropImageVm.push(data);
 				$scope.childImageArray.push(data);
 				$scope.loading = false;
+				
+				$(function(){
+					new PNotify({
+						title: 'Success Notice',
+						text: 'Image Crop Successfully'
+
+					});
+				});
+
+			}).error(function() {
+				
+				$(function(){
+					new PNotify({
+						
+						title: 'failure Notice',
+						text: 'Fail To Crop Image '
+
+					});
+				});
+				
 			});
-		
-/*		var id=$scope.parentImageId;
+
+		/*		var id=$scope.parentImageId;
 		$http.get('/webapp/gallery/save_whole_crop_image/'+id).success(function(data){
 
 		});*/
@@ -371,6 +470,18 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 			$scope.allImageList=data;
 			$scope.loading = false;
+			if($scope.allImageList.length==0){
+
+				$(function(){
+					new PNotify({
+						title: 'Success Notice',
+						text: 'No Image Found'
+
+					});
+				});
+			}
+			
+			
 		});
 	};
 
@@ -446,11 +557,33 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		}
 		$scope.allImageList=$scope.resultArray;
 		$http({url:'/webapp/gallery/move_to_transcription',method:'POST',data:tr}).success(function(data) {
-			$scope.loading = false;	
+			$scope.loading = false;
 
+			$(function(){
+				new PNotify({
+					title: 'Success Notice',
+					text: 'File Moved Successfully'
+
+				});
+			});
+
+		}).error(function() {
+			
+			$(function(){
+				new PNotify({
+					
+					title: 'failure Notice',
+					text: 'Failed To Move File'
+
+				});
+			});
+			
 		});
+
+
+
 	};
-	
+
 	$scope.idsadv = {};
 	$scope.Advertorial=function(){
 		console.log("in move to");
@@ -461,7 +594,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		var tempId=[];
 		for(var i=0;i<$scope.getValue.length;i++){
 			if($scope.getValue[i].checked==true){
-			console.log('in loop');
+				console.log('in loop');
 				$scope.generatedId =parseInt( $scope.getValue[i].value) +parseInt($scope.currentPage) * parseInt( $scope.pageSize);
 				tempId.push($scope.generatedId);
 				tr.push({
@@ -475,21 +608,57 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		}
 		console.log('tr',tr);
 		console.log('tempId',tempId);
-		
+
 		$scope.allImageList=$scope.resultArray;
 		$http({url:'/webapp/gallery/move_to_advertorial',method:'POST',data:tr}).success(function(data) {
 			$scope.loading = false;	
+			
+			$(function(){
+				new PNotify({
+					title: 'Success Notice',
+					text: 'Successfully Done'
+
+				});
+			}).error(function() {
+				
+				$(function(){
+					new PNotify({
+						
+						title: 'failure Notice',
+						text: 'Failed'
+
+					});
+				});
+				
+			});
+
+
 
 		});
-		
+
 	};
 
 	$scope.getDuplicateImage = function(){
+		$scope.loading = true;
+
 		$scope.duplicateImageList=[];
 		$http.get('/webapp/gallery/duplicateImageList').success(function(data){
 			$scope.duplicateImageList=data;
 			$scope.allImageList=data;
 			$scope.status = false;
+			$scope.loading = false;
+			
+			if($scope.duplicateImageList.length==0){
+				$(function(){
+					new PNotify({
+						
+						title: 'failure Notice',
+						text: 'No Duplicate Images Found'
+
+					});
+				});
+			}
+
 		});
 	};
 
@@ -501,10 +670,29 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 	};
 
 	$scope.deleteParentImage=function(index,pagesize,currentpage,id){
+		$scope.loading = true;
 		$scope.imageNumber = (index) + (currentpage) * pagesize;
 		$scope.allImageList.slice($scope.imageNumber,$scope.imageNumber+1);
 		$scope.resultArray=$scope.allImageList.splice($scope.imageNumber,1);
 		$http.post('/webapp/gallery/delete_parent_image/'+id+'/'+$scope.loginUserId).success(function(data){
+			$scope.loading = false;
+			$(function(){
+				new PNotify({
+					title: 'Success Notice',
+					text: 'Image Delete Successfully'
+
+				});
+			});
+		}).error(function() {
+			$(function(){
+				new PNotify({
+					
+					title: 'failure Notice',
+					text: 'Failed To Delete Image'
+
+				});
+			});
+			
 		});
 	};
 
