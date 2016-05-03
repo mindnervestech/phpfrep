@@ -572,6 +572,9 @@ public class GalleryController {
     	
     	cropVm.setDN_ID(childid);
     	cropVm.setDC_IMAGENAME(fileimageName);
+    	String thumbimagename=fileimageName.split("\\.")[0]+"_thumb.jpg";
+    	cropVm.setChildThumb(thumbimagename);
+    	
        return cropVm;
        
 	}

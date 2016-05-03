@@ -80,17 +80,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		}).error(function() {
 			$scope.showRecords = false;
 		});
-
-
-		/*	
-		 $http.get('/webapp/gallery/parentlist').success(function(data) {
-			 $scope.parentList=data;
-			 console.log("in all data");
-			 console.log(data);
-			 console.log($scope.parentList);
-
-		 });*/
-
+		
+		
 
 		$scope.duplicateImageList=[];
 		$http.get('/webapp/gallery/duplicateImageList').success(function(data){
@@ -105,6 +96,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 
 		});
+
 
 
 		$scope.publicationSector=[];
