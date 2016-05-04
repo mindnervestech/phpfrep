@@ -181,7 +181,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		console.log("in save comment");
 		$scope.number = parseInt(index) + parseInt(currentpage) * parseInt(pagesize);
 		console.log('$scope.number',$scope.number);
-		$scope.allImageList[$scope.number].DC_SECTION_OTHER=com;
+	//	$scope.allImageList[$scope.number].DC_SECTION_OTHER=com;
 		$scope.json={
 				"id":pId,
 				"title":com
@@ -190,6 +190,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		console.log('comment json is',$scope.json);
 		$http({url:'/webapp/gallery/save_comment',method:'POST',data:$scope.json}).success(function(data) {
 			$scope.loading = false;
+			$scope.allImageList[$scope.number].DC_SECTION_OTHER=com;
 			$(function(){
 				new PNotify({
 					title: 'Success Notice',
@@ -227,11 +228,13 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 		var childIdTodelete =parseInt(index) +parseInt(currentpage) * parseInt(pagesize);
 		console.log('childIdTodelete',childIdTodelete);
-		$scope.allImageList[childIdTodelete].listVm.splice(childIndex,1);
+		//$scope.allImageList[childIdTodelete].listVm.splice(childIndex,1);
 		console.log('$scope.allImageList[childIdTodelete]',$scope.allImageList[childIdTodelete]);
 
 		$http.post('/webapp/gallery/delete_child_image/'+childId+'/'+$scope.loginUserId).success(function(data){
 			$scope.loading = false;
+			console.log("in ajax loop");
+			$scope.allImageList[childIdTodelete].listVm.splice(childIndex,1);
 			$(function(){
 				new PNotify({
 					title: 'Success Notice',
@@ -253,7 +256,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			
 		});
 	};
-	
+
 	$scope.monthOne=[[1,2,3,4,5,6],[7,8,9,10,11,12]];
 	$scope.years=[[2014,2015,2016,2017,2018,2019,2020]];
 	$scope.openEditImageForm=function(index,pagesize,currentpage,id,imageName){
@@ -313,10 +316,13 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		var number = (index) + (currentpage) * pagesize;
 		console.log('number ',number);
 		console.log('id',id);
-		$scope.allImageList.splice(number,1);
+	//	$scope.allImageList.splice(number,1);
 
 		$http.post('/webapp/gallery/moveToTranscription_parent/'+id).success(function(data){
 			$scope.loading = false;
+			console.log("in ajax loop");
+			$scope.allImageList.splice(number,1);
+			
 			$(function(){
 				new PNotify({
 					title: 'Success Notice',
@@ -356,16 +362,19 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		$scope.publicatioTitle=publicatioTitle;
 	};
 	$scope.saveEditImage=function(){
-
+		
+		
 		$scope.loading = true;
 		console.log("in save Edit immage");
 		$scope.updatedIssueDate=$scope.year+"-"+$scope.month+"-"+$scope.day;
 		$scope.newDate =new Date($scope.updatedIssueDate);
 		console.log('$scope.universalNumber',$scope.universalNumber);
-		$scope.allImageList[$scope.universalNumber].DC_PAGE=$scope.pageModel;
+		
+		/*$scope.allImageList[$scope.universalNumber].DC_PAGE=$scope.pageModel;
 		$scope.allImageList[$scope.universalNumber].DD_ISSUE_DATE=$scope.newDate;
 		$scope.allImageList[$scope.universalNumber].DC_SECTION=$scope.section;
-		$scope.allImageList[$scope.universalNumber].DC_PUBLICATION_TITLE=$scope.publicatioTitle;
+		$scope.allImageList[$scope.universalNumber].DC_PUBLICATION_TITLE=$scope.publicatioTitle;*/
+		
 		$scope.editImageJson={
 				"id":$scope.parentImageIdforEdit,
 				"title":$scope.publicatioTitle,
@@ -377,6 +386,13 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		console.log('$scope.editImageJson',$scope.editImageJson);
 		$http({url:'/webapp/gallery/update_edited_image',method:'POST',data:$scope.editImageJson}).success(function(data) {
 			$scope.loading = false;
+			console.log("in ajax loop");
+			$scope.allImageList[$scope.universalNumber].DC_PAGE=$scope.pageModel;
+			$scope.allImageList[$scope.universalNumber].DD_ISSUE_DATE=$scope.newDate;
+			$scope.allImageList[$scope.universalNumber].DC_SECTION=$scope.section;
+			$scope.allImageList[$scope.universalNumber].DC_PUBLICATION_TITLE=$scope.publicatioTitle;
+			
+			
 			$(function(){
 				new PNotify({
 					title: 'Success Notice',
@@ -447,8 +463,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 					new PNotify({
 						
 						title: 'failure Notice',
-						text: 'Fail To Crop File'
-
+						text: 'Failed '
+							
 					});
 				});
 				
@@ -585,14 +601,20 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 				});
 			};
 		};
-		for(var k=0;k<tempId.length;k++){
+		/*for(var k=0;k<tempId.length;k++){
 			var m=tempId[k]-k;
 			$scope.resultArray.splice(m,1);
-		}
+		}*/
 		$scope.allImageList=$scope.resultArray;
 		$http({url:'/webapp/gallery/move_to_transcription',method:'POST',data:tr}).success(function(data) {
 			$scope.loading = false;
-
+			console.log("in ajax loop");
+			
+			for(var k=0;k<tempId.length;k++){
+				var m=tempId[k]-k;
+				$scope.resultArray.splice(m,1);
+			};
+			
 			$(function(){
 				new PNotify({
 					title: 'Success Notice',
@@ -636,16 +658,21 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 				});
 			};
 		};
-		for(var k=0;k<tempId.length;k++){
+		/*for(var k=0;k<tempId.length;k++){
 			var m=tempId[k]-k;
 			$scope.resultArray.splice(m,1);
-		}
+		}*/
 		console.log('tr',tr);
 		console.log('tempId',tempId);
 
 		$scope.allImageList=$scope.resultArray;
 		$http({url:'/webapp/gallery/move_to_advertorial',method:'POST',data:tr}).success(function(data) {
 			$scope.loading = false;	
+			console.log("in ajax call advetorial");
+			for(var k=0;k<tempId.length;k++){
+				var m=tempId[k]-k;
+				$scope.resultArray.splice(m,1);
+			};
 			
 			$(function(){
 				new PNotify({
@@ -706,10 +733,15 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 	$scope.deleteParentImage=function(index,pagesize,currentpage,id){
 		$scope.loading = true;
 		$scope.imageNumber = (index) + (currentpage) * pagesize;
-		$scope.allImageList.slice($scope.imageNumber,$scope.imageNumber+1);
+		/*$scope.allImageList.slice($scope.imageNumber,$scope.imageNumber+1);
 		$scope.resultArray=$scope.allImageList.splice($scope.imageNumber,1);
+		*/
 		$http.post('/webapp/gallery/delete_parent_image/'+id+'/'+$scope.loginUserId).success(function(data){
 			$scope.loading = false;
+			console.log("in ajax call");
+			$scope.allImageList.slice($scope.imageNumber,$scope.imageNumber+1);
+			$scope.resultArray=$scope.allImageList.splice($scope.imageNumber,1);
+			
 			$(function(){
 				new PNotify({
 					title: 'Success Notice',
