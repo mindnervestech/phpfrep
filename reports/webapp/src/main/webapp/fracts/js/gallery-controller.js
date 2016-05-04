@@ -186,7 +186,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 				"id":pId,
 				"title":com
 		};
-
+		
+		console.log('comment json is',$scope.json);
 		$http({url:'/webapp/gallery/save_comment',method:'POST',data:$scope.json}).success(function(data) {
 			$scope.loading = false;
 			$(function(){
@@ -197,7 +198,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 				});
 			});
 		}).error(function() {
-			
+			$scope.loading = false;
 			$(function(){
 				new PNotify({
 					
@@ -240,7 +241,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			});
 			
 		}).error(function() {
-			
+			$scope.loading = false;
 			$(function(){
 				new PNotify({
 					
@@ -324,6 +325,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 				});
 			});
 		}).error(function() {
+			$scope.loading = false;
 			$(function(){
 				new PNotify({
 					title: 'failure Notice',
@@ -359,6 +361,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		console.log("in save Edit immage");
 		$scope.updatedIssueDate=$scope.year+"-"+$scope.month+"-"+$scope.day;
 		$scope.newDate =new Date($scope.updatedIssueDate);
+		console.log('$scope.universalNumber',$scope.universalNumber);
 		$scope.allImageList[$scope.universalNumber].DC_PAGE=$scope.pageModel;
 		$scope.allImageList[$scope.universalNumber].DD_ISSUE_DATE=$scope.newDate;
 		$scope.allImageList[$scope.universalNumber].DC_SECTION=$scope.section;
@@ -370,6 +373,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 				"page":$scope.pageModel,
 				"section":$scope.section
 		};
+		
+		console.log('$scope.editImageJson',$scope.editImageJson);
 		$http({url:'/webapp/gallery/update_edited_image',method:'POST',data:$scope.editImageJson}).success(function(data) {
 			$scope.loading = false;
 			$(function(){
@@ -381,7 +386,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			});
 			
 		}).error(function() {
-			
+			$scope.loading = false;
 			$(function(){
 				new PNotify({
 					
@@ -437,7 +442,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 					});
 				});
 			}).error(function() {
-				
+				$scope.loading = false;
 				$(function(){
 					new PNotify({
 						
@@ -472,7 +477,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 				});
 
 			}).error(function() {
-				
+				$scope.loading = false;
 				$(function(){
 					new PNotify({
 						
@@ -597,7 +602,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			});
 
 		}).error(function() {
-			
+			$scope.loading = false;
 			$(function(){
 				new PNotify({
 					
@@ -649,7 +654,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 				});
 			}).error(function() {
-				
+				$scope.loading = false;
 				$(function(){
 					new PNotify({
 						
@@ -713,6 +718,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 				});
 			});
 		}).error(function() {
+			$scope.loading = false;
 			$(function(){
 				new PNotify({
 					

@@ -242,8 +242,10 @@ public class GalleryController {
 	public String save_comment(@RequestBody ParentImageVm idVm){
 		System.out.println("in save_comment");
 		Long imageId=Long.parseLong(idVm.getId().toString());
+		System.out.println("imageId "+imageId);
 		String section=null;
 		String comment=idVm.getTitle();
+		System.out.println("comment is"+comment);
 		
 		String sql="select t.DC_SECTION from tbl_parent_image t where t.DN_ID="+imageId;
 		section=jt.queryForObject(sql, String.class);
@@ -839,6 +841,7 @@ public class GalleryController {
 	public void updateEditedImage(@RequestBody ParentImageVm idVm) throws ParseException{
 		
 		String json = new Gson().toJson(idVm);
+		System.out.println("json is "+json);
 		String titlePublication=idVm.getTitle();
 		String publicationTitlkaId=null;
 		if(idVm.getTitle()!=null){
