@@ -406,7 +406,9 @@ public class DeManagedBean implements Serializable{
 		sectionMap.put("SR", "973");
 		sectionMap.put("ST", "1032");
 		sectionMap.put("CL", "644");
-		sectionMap.put("OT", "1033");
+		sectionMap.put("OT", "1083");
+		sectionMap.put("CS", "1033");
+		
 	}
 	
 	public String getIframeUrl() {

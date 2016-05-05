@@ -386,12 +386,13 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		console.log('$scope.editImageJson',$scope.editImageJson);
 		$http({url:'/webapp/gallery/update_edited_image',method:'POST',data:$scope.editImageJson}).success(function(data) {
 			$scope.loading = false;
-			console.log("in ajax loop");
+			console.log("in ajx loop");
 			$scope.allImageList[$scope.universalNumber].DC_PAGE=$scope.pageModel;
 			$scope.allImageList[$scope.universalNumber].DD_ISSUE_DATE=$scope.newDate;
 			$scope.allImageList[$scope.universalNumber].DC_SECTION=$scope.section;
 			$scope.allImageList[$scope.universalNumber].DC_PUBLICATION_TITLE=$scope.publicatioTitle;
 			
+			$scope.closeAll();
 			
 			$(function(){
 				new PNotify({
@@ -498,7 +499,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 					new PNotify({
 						
 						title: 'failure Notice',
-						text: 'Fail To Crop Image '
+						text: 'Failed '
 
 					});
 				});
