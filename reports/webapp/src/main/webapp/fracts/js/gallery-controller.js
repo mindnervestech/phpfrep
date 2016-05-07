@@ -51,7 +51,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		var param1 = getParamValue('param1');
 		$scope.loginUserId=param1;
 		console.log('login user is ',$scope.loginUserId);
-
+		
 
 		$scope.loading = true;
 		$scope.parentList = [];
@@ -191,6 +191,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		$http({url:'/webapp/gallery/save_comment',method:'POST',data:$scope.json}).success(function(data) {
 			$scope.loading = false;
 			$scope.allImageList[$scope.number].DC_SECTION_OTHER=com;
+		//	console.log('value is ',$scope.allImageList[$scope.number].imageComment);
+			$scope.allImageList[$scope.number].imageComment='';
 			$(function(){
 				new PNotify({
 					title: 'Success Notice',
@@ -321,6 +323,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		$http.post('/webapp/gallery/moveToTranscription_parent/'+id).success(function(data){
 			$scope.loading = false;
 			console.log("in ajax loop");
+			
+			$scope.allImageList[number].imageComment='';
 			$scope.allImageList.splice(number,1);
 			
 			$(function(){
@@ -458,6 +462,47 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 					});
 				});
+			}).error(function() {
+				$scope.loading = false;
+				$(function(){
+					new PNotify({
+						title: 'failure Notice',
+						text: 'Failed '
+							
+					});
+				});
+				
+			});
+	};
+	$scope.captureWholeimage=function(index,pagesize,currentpage,parentId){
+		$scope.loading = true;
+		console.log("in capture Whole Image");
+		console.log("parent is ",parentId);
+		$scope.number = parseInt(index) + parseInt(currentpage) * parseInt(pagesize);
+		console.log('$scope.number',$scope.number);
+		
+		$scope.captureWholeImagejson={
+				id:parentId,
+				loginUserId:$scope.loginUserId
+		};
+		
+		$http({url:'/webapp/gallery/save_whole_crop_image',method:'POST',data: $scope.captureWholeImagejson,cache: false,
+			contentType: "application/x-www-form-urlencoded"}).success(function(data) {
+			//	$scope.cropImageVm.push(data);
+				/*$scope.childImageArray.push(data);
+				console.log('$scope.childImageArray',$scope.childImageArray);
+				$scope.loading = false;*/
+				console.log('parent is',$scope.allImageList[$scope.number]);
+				$scope.allImageList[$scope.number].listVm.push(data);
+				$scope.loading = false;
+				$(function(){
+					new PNotify({
+						title: 'Success Notice',
+						text: 'Image Crop Successfully'
+
+					});
+				});
+
 			}).error(function() {
 				$scope.loading = false;
 				$(function(){
@@ -613,8 +658,10 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			
 			for(var k=0;k<tempId.length;k++){
 				var m=tempId[k]-k;
+				$scope.resultArray[m].imageComment='';
 				$scope.resultArray.splice(m,1);
 			};
+			
 			
 			$(function(){
 				new PNotify({
@@ -672,6 +719,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			console.log("in ajax call advetorial");
 			for(var k=0;k<tempId.length;k++){
 				var m=tempId[k]-k;
+				$scope.resultArray[m].imageComment='';
 				$scope.resultArray.splice(m,1);
 			};
 			
@@ -741,6 +789,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			$scope.loading = false;
 			console.log("in ajax call");
 			$scope.allImageList.slice($scope.imageNumber,$scope.imageNumber+1);
+			
+			$scope.allImageList[$scope.imageNumber].imageComment='';
 			$scope.resultArray=$scope.allImageList.splice($scope.imageNumber,1);
 			
 			$(function(){

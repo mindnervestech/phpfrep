@@ -555,8 +555,9 @@ input[type='checkbox'] {
 																					</div>
 																				</div>
 																				<div class="col-md-2 p-0">
-																					<input type="text" ng-model="imageComment"/>
-																					<button class="btn btn-default" ng-click="saveComment($index,pageSize,currentPage,list.DN_ID,imageComment)" style="margin: 5px;">save</button>
+																					<input type="text" ng-model="list.imageComment"/>
+																					<button class="btn btn-default" ng-click="saveComment($index,pageSize,currentPage,list.DN_ID,list.imageComment)" style="margin: 5px;">save</button>
+																					
 																					
 																				</div>
 																			</div>
@@ -564,7 +565,8 @@ input[type='checkbox'] {
 																				<div class="p-0 f_l">
 																					<div class="row m-5 f_l">
 																						<div style="font-weight: bold; float: left">Image
-																							Height :</div>
+																							Height :
+																						</div>
 																						<div class="f_l p-l-10">
 																							<span>{{list.DC_HEIGHT}}</span>
 																						</div>
@@ -606,9 +608,11 @@ input[type='checkbox'] {
 																			</a>
 																			
 																			<button class="btn btn-primary" ng-click="openEditImageForm($index,pageSize,currentPage,list.DN_ID,list.DC_IMAGENAME)" style="margin: 10px;">Edit</button>	
-																			<button class="btn btn-primary" ng-click="moveToTranscription($index,pageSize,currentPage,list.DN_ID)" style="margin: 10px;margin-left:-39%;width:169px">Move to Transcription</button>
+																			<!-- <button class="btn btn-primary" ng-click="moveToTranscription($index,pageSize,currentPage,list.DN_ID)" style="margin: 10px;margin-left:-39%;width:169px">Move to Transcription</button> -->
+																			<a title="Move To Transcription " alt="Move To Transcription" ><span ng-click="moveToTranscription($index,pageSize,currentPage,list.DN_ID)" style="margin-left:54px"><i class="glyphicon glyphicon-play yourClass"style="font-size: 45px;color: #3276b1;"></i></span>
+																			</a>
 																			<h3><span ng-show="list.duplicate" style="margin: 15px;color:red">Duplicate</span></h3>
-																				
+																			<button class="btn btn-primary" ng-click="captureWholeimage($index,pageSize,currentPage,list.DN_ID)" style="margin: 10px;margin-left:-103%;width:242px">Capture whole page as child: [ ✓]</button>	
 																		</div>
 																		
 																	</div>	
@@ -726,12 +730,6 @@ input[type='checkbox'] {
 																						style="margin-top: 0px;">
 																					<span >Uploaded By:</span>
 																					<span >{{CREATED_BY}}</span>	
-																						<!--  <h:outputText
-																							style="" value="Upload By:" />&nbsp;
-																						<h:outputText
-																							value="#{val.createdBy.firstName}"
-																							style="">
-																						</h:outputText> -->
 																		</small>
 																	</div>
 																	<br/> 
