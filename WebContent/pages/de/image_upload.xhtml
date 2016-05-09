@@ -61,20 +61,28 @@
               <div class="panel-heading">
                 <h3 class="panel-title"><strong>Multiple</strong> Image Upload</h3>
               </div>
-              <div class="panel-body">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <form id="jsfForm" action="#{request.contextPath}/uploadservlet?userId=#{userBean.id}" class="dropzone" method="post">
-                      <input type="hidden" id="path" value="#{request.contextPath}"/>
-                      <input type="hidden" id="userId" value="#{userBean.id}" />
-                      <div class="fallback">
-                        <input type="file" name="file"/>                         
-                      </div>
-                    </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
+						<p:ajaxStatus
+							style="width:40px;height:40px;left:50%;top:50%;position:fixed;z-index:10">
+							<f:facet name="start">
+								<h:graphicImage url="/assets/img/loader32.gif" />
+							</f:facet>
+						</p:ajaxStatus>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-12">
+									<form id="jsfForm"
+										action="#{request.contextPath}/uploadservlet?userId=#{userBean.id}"
+										class="dropzone" method="post">
+										<input type="hidden" id="path" value="#{request.contextPath}" />
+										<input type="hidden" id="userId" value="#{userBean.id}" />
+										<div class="fallback">
+											<input type="file" name="file" />
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
             </div>
           </div>
           <div class="row">
@@ -89,7 +97,11 @@
                           <h:form id="fileupload">
                             <div class="row fileupload-buttonbar">
                                 <div class="col-lg-7">
-                                    <p:commandLink  action="#{deBean.saveParentImage}" styleClass="btn btn-primary start" >
+                                    <p:commandLink  action="#{deBean.saveParentImage}" 
+                                    ajax="true" oncomplete="PF('showImageName').show();"
+                                     update=":dlgform:basicDialog" 
+                                     styleClass="btn btn-primary start" 
+                                     >
                                         <i class="glyphicon glyphicon-upload"></i>
                                         <span>Start upload</span>
                                     </p:commandLink>
@@ -127,7 +139,52 @@
 
      
     </div>
-    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+
+	<h:form id="dlgform">
+		<div id="main-content">
+			<div class="page-title">
+				<i class="icon-custom-left"></i>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="row">
+							<p:dialog id="basicDialog" widgetVar="showImageName"
+								draggable="true" resizable="false"
+								header="Following Images successfully Saved"
+								style=" width: 70% !important;margin-left:35%; margin-right:2%;">
+									<div class="row">
+										<div class="col-lg-12 p-0">
+											<table role="presentation" class="table table-striped" style="font-size: 18px;margin-top:-15px;">
+												<ui:repeat id="imageNames" var="name"
+													value="#{deBean.successfullFileNames}" varStatus="myVarStatus">
+														<tr>
+															<td>#{name}</td>
+														</tr>
+												</ui:repeat>
+											</table>
+										</div>
+										<div class="col-lg-12 p-0">
+											<p:commandLink action="#{deBean.redirectToGallery()}"
+												ajax="true" styleClass="btn btn-primary start" style="margin-left: 8px;">
+												<span>Ok</span>
+											</p:commandLink>
+										</div>
+
+
+								</div>
+							</p:dialog>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</h:form>
+
+
+
+
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
     <script src="#{request.contextPath}/assets/plugins/dropzone/dropzone.min.js"></script>
     <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
     <script src="#{request.contextPath}/assets/plugins/jquery-file-upload/tmpl.min.js"></script>

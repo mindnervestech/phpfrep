@@ -289,6 +289,10 @@ public class DeManagedBean implements Serializable{
 	
 	private Set<String> duplicateFileNames;
 	private List<String> duplicateNames;
+	
+	private List<String> successfullFileNames;
+	
+	
 	private String iframeUrl;
 	private int count = 1;
 	private long liveStatusId;
@@ -303,6 +307,20 @@ public class DeManagedBean implements Serializable{
 	public void setLiginUserId() {
 		User user = (User)this.sessionManager.getSessionAttribute("login_user");
 		liginUserId = user.getId();
+	}
+
+	public List<String> getSuccessfullFileNames() {
+		System.out.println("in getSuccessfullFileNames list");
+		
+		
+		
+		return this.successfullFileNames;
+	}
+	public void setSuccessfullFileNames(List<String> successfullFileNames) {
+		System.out.println("in setSuccessfullFileNames lis");
+		this.successfullFileNames = successfullFileNames;
+		
+	}
 	}
 
 	public String getSelectedPub() {
@@ -391,7 +409,6 @@ public class DeManagedBean implements Serializable{
 	public void setTotalStrOcr(String totalStrOcr) {
 		this.totalStrOcr = totalStrOcr;
 	}
-
 	
 	private static Map<String,String> titleMap = new HashMap<String,String>(6);
 	private static Map<String,String> sectionMap = new HashMap<String,String>(4);
@@ -3223,6 +3240,19 @@ public class DeManagedBean implements Serializable{
 		return duplicateNames!=null ? duplicateNames.contains(name) : false;
 	}
 	
+	
+	public String getSuccessfullFile(){
+		System.out.println("in getSuccessfullFile");
+		
+		return null;
+	}
+	
+	public String redirectToGallery(){
+		System.out.println("in redireTo gallery ");
+		return "/pages/de/gallery.xhtml?msgLabel="+this.msgLabel+"&msgFormat="+this.msgFormat+"&faces-redirect=true&msgWarnLabel="+this.msgWarnLabel;
+		
+	}
+	
 	public String saveParentImage() throws IOException{
 		currentUser = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
 		String sourcePath = imageBasePath+CommonProperties.getParentImageTempPath()+"/"+currentUser.getId();
@@ -3231,13 +3261,32 @@ public class DeManagedBean implements Serializable{
 		Publication publication = null;
 		Publication sectionTitle = null;
 		String dateField = "";
+	
 		if(duplicateFileNames==null) {
 			duplicateFileNames = new HashSet<String>();
 		} else {
 			if(!duplicateFileNames.isEmpty()) {
 				duplicateFileNames.clear();
 			}
-		}
+		};
+		
+		
+		if(successfullFileNames==null) {
+			successfullFileNames = new ArrayList<String>();
+		} else {
+			if(!successfullFileNames.isEmpty()) {
+				successfullFileNames.clear();
+			}
+		};
+		
+		/*if(this.successfullFileNames==null) {
+			this.successfullFileNames = new ArrayList<String>();
+		} else {
+			this.successfullFileNames.clear();
+		}*/
+		
+		
+		
 		boolean flag=false;
 		if(sourcePath!=null){
 			File cropFile = new File(sourcePath);
@@ -3264,6 +3313,9 @@ public class DeManagedBean implements Serializable{
 									duplicateFileNames.add(filename);
 								}
 								parentImage.setImageName(filename);
+							
+								
+								successfullFileNames.add(filename);
 								parentImage.setCreatedBy(currentUser);
 								parentImage.setCreatedOn(new Date());
 								BufferedImage image = ImageIO.read(files[i]);
@@ -3428,7 +3480,10 @@ public class DeManagedBean implements Serializable{
 			this.msgWarnLabel = sb.toString() ;
 			messageService.messageWarning(null, this.msgWarnLabel);
 		}
-		return "/pages/de/gallery.xhtml?msgLabel="+this.msgLabel+"&msgFormat="+this.msgFormat+"&faces-redirect=true&msgWarnLabel="+this.msgWarnLabel;
+	//	System.out.println(".............................................");
+	//	System.out.println("successfull image are  "+this.successfullFileNames);
+	//	return "/pages/de/gallery.xhtml?msgLabel="+this.msgLabel+"&msgFormat="+this.msgFormat+"&faces-redirect=true&msgWarnLabel="+this.msgWarnLabel;
+		return null;
 	}
 
 	/**
