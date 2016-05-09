@@ -321,7 +321,8 @@ public class DeManagedBean implements Serializable{
 		this.successfullFileNames = successfullFileNames;
 		
 	}
-	}
+
+	
 
 	public String getSelectedPub() {
 		return selectedPub;
