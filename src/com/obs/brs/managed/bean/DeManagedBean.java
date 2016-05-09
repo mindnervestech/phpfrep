@@ -3348,7 +3348,10 @@ public class DeManagedBean implements Serializable{
 									String[] arr = filename.split("_");
 									
 									System.out.println("arr file  name len: "+arr.length);
-									if(arr.length==4 || arr.length==3) {
+									int lenghtOfFile=arr.length;
+									
+									
+									if(arr.length==4 || arr.length==3 ||arr.length==5) {
 										if(arr[0].contains("newsci")) {
 											if(arr.length == 4){
 												String ver = arr[3].split("\\.")[0];
@@ -3365,7 +3368,23 @@ public class DeManagedBean implements Serializable{
 										} else {
 											publicationTitle = titleMap.get(arr[0]);
 										}
-										this.page = arr[2];
+									//	this.page = arr[2];
+										String pageTemp= arr[2];
+										for(int k=3;k<lenghtOfFile;k++){
+											pageTemp=pageTemp+"_"+arr[k];
+											System.out.println("..."+pageTemp);
+										}
+										
+										System.out.println("...........");
+										System.out.println("page is "+this.page);
+										System.out.println("..............");
+										
+										String[] splitarr = pageTemp.split("\\.");
+										String pageId=splitarr[splitarr.length-2];
+										System.out.println("pageId is"+pageId);
+										
+										this.page=pageId;
+										
 										String[] arr1  = arr[1].split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
 										try {
 											if(arr1.length==2) {
