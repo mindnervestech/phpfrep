@@ -26,10 +26,22 @@ public class ImagesVM {
 	public String imageUrl;
 	public boolean duplicate;
 	public String dateissue;
+	public String createDate;
 	
 	public String thumb;
 	public String thumbChild;
 	
+	
+	public String getCreateDate() {
+		return createDate;
+	}
+
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+
+
 	public String getThumbChild() {
 		return thumbChild;
 	}

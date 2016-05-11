@@ -294,16 +294,29 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		$http.get('/webapp/gallery/edit_image_detail/'+id).success(function(data){
 			console.log("in edit image data ajax call");
 			$scope.editImageDetail=data;
+			
+			console.log('data of image is',data);
 			$scope.issueDate=$scope.editImageDetail.DD_ISSUE_DATE;
+			console.log('$scope.issueDate',$scope.issueDate);
+	//test  
+			$scope.month = $filter('date')($scope.issueDate, 'M');
+			$scope.day = $filter('date')($scope.issueDate, 'd'); 
+			$scope.year = $filter('date')($scope.issueDate,'yyyy');
+			
+			
+			
 			$scope.pageModel=$scope.editImageDetail.DC_PAGE;
-			$scope.r=new Date($scope.editImageDetail.DD_ISSUE_DATE );
-			$scope.da1 = Date.parse($scope.editImageDetail.DD_ISSUE_DATE);
+		//	$scope.r=new Date($scope.editImageDetail.DD_ISSUE_DATE );
+			
+			
+	//		$scope.da1 = Date.parse($scope.editImageDetail.DD_ISSUE_DATE);
+	//		console.log('date is ',$scope.da1);
 			$scope.section=$scope.editImageDetail.section;
 			$scope.publicatioTitle=$scope.editImageDetail.titleName;
-			$scope.month = $filter('date')($scope.da1, 'M');
-			$scope.day = $filter('date')($scope.da1, 'd'); 
-			$scope.year = $filter('date')($scope.da1,'yyyy');
-
+		//	$scope.month = $filter('date')($scope.da1, 'M');
+		//	$scope.day = $filter('date')($scope.da1, 'd'); 
+		//	$scope.year = $filter('date')($scope.da1,'yyyy');
+		
 		});
 	};
 
@@ -393,6 +406,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			console.log("in ajx loop");
 			$scope.allImageList[$scope.universalNumber].DC_PAGE=$scope.pageModel;
 			$scope.allImageList[$scope.universalNumber].DD_ISSUE_DATE=$scope.newDate;
+			$scope.allImageList[$scope.universalNumber].dateissue=$scope.newDate;
 			$scope.allImageList[$scope.universalNumber].DC_SECTION=$scope.section;
 			$scope.allImageList[$scope.universalNumber].DC_PUBLICATION_TITLE=$scope.publicatioTitle;
 			
@@ -418,7 +432,6 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			});
 			
 		});
-
 	};
 
 	$scope.cropImageVm=[];
@@ -510,13 +523,14 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 						
 						title: 'failure Notice',
 						text: 'Failed '
-							
+
 					});
 				});
 				
 			});
+		
 	};
-
+	
 	$scope.wholeCrop= function(){
 		$scope.loading = true;
 		$scope.wholeimagejsonData={

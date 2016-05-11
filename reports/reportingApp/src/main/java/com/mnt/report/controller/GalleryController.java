@@ -927,6 +927,9 @@ public class GalleryController {
 				try {
 					Date date1 = formatter.parse(dateInString1);
 					imagesVM.setDD_ISSUE_DATE(date1);
+					imagesVM.setDateissue(formatter.format(date1));
+					
+				//	System.out.println("DD_isuu date is"+date1);
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -938,6 +941,7 @@ public class GalleryController {
 				try {
 					Date date2 = formatter.parse(dateInString2);
 					imagesVM.setDD_CREATED_ON(date2);
+					imagesVM.setCreateDate(formatter.format(date2));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -1095,6 +1099,8 @@ public class GalleryController {
 				try {
 					Date date2 = formatter.parse(dateInString2);
 					imagesVM.setDD_CREATED_ON(date2);
+					imagesVM.setCreateDate(formatter.format(date2));
+					
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}

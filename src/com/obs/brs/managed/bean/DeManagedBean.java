@@ -3280,13 +3280,6 @@ public class DeManagedBean implements Serializable{
 			}
 		};
 		
-		/*if(this.successfullFileNames==null) {
-			this.successfullFileNames = new ArrayList<String>();
-		} else {
-			this.successfullFileNames.clear();
-		}*/
-		
-		
 		
 		boolean flag=false;
 		if(sourcePath!=null){
@@ -3297,10 +3290,12 @@ public class DeManagedBean implements Serializable{
 					for (int i = 0; i <files.length; i++){
 						String sourcePathImage = imageBasePath+CommonProperties.getParentImageTempPath()+"/"+currentUser.getId();
 						String targetPathImage = imageBasePath+CommonProperties.getParentImagePath();
+					
 						if(sourcePathImage != null){
 							ParentImage parentImage = new ParentImage();
 							String filename = files[i].getName();
 							String orgFilename = files[i].getName();
+							String fileNameOrg=orgFilename;
 							System.out.println("before orgFilename: "+orgFilename);
 							String[] split = filename.split("\\.");
 							extension = split[split.length - 1];
@@ -3347,12 +3342,13 @@ public class DeManagedBean implements Serializable{
 								Integer year = null;
 								if(filename != null && !filename.isEmpty()) {
 									String[] arr = filename.split("_");
-									
+									String[] arrTemp=fileNameOrg.split("_");
+									System.out.println("lenght is "+arrTemp.length);
 									System.out.println("arr file  name len: "+arr.length);
 									int lenghtOfFile=arr.length;
 									
 									
-									if(arr.length==4 || arr.length==3 ||arr.length==5) {
+									if(arr.length==4 || arr.length==3 ||arr.length==5 ||arr.length==6) {
 										if(arr[0].contains("newsci")) {
 											if(arr.length == 4){
 												String ver = arr[3].split("\\.")[0];
@@ -3369,20 +3365,18 @@ public class DeManagedBean implements Serializable{
 										} else {
 											publicationTitle = titleMap.get(arr[0]);
 										}
-									//	this.page = arr[2];
-										String pageTemp= arr[2];
-										for(int k=3;k<lenghtOfFile;k++){
-											pageTemp=pageTemp+"_"+arr[k];
-											System.out.println("..."+pageTemp);
+							
+										
+										System.out.println("fileName is "+fileNameOrg);
+										String pageName=arrTemp[2];
+										
+										for(int j=3;j<arrTemp.length;j++){
+											pageName=pageName+"_"+arr[j];
+											System.out.println("..."+pageName);
 										}
 										
-										System.out.println("...........");
-										System.out.println("page is "+this.page);
-										System.out.println("..............");
-										
-										String[] splitarr = pageTemp.split("\\.");
+										String[] splitarr = pageName.split("\\.");
 										String pageId=splitarr[splitarr.length-2];
-										System.out.println("pageId is"+pageId);
 										
 										this.page=pageId;
 										
