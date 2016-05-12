@@ -1,19 +1,17 @@
 
 
 <style>
-.boxshadow 
-{
-  -moz-box-shadow: 3px 3px 5px #535353;
-  -webkit-box-shadow: 3px 3px 5px #535353;       
-  box-shadow: 3px 3px 5px #535353;
-}
-.roundbox
-{  
-  -moz-border-radius: 6px 6px 6px 6px;
-  -webkit-border-radius: 6px;  
-  border-radius: 6px 6px 6px 6px;
+.boxshadow {
+	-moz-box-shadow: 3px 3px 5px #535353;
+	-webkit-box-shadow: 3px 3px 5px #535353;
+	box-shadow: 3px 3px 5px #535353;
 }
 
+.roundbox {
+	-moz-border-radius: 6px 6px 6px 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px 6px 6px 6px;
+}
 </style>
 
 <script type="text/javascript">
@@ -24,7 +22,8 @@ console.log("this is here....");
       onChange: showCoords,
       onSelect: showCoords,
       onRelease: clearCoords,
-      boxWidth: 600
+      boxWidth: 550,
+      boxHeight: 570
      
     },function(){
       jcrop_api = this;
@@ -59,87 +58,133 @@ console.log("this is here....");
 </script>
 
 
-<div class="roundbox boxshadow" style="border: solid 2px steelblue"> 
-<div class="row" style="margin-top:10px;margin-bottom:10px;margin-left:-6px">
-		<div class="col-lg-1 col-md-1 col-sm-1">
-			<a href="#" ng-click="closeAll()" class="btn btn-primary  btn-block" style=" background-color: #CCC;width:90px;height: 37px;"><i class = "glyphicon glyphicon-arrow-left"></i>Back</a>							
-		</div>
-		<div class="col-lg-3 col-md-3 col-sm-3">
-			<a href="#" ng-click="myCrop()" class="btn btn-primary btn-block" style="width:290px;height: 37px; color: "><i class="fa fa-crop p-r-10" style="font-size:large;"></i>Make Crop</a>							
-		</div>
-		<div class="col-lg-2 col-md-2 col-sm-2">
-			<!-- <button class="btn btn-default" ng-click="myCrop()">whole</button> -->
-			<a href="#" ng-click="wholeCrop()" class="btn btn-primary btn-block" style=" background-color: #327832;width:175px;height: 37px;"><i class="fa fa-crop p-r-10" style="font-size:large;"></i>Whole Crop</a>							
-		</div>
-</div>
-<div class="row">
-<!-- <h6></h6> -->
-</div>
-<div class="row">
-	<div ng-show="loading" class="loading" style="width:40px;height:40px;left:50%;top:50%;position:fixed;z-index:10"><img src="/webapp/assets/img/loader32.gif" >
-	</div>
-	<div class="col-lg-12 col-md-12 col-sm-12">
-		<div class="col-lg-6 col-md-6 col-sm-6">
-			
-			<img ng-src="http://www.enter-fracts.com/files/fracts_files/images/parent/{{cropparentImageId}}/{{parentImageName}}" id="target" />
-			<!-- <img ng-src="/webapp/get-all-parent-image?id={{url}}" id="target" /> -->	
-		</div>
-		<div class="col-lg-6 col-md-6 col-sm-6">
-			<div class="col-lg-5 col-md-5 col-sm-5 col-md-offset-1" ng-repeat="vm in childImageArray">
-				<div style="width: 200px;border: ridge;;margin-top:10px !important">
-					<a href="#" ng-click="openChildImagePopUp(vm.DN_ID,cropparentImageId,vm.DC_IMAGENAME)"> 
-					<img id="childImg"	
-					ng-src="http://www.enter-fracts.com/files/fracts_files/images/child/{{cropparentImageId}}/{{vm.DN_ID}}/{{vm.childThumb}}"
-					 style="max-width: 100%;"/>
-					 </a>
-  				</div>
-   			</div>
-		</div>
-	</div>
-	
-	 <form id="coords"
-		    class="coords"
-		    onsubmit="return false;">
-		    <div class="inline-labels">
-		    <input type="hidden" size="4" id="x1" name="x1" />
-		    <input type="hidden" size="4" id="y1" name="y1" />
-		    <input type="hidden" size="4" id="x2" name="x2" />
-		    <input type="hidden" size="4" id="y2" name="y2" />
-		    <input type="hidden" size="4" id="w" name="w" />
-		     <input type="hidden" size="4" id="h" name="h" />
-		    </div>
-	</form>
-</div>
-	
-<!-- modal -->
-	
-	<div id="myModal1" class="modal fade" role="dialog">
-								<div class="modal-dialog">
+<div class="roundbox boxshadow" style="border: solid 2px steelblue">
+	<div style="margin: 1%">
+		<div class="row">
+			<div class="col-lg-1 col-md-1 col-sm-1">
+				<div class="row" style="height: 133px;">
+					<a href="#" ng-click="closeAll()"
+						class="rotate btn btn-primary  btn-block"
+						style="background-color: #CCC; width: 111px; height: 39px;margin-left: -6%"><i
+						class="glyphicon glyphicon-arrow-left"></i>Back </a>
+				</div>
+				<div class="row" style="height: 250px;">
+					<a href="#" ng-click="myCrop()"
+						class=" rotate btn btn-primary btn-block"
+						style="width: 208px; height: 40px;margin-left:-55px;margin-top:100px"><i
+						class="fa fa-crop p-r-10" style="font-size: large;"></i>Make Crop
+					</a>
+				</div>
+				<div class="row" style="height: 150px;">
+					<a href="#" ng-click="wholeCrop()"
+						class="rotate btn btn-primary btn-block"
+						style="background-color: #327832; width: 139px; height: 39px;margin-left:-20px;margin-top:59%"><i
+						class="fa fa-crop p-r-10" style="font-size: large;"></i>Whole Crop
+					</a>
+				</div>
+			</div>
+			<div class="col-lg-11 col-md-11 col-sm-11" style="margin-left: -2%">
 
-									<!-- Modal content-->
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal">&times;</button>
-											<h4 class="modal-title"></h4>
-										</div>
-										<div class="modal-body">
-											<div>
-												 <img id="childImagePopup"	
-													ng-src="/webapp/get-all-child-image?cid={{childIdPop}}&pid={{parentidPop}}&iname={{imageNamePop}}"
-												style="max-width: 100%;"/>
-											</div>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default"
-												data-dismiss="modal">Close</button>
-										</div>
-									</div>
+			<!-- 	<div class="row"
+					style="margin-top: 10px; margin-bottom: 10px; margin-left: -6px">
+					<div class="col-lg-1 col-md-1 col-sm-1">
+						<a href="#" ng-click="closeAll()"
+							class="btn btn-primary  btn-block"
+							style="background-color: #CCC; width: 90px; height: 37px;"><i
+							class="glyphicon glyphicon-arrow-left"></i>Back</a>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3">
+						<a href="#" ng-click="myCrop()" class="btn btn-primary btn-block"
+							style="width: 290px; height: 37px; color:"><i
+							class="fa fa-crop p-r-10" style="font-size: large;"></i>Make Crop</a>
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-2">
+						<button class="btn btn-default" ng-click="myCrop()">whole</button>
+						<a href="#" ng-click="wholeCrop()"
+							class="btn btn-primary btn-block"
+							style="background-color: #327832; width: 175px; height: 37px;"><i
+							class="fa fa-crop p-r-10" style="font-size: large;"></i>Whole
+							Crop</a>
+					</div>
+				</div> -->
+				<div class="row">
+					<!-- <h6></h6> -->
+				</div>
+				<div class="row">
+					<div ng-show="loading" class="loading"
+						style="width: 40px; height: 40px; left: 50%; top: 50%; position: fixed; z-index: 10">
+						<img src="/webapp/assets/img/loader32.gif">
+					</div>
+					<div class="col-lg-12 col-md-12 col-sm-12">
+						<div class="col-lg-6 col-md-6 col-sm-6">
 
+							<!-- <img ng-src="http://www.enter-fracts.com/files/fracts_files/images/parent/{{cropparentImageId}}/{{parentImageName}}" id="target" /> -->
+							<img ng-src="/webapp/get-all-parent-image?id={{url}}" id="target" />
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-6">
+							<div class="col-lg-5 col-md-5 col-sm-5 col-md-offset-1"
+								ng-repeat="vm in childImageArray">
+								<div
+									style="width: 200px; border: ridge;; margin-top: 10px !important">
+									<!-- <img id="childImg"	
+					ng-src="http://www.enter-fracts.com/files/fracts_files/images/child/{{cropparentImageId}}/{{vm.DN_ID}}/{{vm.DC_IMAGENAME}}"
+					 style="max-width: 100%;"/> -->
+									<a href="#"
+										ng-click="openChildImagePopUp(vm.DN_ID,cropparentImageId,vm.DC_IMAGENAME)">
+										<img id="childImg"
+										ng-src="/webapp/get-all-child-image?cid={{vm.DN_ID}}&pid={{cropparentImageId}}&iname={{vm.DC_IMAGENAME}}"
+										style="max-width: 100%;" />
+									</a>
 								</div>
 							</div>
-	
-<!-- end modal -->	
-	
+						</div>
+					</div>
+
+					<form id="coords" class="coords" onsubmit="return false;">
+						<div class="inline-labels">
+							<input type="hidden" size="4" id="x1" name="x1" /> <input
+								type="hidden" size="4" id="y1" name="y1" /> <input
+								type="hidden" size="4" id="x2" name="x2" /> <input
+								type="hidden" size="4" id="y2" name="y2" /> <input
+								type="hidden" size="4" id="w" name="w" /> <input type="hidden"
+								size="4" id="h" name="h" />
+						</div>
+					</form>
+				</div>
+
+
+
+			</div>
+		</div>
+	</div>
+	<!-- modal -->
+
+	<div id="myModal1" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body">
+					<div>
+						<img id="childImagePopup"
+							ng-src="/webapp/get-all-child-image?cid={{childIdPop}}&pid={{parentidPop}}&iname={{imageNamePop}}"
+							style="max-width: 100%;" />
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- end modal -->
+
 
 </div>
 

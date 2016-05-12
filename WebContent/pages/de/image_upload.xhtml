@@ -97,11 +97,11 @@
                           <h:form id="fileupload">
                             <div class="row fileupload-buttonbar">
                                 <div class="col-lg-7">
-                                    <p:commandLink  action="#{deBean.saveParentImage}" 
-                                    ajax="true" oncomplete="PF('showImageName').show();"
-                                     update=":dlgform:basicDialog" 
-                                     styleClass="btn btn-primary start" 
-                                     >
+                                    <p:commandLink  action="#{deBean.saveParentImage}" styleClass="btn btn-primary start" 
+                                     > 
+                                    <!-- ajax="true" oncomplete="PF('showImageName').show();"
+                                     update=":dlgform:basicDialog" --> 
+                                     
                                         <i class="glyphicon glyphicon-upload"></i>
                                         <span>Start upload</span>
                                     </p:commandLink>

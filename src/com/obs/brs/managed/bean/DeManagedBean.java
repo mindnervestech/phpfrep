@@ -3494,10 +3494,9 @@ public class DeManagedBean implements Serializable{
 			this.msgWarnLabel = sb.toString() ;
 			messageService.messageWarning(null, this.msgWarnLabel);
 		}
-	//	System.out.println(".............................................");
-	//	System.out.println("successfull image are  "+this.successfullFileNames);
-	//	return "/pages/de/gallery.xhtml?msgLabel="+this.msgLabel+"&msgFormat="+this.msgFormat+"&faces-redirect=true&msgWarnLabel="+this.msgWarnLabel;
-		return null;
+	
+		return "/pages/de/gallery.xhtml?msgLabel="+this.msgLabel+"&msgFormat="+this.msgFormat+"&faces-redirect=true&msgWarnLabel="+this.msgWarnLabel;
+	
 	}
 
 	/**
