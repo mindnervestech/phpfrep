@@ -515,7 +515,8 @@ input[type='checkbox'] {
 																			<div class="col-md-12 p-0">
 																			    <div class="col-md-1 p-0" style="height: 100px;">
 																					 
-																					 <button class="rotate btn btn-warning" ng-click="cropImage($index,pageSize,currentPage,list.DN_ID,list.imageUrl,list.DC_IMAGENAME)" style=" margin-left: -58px;">Crop Parent</button>
+																					 <!-- <button class="rotate btn btn-warning" ng-click="cropImage($index,pageSize,currentPage,list.DN_ID,list.imageUrl,list.DC_IMAGENAME)" style=" margin-left: -58px;">Crop Parent</button> -->
+																					 <button class="rotate btn btn-warning" ng-click="captureWholeimage($index,pageSize,currentPage,list.DN_ID)" style=" margin-left: -58px;">No Crops</button>
 																					 
 																					 
 																				</div>
@@ -604,15 +605,15 @@ input[type='checkbox'] {
 																		<div class="col-md-1 m-t-10 col1half">
 																			
 																		  <!--   <button class="btn btn-warning" ng-click="cropImage($index,pageSize,currentPage,list.DN_ID,list.imageUrl)" style="margin: 10px;">Crop Parent</button> -->
-																			<a href="#" ng-click="deleteParentImage($index,pageSize,currentPage,list.DN_ID)" style="float:right;"><i><span class="glyphicon glyphicon-remove"style="font-size: 25px;color:red"></span></i>
+																			<a href="#" ng-click="deleteParentImage($index,pageSize,currentPage,list.DN_ID)" style="float:right;margin-right: -22%;margin-top: -8%;"><i><span class="glyphicon glyphicon-remove"style="font-size: 25px;color:red"></span></i>
 																			</a>
 																			
-																			<button class="btn btn-primary" ng-click="openEditImageForm($index,pageSize,currentPage,list.DN_ID,list.DC_IMAGENAME)" style="margin: 10px;">Edit</button>	
-																			<!-- <button class="btn btn-primary" ng-click="moveToTranscription($index,pageSize,currentPage,list.DN_ID)" style="margin: 10px;margin-left:-39%;width:169px">Move to Transcription</button> -->
-																			<a title="Move To Transcription " alt="Move To Transcription" ><span ng-click="moveToTranscription($index,pageSize,currentPage,list.DN_ID)" style="margin-left:54px"><i class="glyphicon glyphicon-play yourClass"style="font-size: 45px;color: #3276b1;"></i></span>
+																			<button class="btn btn-primary" ng-click="openEditImageForm($index,pageSize,currentPage,list.DN_ID,list.DC_IMAGENAME)" style="margin-top: -8%;width: 80%">Edit</button>	
+																			<!-- <button class="btn btn-primary" ng-click="moveToTranscription($index,pageSize,currentPage,list.DN_ID)" style="margin-left: -12%;margin-top: -5%;width: 80%;">Move to Transcription</button> -->
+																			<a title="Move To Transcription " alt="Move To Transcription" ><span ng-click="moveToTranscription($index,pageSize,currentPage,list.DN_ID)" style=""><i class="glyphicon glyphicon-play yourClass"style="font-size: 45px;color: #3276b1;margin-top: 35%;margin-left: 19%"></i></span>
 																			</a>
 																			<h3><span ng-show="list.duplicate" style="margin: 15px;color:red">Duplicate</span></h3>
-																			<button class="btn btn-primary" ng-click="captureWholeimage($index,pageSize,currentPage,list.DN_ID)" style="margin: 10px;margin-left:-103%;width:242px">Capture whole page as child: [ ✓]</button>	
+																			<!-- <button class="btn btn-primary" ng-click="captureWholeimage($index,pageSize,currentPage,list.DN_ID)" style="margin: 10px;margin-left:-103%;width:242px">Capture whole page as child: [ ✓]</button> -->	
 																		</div>
 																		
 																	</div>	

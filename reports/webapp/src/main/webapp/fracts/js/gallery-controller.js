@@ -383,7 +383,22 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		
 		$scope.loading = true;
 		console.log("in save Edit immage");
+		
+		if($scope.day.length==1){
+			$scope.day="0"+$scope.day;
+		}
+	
+		if($scope.month.length==1){
+			$scope.month="0"+$scope.month;
+		}
+
 		$scope.updatedIssueDate=$scope.year+"-"+$scope.month+"-"+$scope.day;
+		console.log('$scope.updatedIssueDate',$scope.updatedIssueDate);
+		
+		$scope.collectionDate = $filter('date')($scope.updatedIssueDate, 'yyyy-MM-dd');
+		
+		
+		
 		$scope.newDate =new Date($scope.updatedIssueDate);
 		console.log('$scope.universalNumber',$scope.universalNumber);
 		
@@ -406,7 +421,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			console.log("in ajx loop");
 			$scope.allImageList[$scope.universalNumber].DC_PAGE=$scope.pageModel;
 			$scope.allImageList[$scope.universalNumber].DD_ISSUE_DATE=$scope.newDate;
-			$scope.allImageList[$scope.universalNumber].dateissue=$scope.newDate;
+			$scope.allImageList[$scope.universalNumber].dateissue=$scope.collectionDate;
 			$scope.allImageList[$scope.universalNumber].DC_SECTION=$scope.section;
 			$scope.allImageList[$scope.universalNumber].DC_PUBLICATION_TITLE=$scope.publicatioTitle;
 			
