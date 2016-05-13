@@ -611,8 +611,13 @@ input[type='checkbox'] {
 																			<div style="width:100px;height:30px">
 																			<h3><span ng-show="list.duplicate" style="margin: 15px;color:red">Duplicate</span></h3>
 																			</div>
-																			<a href="#" ng-click="deleteParentImage($index,pageSize,currentPage,list.DN_ID)" style="float:right;margin-top: inherit;"><i><span class="glyphicon glyphicon-remove"style="font-size: 32px;color:red;margin-bottom: 0px;"></span></i>
+																			<!-- <a href="#" ng-click="deleteParentImage($index,pageSize,currentPage,list.DN_ID)" style="float:right;margin-top: inherit;"><i><span class="glyphicon glyphicon-remove"style="font-size: 32px;color:red;margin-bottom: 0px;"></span></i>
+																			</a> -->
+																			
+																			<a href="#" ng-click="deleteParentImageDialog($index,pageSize,currentPage,list.DN_ID)" style="float:right;margin-top: inherit;"><i><span class="glyphicon glyphicon-remove"style="font-size: 32px;color:red;margin-bottom: 0px;"></span></i>
 																			</a>
+																			
+																			
 																			
 																		</div>
 																		
@@ -847,12 +852,37 @@ input[type='checkbox'] {
 
 								</div>
 							</div>
-<!-- end modal -->						
-						
-						
-						
-						
-					</div>
+<!-- end modal -->
+
+							<div class="modal fade" id="myModalDelete" role="dialog">
+								<div class="modal-dialog">
+
+									<!-- Modal content-->
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+											<h4 class="modal-title"></h4>
+										</div>
+										<div class="modal-body">
+											<h4><strong><p>Are You Sure You Want To Delete</p></strong></h4>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-warning"
+												data-dismiss="modal" style="margin-right:4%">No</button>
+											<button type="button" ng-click="deleteParentImage(deletImageNumber,deleteImageIdNum)" class="btn btn-primary" data-dismiss="modal">Yes</button>	
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+
+
+
+
+
+
+						</div>
 					
   		    	</div>
   		    </div>

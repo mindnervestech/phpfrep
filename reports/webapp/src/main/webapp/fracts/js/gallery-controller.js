@@ -808,12 +808,63 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		$("input:checkbox[name=selectInput]").prop('checked', false);
 	};
 
-	$scope.deleteParentImage=function(index,pagesize,currentpage,id){
+	
+
+	$scope.deleteParentImageDialog=function(index,pagesize,currentpage,id){
+		console.log("in delete image dialog");
+		$scope.deletImageNumber = (index) + (currentpage) * pagesize;
+		$scope.deleteImageIdNum=id;
+		console.log('image no is ',$scope.deletImageNumber);
+		
+		$('#myModalDelete').modal('show');
+		
+		
+	};
+	
+	$scope.deleteParentImage=function(deletImageNo,id){
 		$scope.loading = true;
-		$scope.imageNumber = (index) + (currentpage) * pagesize;
+		console.log("in delete parent image");
+		console.log('image id is ',deletImageNo);
+		//$scope.imageNumber = (index) + (currentpage) * pagesize;
 		/*$scope.allImageList.slice($scope.imageNumber,$scope.imageNumber+1);
 		$scope.resultArray=$scope.allImageList.splice($scope.imageNumber,1);
 		*/
+		
+		$http.post('/webapp/gallery/delete_parent_image/'+id+'/'+$scope.loginUserId).success(function(data){
+			$scope.loading = false;
+			console.log("in ajax call");
+			$scope.allImageList.slice(deletImageNo,deletImageNo+1);
+			
+			$scope.allImageList[deletImageNo].imageComment='';
+			$scope.resultArray=$scope.allImageList.splice(deletImageNo,1);
+			
+			$(function(){
+				new PNotify({
+					title: 'Success Notice',
+					text: 'Image Delete Successfully'
+
+				});
+			});
+		}).error(function() {
+			$scope.loading = false;
+			$(function(){
+				new PNotify({
+					
+					title: 'failure Notice',
+					text: 'Failed To Delete Image'
+
+				});
+			});
+			
+		});
+	};
+	
+/*	$scope.deleteParentImage=function(index,pagesize,currentpage,id){
+		$scope.loading = true;
+		$scope.imageNumber = (index) + (currentpage) * pagesize;
+		$scope.allImageList.slice($scope.imageNumber,$scope.imageNumber+1);
+		$scope.resultArray=$scope.allImageList.splice($scope.imageNumber,1);
+		
 		$http.post('/webapp/gallery/delete_parent_image/'+id+'/'+$scope.loginUserId).success(function(data){
 			$scope.loading = false;
 			console.log("in ajax call");
@@ -841,7 +892,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			});
 			
 		});
-	};
+	};*/
 
 	$scope.gotoLastPage = function() {
 		$scope.currentPage = ($scope.allImageList.length % $scope.pageSize > 0 ? Math.ceil($scope.allImageList.length / $scope.pageSize) : Math.ceil($scope.allImageList.length / $scope.pageSize))-1;

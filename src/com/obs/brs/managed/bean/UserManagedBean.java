@@ -1435,6 +1435,9 @@ implements Serializable
 			break;
 		case 26:
 			redirectLink = "/pages/de/gallery_crop_angular.xhtml";
+			break;
+		case 27:
+			redirectLink = "/pages/de/image_history_angular.xhtml";
 			break;	
 		
 		}

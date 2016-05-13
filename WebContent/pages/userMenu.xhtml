@@ -126,7 +126,14 @@
 								<i class="glyphicon glyphicon-scissors"></i>
 								<span class="sidebar-text">Parent Image Crop</span>
 								<f:param name="menuId" value="26" />
-							</h:commandLink></li>		
+							</h:commandLink></li>
+						<li id="menu27" title="Image History"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								<i class="glyphicon glyphicon-th-list"></i>
+								<span class="sidebar-text">Image History</span>
+								<f:param name="menuId" value="27" />
+							</h:commandLink></li>			
 					</ul>
 				</div>
 				
@@ -168,6 +175,8 @@
 				document.getElementById("menu19").setAttribute("class", "current active");
 			} else if (menuval == "26") {
 				document.getElementById("menu26").setAttribute("class", "current active");
+			} else if (menuval == "27") {
+				document.getElementById("menu27").setAttribute("class", "current active");
 			} else if (menuval == "111") {
 				document.getElementById("menu111").setAttribute("class", "");
 			} else {
