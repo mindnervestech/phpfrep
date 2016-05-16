@@ -39,6 +39,13 @@
 								<i class="fa fa-cloud-upload"></i><span class="sidebar-text">Image upload</span>
 								<f:param name="menuId" value="5" />
 							</h:commandLink></li>
+								<li id="menu27" title="Image History"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								<i class="glyphicon glyphicon-th-list"></i>
+								<span class="sidebar-text">Image History</span>
+								<f:param name="menuId" value="27" />
+							</h:commandLink></li>
 							<li id="menu6" title="Cropping"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{settingsBean.checkVisible(6)}">
@@ -127,13 +134,7 @@
 								<span class="sidebar-text">Parent Image Crop</span>
 								<f:param name="menuId" value="26" />
 							</h:commandLink></li>
-						<li id="menu27" title="Image History"><h:commandLink
-								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
-								<i class="glyphicon glyphicon-th-list"></i>
-								<span class="sidebar-text">Image History</span>
-								<f:param name="menuId" value="27" />
-							</h:commandLink></li>			
+								
 					</ul>
 				</div>
 				

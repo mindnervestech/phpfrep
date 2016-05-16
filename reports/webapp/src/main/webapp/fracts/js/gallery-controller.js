@@ -320,8 +320,65 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		});
 	};
 
-
+    $scope.tempChildArray=[];
 	$scope.moveToTranscription=function(index,pagesize,currentpage,id){
+		$scope.loading = true;
+//		console.log("inmove to transcription ");
+//		console.log('index',index);
+//		console.log('currentpage',currentpage);
+//		console.log('pagesize',pagesize);
+		
+		var number = (index) + (currentpage) * pagesize;
+		
+		$scope.parentImageIdForTrans=id;
+		$scope.parentImageNumber=number;
+		
+//		console.log('number ',number);
+//		console.log('id',id);
+	//	$scope.allImageList.splice(number,1);
+		$scope.tempChildArray=$scope.allImageList[number].listVm;
+		console.log('$scope.tempChildArray',$scope.tempChildArray);
+		$scope.loading = false;
+		if($scope.tempChildArray.length==0){
+			$('#myModalTranscription').modal('show');
+		}else{
+			$scope.MoveImageToTransscription($scope.parentImageIdForTrans,$scope.parentImageNumber);
+		}
+
+	};
+	
+	$scope.MoveImageToTransscription=function(id,number){
+		$scope.loading = true;
+//		console.log('number ',number);
+//		console.log('id',id);
+		$http.post('/webapp/gallery/moveToTranscription_parent/'+id).success(function(data){
+			$scope.loading = false;
+//			console.log("in ajax loop");
+			
+			$scope.allImageList[number].imageComment='';
+			$scope.allImageList.splice(number,1);
+			$scope.loading = false;
+			$(function(){
+				new PNotify({
+					title: 'Success Notice',
+					text: 'Successfully Done'
+
+				});
+			});
+		}).error(function() {
+			$scope.loading = false;
+			$(function(){
+				new PNotify({
+					title: 'failure Notice',
+					text: 'Failed'
+
+				});
+			});
+			
+		});
+		
+	};
+/*	$scope.moveToTranscription=function(index,pagesize,currentpage,id){
 		$scope.loading = true;
 		console.log("inmove to transcription ");
 
@@ -358,7 +415,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			});
 			
 		});
-	};
+	};*/
 
 	$scope.changeDay=function(day){
 		$scope.day=day;
@@ -453,7 +510,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 	$scope.myCrop=function(){
 		$scope.loading = true;
 		console.log("in make crop function");
-		console.log('$scope.loginUserId',$scope.loginUserId);
+
 		$scope.x1= document.getElementById("x1").value;
 		$scope.x2= document.getElementById("x2").value;
 		$scope.y1= document.getElementById("y1").value;
@@ -475,7 +532,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		};
 
 
-		console.log('$scope.parentImageId',$scope.parentImageId);
+	
 
 
 		$http({url:'/webapp/gallery/save_crop_image',method:'POST',data: $scope.imagejsonData,cache: false,
@@ -659,7 +716,86 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 				}
 		);
 	};
+	
 	$scope.ids = {};
+	$scope.moveTo=function(){
+		console.log("in move to");
+		$scope.loading = true;
+		$scope.resultArray=$scope.allImageList;
+		$scope.tr=[];
+		$scope.getValue=document.getElementsByClassName("chackboxclass");
+		$scope.tempId=[];
+		for(var i=0;i<$scope.getValue.length;i++){
+			if($scope.getValue[i].checked==true){
+				$scope.generatedId =parseInt( $scope.getValue[i].value) +parseInt($scope.currentPage) * parseInt( $scope.pageSize);
+				$scope.tempId.push($scope.generatedId);
+				$scope.tr.push({
+					id:$scope.allImageList[$scope.generatedId].DN_ID
+				});
+			};
+		};
+		var flag=false;
+		for(var k=0;k<$scope.tempId.length;k++){
+		//	var m=tempId[k]-k;
+		//	$scope.resultArray.splice(m,1);
+			var n=$scope.tempId[k];
+			if($scope.resultArray[n].listVm.length==0){
+				flag=true;
+			}
+		};
+		
+		$scope.loading = false;
+		if(flag==true){
+			$('#myModalTransGroup').modal('show');
+			
+		}else{
+			 $scope.MoveToTransGroupImages();
+		}
+
+	};
+	
+   $scope.MoveToTransGroupImages=function(){
+	   
+	   $scope.loading = true;
+	   console.log('$scope.tr',$scope.tr);
+	//   console.log('$scope.tempId',$scope.tempId);
+		$http({url:'/webapp/gallery/move_to_transcription',method:'POST',data:$scope.tr}).success(function(data) {
+			$scope.loading = false;
+	//		console.log("in ajax loop");
+			
+			for(var k=0;k<$scope.tempId.length;k++){
+				var m=$scope.tempId[k]-k;
+				$scope.resultArray[m].imageComment='';
+				$scope.resultArray.splice(m,1);
+			};
+			
+			$scope.allImageList=$scope.resultArray;
+			$scope.loading = false;
+			$(function(){
+				new PNotify({
+					title: 'Success Notice',
+					text: 'File Moved Successfully'
+
+				});
+			});
+
+		}).error(function() {
+			$scope.loading = false;
+			$(function(){
+				new PNotify({
+					
+					title: 'failure Notice',
+					text: 'Failed To Move File'
+
+				});
+			});
+			
+		});
+
+  
+   };	
+	
+/*	$scope.ids = {};
 	$scope.moveTo=function(){
 		console.log("in move to");
 		$scope.loading = true;
@@ -676,10 +812,10 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 				});
 			};
 		};
-		/*for(var k=0;k<tempId.length;k++){
+		for(var k=0;k<tempId.length;k++){
 			var m=tempId[k]-k;
 			$scope.resultArray.splice(m,1);
-		}*/
+		}
 		$scope.allImageList=$scope.resultArray;
 		$http({url:'/webapp/gallery/move_to_transcription',method:'POST',data:tr}).success(function(data) {
 			$scope.loading = false;
@@ -715,7 +851,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 
 
-	};
+	};*/
 
 	$scope.idsadv = {};
 	$scope.Advertorial=function(){
@@ -739,8 +875,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			var m=tempId[k]-k;
 			$scope.resultArray.splice(m,1);
 		}*/
-		console.log('tr',tr);
-		console.log('tempId',tempId);
+	
 
 		$scope.allImageList=$scope.resultArray;
 		$http({url:'/webapp/gallery/move_to_advertorial',method:'POST',data:tr}).success(function(data) {
@@ -814,7 +949,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		console.log("in delete image dialog");
 		$scope.deletImageNumber = (index) + (currentpage) * pagesize;
 		$scope.deleteImageIdNum=id;
-		console.log('image no is ',$scope.deletImageNumber);
+	
 		
 		$('#myModalDelete').modal('show');
 		
@@ -823,8 +958,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 	
 	$scope.deleteParentImage=function(deletImageNo,id){
 		$scope.loading = true;
-		console.log("in delete parent image");
-		console.log('image id is ',deletImageNo);
+	
 		//$scope.imageNumber = (index) + (currentpage) * pagesize;
 		/*$scope.allImageList.slice($scope.imageNumber,$scope.imageNumber+1);
 		$scope.resultArray=$scope.allImageList.splice($scope.imageNumber,1);
