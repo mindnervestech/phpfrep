@@ -1103,13 +1103,34 @@ public class GalleryController {
 	
 	}
 	
-	@RequestMapping(value="/all_image_history", method=RequestMethod.GET)
+	
+	@RequestMapping(value="/all_image_history", method=RequestMethod.POST)
 	@ResponseBody
-	public List getAllImageHistory(){
+	public List getAllImageHistory(@RequestBody ImageHistoryVm Ivm) throws ParseException{
+	
+	//	System.out.println("all_image_history");
+	//	System.out.println("date from is"+Ivm.getDateFrom());
+	//	System.out.println("date to is "+Ivm.getDateTo());
 		
+		String[] arrTemp=Ivm.getDateFrom().split("/");
+	//	System.out.println("array size is"+arrTemp.length);
+		
+		String dateFromT=arrTemp[2]+"-"+arrTemp[0]+"-"+arrTemp[1];
+		
+	//	System.out.println("final date is "+dateFromT);
+		
+		
+		String[] arrTempTo=Ivm.getDateTo().split("/");
+	//	System.out.println("array size is"+arrTempTo.length);
+		
+		String dateToT=arrTempTo[2]+"-"+arrTempTo[0]+"-"+arrTempTo[1];
+	//	System.out.println("final date to is "+dateToT);
+		
+
 		List<ImageHistoryVm> listImage= new ArrayList<ImageHistoryVm>();
 		List<Map<String,Object>> imageHistoryList = new ArrayList<Map<String,Object>>();
-		String sql="select m.DN_ID,m.DC_IMAGENAME,m.DD_CREATED_ON,m.DD_ISSUE_DATE from tbl_parent_image m where DATEDIFF(now(),m.DD_CREATED_ON) < 7 ORDER  BY m.DD_CREATED_ON desc";
+		
+		String sql="select * from tbl_parent_image t where t.DD_CREATED_ON BETWEEN '"+dateFromT+"' and '"+dateToT+"'";
 		imageHistoryList=jt.queryForList(sql);
 	//	System.out.println("size of list is "+imageHistoryList.size());
 		
@@ -1140,10 +1161,53 @@ public class GalleryController {
 		}
 	//	System.out.println("size of image history list is"+listImage);
 	
-	return listImage;
+		return listImage;
+
 	}
 	
 	
+	
+	/*@RequestMapping(value="/all_image_history", method=RequestMethod.GET)
+	@ResponseBody
+	public List getAllImageHistory(){
+		
+		List<ImageHistoryVm> listImage= new ArrayList<ImageHistoryVm>();
+		List<Map<String,Object>> imageHistoryList = new ArrayList<Map<String,Object>>();
+		String sql="select m.DN_ID,m.DC_IMAGENAME,m.DD_CREATED_ON,m.DD_ISSUE_DATE from tbl_parent_image m where DATEDIFF(now(),m.DD_CREATED_ON) < 7 ORDER  BY m.DD_CREATED_ON desc";
+		imageHistoryList=jt.queryForList(sql);
+		System.out.println("size of list is "+imageHistoryList.size());
+		
+		int i=1;
+		for (Map<String, Object> pImage : imageHistoryList) {
+			ImageHistoryVm vm= new ImageHistoryVm();
+			
+			vm.setId(i);
+			i++;
+			if(pImage.get("DN_ID")!=null){
+			
+				vm.setJobId(Long.parseLong(pImage.get("DN_ID").toString()));
+			}
+			if(pImage.get("DC_IMAGENAME")!=null){
+				
+				vm.setImageName(pImage.get("DC_IMAGENAME").toString());
+			}
+			if(pImage.get("DD_CREATED_ON")!=null){
+
+				vm.setCreatedDate(pImage.get("DD_CREATED_ON").toString());
+			}
+			if(pImage.get("DD_ISSUE_DATE")!=null){
+
+				vm.setIssueDate(pImage.get("DD_ISSUE_DATE").toString());
+			}
+			
+			listImage.add(vm);
+		}
+		System.out.println("size of image history list is"+listImage);
+	
+	return listImage;
+	}
+	
+*/	
 	
 	@RequestMapping(value="/all_image_list", method=RequestMethod.GET)
 	@ResponseBody
@@ -1197,6 +1261,7 @@ public class GalleryController {
 			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			Object d=pImage.get("DD_ISSUE_DATE");
+			
 			if(d!=null){
 				String dateInString1 =d.toString();
 				try {
