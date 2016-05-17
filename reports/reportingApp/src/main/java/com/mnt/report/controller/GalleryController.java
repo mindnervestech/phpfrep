@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -114,7 +115,7 @@ public class GalleryController {
 		
 		List<ImagesVM> duplicateImageVm= new ArrayList<ImagesVM>();
 		int count=0;
-			String sql="select * from tbl_parent_image m where m.DN_STATUS=0 ORDER BY m.DN_ID desc";
+			String sql="select * from tbl_parent_image m where m.DN_STATUS=0 ORDER BY m.DN_ID ";
 			parentImageListfornewSci=jt.queryForList(sql);
 			for(Map<String, Object> pImage : parentImageListfornewSci){
 				if(!duplicateNamess.add(pImage.get("DC_IMAGENAME").toString())) {
@@ -189,9 +190,10 @@ public class GalleryController {
 				    }
 				}
 			}
-			
+		Collections.reverse(duplicateImageVm);	
 		return duplicateImageVm;
 	}
+	
 	
 	
 	@RequestMapping(value="/get_publication_title", method=RequestMethod.GET)
@@ -953,7 +955,7 @@ public class GalleryController {
 		int m=0;
 		
 		List<Map<String,Object>> parentImageList = new ArrayList<Map<String,Object>>();
-		String sql="select m.DN_ID,m.DC_IMAGENAME,m.DD_CREATED_ON,m.DN_CREATED_BY,u.DC_FIRSTNAME,m.DN_DELETED_BY,m.DD_DELETED_ON,m.DB_DELETED,m.DD_ISSUE_DATE,m.DC_PAGE,m.DC_PUBLICATION_TITLE,m.DC_SECTION,m.DC_SECTION_OTHER,m.DC_SECTION_SPECIAL_REGIONAL,m.DC_SECTION_SPECIAL_TOPIC,m.DC_HEIGHT,m.DC_WIDTH from tbl_parent_image m inner join tbl_user u on m.DN_CREATED_BY=u.DN_ID and m.DN_STATUS="+filterId+" ORDER BY m.DN_ID desc";
+		String sql="select m.DN_ID,m.DC_IMAGENAME,m.DD_CREATED_ON,m.DN_CREATED_BY,u.DC_FIRSTNAME,m.DN_DELETED_BY,m.DD_DELETED_ON,m.DB_DELETED,m.DD_ISSUE_DATE,m.DC_PAGE,m.DC_PUBLICATION_TITLE,m.DC_SECTION,m.DC_SECTION_OTHER,m.DC_SECTION_SPECIAL_REGIONAL,m.DC_SECTION_SPECIAL_TOPIC,m.DC_HEIGHT,m.DC_WIDTH from tbl_parent_image m inner join tbl_user u on m.DN_CREATED_BY=u.DN_ID and m.DN_STATUS="+filterId+" ORDER BY m.DN_ID";
 		parentImageList=jt.queryForList(sql);
 		
 		List<String> duplicate= new ArrayList<String>();
@@ -1097,7 +1099,9 @@ public class GalleryController {
 			imagesVM.getListVm().addAll(arrayList);
 			li.add(imagesVM);
 		}
-		String json = new Gson().toJson(li);
+		
+		Collections.reverse(li);
+	//	String json = new Gson().toJson(li);
 	//	System.out.println("...."+json);
 		return li;
 	
@@ -1220,7 +1224,7 @@ public class GalleryController {
 		int m=0;
 		
 		List<Map<String,Object>> parentImageList = new ArrayList<Map<String,Object>>();
-		String sql="select m.DN_ID,m.DC_IMAGENAME,m.DD_CREATED_ON,m.DN_CREATED_BY,u.DC_FIRSTNAME,m.DN_DELETED_BY,m.DD_DELETED_ON,m.DB_DELETED,m.DD_ISSUE_DATE,m.DC_PAGE,m.DC_PUBLICATION_TITLE,m.DC_SECTION,m.DC_SECTION_OTHER,m.DC_SECTION_SPECIAL_REGIONAL,m.DC_SECTION_SPECIAL_TOPIC,m.DC_HEIGHT,m.DC_WIDTH from tbl_parent_image m inner join tbl_user u on m.DN_CREATED_BY=u.DN_ID and m.DN_STATUS=0 ORDER BY m.DN_ID desc";
+		String sql="select m.DN_ID,m.DC_IMAGENAME,m.DD_CREATED_ON,m.DN_CREATED_BY,u.DC_FIRSTNAME,m.DN_DELETED_BY,m.DD_DELETED_ON,m.DB_DELETED,m.DD_ISSUE_DATE,m.DC_PAGE,m.DC_PUBLICATION_TITLE,m.DC_SECTION,m.DC_SECTION_OTHER,m.DC_SECTION_SPECIAL_REGIONAL,m.DC_SECTION_SPECIAL_TOPIC,m.DC_HEIGHT,m.DC_WIDTH from tbl_parent_image m inner join tbl_user u on m.DN_CREATED_BY=u.DN_ID and m.DN_STATUS=0 ORDER BY m.DN_ID";
 		parentImageList=jt.queryForList(sql);
 		
 		List<String> duplicate= new ArrayList<String>();
@@ -1357,7 +1361,9 @@ public class GalleryController {
 			imagesVM.getListVm().addAll(arrayList);
 			li.add(imagesVM);
 		}
-		String json = new Gson().toJson(li);
+		
+		Collections.reverse(li);
+	//	String json = new Gson().toJson(li);
 		return li;
 	}
 }
