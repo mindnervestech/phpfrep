@@ -228,7 +228,7 @@ public class FractsController {
 		}
 	}
 	
-	@RequestMapping(value = "/mark-all-live", method = RequestMethod.POST)
+	@RequestMapping(value = "/mark-all-live_One", method = RequestMethod.POST)
 	@ResponseBody public void markAllLive(
 			@RequestBody List<MarkLiveVM> liveVMs) {
 		for(MarkLiveVM liveVM : liveVMs) {
@@ -272,7 +272,7 @@ public class FractsController {
 		jt.update(query);
 	}
 	
-	@RequestMapping(value = "/mark-all-not-duplicate", method = RequestMethod.POST)
+	@RequestMapping(value = "/mark-all-not-duplicate_One", method = RequestMethod.POST)
 	@ResponseBody public void markAllNotDuplicate(@RequestBody List<MarkLiveVM> liveVMs) {
 		for(MarkLiveVM liveVM : liveVMs) {
 			String query = "update tbl_ocr_text_match_result set DC_IS_DUPLICATE='1', STATUS_CHANGED_DATE = CURDATE() where DC_CROPPED_JOBID = "+liveVM.getCroppedId()+" and DC_LIVE_JOBID = "+liveVM.getLiveId();
