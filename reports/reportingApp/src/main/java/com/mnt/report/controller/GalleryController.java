@@ -63,8 +63,65 @@ public class GalleryController {
 	@Value("${fullImagePath}")
 	String fullImagePath;
 	
+   
 
+	
 	@RequestMapping(value="/create_thumnail_images", method=RequestMethod.GET)
+	@ResponseBody
+	public void createThumbanail(){
+		
+		System.out.println("in create thumb images");
+		
+		String query = "select DN_ID,DC_IMAGENAME,DN_PARENT_IMAGE_ID from tbl_child_image";
+		List<Map<String,Object>> results =  jt.queryForList(query);
+		System.out.println("size o flist is "+results.size());
+		int childCount=0;
+		
+		int childCountOrg=0;
+		if(results.size()>0){
+			for (Map<String, Object> map : results) {
+				
+				String fileName=map.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+				
+			//	System.out.println("filename is "+fileName);
+				
+				File thumbFile = new File(fullImagePath+"/"+"child"+"/"+map.get("DN_PARENT_IMAGE_ID").toString()+"/"+map.get("DN_ID").toString()+"/"+fileName);
+				File thumbFileOrg = new File(fullImagePath+"/"+"child"+"/"+map.get("DN_PARENT_IMAGE_ID").toString()+"/"+map.get("DN_ID").toString()+"/"+map.get("DC_IMAGENAME").toString());
+				
+				System.out.println("path of thumnail file is "+thumbFile.getAbsolutePath());
+				 if (thumbFileOrg.exists()) {
+					 childCountOrg++;
+			        if (!thumbFile.exists()) {
+			        	//thumbFile.mkdirs();
+			        	childCount++;
+			        	try {	
+							Thumbnails.of(new File(fullImagePath+"/"+"child"+"/"+map.get("DN_PARENT_IMAGE_ID").toString()+"/"+map.get("DN_ID").toString()+"/"+map.get("DC_IMAGENAME")))
+				        	.width(200).keepAspectRatio(true)
+				        	.outputFormat("jpg")
+				        	.toFile(fullImagePath+"/"+"child"+"/"+map.get("DN_PARENT_IMAGE_ID").toString()+"/"+map.get("DN_ID").toString()+"/"+map.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg");
+						
+							System.out.println("thumnail created");
+			        	} catch (IOException e1) {
+							System.out.println("problame to create thumnail");
+							e1.printStackTrace();
+							
+						}
+
+			        	
+			        }
+				 }
+		    
+			}
+
+		}
+			
+		System.out.println("child count is "+childCount);
+		System.out.println("childCountOrg is "+childCountOrg);
+	}
+	
+	
+	
+/*	@RequestMapping(value="/create_thumnail_images", method=RequestMethod.GET)
 	@ResponseBody
 	public void createThumbanail(){
 		
@@ -96,7 +153,7 @@ public class GalleryController {
 		}
 
 
-	}
+	}*/
 	
 	@RequestMapping(value="/parentlist", method=RequestMethod.GET)
 	@ResponseBody
