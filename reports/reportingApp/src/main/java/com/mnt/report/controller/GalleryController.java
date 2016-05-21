@@ -47,6 +47,7 @@ import com.mysql.jdbc.PreparedStatement;
 
 
 
+
 @Controller
 @RequestMapping("/gallery")
 public class GalleryController {
@@ -731,7 +732,7 @@ public class GalleryController {
         	imageName=results.get("DC_IMAGENAME").toString();
         }
 		
-		String sqldeteteChild="insert into tbl_deleted_image (DN_ID,DN_IMAGEID,DC_IMAGENAME,DN_DELETED_BY,DD_DELETED_ON,DB_ISCHILD) VALUES('"+id+"','"+id+"','"+imageName+"','"+deletedBy+"',now(),'0')";
+		String sqldeteteChild="insert into tbl_deleted_image (DN_IMAGEID,DC_IMAGENAME,DN_DELETED_BY,DD_DELETED_ON,DB_ISCHILD) VALUES('"+id+"','"+imageName+"','"+deletedBy+"',now(),'0')";
 		jt.execute(sqldeteteChild);
 		
 		String sql="DELETE from tbl_child_image  where DN_PARENT_IMAGE_ID="+id;
@@ -850,8 +851,8 @@ public class GalleryController {
         	imageName=results.get("DC_IMAGENAME").toString();
         }
 		
-        System.out.println("before insert row");
-		String sqldeteteChild="insert into tbl_deleted_image (DN_ID,DN_IMAGEID,DC_IMAGENAME,DN_DELETED_BY,DD_DELETED_ON,DB_ISCHILD) VALUES('"+imageid+"','"+imageid+"','"+imageName+"','"+deletedBy+"',now(),'1')";
+    //    System.out.println("before insert row");
+		String sqldeteteChild="insert into tbl_deleted_image (DN_IMAGEID,DC_IMAGENAME,DN_DELETED_BY,DD_DELETED_ON,DB_ISCHILD) VALUES('"+imageid+"','"+imageName+"','"+deletedBy+"',now(),'1')";
 		jt.execute(sqldeteteChild);
 		System.out.println("delete row created");
 		
