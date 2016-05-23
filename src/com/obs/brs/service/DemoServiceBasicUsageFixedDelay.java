@@ -27,9 +27,9 @@ public class DemoServiceBasicUsageFixedDelay
 	@ManagedProperty(value ="#{DeService}")
 	IDeService deService;
     
-	/*@Scheduled(fixedRate = 3600000, initialDelay= 2 *60*1000)*/
+	
     //@Scheduled(fixedRate = 5000)
-	@Scheduled(fixedRate = 500000, initialDelay= 50000)
+	@Scheduled(fixedRate = 3600000, initialDelay= 2 *60*1000)
     public void demoServiceMethod(){
     	System.out.println("Method executed at every 1 hour. Current time is :: "+ new Date());
     	try {
