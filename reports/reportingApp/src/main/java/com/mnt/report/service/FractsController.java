@@ -82,8 +82,8 @@ public class FractsController {
 								}
 								if(recordMap.get("DC_IMAGENAME")!=null){
 									liveVM.childImageName=recordMap.get("DC_IMAGENAME").toString();
-									String fileName=recordMap.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
-									liveVM.childImageThumb=fileName;
+								//	String fileName=recordMap.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+									liveVM.childImageThumb=recordMap.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
 									
 								}
 								
@@ -109,18 +109,18 @@ public class FractsController {
 					
 					try {
 						
-						 Map<String,Object> recordMap=jt.queryForMap("select c.DC_IMAGENAME,c.DN_PARENT_IMAGE_ID from tbl_child_image c where c.DN_ID ="+Long.valueOf(map.get("croppedChildImageId").toString()));
+						 Map<String,Object> recordMapOne=jt.queryForMap("select c.DC_IMAGENAME,c.DN_PARENT_IMAGE_ID from tbl_child_image c where c.DN_ID ="+Long.valueOf(map.get("croppedChildImageId").toString()));
 							
-							if(recordMap!=null &&!recordMap.isEmpty()) {
+							if(recordMapOne!=null &&!recordMapOne.isEmpty()) {
 								
-								if(recordMap.get("DN_PARENT_IMAGE_ID")!=null){
-									croppedVM.parentImageId=Long.valueOf(recordMap.get("DN_PARENT_IMAGE_ID").toString());
+								if(recordMapOne.get("DN_PARENT_IMAGE_ID")!=null){
+									croppedVM.parentImageId=Long.valueOf(recordMapOne.get("DN_PARENT_IMAGE_ID").toString());
 								}
-								if(recordMap.get("DC_IMAGENAME")!=null){
-									croppedVM.childImageName=recordMap.get("DC_IMAGENAME").toString();
+								if(recordMapOne.get("DC_IMAGENAME")!=null){
+									croppedVM.childImageName=recordMapOne.get("DC_IMAGENAME").toString();
 									
-									String fileNameOne=recordMap.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
-									croppedVM.childImageThumb=fileNameOne;
+								//	String fileNameOne=recordMap.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+									croppedVM.childImageThumb=recordMapOne.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
 									
 								}
 								
@@ -155,8 +155,8 @@ public class FractsController {
 							if(recordMapTwo.get("DC_IMAGENAME")!=null){
 								liveVM.childImageName=recordMapTwo.get("DC_IMAGENAME").toString();
 								
-								String fileNameTwo=recordMapTwo.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
-								croppedVM.childImageThumb=fileNameTwo;
+							//	String fileNameTwo=recordMapTwo.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+								liveVM.childImageThumb=recordMapTwo.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
 								
 							}
 
@@ -202,6 +202,26 @@ public class FractsController {
 				CroppedVM liveVM = new CroppedVM();
 				liveVM.id = Long.valueOf(map.get("liveId").toString());
 				liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
+				
+				try {
+
+					Map<String,Object> recordMapOne=jt.queryForMap("select c.DC_IMAGENAME,c.DN_PARENT_IMAGE_ID from tbl_child_image c where c.DN_ID ="+Long.valueOf(map.get("liveChildImageId").toString()));
+					if(recordMapOne!=null &&!recordMapOne.isEmpty()) {
+						if(recordMapOne.get("DN_PARENT_IMAGE_ID")!=null){
+							liveVM.parentImageId=Long.valueOf(recordMapOne.get("DN_PARENT_IMAGE_ID").toString());
+						}
+						if(recordMapOne.get("DC_IMAGENAME")!=null){
+							liveVM.childImageName=recordMapOne.get("DC_IMAGENAME").toString();
+							liveVM.childImageThumb=recordMapOne.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+							
+						}
+
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				
 				if( resMap.get(croppedId).size() < 2 ) {  
 					resMap.get(croppedId).add(liveVM); 
 				}
@@ -209,10 +229,55 @@ public class FractsController {
 				CroppedVM croppedVM = new CroppedVM();
 				croppedVM.id = croppedId;
 				croppedVM.childImageId = Long.valueOf(map.get("croppedChildImageId").toString());
+				
+				
+				try {
+
+					Map<String,Object> recordMap=jt.queryForMap("select c.DC_IMAGENAME,c.DN_PARENT_IMAGE_ID from tbl_child_image c where c.DN_ID ="+Long.valueOf(map.get("croppedChildImageId").toString()));
+					if(recordMap!=null &&!recordMap.isEmpty()) {
+						if(recordMap.get("DN_PARENT_IMAGE_ID")!=null){
+							croppedVM.parentImageId=Long.valueOf(recordMap.get("DN_PARENT_IMAGE_ID").toString());
+						}
+						if(recordMap.get("DC_IMAGENAME")!=null){
+							croppedVM.childImageName=recordMap.get("DC_IMAGENAME").toString();
+							croppedVM.childImageThumb=recordMap.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+							
+						}
+
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				
+				
+				
 				List<CroppedVM> relevanceList = new ArrayList<CroppedVM>();
 				CroppedVM liveVM = new CroppedVM();
 				liveVM.id = Long.valueOf(map.get("liveId").toString());
 				liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
+				
+				
+				try {
+
+					Map<String,Object> recordMapOne=jt.queryForMap("select c.DC_IMAGENAME,c.DN_PARENT_IMAGE_ID from tbl_child_image c where c.DN_ID ="+Long.valueOf(map.get("liveChildImageId").toString()));
+					if(recordMapOne!=null &&!recordMapOne.isEmpty()) {
+						if(recordMapOne.get("DN_PARENT_IMAGE_ID")!=null){
+							liveVM.parentImageId=Long.valueOf(recordMapOne.get("DN_PARENT_IMAGE_ID").toString());
+						}
+						if(recordMapOne.get("DC_IMAGENAME")!=null){
+							liveVM.childImageName=recordMapOne.get("DC_IMAGENAME").toString();
+							liveVM.childImageThumb=recordMapOne.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+							
+						}
+
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				
+				
 				relevanceList.add(liveVM);
 				resMap.put(croppedId, relevanceList);
 				croppedVM.revelanceList = relevanceList;
@@ -246,6 +311,26 @@ public class FractsController {
 				CroppedVM liveVM = new CroppedVM();
 				liveVM.id = Long.valueOf(map.get("liveId").toString());
 				liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
+				
+				
+				try {
+
+					Map<String,Object> recordMap=jt.queryForMap("select c.DC_IMAGENAME,c.DN_PARENT_IMAGE_ID from tbl_child_image c where c.DN_ID ="+Long.valueOf(map.get("liveChildImageId").toString()));
+					if(recordMap!=null &&!recordMap.isEmpty()) {
+						if(recordMap.get("DN_PARENT_IMAGE_ID")!=null){
+							liveVM.parentImageId=Long.valueOf(recordMap.get("DN_PARENT_IMAGE_ID").toString());
+						}
+						if(recordMap.get("DC_IMAGENAME")!=null){
+							liveVM.childImageName=recordMap.get("DC_IMAGENAME").toString();
+							liveVM.childImageThumb=recordMap.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+							
+						}
+
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
 				if( resMap.get(croppedId).size() < 2 ) {  
 					resMap.get(croppedId).add(liveVM); 
 				}
@@ -253,10 +338,57 @@ public class FractsController {
 				CroppedVM croppedVM = new CroppedVM();
 				croppedVM.id = croppedId;
 				croppedVM.childImageId = Long.valueOf(map.get("croppedChildImageId").toString());
+				
+				
+
+				try {
+
+					Map<String,Object> recordMap=jt.queryForMap("select c.DC_IMAGENAME,c.DN_PARENT_IMAGE_ID from tbl_child_image c where c.DN_ID ="+Long.valueOf(map.get("croppedChildImageId").toString()));
+					if(recordMap!=null &&!recordMap.isEmpty()) {
+						if(recordMap.get("DN_PARENT_IMAGE_ID")!=null){
+							croppedVM.parentImageId=Long.valueOf(recordMap.get("DN_PARENT_IMAGE_ID").toString());
+						}
+						if(recordMap.get("DC_IMAGENAME")!=null){
+							croppedVM.childImageName=recordMap.get("DC_IMAGENAME").toString();
+							croppedVM.childImageThumb=recordMap.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+							
+						}
+
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				
+				
 				List<CroppedVM> relevanceList = new ArrayList<CroppedVM>();
 				CroppedVM liveVM = new CroppedVM();
 				liveVM.id = Long.valueOf(map.get("liveId").toString());
 				liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
+				
+
+				try {
+
+					Map<String,Object> recordMapLive=jt.queryForMap("select c.DC_IMAGENAME,c.DN_PARENT_IMAGE_ID from tbl_child_image c where c.DN_ID ="+Long.valueOf(map.get("liveChildImageId").toString()));
+					if(recordMapLive!=null &&!recordMapLive.isEmpty()) {
+						if(recordMapLive.get("DN_PARENT_IMAGE_ID")!=null){
+							liveVM.parentImageId=Long.valueOf(recordMapLive.get("DN_PARENT_IMAGE_ID").toString());
+						}
+						if(recordMapLive.get("DC_IMAGENAME")!=null){
+							liveVM.childImageName=recordMapLive.get("DC_IMAGENAME").toString();
+							liveVM.childImageThumb=recordMapLive.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+							
+						}
+
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				
+				
+				
+				
 				relevanceList.add(liveVM);
 				resMap.put(croppedId, relevanceList);
 				croppedVM.revelanceList = relevanceList;

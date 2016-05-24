@@ -324,11 +324,15 @@ input[type='checkbox'] {
 																									Job ID : <span>{{r.id}}</span>
 																								</div>
 																								<div class="f_l p-l-10">
-																									<a ng-click="openCroppedPopup($index)"> <img
+																							
+																							
+																							
+																								<a ng-click="openCroppedPopup($index)">  <img
 																										style="height: 240px; width: 213px"
-																										src="/webapp/get-child-image?id={{r.childImageId}}"
-																										class="img-responsive m-10" alt="" />
-																									</a>
+																										src="http://www.enter-fracts.com/files/fracts_files/images/child/{{r.parentImageId}}/{{r.childImageId}}/{{r.childImageThumb}}"
+																										class="img-responsive m-10" alt="" /> 
+																									</a>		
+																												
 																								</div>
 																							</div>
 																						</div>
@@ -349,10 +353,10 @@ input[type='checkbox'] {
 																									<div style="font-weight: bold; float: left">
 																										Made Live From Job ID : <span>{{l.id}}</span>
 																									</div>
-																									<a ng-click="comparePopup($parent.$index,l.childImageId)"> <img class="img-responsive m-10" alt=""
-																										src="/webapp/get-child-image?id={{l.childImageId}}"
-																										style="height: 240px; width: 213px"></img>
-																									</a>
+																								<a ng-click="comparePopup($parent.$index,l.childImageId)">  <img class="img-responsive m-10" alt=""
+																										src="http://www.enter-fracts.com/files/fracts_files/images/child/{{l.parentImageId}}/{{l.childImageId}}/{{l.childImageThumb}}"
+																										style="height: 240px; width: 213px"></img> 
+																									</a> 
 																								</div>
 																							</div>
 																						</div>
