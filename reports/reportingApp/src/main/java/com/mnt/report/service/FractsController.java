@@ -1,5 +1,6 @@
 package com.mnt.report.service;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,6 +70,30 @@ public class FractsController {
 			//	liveVM.id = Long.valueOf(map.get("liveId").toString());
 				if(map.get("liveChildImageId")!=null){
 					liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
+					
+					try {
+						
+						 Map<String,Object> recordMap=jt.queryForMap("select c.DC_IMAGENAME,c.DN_PARENT_IMAGE_ID from tbl_child_image c where c.DN_ID ="+Long.valueOf(map.get("liveChildImageId").toString()));
+							
+							if(recordMap!=null &&!recordMap.isEmpty()) {
+								
+								if(recordMap.get("DN_PARENT_IMAGE_ID")!=null){
+									liveVM.parentImageId=Long.valueOf(recordMap.get("DN_PARENT_IMAGE_ID").toString());
+								}
+								if(recordMap.get("DC_IMAGENAME")!=null){
+									liveVM.childImageName=recordMap.get("DC_IMAGENAME").toString();
+									String fileName=recordMap.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+									liveVM.childImageThumb=fileName;
+									
+								}
+								
+							}
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					
 				}
 			//	liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
 				if( resMap.get(croppedId).size() < 2 ) {  
@@ -77,9 +102,35 @@ public class FractsController {
 			} else {
 				CroppedVM croppedVM = new CroppedVM();
 				croppedVM.id = croppedId;
-				System.out.println("befor exception");
+				
 				if(map.get("croppedChildImageId")!=null){
 					croppedVM.childImageId = Long.valueOf(map.get("croppedChildImageId").toString());
+					
+					
+					try {
+						
+						 Map<String,Object> recordMap=jt.queryForMap("select c.DC_IMAGENAME,c.DN_PARENT_IMAGE_ID from tbl_child_image c where c.DN_ID ="+Long.valueOf(map.get("croppedChildImageId").toString()));
+							
+							if(recordMap!=null &&!recordMap.isEmpty()) {
+								
+								if(recordMap.get("DN_PARENT_IMAGE_ID")!=null){
+									croppedVM.parentImageId=Long.valueOf(recordMap.get("DN_PARENT_IMAGE_ID").toString());
+								}
+								if(recordMap.get("DC_IMAGENAME")!=null){
+									croppedVM.childImageName=recordMap.get("DC_IMAGENAME").toString();
+									
+									String fileNameOne=recordMap.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+									croppedVM.childImageThumb=fileNameOne;
+									
+								}
+								
+							}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					
+					
 				}
 			//	croppedVM.childImageId = Long.valueOf(map.get("croppedChildImageId").toString());
 				
@@ -91,6 +142,31 @@ public class FractsController {
 			//	liveVM.id = Long.valueOf(map.get("liveId").toString());
 				if(map.get("liveChildImageId")!=null){
 					liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
+					
+					try {
+
+						Map<String,Object> recordMapTwo=jt.queryForMap("select c.DC_IMAGENAME,c.DN_PARENT_IMAGE_ID from tbl_child_image c where c.DN_ID ="+Long.valueOf(map.get("liveChildImageId").toString()));
+
+						if(recordMapTwo!=null &&!recordMapTwo.isEmpty()) {
+
+							if(recordMapTwo.get("DN_PARENT_IMAGE_ID")!=null){
+								liveVM.parentImageId=Long.valueOf(recordMapTwo.get("DN_PARENT_IMAGE_ID").toString());
+							}
+							if(recordMapTwo.get("DC_IMAGENAME")!=null){
+								liveVM.childImageName=recordMapTwo.get("DC_IMAGENAME").toString();
+								
+								String fileNameTwo=recordMapTwo.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+								croppedVM.childImageThumb=fileNameTwo;
+								
+							}
+
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					
+					
 				}
 			//	liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
 				relevanceList.add(liveVM);
@@ -231,6 +307,8 @@ public class FractsController {
 	@RequestMapping(value = "/mark-all-live_One", method = RequestMethod.POST)
 	@ResponseBody public void markAllLive(
 			@RequestBody List<MarkLiveVM> liveVMs) {
+		
+	    
 		for(MarkLiveVM liveVM : liveVMs) {
 			String query = "update tbl_de_data d join tbl_de_data live "+
 					"set d.DC_AD_CATEGORY = live.DC_AD_CATEGORY,"+
@@ -283,6 +361,9 @@ public class FractsController {
 	public static class CroppedVM {
 		public Long id;
 		public Long childImageId;
+		public Long parentImageId;
+		public String childImageName;
+		public String childImageThumb;
 		public List<CroppedVM> revelanceList;
 	}
 }
