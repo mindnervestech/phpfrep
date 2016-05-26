@@ -428,20 +428,25 @@ public class FractsController {
 		query = "select count(*) from tbl_de_data where DN_DECOMPANY_ID IS NULL and DE_JOB_ID = (select DE_JOB_ID from tbl_de_data where DN_ID = "+liveVM.getCroppedId()+")";
 		int notProcessed = jt.queryForInt(query);
 		if(notProcessed == 0) {
-			query = "update tbl_parent_image set DN_STATUS = 2 where DN_ID = (select DE_JOB_ID from tbl_de_data where DN_ID = "+liveVM.getCroppedId()+")";
+			System.out.println("in lopp");
+			query = "update tbl_parent_image set DN_STATUS = 2 where DN_ID = (select DN_PARENT_IMAGE_ID from tbl_de_data where DN_ID = "+liveVM.getCroppedId()+")";
 			jt.update(query);
-			query = "update tbl_de_job set DN_STATUS = (select DE_JOB_ID from tbl_de_data where DN_ID = "+liveVM.getLiveId()+")";
+			query = "update tbl_de_job set DN_STATUS = 1 where DN_ID = (select DE_JOB_ID from tbl_de_data where DN_ID = "+liveVM.getCroppedId()+") ";
 			jt.update(query);
-			query = "update tbl_ocr_text_match_result set STATUS_CHANGED_DATE = CURDATE() where ";
+			//query = "update tbl_ocr_text_match_result set STATUS_CHANGED_DATE = CURDATE() where ";
 		}
 	}
 	
-	@RequestMapping(value = "/mark-all-live_One", method = RequestMethod.POST)
+	@RequestMapping(value = "/mark-all-live", method = RequestMethod.POST)
 	@ResponseBody public void markAllLive(
 			@RequestBody List<MarkLiveVM> liveVMs) {
 		
 	    
 		for(MarkLiveVM liveVM : liveVMs) {
+			
+			System.out.println("crop id is "+liveVM.getCroppedId());
+			System.out.println("live id is"+liveVM.getLiveId());
+			
 			String query = "update tbl_de_data d join tbl_de_data live "+
 					"set d.DC_AD_CATEGORY = live.DC_AD_CATEGORY,"+
 					"d.DC_ADD_COLUMN = live.DC_ADD_COLUMN,"+
@@ -467,10 +472,13 @@ public class FractsController {
 			jt.update(query);
 			query = "select count(*) from tbl_de_data where DN_DECOMPANY_ID IS NULL and DE_JOB_ID = (select DE_JOB_ID from tbl_de_data where DN_ID = "+liveVM.getCroppedId()+")";
 			int notProcessed = jt.queryForInt(query);
+			
+			System.out.println("count is "+notProcessed);
 			if(notProcessed == 0) {
-				query = "update tbl_parent_image set DN_STATUS = 2 where DN_ID = (select DE_JOB_ID from tbl_de_data where DN_ID = "+liveVM.getCroppedId()+")";
+				System.out.println("in loop");
+				query = "update tbl_parent_image set DN_STATUS = 2 where DN_ID = (select DN_PARENT_IMAGE_ID from tbl_de_data where DN_ID = "+liveVM.getCroppedId()+")";
 				jt.update(query);
-				query = "update tbl_de_job set DN_STATUS = (select DE_JOB_ID from tbl_de_data where DN_ID = "+liveVM.getLiveId()+")";
+				query = "update tbl_de_job set DN_STATUS = 1  where DN_ID = (select DE_JOB_ID from tbl_de_data where DN_ID = "+liveVM.getCroppedId()+")";
 				jt.update(query);
 			}
 		}
@@ -482,7 +490,7 @@ public class FractsController {
 		jt.update(query);
 	}
 	
-	@RequestMapping(value = "/mark-all-not-duplicate_One", method = RequestMethod.POST)
+	@RequestMapping(value = "/mark-all-not-duplicate", method = RequestMethod.POST)
 	@ResponseBody public void markAllNotDuplicate(@RequestBody List<MarkLiveVM> liveVMs) {
 		for(MarkLiveVM liveVM : liveVMs) {
 			String query = "update tbl_ocr_text_match_result set DC_IS_DUPLICATE='1', STATUS_CHANGED_DATE = CURDATE() where DC_CROPPED_JOBID = "+liveVM.getCroppedId()+" and DC_LIVE_JOBID = "+liveVM.getLiveId();
