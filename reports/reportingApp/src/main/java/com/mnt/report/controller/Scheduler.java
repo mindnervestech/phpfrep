@@ -9,9 +9,6 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -37,9 +34,8 @@ public class Scheduler {
 	
 	
 	//@Scheduled(fixedDelay =20000)
-//	@Scheduled(fixedRate =   90000)
 //	@Scheduled(fixedRate =   300000)
-/*	public void generateOcr(){
+	public void generateOcr(){
 		System.out.println("scheduler run at every 5 minute..... ");
 
 		String sql="select d.DN_ID,d.DN_CHILD_IMAGE_ID,d.DN_PARENT_IMAGE_ID,c.DC_IMAGENAME from tbl_de_data d inner join tbl_child_image c on d.DN_CHILD_IMAGE_ID=c.DN_ID and d.DC_OCR_TEXT IS NULL";
@@ -61,15 +57,15 @@ public class Scheduler {
 				if (newChild.exists()) {
 					
 					clearRecorg++;
-					String resultOcr = null;
-					try {
+					final String resultOcr =null;
+					/*try {
 						BufferedImage image = ImageIO.read(newChild);
-						 resultOcr =doOCR(newChild);
+							final String resultOcr =doOCR(newChild);
 					} catch (IOException e) {
 						e.printStackTrace();
-					}
+					}*/
 					
-					final String Ocr=resultOcr;
+					
 					String sqlUpdate="update tbl_de_data d set d.DC_OCR_TEXT=? where d.DN_CHILD_IMAGE_ID=?";
 					//		jt.execute(sqlUpdate);
 
@@ -78,7 +74,7 @@ public class Scheduler {
 						@Override
 						public Boolean doInPreparedStatement(java.sql.PreparedStatement ps)
 								throws SQLException, DataAccessException {
-							ps.setString (1, Ocr);
+							ps.setString (1, resultOcr);
 							ps.setLong (2, childImageId);
 							return ps.execute(); 
 						}  
@@ -90,25 +86,11 @@ public class Scheduler {
 
 		}
 		
-	//	System.out.println("null row are "+blankIdRecord);
-	//	System.out.println("clear record are "+clearRecorg);
+		System.out.println("null row are "+blankIdRecord);
+		System.out.println("clear record are "+clearRecorg);
 		System.out.println("recorg updated are "+recordUpdated);
 	}
 	
-	private String doOCR(File thumbFile) {
-		  
-		System.out.println("in ocr result");
-				String result = null;
-				try {
-					if(thumbFile.exists()){
-						Tesseract instance = Tesseract.getInstance();
-						result = instance.doOCR(thumbFile);
-					}
-				} catch (TesseractException e) {
-					e.printStackTrace();
-					System.err.println(e.getMessage());
-				}
-				return result;
-	}*/
+
 	
 }
