@@ -39,7 +39,7 @@ public class Scheduler {
 	//@Scheduled(fixedDelay =20000)
 //	@Scheduled(fixedRate =   90000)
 //	@Scheduled(fixedRate =   300000)
-	public void generateOcr(){
+/*	public void generateOcr(){
 		System.out.println("scheduler run at every 5 minute..... ");
 
 		String sql="select d.DN_ID,d.DN_CHILD_IMAGE_ID,d.DN_PARENT_IMAGE_ID,c.DC_IMAGENAME from tbl_de_data d inner join tbl_child_image c on d.DN_CHILD_IMAGE_ID=c.DN_ID and d.DC_OCR_TEXT IS NULL";
@@ -95,6 +95,20 @@ public class Scheduler {
 		System.out.println("recorg updated are "+recordUpdated);
 	}
 	
-	
+	private String doOCR(File thumbFile) {
+		  
+		System.out.println("in ocr result");
+				String result = null;
+				try {
+					if(thumbFile.exists()){
+						Tesseract instance = Tesseract.getInstance();
+						result = instance.doOCR(thumbFile);
+					}
+				} catch (TesseractException e) {
+					e.printStackTrace();
+					System.err.println(e.getMessage());
+				}
+				return result;
+	}*/
 	
 }
