@@ -38,7 +38,7 @@ public class Scheduler {
 	
 	//@Scheduled(fixedDelay =20000)
 //	@Scheduled(fixedRate =   90000)
-	@Scheduled(fixedRate =   300000)
+//	@Scheduled(fixedRate =   300000)
 	public void generateOcr(){
 		System.out.println("scheduler run at every 5 minute..... ");
 
