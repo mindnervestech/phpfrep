@@ -129,6 +129,35 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 	};
 //end of ng-init()
 	
+	$scope.comm;
+	$scope.selectedCountry = function(selected) {
+		console.log("in select contry");
+        console.log('comment is ',$scope.comm);
+        if (selected) {
+            console.log(selected);
+            $scope.countryCode = selected.originalObject.id;
+        }
+    };
+    $scope.countries = [{
+        'id': 'DNK',
+            'name': 'Denmark'
+    }, {
+        'id': 'DE',
+            'name': 'Germany'
+    }];
+	
+	
+	
+	
+	$scope.allComments = ['tushar','mangesh','good','bad'];
+	
+	$scope.serchAllComment=function(comment){
+		console.log("in serch all comment");
+		console.log('comment',comment);
+		
+		
+		
+	};
 	
 	$scope.openChildImage=function(childid,parentId,imageName){
 		console.log("in open Child image");
@@ -143,6 +172,9 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			 $('#myModal').modal('show');
 		
 	};
+	
+	
+	
 	
 	$scope.openChildImagePopUp=function(childid,parentId,imageName){
 		
@@ -179,20 +211,39 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 	$scope.saveComment=function(index,pagesize,currentpage,pId,com){
 		$scope.loading = true;
 		console.log("in save comment");
+		var comm='';
 		$scope.number = parseInt(index) + parseInt(currentpage) * parseInt(pagesize);
-		console.log('$scope.number',$scope.number);
-	//	$scope.allImageList[$scope.number].DC_SECTION_OTHER=com;
-		$scope.json={
-				"id":pId,
-				"title":com
-		};
-		
-		console.log('comment json is',$scope.json);
+		if(typeof com !== "undefined") {
+			if(typeof com.title !== "undefined") {
+				comm=com.title;
+			}else{
+				comm=com.originalObject;
+			}
+			$scope.json={
+					"id":pId,
+					"title":comm
+			};
+		}else{
+			$scope.json={
+					"id":pId,
+					"title":comm
+			};
+		}
 		$http({url:'/webapp/gallery/save_comment',method:'POST',data:$scope.json}).success(function(data) {
+			var commentStatus=data;
+			console.log('comment status is',commentStatus);
+			if(commentStatus==1){
+				$scope.allImageList[$scope.number].DC_SECTION_SPECIAL_TOPIC=comm;
+			}else if(commentStatus==2){
+				$scope.allImageList[$scope.number].DC_SECTION_SPECIAL_REGIONAL=comm;
+			}else{
+				$scope.allImageList[$scope.number].DC_SECTION_OTHER=comm;
+			} 
 			$scope.loading = false;
-			$scope.allImageList[$scope.number].DC_SECTION_OTHER=com;
+			
 		//	console.log('value is ',$scope.allImageList[$scope.number].imageComment);
 			$scope.allImageList[$scope.number].imageComment='';
+			$scope.$broadcast('angucomplete-alt:clearInput','ex5');
 			$(function(){
 				new PNotify({
 					title: 'Success Notice',

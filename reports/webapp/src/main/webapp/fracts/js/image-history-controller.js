@@ -2,6 +2,7 @@ app.controller('ImageHistoryController',function($scope,$http,$filter) {
 
 	$scope.loading = false;
 	$scope.allImageHistory=[];
+	
 	$scope.init=function(){
 		$scope.loading = true;
 		console.log("in image history inint method");

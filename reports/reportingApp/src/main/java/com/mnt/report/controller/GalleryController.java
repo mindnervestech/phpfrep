@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,6 +65,8 @@ public class GalleryController {
 	String fullImagePath;
 	
    
+
+    
 
 	
 	@RequestMapping(value="/create_thumnail_images", method=RequestMethod.GET)
@@ -324,6 +327,8 @@ public class GalleryController {
 	}
 	
 	
+	
+	
 	@RequestMapping(value="/edit_image_detail/{id}", method=RequestMethod.GET)
 	@ResponseBody
 	public Map getEditImageDetail(@PathVariable("id") String id){
@@ -352,9 +357,35 @@ public class GalleryController {
 		
 	}
 	
+	@RequestMapping(value="/searchComment/{comment}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<CommentVm> getSearchComment(@PathVariable("comment") String comment){
+		System.out.println("in search comment ");
+		
+		String sql="select Distinct(t.DC_SECTION_SPECIAL_REGIONAL) as com from tbl_parent_image t where t.DC_SECTION_SPECIAL_REGIONAL like '%"+comment+"%'"+
+					" union "+
+                    " select DISTINCT(t.DC_SECTION_OTHER) as com from tbl_parent_image t where t.DC_SECTION_OTHER like '%"+comment+"%'"+
+                    " union "+
+                    "select DISTINCT(t.DC_SECTION_SPECIAL_TOPIC) as com from tbl_parent_image t where t.DC_SECTION_SPECIAL_TOPIC like '%"+comment+"%'";
+		
+		List<Map<String,Object>> results =  jt.queryForList(sql);
+		List<CommentVm> cVm= new ArrayList<CommentVm>();
+		if(results.size()>0){
+			for (Map<String, Object> map : results) {
+				CommentVm cm= new CommentVm();
+				cm.comment=map.get("com").toString();
+				cVm.add(cm);
+			}
+		}
+		return cVm;
+		
+	}
+	
+	
+	
 	@RequestMapping(value="/save_comment", method=RequestMethod.POST)
 	@ResponseBody
-	public String save_comment(@RequestBody ParentImageVm idVm){
+	public int save_comment(@RequestBody ParentImageVm idVm){
 		System.out.println("in save_comment");
 		Long imageId=Long.parseLong(idVm.getId().toString());
 		System.out.println("imageId "+imageId);
@@ -371,18 +402,24 @@ public class GalleryController {
 		String publicationTitle=jt.queryForObject(sql1, String.class);
 		System.out.println(publicationTitle);
 		
+		int k=0;
+		
 		if(publicationTitle.equals("Special-Topic")){
 			String sql2="update tbl_parent_image t set t.DC_SECTION_SPECIAL_TOPIC='"+comment+"' where t.DN_ID="+imageId;
 			jt.execute(sql2);
+			k=1;
 		}else if(publicationTitle.equals("Special-Regional")) {
-			String sql3="update tbl_parent_image t set t.DC_SECTION_SPECIAL_REGIONAL="+comment+" where t.DN_ID="+imageId;
+			String sql3="update tbl_parent_image t set t.DC_SECTION_SPECIAL_REGIONAL='"+comment+"' where t.DN_ID="+imageId;
 			jt.execute(sql3);
+			k=2;
 		} else {
 			String sql4="update tbl_parent_image t set t.DC_SECTION_OTHER='"+comment+"' where t.DN_ID="+imageId;
 			jt.execute(sql4);
+			k=3;
 		}
 		
-		return "success";
+		
+		return k;
 				
 	}
 
@@ -599,32 +636,29 @@ public class GalleryController {
 		}
     	System.out.println("after thumbnail");
     	
-    	
     	final String heightCM=decimalFormat.format(((double)h1/96)*2.54*0.9575);
 		final String widthCM=decimalFormat.format(((double)w1/96)*2.54*0.9575);	
     	
+		
+		/*
     	 File newChild = new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName); 
-    	  	
-	
+    	  
+		
+		ImageIO.write(croppedImage,"png",newChild );
 		
 		System.out.println("before ocr result");
 		
-			
-    //    ImageIO.write(croppedImage,"png",newChild );
-		
-		BufferedImage image = ImageIO.read(newChild);
-		
-		System.out.println("before ocr result");
-		
-		final String result =doOCR(newChild);
+		String result =doOCR(newChild);
+    	System.out.println("path is "+newChild.getAbsolutePath());
+        System.out.println("ocr result is "+result); 
+        */
 		
 		
+	//	final String result="testing";
 		
-        
-		//final String result="testing";
+	//	System.out.println("after ocr result");
 		
-		System.out.println("after ocr result");
-    	
+		
     	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now(),DC_HEIGHT='"+heightCM+"',DC_WIDTH='"+widthCM+"' where DN_ID="+childid;
     	jt.execute(updateSql);
 
@@ -635,10 +669,7 @@ public class GalleryController {
     		
     	
     	File chilFile = new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName);
-    	System.out.println("path is "+chilFile.getAbsolutePath());
-    	
-    	
-    	
+    //	System.out.println("path is "+chilFile.getAbsolutePath());
     	
     	/*String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+cropImageVm.getId()+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
     	jt.execute(sqlforupdatededata);
@@ -647,7 +678,7 @@ public class GalleryController {
     	
     	Calendar calendar = Calendar.getInstance();
 	    final java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
-    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH)  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     	
     	System.out.println("before prepare statement");
     	
@@ -660,14 +691,13 @@ public class GalleryController {
 			public Boolean doInPreparedStatement(java.sql.PreparedStatement ps)
 					throws SQLException, DataAccessException {
 				ps.setString (1, "0");
-				ps.setString (2, result);
-				ps.setLong (3, childid);
-				ps.setLong(4, idChild);
-				ps.setDate(5, startDate);
-				ps.setLong(6, iddd);
-				ps.setString(7, jobId);
-				ps.setString(8, heightCM);
-				ps.setString(9, widthCM);
+				ps.setLong (2, childid);
+				ps.setLong(3, idChild);
+				ps.setDate(4, startDate);
+				ps.setLong(5, iddd);
+				ps.setString(6, jobId);
+				ps.setString(7, heightCM);
+				ps.setString(8, widthCM);
 	    	        return ps.execute(); 
 			}  
     	    });
@@ -751,16 +781,15 @@ public class GalleryController {
     	
 		File newthumbFile = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
 		
-    //    ImageIO.write(croppedImage,"png",newthumbFile );
 		
-		BufferedImage image = ImageIO.read(newthumbFile);
+       /* ImageIO.write(croppedImage,"png",newthumbFile );
 		
 		System.out.println("before ocr result");
 		
-		final String result =doOCR(newthumbFile);
+		String result =doOCR(newthumbFile);*/
 		
-		
-    	
+	//	final String result=null;
+	
     	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now(),DC_HEIGHT='"+heightCM+"',DC_WIDTH='"+widthCM+"' where DN_ID="+childid;
 		jt.execute(updateSql);
         System.out.println("successfully created");
@@ -780,7 +809,7 @@ public class GalleryController {
         
     	Calendar calendar = Calendar.getInstance();
 	    final java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
-    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH)  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     	
     	System.out.println("before prepare statement");
     	
@@ -790,14 +819,13 @@ public class GalleryController {
 			public Boolean doInPreparedStatement(java.sql.PreparedStatement ps)
 					throws SQLException, DataAccessException {
 				ps.setString (1, "0");
-				ps.setString (2, result);
-				ps.setLong (3, childid);
-				ps.setLong(4, cropImageVm.getLoginUserId());
-				ps.setDate(5, startDate);
-				ps.setLong(6, imageId);
-				ps.setString(7, jobId);
-				ps.setString(8, heightCM);
-				ps.setString(9, widthCM);
+				ps.setLong (2, childid);
+				ps.setLong(3, cropImageVm.getLoginUserId());
+				ps.setDate(4, startDate);
+				ps.setLong(5, imageId);
+				ps.setString(6, jobId);
+				ps.setString(7, heightCM);
+				ps.setString(8, widthCM);
 	    	        return ps.execute(); 
 			}  
     	    });
@@ -897,7 +925,7 @@ public class GalleryController {
 		List<ImageHistoryVm> listImage= new ArrayList<ImageHistoryVm>();
 		List<Map<String,Object>> imageHistoryList = new ArrayList<Map<String,Object>>();
 		
-		String sql="select * from tbl_parent_image t where t.DD_CREATED_ON BETWEEN '"+dateFromT+"' and '"+dateToT+"'";
+		String sql="select * from tbl_parent_image t where date(t.DD_CREATED_ON) BETWEEN '"+dateFromT+"' and '"+dateToT+"'";
 		
 		imageHistoryList=jt.queryForList(sql);
 	//	System.out.println("size of list is "+imageHistoryList.size());
@@ -1247,7 +1275,7 @@ public class GalleryController {
 		List<ImageHistoryVm> listImage= new ArrayList<ImageHistoryVm>();
 		List<Map<String,Object>> imageHistoryList = new ArrayList<Map<String,Object>>();
 		
-		String sql="select * from tbl_parent_image t where t.DD_CREATED_ON BETWEEN '"+dateFromT+"' and '"+dateToT+"'";
+		String sql="select * from tbl_parent_image t where date(t.DD_CREATED_ON) BETWEEN '"+dateFromT+"' and '"+dateToT+"'";
 		imageHistoryList=jt.queryForList(sql);
 	//	System.out.println("size of list is "+imageHistoryList.size());
 		

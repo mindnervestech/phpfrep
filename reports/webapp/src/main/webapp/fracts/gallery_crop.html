@@ -36,6 +36,10 @@
 	rel="stylesheet" />
 <link href="#{request.contextPath}/assets/css/bootstrap.min.css"
 	rel="stylesheet" />
+<link href="/webapp/assets/css/angucomplete-alt.css"
+	rel="stylesheet" />
+<link href="/webapp/assets/css/select2.css"
+	rel="stylesheet" />
 <link href="#{request.contextPath}/assets/css/plugins_new.min.css"
 	rel="stylesheet" />
 
@@ -504,7 +508,7 @@ input[type='checkbox'] {
 																							<div styleClass="f_l p-l-10" style="float:left;">
 																								 <!-- <span>{{list.DC_SECTION_SPECIAL_TOPIC}}</span>
 																								 <span>{{list.DC_SECTION_SPECIAL_REGIONAL}}</span> -->
-																								 <span> {{list.DC_SECTION_OTHER}}</span>
+																								 <span> {{list.DC_SECTION_OTHER}}{{list.DC_SECTION_SPECIAL_REGIONAL}}{{list.DC_SECTION_SPECIAL_TOPIC}}</span>
 																								
 																							</div>
 																						</div>
@@ -556,8 +560,41 @@ input[type='checkbox'] {
 																					</div>
 																				</div>
 																				<div class="col-md-2 p-0">
-																					<input type="text" ng-model="list.imageComment"/>
-																					<button class="btn btn-default" ng-click="saveComment($index,pageSize,currentPage,list.DN_ID,list.imageComment)" style="margin: 5px;">save</button>
+
+
+
+																						<div angucomplete-alt id="ex5"
+																							placeholder="Search" pause="500"
+																							selected-object="selectedProject"
+																							remote-url="/webapp/gallery/searchComment/"
+																							remote-url-request-formatter="remoteUrlRequestFn"
+																							title-field="comment" minlength="4"
+																							input-class="form-control form-control-small"
+																							match-class="highlight"
+																							override-suggestions="true">
+																						</div>
+
+																						<button class="btn btn-default" ng-click="saveComment($index,pageSize,currentPage,list.DN_ID,selectedProject)" style="margin: 5px;margin-top: 11%;">save</button>
+																						
+																						<!-- <input type="text" ng-model="list.imageComment"
+																							ng-change="serchAllComment()" />
+																						 	
+																					    <select
+																							style="width: 200px;" ui-select2 
+																							 ng-model="selectedTags">
+																							<option ng-repeat="tag in allComments"
+																								value="{{tag}}">{{tag}}</option>
+																						</select>
+ -->
+
+																						<!-- 	<select
+																							class="btn btn-default" name="select" id="select"
+																							ng-model="saveComment" ng-click="saveComment($index,pageSize,currentPage,list.DN_ID,saveComment)" 
+																							style="height: 30px; width: 130px; margin-top: -1px;">
+																							<option ng-repeat="n in allComments" value="{{n}}">{{n}}</option>
+																						</select> -->
+
+																						<!-- <button class="btn btn-default" ng-click="saveComment($index,pageSize,currentPage,list.DN_ID,list.imageComment)" style="margin: 5px;">save</button> -->
 																					
 																					
 																				</div>
@@ -992,7 +1029,12 @@ input[type='checkbox'] {
 	<script type="text/javascript" src="/webapp/assets/js/ng-img-crop.js"></script>
 	<script src='/webapp/report/vendor/bootbox/bootbox.min.js'></script>
 	<script src='/webapp/report/vendor/ng-dialog/ngDialog.min.js'></script>
+	<script src='/webapp/assets/js/ui-bootstrap.js'></script>
+	<script src='/webapp/assets/js/angucomplete-alt.js'></script>
 	
+	<!-- <script src="/webapp/assets/js/select2.js"></script> -->
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.0/select2.min.js"></script>
+	<script src="https://rawgithub.com/angular-ui/ui-select2/master/src/select2.js"></script>
 	<script type="text/javascript" src="/webapp/fracts/js/gallery-app.js"></script>
 	<script type="text/javascript" src="/webapp/fracts/js/gallery-controller.js"></script>
 	<script src="/webapp/assets/js/application.js"></script>

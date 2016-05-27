@@ -1,4 +1,4 @@
-var app = angular.module('FractsApp',['ui.router','ngDialog']);
+var app = angular.module('FractsApp',['angucomplete-alt','ui.select2','ui.router','ngDialog']);
 app.filter('startFrom', function() {
     return function(input, start) {
         start = +start; //parse to int
