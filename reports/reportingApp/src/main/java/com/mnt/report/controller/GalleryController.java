@@ -640,15 +640,18 @@ public class GalleryController {
 		final String widthCM=decimalFormat.format(((double)w1/96)*2.54*0.9575);	
     	
 		
-		
+		/*
     	 File newChild = new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName); 
     	  
+		
 		ImageIO.write(croppedImage,"png",newChild );
+		
 		System.out.println("before ocr result");
-		final String result =doOCR(newChild);
-    //	System.out.println("path is "+newChild.getAbsolutePath());
+		
+		String result =doOCR(newChild);
+    	System.out.println("path is "+newChild.getAbsolutePath());
         System.out.println("ocr result is "+result); 
-        
+        */
 		
 		
 	//	final String result="testing";
@@ -675,7 +678,7 @@ public class GalleryController {
     	
     	Calendar calendar = Calendar.getInstance();
 	    final java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
-    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH)  VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)";
+    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH)  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     	
     	System.out.println("before prepare statement");
     	
@@ -688,14 +691,13 @@ public class GalleryController {
 			public Boolean doInPreparedStatement(java.sql.PreparedStatement ps)
 					throws SQLException, DataAccessException {
 				ps.setString (1, "0");
-				ps.setString(2, result);
-				ps.setLong (3, childid);
-				ps.setLong(4, idChild);
-				ps.setDate(5, startDate);
-				ps.setLong(6, iddd);
-				ps.setString(7, jobId);
-				ps.setString(8, heightCM);
-				ps.setString(9, widthCM);
+				ps.setLong (2, childid);
+				ps.setLong(3, idChild);
+				ps.setDate(4, startDate);
+				ps.setLong(5, iddd);
+				ps.setString(6, jobId);
+				ps.setString(7, heightCM);
+				ps.setString(8, widthCM);
 	    	        return ps.execute(); 
 			}  
     	    });
@@ -778,13 +780,14 @@ public class GalleryController {
 		final String widthCM=decimalFormat.format(((double)width/96)*2.54*0.9575);	
     	
 		File newthumbFile = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
+	
 		
 		
-        ImageIO.write(croppedImage,"png",newthumbFile );
+       /* ImageIO.write(croppedImage,"png",newthumbFile );
 		
 		System.out.println("before ocr result");
 		
-		final String result =doOCR(newthumbFile);
+		String result =doOCR(newthumbFile);*/
 		
 	//	final String result=null;
 	
@@ -807,7 +810,7 @@ public class GalleryController {
         
     	Calendar calendar = Calendar.getInstance();
 	    final java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
-    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH)  VALUES (?,?,?, ?, ?, ?, ?, ?, ?)";
+    	String sqlforupdatededata="INSERT INTO tbl_de_data (DC_CURRENCY,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH)  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     	
     	System.out.println("before prepare statement");
     	
@@ -817,14 +820,13 @@ public class GalleryController {
 			public Boolean doInPreparedStatement(java.sql.PreparedStatement ps)
 					throws SQLException, DataAccessException {
 				ps.setString (1, "0");
-				ps.setString(2, result);
-				ps.setLong (3, childid);
-				ps.setLong(4, cropImageVm.getLoginUserId());
-				ps.setDate(5, startDate);
-				ps.setLong(6, imageId);
-				ps.setString(7, jobId);
-				ps.setString(8, heightCM);
-				ps.setString(9, widthCM);
+				ps.setLong (2, childid);
+				ps.setLong(3, cropImageVm.getLoginUserId());
+				ps.setDate(4, startDate);
+				ps.setLong(5, imageId);
+				ps.setString(6, jobId);
+				ps.setString(7, heightCM);
+				ps.setString(8, widthCM);
 	    	        return ps.execute(); 
 			}  
     	    });
