@@ -95,20 +95,6 @@ public class Scheduler {
 		System.out.println("recorg updated are "+recordUpdated);
 	}
 	
-	private String doOCR(File thumbFile) {
-		  
-		System.out.println("in ocr result");
-				String result = null;
-				try {
-					if(thumbFile.exists()){
-						Tesseract instance = Tesseract.getInstance();
-						result = instance.doOCR(thumbFile);
-					}
-				} catch (TesseractException e) {
-					e.printStackTrace();
-					System.err.println(e.getMessage());
-				}
-				return result;
-	}
+	
 	
 }
