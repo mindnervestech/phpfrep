@@ -1092,158 +1092,159 @@ public class GalleryController {
 		Long filterId=Long.parseLong(filter);
 		List<ImagesVM> li= new ArrayList<ImagesVM>();
 		String url="/webapp/get-all-parent-image?id=";
+		int stat=Integer.parseInt(filter);
+	
 		
 		int n=0;
 		int m=0;
 		
 		List<Map<String,Object>> parentImageList = new ArrayList<Map<String,Object>>();
-		String sql="select m.DN_ID,m.DC_IMAGENAME,m.DD_CREATED_ON,m.DN_CREATED_BY,u.DC_FIRSTNAME,m.DN_DELETED_BY,m.DD_DELETED_ON,m.DB_DELETED,m.DD_ISSUE_DATE,m.DC_PAGE,m.DC_PUBLICATION_TITLE,m.DC_SECTION,m.DC_SECTION_OTHER,m.DC_SECTION_SPECIAL_REGIONAL,m.DC_SECTION_SPECIAL_TOPIC,m.DC_HEIGHT,m.DC_WIDTH from tbl_parent_image m inner join tbl_user u on m.DN_CREATED_BY=u.DN_ID and m.DN_STATUS="+filterId+" ORDER BY m.DN_ID";
+		String sql="select m.DN_ID,m.DN_STATUS,m.DC_IMAGENAME,m.DD_CREATED_ON,m.DN_CREATED_BY,u.DC_FIRSTNAME,m.DN_DELETED_BY,m.DD_DELETED_ON,m.DB_DELETED,m.DD_ISSUE_DATE,m.DC_PAGE,m.DC_PUBLICATION_TITLE,m.DC_SECTION,m.DC_SECTION_OTHER,m.DC_SECTION_SPECIAL_REGIONAL,m.DC_SECTION_SPECIAL_TOPIC,m.DC_HEIGHT,m.DC_WIDTH from tbl_parent_image m inner join tbl_user u on m.DN_CREATED_BY=u.DN_ID  ORDER BY m.DN_ID";
 		parentImageList=jt.queryForList(sql);
 		
 		List<String> duplicate= new ArrayList<String>();
 		Set<String> duplicateNamess = new HashSet<String>();
+		int l=0;
 		
 		
 		for (Map<String, Object> pImage : parentImageList) {
-			ImagesVM imagesVM= new ImagesVM();
 			
-			if(pImage.get("DN_ID")!=null){
-				imagesVM.setDN_ID(Long.valueOf(pImage.get("DN_ID").toString()));
-			}
+			ImagesVM imagesVM= new ImagesVM();
 			if(pImage.get("DC_IMAGENAME")!=null){
-					
+				
 				if(!duplicateNamess.add(pImage.get("DC_IMAGENAME").toString())) {
-					System.out.println("in duplicate image ");
+					
 					imagesVM.setDuplicate(true);
 					n++;
 				}else{
 					imagesVM.setDuplicate(false);
 					m++;
 				}	
-				imagesVM.setDC_IMAGENAME(pImage.get("DC_IMAGENAME").toString());
 				
+				imagesVM.setDC_IMAGENAME(pImage.get("DC_IMAGENAME").toString());
 				String thumImageName=pImage.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
 				imagesVM.setThumb(thumImageName);
-				
 			}
+			
 			if(pImage.get("DN_STATUS")!=null){
-				imagesVM.setDN_STATUS(Integer.parseInt(pImage.get("DN_STATUS").toString()));
-			}
-			
-			String publicationTitle=null;
-			if(pImage.get("DC_PUBLICATION_TITLE")!=null){
-				String sql11="select t.DC_PUBLICATION_TITLE from tbl_publication t where t.DN_ID="+pImage.get("DC_PUBLICATION_TITLE").toString();
-				publicationTitle=jt.queryForObject(sql11, String.class);
-				imagesVM.setDC_PUBLICATION_TITLE(publicationTitle);
-				
-			}
-			
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-			Object d=pImage.get("DD_ISSUE_DATE");
-			if(d!=null){
-				String dateInString1 =d.toString();
-				try {
-					Date date1 = formatter.parse(dateInString1);
-					imagesVM.setDD_ISSUE_DATE(date1);
-					imagesVM.setDateissue(formatter.format(date1));
+				if(Integer.parseInt(pImage.get("DN_STATUS").toString())==stat){
+							
+					imagesVM.setDN_STATUS(Integer.parseInt(pImage.get("DN_STATUS").toString()));
+					System.out.println("in loop of status one");
+					l++;
 					
-				//	System.out.println("DD_isuu date is"+date1);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			Object d2=pImage.get("DD_CREATED_ON");
-			if(d2!=null){
-				String dateInString2 =d2.toString();
-				try {
-					Date date2 = formatter.parse(dateInString2);
-					imagesVM.setDD_CREATED_ON(date2);
-					imagesVM.setCreateDate(formatter.format(date2));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			
-			if(pImage.get("DC_FIRSTNAME")!=null){
-				imagesVM.setCREATED_BY(pImage.get("DC_FIRSTNAME").toString());
-			}
-			
-			/*if(pImage.get("DC_SECTION")!=null){
-				imagesVM.setDC_SECTION(pImage.get("DC_SECTION").toString());
-			}*/
-			
+					if(pImage.get("DN_ID")!=null){
+						
+						imagesVM.setDN_ID(Long.valueOf(pImage.get("DN_ID").toString()));
+					}
+					
+					String publicationTitle=null;
+					if(pImage.get("DC_PUBLICATION_TITLE")!=null){
+						String sql11="select t.DC_PUBLICATION_TITLE from tbl_publication t where t.DN_ID="+pImage.get("DC_PUBLICATION_TITLE").toString();
+						publicationTitle=jt.queryForObject(sql11, String.class);
+						imagesVM.setDC_PUBLICATION_TITLE(publicationTitle);
+						
+					}
+					
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+					Object d=pImage.get("DD_ISSUE_DATE");
+					
+					if(d!=null){
+					//	System.out.println("date in java is "+d.toString());
+						String dateInString1 =d.toString();
+						try {
+							Date date1 = formatter.parse(dateInString1);
+							imagesVM.setDD_ISSUE_DATE(date1);
+							System.out.println("DD_ISSUE_DATE is "+date1);
+							imagesVM.setDateissue(formatter.format(date1));
+						//	System.out.println("Dateissue is "+formatter.format(date1));
+							
+							
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					}
+					
+					Object d2=pImage.get("DD_CREATED_ON");
+					if(d2!=null){
+						String dateInString2 =d2.toString();
+						try {
+							Date date2 = formatter.parse(dateInString2);
+							imagesVM.setDD_CREATED_ON(date2);
+							imagesVM.setCreateDate(formatter.format(date2));
+							
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					}
+					
+					
+					if(pImage.get("DC_FIRSTNAME")!=null){
+						imagesVM.setCREATED_BY(pImage.get("DC_FIRSTNAME").toString());
+					}
+					
+					String section=null;
+					if(pImage.get("DC_SECTION")!=null){
+						String sql22="select t.DC_PUBLICATION_TITLE from tbl_publication t where t.DN_ID="+pImage.get("DC_SECTION").toString();
+						section=jt.queryForObject(sql22, String.class);
+						imagesVM.setDC_SECTION(section);
+					}
+					if(pImage.get("DC_SECTION_OTHER")!=null){
+						imagesVM.setDC_SECTION_OTHER(pImage.get("DC_SECTION_OTHER").toString());
+					}
+					
+					if(pImage.get("DC_SECTION_SPECIAL_REGIONAL")!=null){
+						imagesVM.setDC_SECTION_SPECIAL_REGIONAL(pImage.get("DC_SECTION_SPECIAL_REGIONAL").toString());
+					}
+					if(pImage.get("DC_SECTION_SPECIAL_TOPIC")!=null){
+						imagesVM.setDC_SECTION_SPECIAL_TOPIC(pImage.get("DC_SECTION_SPECIAL_TOPIC").toString());
+					}
+					if(pImage.get("DC_HEIGHT")!=null){
+						imagesVM.setDC_HEIGHT(pImage.get("DC_HEIGHT").toString());
+					}
+					if(pImage.get("DC_WIDTH")!=null){
+						imagesVM.setDC_WIDTH(pImage.get("DC_WIDTH").toString());
+					}
+					if(pImage.get("DC_PAGE")!=null){
+						imagesVM.setDC_PAGE(pImage.get("DC_PAGE").toString());
+					}
+					
+					
+					imagesVM.setImageUrl(url+Long.parseLong(pImage.get("DN_ID").toString()));
 
-			String section=null;
-			if(pImage.get("DC_SECTION")!=null){
-				String sql22="select t.DC_PUBLICATION_TITLE from tbl_publication t where t.DN_ID="+pImage.get("DC_SECTION").toString();
-				section=jt.queryForObject(sql22, String.class);
-				imagesVM.setDC_SECTION(section);
-			}
-			
-			if(pImage.get("DC_SECTION_OTHER")!=null){
-				imagesVM.setDC_SECTION_OTHER(pImage.get("DC_SECTION_OTHER").toString());
-			}
-			
-			if(pImage.get("DC_SECTION_SPECIAL_REGIONAL")!=null){
-				imagesVM.setDC_SECTION_SPECIAL_REGIONAL(pImage.get("DC_SECTION_SPECIAL_REGIONAL").toString());
-			}
-			if(pImage.get("DC_SECTION_SPECIAL_TOPIC")!=null){
-				imagesVM.setDC_SECTION_SPECIAL_TOPIC(pImage.get("DC_SECTION_SPECIAL_TOPIC").toString());
-			}
-			if(pImage.get("DC_HEIGHT")!=null){
-				imagesVM.setDC_HEIGHT(pImage.get("DC_HEIGHT").toString());
-			}
-			if(pImage.get("DC_WIDTH")!=null){
-				imagesVM.setDC_WIDTH(pImage.get("DC_WIDTH").toString());
-			}
-			
-			if(pImage.get("DC_PAGE")!=null){
-				imagesVM.setDC_PAGE(pImage.get("DC_PAGE").toString());
-			}
-			
-			imagesVM.setImageUrl(url+Long.parseLong(pImage.get("DN_ID").toString()));
-
-			
-			
-			String id=pImage.get("DN_ID").toString();
-			List<Map<String,Object>> childImageList = new ArrayList<Map<String,Object>>();
-			String sql1="select m.DC_IMAGENAME,m.DN_ID from tbl_child_image m where m.DN_PARENT_IMAGE_ID="+id+" ORDER BY m.DN_ID desc";
-			childImageList=jt.queryForList(sql1);
-			List<ChildImageVm> arrayList= new ArrayList<ChildImageVm>();
-			for (Map<String, Object> map : childImageList) {
-				ChildImageVm childVm= new ChildImageVm();
-				
-				if(map.get("DN_ID")!=null){
-					childVm.setDN_ID(Long.valueOf(map.get("DN_ID").toString()));
-				}
-				if(map.get("DC_IMAGENAME")!=null){
-					childVm.setDC_IMAGENAME(map.get("DC_IMAGENAME").toString());
-					String thumChildImageName=map.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
-				    childVm.setChildThumb(thumChildImageName);
+					
+					
+					String id=pImage.get("DN_ID").toString();
+					List<Map<String,Object>> childImageList = new ArrayList<Map<String,Object>>();
+					String sql1="select m.DC_IMAGENAME,m.DN_ID from tbl_child_image m where m.DN_PARENT_IMAGE_ID="+id;
+					childImageList=jt.queryForList(sql1);
+					List<ChildImageVm> arrayList= new ArrayList<ChildImageVm>();
+					for (Map<String, Object> map : childImageList) {
+						ChildImageVm childVm= new ChildImageVm();
+						
+						if(map.get("DN_ID")!=null){
+							childVm.setDN_ID(Long.valueOf(map.get("DN_ID").toString()));
+						}
+						if(map.get("DC_IMAGENAME")!=null){
+							childVm.setDC_IMAGENAME(map.get("DC_IMAGENAME").toString());
+							String thumChildImageName=map.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+							childVm.setChildThumb(thumChildImageName);
+							
+						}
+					
+					    arrayList.add(childVm);
+					}
+					imagesVM.getListVm().addAll(arrayList);
+					li.add(imagesVM);
 					
 				}
-				/*if(map.get("DN_PARENT_IMAGE_ID")!=null){
-					childVm.setDN_PARENT_IMAGE_ID(Long.parseLong(map.get("DN_PARENT_IMAGE_ID").toString()));
-				}
-				if(map.get("isCompleted")!=null){
-					childVm.setIsCompleted(map.get("isCompleted").toString());
-				}
-				if(map.get("DC_HEIGHT")!=null){
-					childVm.setDC_HEIGHT(map.get("DC_HEIGHT").toString());
-				}
-				if(map.get("DC_WIDTH")!=null){
-					childVm.setDC_WIDTH(map.get("DC_WIDTH").toString());
-				}*/
-			    arrayList.add(childVm);
 			}
-			imagesVM.getListVm().addAll(arrayList);
-			li.add(imagesVM);
+
 		}
 		
+		
 		Collections.reverse(li);
-	//	String json = new Gson().toJson(li);
+		String json = new Gson().toJson(li);
 	//	System.out.println("...."+json);
 		return li;
 	
@@ -1366,144 +1367,147 @@ public class GalleryController {
 		int m=0;
 		
 		List<Map<String,Object>> parentImageList = new ArrayList<Map<String,Object>>();
-		String sql="select m.DN_ID,m.DC_IMAGENAME,m.DD_CREATED_ON,m.DN_CREATED_BY,u.DC_FIRSTNAME,m.DN_DELETED_BY,m.DD_DELETED_ON,m.DB_DELETED,m.DD_ISSUE_DATE,m.DC_PAGE,m.DC_PUBLICATION_TITLE,m.DC_SECTION,m.DC_SECTION_OTHER,m.DC_SECTION_SPECIAL_REGIONAL,m.DC_SECTION_SPECIAL_TOPIC,m.DC_HEIGHT,m.DC_WIDTH from tbl_parent_image m inner join tbl_user u on m.DN_CREATED_BY=u.DN_ID and m.DN_STATUS=0 ORDER BY m.DN_ID";
+		String sql="select m.DN_ID,m.DN_STATUS,m.DC_IMAGENAME,m.DD_CREATED_ON,m.DN_CREATED_BY,u.DC_FIRSTNAME,m.DN_DELETED_BY,m.DD_DELETED_ON,m.DB_DELETED,m.DD_ISSUE_DATE,m.DC_PAGE,m.DC_PUBLICATION_TITLE,m.DC_SECTION,m.DC_SECTION_OTHER,m.DC_SECTION_SPECIAL_REGIONAL,m.DC_SECTION_SPECIAL_TOPIC,m.DC_HEIGHT,m.DC_WIDTH from tbl_parent_image m inner join tbl_user u on m.DN_CREATED_BY=u.DN_ID  ORDER BY m.DN_ID";
 		parentImageList=jt.queryForList(sql);
 		
 		List<String> duplicate= new ArrayList<String>();
 		Set<String> duplicateNamess = new HashSet<String>();
+		int l=0;
 		
 		for (Map<String, Object> pImage : parentImageList) {
+			
 			ImagesVM imagesVM= new ImagesVM();
-			
-			if(pImage.get("DN_ID")!=null){
-			
-				imagesVM.setDN_ID(Long.valueOf(pImage.get("DN_ID").toString()));
-			}
 			if(pImage.get("DC_IMAGENAME")!=null){
-					
+				
 				if(!duplicateNamess.add(pImage.get("DC_IMAGENAME").toString())) {
-					System.out.println("in duplicate image ");
+					
 					imagesVM.setDuplicate(true);
 					n++;
 				}else{
 					imagesVM.setDuplicate(false);
 					m++;
 				}	
+				
 				imagesVM.setDC_IMAGENAME(pImage.get("DC_IMAGENAME").toString());
 				String thumImageName=pImage.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
 				imagesVM.setThumb(thumImageName);
 			}
+			
 			if(pImage.get("DN_STATUS")!=null){
-				imagesVM.setDN_STATUS(Integer.parseInt(pImage.get("DN_STATUS").toString()));
-			}
-			
-			String publicationTitle=null;
-			if(pImage.get("DC_PUBLICATION_TITLE")!=null){
-				String sql11="select t.DC_PUBLICATION_TITLE from tbl_publication t where t.DN_ID="+pImage.get("DC_PUBLICATION_TITLE").toString();
-				publicationTitle=jt.queryForObject(sql11, String.class);
-				imagesVM.setDC_PUBLICATION_TITLE(publicationTitle);
-				
-			}
-			
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			Object d=pImage.get("DD_ISSUE_DATE");
-			
-			if(d!=null){
-				String dateInString1 =d.toString();
-				try {
-					Date date1 = formatter.parse(dateInString1);
-					imagesVM.setDD_ISSUE_DATE(date1);
-					imagesVM.setDateissue(formatter.format(date1));
+				if(Integer.parseInt(pImage.get("DN_STATUS").toString())==0){
+					imagesVM.setDN_STATUS(Integer.parseInt(pImage.get("DN_STATUS").toString()));
+					System.out.println("in loop of status one");
+					l++;
 					
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			Object d2=pImage.get("DD_CREATED_ON");
-			if(d2!=null){
-				String dateInString2 =d2.toString();
-				try {
-					Date date2 = formatter.parse(dateInString2);
-					imagesVM.setDD_CREATED_ON(date2);
-					imagesVM.setCreateDate(formatter.format(date2));
+					if(pImage.get("DN_ID")!=null){
+						
+						imagesVM.setDN_ID(Long.valueOf(pImage.get("DN_ID").toString()));
+					}
 					
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			
-			if(pImage.get("DC_FIRSTNAME")!=null){
-				imagesVM.setCREATED_BY(pImage.get("DC_FIRSTNAME").toString());
-			}
-			
-			String section=null;
-			if(pImage.get("DC_SECTION")!=null){
-				String sql22="select t.DC_PUBLICATION_TITLE from tbl_publication t where t.DN_ID="+pImage.get("DC_SECTION").toString();
-				section=jt.queryForObject(sql22, String.class);
-				imagesVM.setDC_SECTION(section);
-			}
-			if(pImage.get("DC_SECTION_OTHER")!=null){
-				imagesVM.setDC_SECTION_OTHER(pImage.get("DC_SECTION_OTHER").toString());
-			}
-			
-			if(pImage.get("DC_SECTION_SPECIAL_REGIONAL")!=null){
-				imagesVM.setDC_SECTION_SPECIAL_REGIONAL(pImage.get("DC_SECTION_SPECIAL_REGIONAL").toString());
-			}
-			if(pImage.get("DC_SECTION_SPECIAL_TOPIC")!=null){
-				imagesVM.setDC_SECTION_SPECIAL_TOPIC(pImage.get("DC_SECTION_SPECIAL_TOPIC").toString());
-			}
-			if(pImage.get("DC_HEIGHT")!=null){
-				imagesVM.setDC_HEIGHT(pImage.get("DC_HEIGHT").toString());
-			}
-			if(pImage.get("DC_WIDTH")!=null){
-				imagesVM.setDC_WIDTH(pImage.get("DC_WIDTH").toString());
-			}
-			if(pImage.get("DC_PAGE")!=null){
-				imagesVM.setDC_PAGE(pImage.get("DC_PAGE").toString());
-			}
-			
-			
-			imagesVM.setImageUrl(url+Long.parseLong(pImage.get("DN_ID").toString()));
+					String publicationTitle=null;
+					if(pImage.get("DC_PUBLICATION_TITLE")!=null){
+						String sql11="select t.DC_PUBLICATION_TITLE from tbl_publication t where t.DN_ID="+pImage.get("DC_PUBLICATION_TITLE").toString();
+						publicationTitle=jt.queryForObject(sql11, String.class);
+						imagesVM.setDC_PUBLICATION_TITLE(publicationTitle);
+						
+					}
+					
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+					Object d=pImage.get("DD_ISSUE_DATE");
+					
+					if(d!=null){
+					//	System.out.println("date in java is "+d.toString());
+						String dateInString1 =d.toString();
+						try {
+							Date date1 = formatter.parse(dateInString1);
+							imagesVM.setDD_ISSUE_DATE(date1);
+							System.out.println("DD_ISSUE_DATE is "+date1);
+							imagesVM.setDateissue(formatter.format(date1));
+						//	System.out.println("Dateissue is "+formatter.format(date1));
+							
+							
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					}
+					
+					Object d2=pImage.get("DD_CREATED_ON");
+					if(d2!=null){
+						String dateInString2 =d2.toString();
+						try {
+							Date date2 = formatter.parse(dateInString2);
+							imagesVM.setDD_CREATED_ON(date2);
+							imagesVM.setCreateDate(formatter.format(date2));
+							
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					}
+					
+					
+					if(pImage.get("DC_FIRSTNAME")!=null){
+						imagesVM.setCREATED_BY(pImage.get("DC_FIRSTNAME").toString());
+					}
+					
+					String section=null;
+					if(pImage.get("DC_SECTION")!=null){
+						String sql22="select t.DC_PUBLICATION_TITLE from tbl_publication t where t.DN_ID="+pImage.get("DC_SECTION").toString();
+						section=jt.queryForObject(sql22, String.class);
+						imagesVM.setDC_SECTION(section);
+					}
+					if(pImage.get("DC_SECTION_OTHER")!=null){
+						imagesVM.setDC_SECTION_OTHER(pImage.get("DC_SECTION_OTHER").toString());
+					}
+					
+					if(pImage.get("DC_SECTION_SPECIAL_REGIONAL")!=null){
+						imagesVM.setDC_SECTION_SPECIAL_REGIONAL(pImage.get("DC_SECTION_SPECIAL_REGIONAL").toString());
+					}
+					if(pImage.get("DC_SECTION_SPECIAL_TOPIC")!=null){
+						imagesVM.setDC_SECTION_SPECIAL_TOPIC(pImage.get("DC_SECTION_SPECIAL_TOPIC").toString());
+					}
+					if(pImage.get("DC_HEIGHT")!=null){
+						imagesVM.setDC_HEIGHT(pImage.get("DC_HEIGHT").toString());
+					}
+					if(pImage.get("DC_WIDTH")!=null){
+						imagesVM.setDC_WIDTH(pImage.get("DC_WIDTH").toString());
+					}
+					if(pImage.get("DC_PAGE")!=null){
+						imagesVM.setDC_PAGE(pImage.get("DC_PAGE").toString());
+					}
+					
+					
+					imagesVM.setImageUrl(url+Long.parseLong(pImage.get("DN_ID").toString()));
 
-			
-			
-			String id=pImage.get("DN_ID").toString();
-			List<Map<String,Object>> childImageList = new ArrayList<Map<String,Object>>();
-			String sql1="select m.DC_IMAGENAME,m.DN_ID from tbl_child_image m where m.DN_PARENT_IMAGE_ID="+id;
-			childImageList=jt.queryForList(sql1);
-			List<ChildImageVm> arrayList= new ArrayList<ChildImageVm>();
-			for (Map<String, Object> map : childImageList) {
-				ChildImageVm childVm= new ChildImageVm();
-				
-				if(map.get("DN_ID")!=null){
-					childVm.setDN_ID(Long.valueOf(map.get("DN_ID").toString()));
-				}
-				if(map.get("DC_IMAGENAME")!=null){
-					childVm.setDC_IMAGENAME(map.get("DC_IMAGENAME").toString());
-					String thumChildImageName=map.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
-					childVm.setChildThumb(thumChildImageName);
+					
+					
+					String id=pImage.get("DN_ID").toString();
+					List<Map<String,Object>> childImageList = new ArrayList<Map<String,Object>>();
+					String sql1="select m.DC_IMAGENAME,m.DN_ID from tbl_child_image m where m.DN_PARENT_IMAGE_ID="+id;
+					childImageList=jt.queryForList(sql1);
+					List<ChildImageVm> arrayList= new ArrayList<ChildImageVm>();
+					for (Map<String, Object> map : childImageList) {
+						ChildImageVm childVm= new ChildImageVm();
+						
+						if(map.get("DN_ID")!=null){
+							childVm.setDN_ID(Long.valueOf(map.get("DN_ID").toString()));
+						}
+						if(map.get("DC_IMAGENAME")!=null){
+							childVm.setDC_IMAGENAME(map.get("DC_IMAGENAME").toString());
+							String thumChildImageName=map.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+							childVm.setChildThumb(thumChildImageName);
+							
+						}
+					
+					    arrayList.add(childVm);
+					}
+					imagesVM.getListVm().addAll(arrayList);
+					li.add(imagesVM);
 					
 				}
-				/*if(map.get("DN_PARENT_IMAGE_ID")!=null){
-					childVm.setDN_PARENT_IMAGE_ID(Long.parseLong(map.get("DN_PARENT_IMAGE_ID").toString()));
-				}
-				if(map.get("isCompleted")!=null){
-					childVm.setIsCompleted(map.get("isCompleted").toString());
-				}
-				if(map.get("DC_HEIGHT")!=null){
-					childVm.setDC_HEIGHT(map.get("DC_HEIGHT").toString());
-				}
-				if(map.get("DC_WIDTH")!=null){
-					childVm.setDC_WIDTH(map.get("DC_WIDTH").toString());
-				}*/
-			    arrayList.add(childVm);
 			}
-			imagesVM.getListVm().addAll(arrayList);
-			li.add(imagesVM);
+
 		}
-		
+		System.out.println("count is "+l);
 		Collections.reverse(li);
 	//	String json = new Gson().toJson(li);
 		return li;
