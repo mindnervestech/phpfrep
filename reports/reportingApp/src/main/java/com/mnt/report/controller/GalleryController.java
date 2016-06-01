@@ -644,7 +644,7 @@ public class GalleryController {
 		File newChild = new File(fullImagePath+"/"+"child"+"/"+cropImageVm.getId()+"/"+childid+"/"+fileimageName); 
 		ImageIO.write(croppedImage,"png",newChild );
 		System.out.println("before ocr result");
-		final String result = null;//doOCR(newChild);
+		final String result = null; //doOCR(newChild);
 		
 		
     //	System.out.println("path is "+newChild.getAbsolutePath());

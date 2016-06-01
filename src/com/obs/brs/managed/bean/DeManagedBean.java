@@ -83,7 +83,7 @@ import com.obs.brs.utils.StringUtility;
 @ViewScoped
 public class DeManagedBean implements Serializable{
 
-
+	
 	private static final long serialVersionUID = 1L;
 	CommonUtils commonUtils 		= CommonUtils.getInstance();
 	SessionManager sessionManager 	= new SessionManager();
@@ -101,8 +101,8 @@ public class DeManagedBean implements Serializable{
 	ISettingsService settingsService;
 
 	@ManagedProperty(value ="#{DeService}")
-	IDeService deService;
 
+	IDeService deService;
 	@ManagedProperty(value ="#{ParentImageService}")
 	IParentImageService parentImageService;
 
@@ -316,6 +316,8 @@ public class DeManagedBean implements Serializable{
 		
 		return this.successfullFileNames;
 	}
+
+	
 	public void setSuccessfullFileNames(List<String> successfullFileNames) {
 		System.out.println("in setSuccessfullFileNames lis");
 		this.successfullFileNames = successfullFileNames;
@@ -426,6 +428,8 @@ public class DeManagedBean implements Serializable{
 		sectionMap.put("CL", "644");
 		sectionMap.put("OT", "1083");
 		sectionMap.put("CS", "1033");
+		sectionMap.put("AV", "1088");
+		
 		
 	}
 	
@@ -506,6 +510,7 @@ public class DeManagedBean implements Serializable{
             pages[i] = ++firstPage;
         }
 	}
+	
 	
 	/** load pagination for the ocr text**/
 	private void loadPaginationOcr() {
@@ -2238,6 +2243,8 @@ public class DeManagedBean implements Serializable{
 						/*if(dataEntry != null){
 							this.ocrText = dataEntry.getOcrText();
 						}*/
+						
+						
 						Object childImageSessionObj = sessionManager.getSessionAttribute(SessionManager.CHILDIMAGEID);
 						int childImageIdSession   = childImageSessionObj!=null?((Integer)childImageSessionObj).intValue():0; // get job id
 						if(childImageIdSession > 0){
@@ -2256,6 +2263,7 @@ public class DeManagedBean implements Serializable{
 							if(dataEntry.getDeCompany() != null){
 								setAllDeCompanyDetails(dataEntry.getDeCompany());
 							}
+							
 							if(this.childImageId == 0 && this.ocrText == null){
 								try {
 									File image=new File(imageBasePath+CommonProperties.getParentImagePath()+this.parentImageId+"/"+this.parentImageName);
@@ -2269,6 +2277,7 @@ public class DeManagedBean implements Serializable{
 									e.printStackTrace();
 								}
 							}
+							
 							if(this.childImageId > 0 && this.ocrText == null){
 								try {
 									File image=new File(imageBasePath+CommonProperties.getChildImagePath()+this.parentImageId+"/"+this.childImageId+"/"+dataEntry.getChildImage().getImageName());
@@ -2879,8 +2888,6 @@ public class DeManagedBean implements Serializable{
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
-
 			}else{
 				messageService.messageFatal(null, "Please Select Image.");	
 				return null;
@@ -3494,9 +3501,11 @@ public class DeManagedBean implements Serializable{
 			this.msgWarnLabel = sb.toString() ;
 			messageService.messageWarning(null, this.msgWarnLabel);
 		}
-	
-		return "/pages/de/gallery.xhtml?msgLabel="+this.msgLabel+"&msgFormat="+this.msgFormat+"&faces-redirect=true&msgWarnLabel="+this.msgWarnLabel;
-	
+		
+		
+		return "/pages/de/gallery_crop_angular.xhtml";
+		//	return "/pages/de/gallery.xhtml?msgLabel="+this.msgLabel+"&msgFormat="+this.msgFormat+"&faces-redirect=true&msgWarnLabel="+this.msgWarnLabel;
+	//	return null;
 	}
 
 	/**
