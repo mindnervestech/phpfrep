@@ -2240,9 +2240,9 @@ public class DeManagedBean implements Serializable{
 						}else{
 							this.childImageName = deJob.getParentImage().getImageName();
 						}*/
-						/*if(dataEntry != null){
+						if(dataEntry != null){
 							this.ocrText = dataEntry.getOcrText();
-						}*/
+						}
 						
 						
 						Object childImageSessionObj = sessionManager.getSessionAttribute(SessionManager.CHILDIMAGEID);
@@ -2264,7 +2264,7 @@ public class DeManagedBean implements Serializable{
 								setAllDeCompanyDetails(dataEntry.getDeCompany());
 							}
 							
-							if(this.childImageId == 0 && this.ocrText == null){
+							/*if(this.childImageId == 0 && this.ocrText == null){
 								try {
 									File image=new File(imageBasePath+CommonProperties.getParentImagePath()+this.parentImageId+"/"+this.parentImageName);
 									ImageIO.scanForPlugins();
@@ -2276,9 +2276,9 @@ public class DeManagedBean implements Serializable{
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
-							}
+							}*/
 							
-							if(this.childImageId > 0 && this.ocrText == null){
+							/*if(this.childImageId > 0 && this.ocrText == null){
 								try {
 									File image=new File(imageBasePath+CommonProperties.getChildImagePath()+this.parentImageId+"/"+this.childImageId+"/"+dataEntry.getChildImage().getImageName());
 									ImageIO.scanForPlugins();
@@ -2290,7 +2290,10 @@ public class DeManagedBean implements Serializable{
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
-							}
+							}*/
+							
+							
+							
 						}
 						//else{
 						//clear();
@@ -3114,9 +3117,9 @@ public class DeManagedBean implements Serializable{
 					try {
 						ImageIO.scanForPlugins();
 						//File newFile=new File(imageBasePath+CommonProperties.getTempPath()+currentUser.getId()+"/crp_"+random+"_"+parentImage.getImageName());
-						String result = new Ocr().doOCR(cropFile);
-						System.out.println("result: "+result);
-						if(result != null) {
+						String result = null; //new Ocr().doOCR(cropFile);
+					//	System.out.println("result: "+result);
+						
 							DeJob deJob = deService.getDeJobByParentImageId(parentImage.getId());
 							DataEntry entry = new DataEntry();
 							entry.setOcrText(result); 
@@ -3124,7 +3127,7 @@ public class DeManagedBean implements Serializable{
 							entry.setParentImage(parentImage);
 							entry.setChildImage(fetchChildImageById(imgId));
 							deService.addDataEntry(entry);
-						}
+						
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -4264,8 +4267,12 @@ public class DeManagedBean implements Serializable{
 			this.childImageId=childImage.getChildImage().getId();
 			this.parentImageName=childImage.getParentImage().getImageName();
 			this.childImageName = childImage.getChildImage().getImageName();
+			this.ocrText=childImage.getOcrText();
 			setAllAdDetails(childImage);
-			if(this.ocrText==null || this.ocrText.isEmpty()){
+			
+			
+			
+			/*if(this.ocrText==null || this.ocrText.isEmpty()){
 				try {
 					File image=new File(imageBasePath+CommonProperties.getChildImagePath()+childImage.getParentImage().getId()+"/"+this.childImageId+"/"+this.childImageName);
 					ImageIO.scanForPlugins();
@@ -4276,7 +4283,7 @@ public class DeManagedBean implements Serializable{
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
+			}*/
 			//setAllAdDetails(childImages);
 			if(childImage.getDeCompany() != null){
 				setAllDeCompanyDetails(childImage.getDeCompany());
@@ -4312,8 +4319,10 @@ public class DeManagedBean implements Serializable{
 			this.childImageId=childImage.getChildImage().getId();
 			this.parentImageName=childImage.getParentImage().getImageName();
 			this.childImageName = childImage.getChildImage().getImageName();
+			this.ocrText=childImage.getOcrText();
+			
 			setAllAdDetails(childImage);
-			if(this.ocrText==null || this.ocrText.isEmpty()){
+			/*if(this.ocrText==null || this.ocrText.isEmpty()){
 				try {
 					File image=new File(imageBasePath+CommonProperties.getChildImagePath()+childImage.getParentImage().getId()+"/"+this.childImageId+"/"+this.childImageName);
 					ImageIO.scanForPlugins();
@@ -4324,7 +4333,7 @@ public class DeManagedBean implements Serializable{
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
+			}*/
 			//setAllAdDetails(childImages);
 			if(childImage.getDeCompany() != null){
 				setAllDeCompanyDetails(childImage.getDeCompany());
@@ -4367,8 +4376,10 @@ public class DeManagedBean implements Serializable{
 				this.childImageId=childImages.getChildImage()!=null?childImages.getChildImage().getId():0L;
 				this.deDataId=childImages.getId();
 				this.parentImageName=childImages.getParentImage().getImageName();
+				this.ocrText=childImages.getOcrText();
+				
 				setAllAdDetails(childImages);
-				if(this.ocrText==null || this.ocrText.isEmpty()){
+				/*if(this.ocrText==null || this.ocrText.isEmpty()){
 					try {
 						File image=new File(imageBasePath+CommonProperties.getParentImagePath()+childImages.getParentImage().getId()+"/"+this.parentImageName);
 						ImageIO.scanForPlugins();
@@ -4379,7 +4390,7 @@ public class DeManagedBean implements Serializable{
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				}
+				}*/
 				//setAllAdDetails(childImages);
 				if(childImages.getDeCompany() != null){
 					setAllDeCompanyDetails(childImages.getDeCompany());
@@ -4394,8 +4405,9 @@ public class DeManagedBean implements Serializable{
 				this.deDataId=childImages.getId();
 				this.parentImageName=childImages.getParentImage().getImageName();
 				this.childImageName = childImages.getChildImage().getImageName();
+				this.ocrText=childImages.getOcrText();
 				setAllAdDetails(childImages);
-				if(this.ocrText==null || this.ocrText.isEmpty()){
+				/*if(this.ocrText==null || this.ocrText.isEmpty()){
 					try {
 						File image=new File(imageBasePath+CommonProperties.getChildImagePath()+childImages.getParentImage().getId()+"/"+this.childImageId+"/"+this.childImageName);
 						ImageIO.scanForPlugins();
@@ -4406,7 +4418,7 @@ public class DeManagedBean implements Serializable{
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				}
+				}*/
 				//setAllAdDetails(childImages);
 				if(childImages.getDeCompany() != null){
 					setAllDeCompanyDetails(childImages.getDeCompany());
@@ -4711,6 +4723,7 @@ public List<String> getcompaniesId(String query) {
 	}
 	
 	public void updateMemo(ParentImage image,Integer index) {
+		
 		if(image.getSection().getPublicationTitle().equals("Special-Topic")) {
 			image.setSectionspecialTopic(image.getMemo());
 		} else if(image.getSection().getPublicationTitle().equals("Special-Regional")) {
@@ -6600,8 +6613,11 @@ public List<String> getcompaniesId(String query) {
 			DataEntry entry = new DataEntry();
 			entry.setChildImage(childImage);
 			entry.setParentImage(childImage.getParentImage());
+			
 			entry.setDeJobid(deService.getDeJobByParentImageId(childImage.getParentImage().getId()));
-			try {
+			
+			
+			/*try {
 				File image=new File(imageBasePath+CommonProperties.getChildImagePath()+childImage.getParentImage().getId()+"/"+childImage.getId()+"/"+childImage.getImageName());
 				ImageIO.scanForPlugins();
 				String result = new Ocr().doOCR(image);
@@ -6609,7 +6625,7 @@ public List<String> getcompaniesId(String query) {
 				entry.setOcrText(result);
 			} catch (Exception e) {
 				e.printStackTrace();
-			}
+			}*/
 			deService.addDataEntry(entry);
 		}
 	}
