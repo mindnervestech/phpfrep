@@ -134,6 +134,13 @@
 								<span class="sidebar-text">Parent Image Crop</span>
 								<f:param name="menuId" value="26" />
 							</h:commandLink></li>
+						<li id="menu28" title="publication"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								<i class="glyphicon glyphicon-folder-open"></i>
+								<span class="sidebar-text">Publication</span>
+								<f:param name="menuId" value="28" />
+							</h:commandLink></li>	
 								
 					</ul>
 				</div>
@@ -178,7 +185,9 @@
 				document.getElementById("menu26").setAttribute("class", "current active");
 			} else if (menuval == "27") {
 				document.getElementById("menu27").setAttribute("class", "current active");
-			} else if (menuval == "111") {
+			}else if (menuval == "28") {
+				document.getElementById("menu28").setAttribute("class", "current active");
+			}else if (menuval == "111") {
 				document.getElementById("menu111").setAttribute("class", "");
 			} else {
 				document.getElementById("menu2").setAttribute("class", "current active");
