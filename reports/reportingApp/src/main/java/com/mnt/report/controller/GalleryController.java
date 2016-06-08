@@ -1326,7 +1326,7 @@ public class GalleryController {
 		
 		
 		Collections.reverse(li);
-		String json = new Gson().toJson(li);
+	//	String json = new Gson().toJson(li);
 	//	System.out.println("...."+json);
 		return li;
 	
@@ -1446,8 +1446,8 @@ public class GalleryController {
 	
 		System.out.println("in getPublicatation title");
 		
-		System.out.println("month is "+month);
-		System.out.println("yea is r_"+year);
+	//	System.out.println("month is "+month);
+	//	System.out.println("yea is r_"+year);
 		List<PublicationVm> li= new ArrayList<PublicationVm>();
 		
 		
@@ -1477,7 +1477,7 @@ public class GalleryController {
 					" p.DN_ID = j.DN_PARENT_IMAGE_ID and "+
 					" MONTH(p.DD_ISSUE_DATE)='"+month+"' and "+
 					" year(p.DD_ISSUE_DATE)='"+year+"' and "+
-					" p.DC_PUBLICATION_TITLE = '"+titleId+"'";
+					" p.DC_PUBLICATION_TITLE = '"+titleId+"' ORDER by p.DD_ISSUE_DATE";
 
 			childImageList=jt.queryForList(sqlforpublicationChildImages);
 			
@@ -1540,8 +1540,8 @@ public class GalleryController {
 			
 		}
 		
-		String json = new Gson().toJson(li);
-		System.out.println("json is.. "+json);
+	//	String json = new Gson().toJson(li);
+	//	System.out.println("json is.. "+json);
 		
 		return li;
 	}

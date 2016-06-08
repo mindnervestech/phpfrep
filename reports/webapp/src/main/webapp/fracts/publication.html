@@ -282,9 +282,40 @@ input[type='checkbox'] {
 		<div class="container" style="margin: 1%;">
 			<div>
 			<div ng-show="loading" class="loading" style="width:40px;height:40px;left:50%;top:50%;position:fixed;z-index:10"><img src="/webapp/assets/img/loader32.gif" ></div>	
-				<div class="row">
-						
+				<div class="row" style="margin: 1%">
+
 					
+					<div class="row">
+					<div class="col-md-2">
+						
+						</div>
+					 <div class="col-md-9">
+						<div ng-repeat="month in monthArray track by $index">
+							<button style="width: 7%; margin: 2px"
+								class="btn col-md-1" ng-class="($index == selectedmonth-1)?'btn-warning':'btn-primary'" ng-click="setmonth($index)">{{month}}</button>
+
+						</div>
+					</div>	
+					<div class="col-md-1">
+						 <button style="margin-top: 4px;margin-left: -64px;width: 217%;" ng-click="searchData()"
+								class="btn btn-warning col-md-1">search</button>
+						</div>
+					
+					</div>
+					<div class="row">
+						<div class="col-md-2">
+						 
+						</div>
+					 <div class="col-md-9">
+						<div ng-repeat="year in yearOptions track by $index">
+							<button style="width: 7%; margin: 2px"  ng-click="setyear(year.name);"
+								class="btn col-md-1" ng-class="(year.name == selectedyear)?'btn-warning':'btn-primary'">{{year.name}}</button>
+
+						</div>
+						</div>
+						
+					</div>
+					<!-- 					
 					<div class="col-md-3">
 						<select class="form-control" ng-options="option.name for option in monthdata.availableOptions" name="repeatSelect" id="repeatSelect"
 							ng-model="monthModel" value="{{option.id}}">
@@ -301,7 +332,7 @@ input[type='checkbox'] {
 					</div>
 					<div class="col-md-3">
 					 <button class="btn btn-primary" style="height: 38px;" ng-click="dateChange(monthModel,yearModel)">search</button>
-					</div>
+					</div> -->
 					
 				</div>
 			</div>
@@ -315,7 +346,7 @@ input[type='checkbox'] {
 					
 					<div class="col-md-10">
 						<div class="col-md-2" ng-repeat="la in list.listVm">
-						  <div class="row" style="height: 130px;margin:1%;width: 130px;border: 3px solid;" ng-style="{'border-color':la.color}">	
+						  <div class="row" style="height: 180px;margin:1%;width: 150px;border: 3px solid;" ng-style="{'border-color':la.color}">	
 							<a href="#"	 ng-click="openChildImage(la.DN_ID,la.DN_PARENT_IMAGE_ID,la.DC_IMAGENAME)" >
 							
 							<img id="childImg" style="display: block;width:100%"
@@ -352,8 +383,12 @@ input[type='checkbox'] {
 										</div>
 										<div class="modal-body">
 											<div>
-												 <img id="childImagePopup"	
+												<!--  <img id="childImagePopup"	
 													ng-src="/webapp/get-all-child-image?cid={{childIdForDisplay}}&pid={{parentidForDisplay}}&iname={{imageNameForDisplay}}"
+												style="max-width: 100%;"/> -->
+												
+												 <img id="childImagePopup"	
+												 ng-src="http://www.enter-fracts.com/files/fracts_files/images/child/{{parentidForDisplay}}/{{childIdForDisplay}}/{{imageNameForDisplay}}"
 												style="max-width: 100%;"/>
 											</div>
 										</div>

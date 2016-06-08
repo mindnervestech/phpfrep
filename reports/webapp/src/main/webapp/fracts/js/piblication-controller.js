@@ -2,18 +2,72 @@ app.controller('MainController',function($scope,$http,$filter) {
 
 
 	$scope.FromDate = new Date();
-	$scope.month = $filter('date')( $scope.FromDate, 'M');
+	$scope.currentmonth = $filter('date')( $scope.FromDate, 'M');
 	$scope.day = $filter('date')($scope.FromDate, 'd'); 
-	$scope.year = $filter('date')($scope.FromDate,'yyyy');
+	$scope.currentYear = $filter('date')($scope.FromDate,'yyyy');
 	console.log('date is ',$scope.FromDate);
 	console.log('day is ',$scope.day);
-	console.log('$scope.month',$scope.month);
-	console.log('$scope.year',$scope.year);
+	console.log('$scope.currentmonth',$scope.currentmonth);
+	console.log('$scope.year',$scope.currentYear);
 
+	$scope.selectedyear =$scope.currentYear;
+	$scope.selectedmonth = $scope.currentmonth;
+	$scope.setmonth = function(month){
+		$scope.selectedmonth = month+1;
+	};
+	$scope.setyear = function(year){
+		$scope.selectedyear = year;
+	};
+	$scope.searchData = function(){
+		$scope.loading=true;
+		console.log("month",$scope.selectedmonth,"year",$scope.selectedyear);
+		$http.post('/webapp/gallery/get_publicatio_images/'+$scope.selectedmonth+'/'+$scope.selectedyear).success(function(data) {
+			console.log("in ng-change responce");
+			$scope.publicationList=data;
+			$scope.loading=false;
+			
+			if($scope.publicationList.length==0){
+				$(function(){
+					new PNotify({
+						title: 'Success Notice',
+						text: 'No Images Found'
+
+					});
+				});
+			}
+			
+			
+			console.log('$scope.publicationList',$scope.publicationList);
+			
+
+		});
+		
+		
+		
+	};
+	
 	$scope.yearId;
+	
+	
+	$scope.monthArray=['Jan','Feb','March','April','May','Jun','July','Aug','Sept','Oct','Nov','Dec'];
+	$scope.yearArray=['2014','2015','2016','2017','2018','2019','2020'];
+	
+	$scope.yearOptions= [
+	                   {id: '2014', name: '2014'},
+	                   {id: '2015', name: '2015'},
+	                   {id: '2016', name: '2016'},
+		               {id: '2017', name: '2017'},
+			           {id: '2018', name: '2018'},
+			           {id: '2019', name: '2019'},
+			           {id: '2020', name: '2020'}
+
+	                   ];
+	
+	
 	$scope.init = function() {
 		console.log("in publication init method");
 		$scope.loading=true;
+		
 		if($scope.year==2014){
 			$scope.yearModel=$scope.yeardata.availableOptions[0];
 		}else if($scope.year==2015){
@@ -25,12 +79,14 @@ app.controller('MainController',function($scope,$http,$filter) {
 		$scope.monthModel=$scope.monthdata.availableOptions[$scope.month-1];
 
 		
+		
 		$scope.publicationList=[];
-		$http.post('/webapp/gallery/get_publicatio_images/'+$scope.month+'/'+$scope.year).success(function(data) {
+		$http.post('/webapp/gallery/get_publicatio_images/'+$scope.currentmonth+'/'+$scope.currentYear).success(function(data) {
 			console.log("in responce");
 			$scope.publicationList=data;
 			$scope.loading=false;
 			
+		
 			if($scope.publicationList.length==0){
 				$(function(){
 					new PNotify({
@@ -81,6 +137,7 @@ app.controller('MainController',function($scope,$http,$filter) {
 			                   ],
 	};
 
+	
 	$scope.dateChange=function(month,year){
 		console.log('month is ',month);
 		console.log('year is ',year);
