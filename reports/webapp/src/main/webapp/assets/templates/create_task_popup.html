@@ -1,0 +1,71 @@
+
+
+<style>
+.boxshadow {
+	-moz-box-shadow: 3px 3px 5px #535353;
+	-webkit-box-shadow: 3px 3px 5px #535353;
+	box-shadow: 3px 3px 5px #535353;
+}
+
+.roundbox {
+	-moz-border-radius: 6px 6px 6px 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px 6px 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+	
+</script>
+
+
+<div class="roundbox boxshadow" style="border: solid 2px steelblue">
+	<div style="margin: 1%; height: 500px">
+
+
+		<form>
+			<fieldset class="form-group">
+				<label for="taskName">Task Name</label> <input type="text"
+					class="form-control" id="taskName" placeholder="Enter task name">
+			</fieldset>
+			<fieldset class="form-group">
+				<label for="Description">Description</label>
+				<textarea class="form-control" id="Description" rows="3"></textarea>
+			</fieldset>
+
+			<fieldset class="form-group">
+				<label for="imageUpload">Image Upload</label> <input type="file"
+					class="form-control-file" id="imageUpload">
+			</fieldset> 
+
+			
+
+
+
+			<fieldset class="form-group">
+				<label for="status">Status</label> <select
+					class="form-control" id="status">
+					<option>Live</option>
+					<option>Gallery</option>
+					<option>Transcription</option>
+					<option>Advertorial</option>
+				</select>
+			</fieldset>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+		
+		<form id="jsfForm" action="" class="dropzone" method="post">
+		<div class="fallback">
+			<input type="file" name="file" />
+		</div>
+	</form>
+
+	</div>
+
+	
+
+
+</div>
+
+
+

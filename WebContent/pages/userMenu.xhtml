@@ -53,7 +53,6 @@
 								<span class="sidebar-text">Parent Image</span>
 								<f:param name="menuId" value="6" />
 							</h:commandLink></li>
-							
 							<li id="menu16" title="Change Buckets"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
@@ -68,6 +67,14 @@
 								<span class="sidebar-text">Settings</span>
 								<f:param name="menuId" value="8" />
 							</h:commandLink></li>
+								<li id="menu29" title="Create Task"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
+								<i class="glyphicon glyphicon-tasks"></i>
+								<span class="sidebar-text">Create Task</span>
+								<f:param name="menuId" value="29" />
+							</h:commandLink></li>
+							
 							
 						 <li id="menu12" title="Manage Company"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
@@ -163,7 +170,9 @@
 				document.getElementById("menu6").setAttribute("class", "current active");
 			} else if (menuval == "7") {
 				document.getElementById("menu7").setAttribute("class", "current active");
-			} else if (menuval == "8") {
+			} else if (menuval == "29") {
+				document.getElementById("menu29").setAttribute("class", "current active");
+			}else if (menuval == "8") {
 				document.getElementById("menu8").setAttribute("class", "current active");
 			} else if (menuval == "9") {
 				document.getElementById("menu9").setAttribute("class", "current active");

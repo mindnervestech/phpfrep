@@ -1086,6 +1086,87 @@ public class GalleryController {
 	}
 	
 	
+	@RequestMapping(value="/get_filter_task/{searchTask}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<TaskVm> getfilterTask(@PathVariable("searchTask") String searchTask){
+		
+
+		System.out.println("in search filter method");
+		System.out.println("search text is"+searchTask);
+		
+		List<Map<String,Object>> taskList = new ArrayList<Map<String,Object>>();
+		
+		String sqlq="select t.DN_ID,t.DN_NAME,t.DN_DESCRIPTION,t.DN_STATUS,t.DD_CREATED_BY,"+
+				 " t.DD_CREATED_ON,u.DC_FIRSTNAME,u.DC_LASTNAME "+ 
+                " from tbl_task t inner join tbl_user u on t.DD_CREATED_BY=u.DN_ID  ORDER BY t.DN_ID desc";
+		
+		String sql=null;
+		if(searchTask.equalsIgnoreCase("All")){
+			
+			sql="select t.DN_ID,t.DN_NAME,t.DN_DESCRIPTION,t.DN_STATUS,t.DD_CREATED_BY,"+
+				 " t.DD_CREATED_ON,u.DC_FIRSTNAME,u.DC_LASTNAME "+ 
+                " from tbl_task t inner join tbl_user u on t.DD_CREATED_BY=u.DN_ID  ORDER BY t.DN_ID desc";
+		}else{
+			
+			sql="select t.DN_ID,t.DN_NAME,t.DN_DESCRIPTION,t.DN_STATUS,t.DD_CREATED_BY, "+
+					 "t.DD_CREATED_ON,u.DC_FIRSTNAME,u.DC_LASTNAME "+
+                     " from tbl_task t inner join tbl_user u on t.DD_CREATED_BY=u.DN_ID and "+
+                     " t.DN_STATUS like '%"+searchTask+"%'  ORDER BY t.DN_ID desc";
+			
+		/* sql="select * from tbl_task t where t.DN_STATUS like '%"+searchTask+"%'";*/
+		}
+		taskList=jt.queryForList(sql);
+
+		List<TaskVm> li= new ArrayList<TaskVm>();
+		for (Map<String, Object> pImage : taskList) {
+
+			TaskVm tVm= new TaskVm();
+			
+			if(pImage.get("DN_ID")!=null){
+
+				tVm.id=Long.parseLong(pImage.get("DN_ID").toString());
+			}
+			if(pImage.get("DN_NAME")!=null){
+
+				tVm.name=pImage.get("DN_NAME").toString();
+			}
+			if(pImage.get("DN_DESCRIPTION")!=null){
+
+				tVm.desc=pImage.get("DN_DESCRIPTION").toString();
+			}
+			if(pImage.get("DN_STATUS")!=null){
+
+				tVm.status=pImage.get("DN_STATUS").toString();
+			}
+			if(pImage.get("DD_CREATED_BY")!=null){
+
+				tVm.createdBy=pImage.get("DD_CREATED_BY").toString();
+			}
+			if(pImage.get("DD_CREATED_ON")!=null){
+
+				tVm.createdOn=pImage.get("DD_CREATED_ON").toString();
+			}
+			if(pImage.get("DC_FIRSTNAME")!=null){
+
+				tVm.firstName=pImage.get("DC_FIRSTNAME").toString();
+			}
+			if(pImage.get("DC_LASTNAME")!=null){
+
+				tVm.lastName=pImage.get("DC_LASTNAME").toString();
+			}
+			
+			li.add(tVm);
+
+		}
+		
+		
+		
+		return li;
+
+		
+	}
+	
+	
 	@RequestMapping(value="/get_filter_image/{id}", method=RequestMethod.GET)
 	@ResponseBody
 	public List<ImagesVM> getfilterimage(@PathVariable("id") String filter){
@@ -1466,6 +1547,99 @@ public class GalleryController {
 	}
 	
 
+	@RequestMapping(value="/update_task", method=RequestMethod.POST)
+	@ResponseBody
+	public String updateTask(@RequestBody TaskVm taskVm){
+		
+//		System.out.println("in save task method");
+//		System.out.println("name is "+taskVm.name);
+//		System.out.println("desc is "+taskVm.desc);
+//		System.out.println("status is "+taskVm.status);
+//		System.out.println("usertId is "+taskVm.id);
+		
+		
+		String sql="update tbl_task  set DN_NAME='"+taskVm.name+"',DN_DESCRIPTION='"+taskVm.desc+"',DN_STATUS='"+taskVm.status+"' where DN_ID="+taskVm.id;
+	   
+		jt.execute(sql);
+	   
+		return "success";
+		
+	}
+	
+	@RequestMapping(value="/save_task", method=RequestMethod.POST)
+	@ResponseBody
+	public String saveTask(@RequestBody TaskVm taskVm){
+		
+//		System.out.println("in save task method");
+//		System.out.println("name is "+taskVm.name);
+//		System.out.println("desc is "+taskVm.desc);
+//		System.out.println("status is "+taskVm.status);
+		
+		String sql="insert into tbl_task (DN_NAME,DN_DESCRIPTION,DN_STATUS,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+taskVm.name+"','"+taskVm.desc+"','"+taskVm.status+"','"+taskVm.createdBy+"',CURRENT_DATE())";
+	   
+		jt.execute(sql);
+	   
+		return "success";
+		
+	}
+	
+	@RequestMapping(value="/get_all_task", method=RequestMethod.GET)
+	@ResponseBody
+	public List getAllTask(){
+		
+		List<Map<String,Object>> taskList = new ArrayList<Map<String,Object>>();
+		/*String sql="select * from tbl_task t ORDER BY t.DN_ID desc";*/
+		String sql="select t.DN_ID,t.DN_NAME,t.DN_DESCRIPTION,t.DN_STATUS,t.DD_CREATED_BY,"+
+				 " t.DD_CREATED_ON,u.DC_FIRSTNAME,u.DC_LASTNAME "+ 
+                 " from tbl_task t inner join tbl_user u on t.DD_CREATED_BY=u.DN_ID  ORDER BY t.DN_ID desc";
+		taskList=jt.queryForList(sql);
+
+		List<TaskVm> li= new ArrayList<TaskVm>();
+		for (Map<String, Object> pImage : taskList) {
+
+			TaskVm tVm= new TaskVm();
+			
+			if(pImage.get("DN_ID")!=null){
+
+				tVm.id=Long.parseLong(pImage.get("DN_ID").toString());
+			}
+			if(pImage.get("DN_NAME")!=null){
+
+				tVm.name=pImage.get("DN_NAME").toString();
+			}
+			if(pImage.get("DN_DESCRIPTION")!=null){
+
+				tVm.desc=pImage.get("DN_DESCRIPTION").toString();
+			}
+			if(pImage.get("DN_STATUS")!=null){
+
+				tVm.status=pImage.get("DN_STATUS").toString();
+			}
+			if(pImage.get("DD_CREATED_BY")!=null){
+
+				tVm.createdBy=pImage.get("DD_CREATED_BY").toString();
+			}
+			if(pImage.get("DD_CREATED_ON")!=null){
+
+				tVm.createdOn=pImage.get("DD_CREATED_ON").toString();
+			}
+			if(pImage.get("DC_FIRSTNAME")!=null){
+
+				tVm.firstName=pImage.get("DC_FIRSTNAME").toString();
+			}
+			if(pImage.get("DC_LASTNAME")!=null){
+
+				tVm.lastName=pImage.get("DC_LASTNAME").toString();
+			}
+			
+			li.add(tVm);
+
+		}
+		
+		
+		
+		return li;
+	}
 	
 	@RequestMapping(value="/all_image_list", method=RequestMethod.GET)
 	@ResponseBody
