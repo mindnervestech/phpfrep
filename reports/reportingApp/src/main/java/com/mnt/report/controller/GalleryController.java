@@ -13,18 +13,29 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.coobird.thumbnailator.Thumbnails;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
@@ -35,6 +46,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -45,6 +57,7 @@ import sun.util.locale.StringTokenIterator;
 import com.google.gson.Gson;
 import com.mnt.report.util.CommonUtils;
 import com.mysql.jdbc.PreparedStatement;
+
 
 
 
@@ -68,6 +81,98 @@ public class GalleryController {
 
     
 
+	@RequestMapping(value="/uploadImages",method=RequestMethod.POST)
+	@ResponseBody
+	public void getAllParentImageImg(HttpServletRequest request, 
+			HttpServletResponse response) throws ServletException, java.io.IOException {
+		
+		System.out.println("in uploadImages method");
+		
+		/*MultipartFormData body = request().body().asMultipartFormData();
+		*/
+		boolean isMultipart;
+		isMultipart = ServletFileUpload.isMultipartContent(request);
+		response.setContentType("text/html");
+		java.io.PrintWriter out = response.getWriter( );
+		if( !isMultipart ){
+			System.out.println("form type mismatch");
+			return;
+		}
+		
+		System.out.println("all ok");
+		
+		DiskFileItemFactory factory = new DiskFileItemFactory();
+		
+		factory.setRepository(new File("D:/temp"));
+		
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		String filePath;
+		
+		try{ 
+			String userId="3";
+			/*filePath = CommonProperties.getBasePath()+CommonProperties.getImageContextPath()+CommonProperties.getParentImageTempPath();
+			*/
+			
+			filePath = "D:/temp";
+			
+			File file = new File(filePath);
+			if(!file.exists()){				
+				file.mkdirs();
+			}
+		
+			// Parse the request to get file items.
+			List fileItems = upload.parseRequest(request);
+			System.out.println("file size are "+fileItems.size());
+		
+			// Process the uploaded file items
+			Iterator i = fileItems.iterator();
+			System.out.println("Image Servlet upload");  
+			while ( i.hasNext () ) 
+			{
+				
+				System.out.println("in loop 1st");
+				FileItem fi = (FileItem)i.next();
+				if ( !fi.isFormField () )	
+				{
+					System.out.println("in second loop");
+					String  extension="";
+					// Get the uploaded file parameters
+					String fieldName = fi.getFieldName();
+					String fileName = fi.getName();
+					String contentType = fi.getContentType();
+					boolean isInMemory = fi.isInMemory();
+					long sizeInBytes = fi.getSize();
+					String[] split = fileName.split("\\.");
+					extension = split[split.length - 1];
+					String fileString = split[split.length - 2];
+					fileString=fileString.replaceAll(" ", "_");
+					fileName=fileString+"."+extension;
+					// Write the file
+					if( fileName.lastIndexOf("\\") >= 0 ){
+						file = new File( filePath + "/"+
+								fileName.substring( fileName.lastIndexOf("\\"))) ;
+					}else{
+						file = new File( filePath +  "/"+
+								fileName.substring(fileName.lastIndexOf("\\")+1)) ;
+					}
+					fi.write( file ) ;
+					System.out.println("Uploaded Filename: " + fileName + "<br>");
+				}
+				
+				}
+			out.println("</body>");
+			out.println("</html>");
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
+	}
+	
 	
 	@RequestMapping(value="/create_thumnail_images", method=RequestMethod.GET)
 	@ResponseBody
@@ -224,6 +329,7 @@ public class GalleryController {
 	@RequestMapping(value="/duplicateImageList", method=RequestMethod.GET)
 	@ResponseBody
 	public List getDuplicateImageList(){
+		System.out.println("IN DUPLICATE IMAGE");
 		List<Map<String,Object>> parentImageListfornewSci = new ArrayList<Map<String,Object>>();
 	    List<String> duplicateNames= new ArrayList<String>();
 	    
@@ -311,6 +417,76 @@ public class GalleryController {
 	}
 	
 	
+	@RequestMapping(value="/set_jobId_status", method=RequestMethod.GET)
+	@ResponseBody
+	public void setJobIdStatus(){
+		
+
+		System.out.println("in setJobIsStatus method..........");
+		String sql = "select d.DN_ID, d.DN_PARENT_IMAGE_ID from tbl_de_job d";
+		List<Map<String,Object>> resultsList =  jt.queryForList(sql);
+		
+		int statusOne=0;
+		int starusZero=0;
+		for (Map<String, Object> map : resultsList) {
+			
+			String 	sqlForJobId = "select * from tbl_de_data d where d.DB_DELETED=0 and d.DE_JOB_ID='"+map.get("DN_ID").toString()+"'";
+			List<Map<String,Object>> deDataList =  jt.queryForList(sqlForJobId);
+			
+			if(deDataList.size()!=0){
+			
+				long compleated = 0;
+				for(Map<String, Object> data : deDataList){
+					
+					String temp=String.valueOf(data.get("DN_DECOMPANY_ID"));
+					
+					if(temp!=null){
+						compleated++;
+					}
+					
+				}
+				
+				if(compleated==deDataList.size()){
+					String sqlUpdat="Update tbl_de_job set DN_STATUS=1 Where DN_ID="+map.get("DN_ID").toString();
+					jt.execute(sqlUpdat);
+					
+					statusOne++;
+					
+				}else{
+					/*String sqlUpdatStatusZere="Update tbl_de_job set DN_STATUS=0 Where DN_ID="+map.get("DN_ID").toString();
+					jt.execute(sqlUpdatStatusZere);
+					starusZero++;
+					*/
+					
+					
+					
+				}
+				
+			}
+			else {
+				
+				try {
+					if(map.get("DN_PARENT_IMAGE_ID") != null ) {
+						String sqlUpdatStatusZere="Update tbl_parent_image set DN_STATUS=0 Where DN_ID="+map.get("DN_PARENT_IMAGE_ID").toString();
+						jt.execute(sqlUpdatStatusZere);
+					}
+					
+					String	sqlUpdatStatus="Update tbl_de_job set DN_STATUS=0 Where DN_ID="+map.get("DN_ID").toString();
+					jt.execute(sqlUpdatStatus);
+					starusZero++;
+				} catch (Exception e) {
+					e.printStackTrace();
+					
+				}
+				
+			}
+			
+		}
+		
+		System.out.println("one is .."+statusOne);
+		System.out.println("zero is..."+starusZero);
+	}
+	
 	
 	@RequestMapping(value="/get_publication_title", method=RequestMethod.GET)
 	@ResponseBody
@@ -381,6 +557,7 @@ public class GalleryController {
 		
 	}
 	
+
 	
 	
 	@RequestMapping(value="/save_comment", method=RequestMethod.POST)
@@ -589,6 +766,7 @@ public class GalleryController {
 	@ResponseBody
 	public CropImageVm saveCropImage(@RequestBody CropImageVm cropImageVm) throws IOException{
 		System.out.println("in save crop image");
+		System.out.println("login user id is "+cropImageVm.getLoginUserId());
 		
 		Double x1,x2,y1,y2,w,h;
 		
@@ -605,6 +783,8 @@ public class GalleryController {
 		int y22=y2.intValue();
 		int w1=w.intValue();
 		int h1=h.intValue();
+		System.out.println("height is "+h1);
+		System.out.println("height is "+w1);
 		
 		
 		String sqlImagName="select DC_IMAGENAME from tbl_parent_image where DN_ID="+cropImageVm.getId();
@@ -654,8 +834,7 @@ public class GalleryController {
 		
 	//	final String result="testing";
 		
-	//	System.out.println("after ocr result");
-		
+		System.out.println("after ocr result");
 		
     	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now(),DC_HEIGHT='"+heightCM+"',DC_WIDTH='"+widthCM+"' where DN_ID="+childid;
     	jt.execute(updateSql);
@@ -901,27 +1080,30 @@ public class GalleryController {
 		
 	}*/
 	
+	
+	
+	
 	@RequestMapping(value="/get_filter_image_history", method=RequestMethod.POST)
 	@ResponseBody
 	public List getFilterImageHistory(@RequestBody ImageHistoryVm Ivm) throws ParseException{
 	
-	//	System.out.println("get_filter_image_history");
-	//	System.out.println("date from is"+Ivm.getDateFrom());
-	//	System.out.println("date to is "+Ivm.getDateTo());
+		System.out.println("get_filter_image_history");
+		System.out.println("date from is"+Ivm.getDateFrom());
+		System.out.println("date to is "+Ivm.getDateTo());
 		
 		String[] arrTemp=Ivm.getDateFrom().split("/");
-	//	System.out.println("array size is"+arrTemp.length);
+		System.out.println("array size is"+arrTemp.length);
 		
 		String dateFromT=arrTemp[2]+"-"+arrTemp[0]+"-"+arrTemp[1];
 		
-	//	System.out.println("final date is "+dateFromT);
+		System.out.println("final date is "+dateFromT);
 		
 		
 		String[] arrTempTo=Ivm.getDateTo().split("/");
-	//	System.out.println("array size is"+arrTempTo.length);
+		System.out.println("array size is"+arrTempTo.length);
 		
 		String dateToT=arrTempTo[2]+"-"+arrTempTo[0]+"-"+arrTempTo[1];
-	//	System.out.println("final date to is "+dateToT);
+		System.out.println("final date to is "+dateToT);
 		
 
 		List<ImageHistoryVm> listImage= new ArrayList<ImageHistoryVm>();
@@ -930,7 +1112,7 @@ public class GalleryController {
 		String sql="select * from tbl_parent_image t where date(t.DD_CREATED_ON) BETWEEN '"+dateFromT+"' and '"+dateToT+"'";
 		
 		imageHistoryList=jt.queryForList(sql);
-	//	System.out.println("size of list is "+imageHistoryList.size());
+		System.out.println("size of list is "+imageHistoryList.size());
 		
 		int i=1;
 		for (Map<String, Object> pImage : imageHistoryList) {
@@ -957,7 +1139,7 @@ public class GalleryController {
 			
 			listImage.add(vm);
 		}
-	//	System.out.println("size of image history list is"+listImage);
+		System.out.println("size of image history list is"+listImage);
 	
 	return listImage;
 		
@@ -993,7 +1175,7 @@ public class GalleryController {
         	imageName=results.get("DC_IMAGENAME").toString();
         }
 		
-    //    System.out.println("before insert row");
+        System.out.println("before insert row");
 		String sqldeteteChild="insert into tbl_deleted_image (DN_IMAGEID,DC_IMAGENAME,DN_DELETED_BY,DD_DELETED_ON,DB_ISCHILD) VALUES('"+imageid+"','"+imageName+"','"+deletedBy+"',now(),'1')";
 		jt.execute(sqldeteteChild);
 		System.out.println("delete row created");
@@ -1175,7 +1357,7 @@ public class GalleryController {
 		List<ImagesVM> li= new ArrayList<ImagesVM>();
 		String url="/webapp/get-all-parent-image?id=";
 		int stat=Integer.parseInt(filter);
-	
+		System.out.println("status is "+stat);
 		
 		int n=0;
 		int m=0;
@@ -1326,11 +1508,13 @@ public class GalleryController {
 		
 		
 		Collections.reverse(li);
-	//	String json = new Gson().toJson(li);
-	//	System.out.println("...."+json);
+		String json = new Gson().toJson(li);
+		System.out.println("...."+json);
 		return li;
 	
 	}
+	
+	
 	
 	
 	@RequestMapping(value="/all_image_history", method=RequestMethod.POST)
@@ -1396,58 +1580,119 @@ public class GalleryController {
 	
 	
 	
-	/*@RequestMapping(value="/all_image_history", method=RequestMethod.GET)
+	@RequestMapping(value="/get_publication_gallery_images/{month}/{year}/{publication}", method=RequestMethod.POST)
 	@ResponseBody
-	public List getAllImageHistory(){
-		
-		List<ImageHistoryVm> listImage= new ArrayList<ImageHistoryVm>();
-		List<Map<String,Object>> imageHistoryList = new ArrayList<Map<String,Object>>();
-		String sql="select m.DN_ID,m.DC_IMAGENAME,m.DD_CREATED_ON,m.DD_ISSUE_DATE from tbl_parent_image m where DATEDIFF(now(),m.DD_CREATED_ON) < 7 ORDER  BY m.DD_CREATED_ON desc";
-		imageHistoryList=jt.queryForList(sql);
-		System.out.println("size of list is "+imageHistoryList.size());
-		
-		int i=1;
-		for (Map<String, Object> pImage : imageHistoryList) {
-			ImageHistoryVm vm= new ImageHistoryVm();
-			
-			vm.setId(i);
-			i++;
-			if(pImage.get("DN_ID")!=null){
-			
-				vm.setJobId(Long.parseLong(pImage.get("DN_ID").toString()));
-			}
+	public Map<String, List<ImagesVM>> getPublicatioGalleryImages(@PathVariable("month") String month,@PathVariable("year") String year,@PathVariable("publication") String publication ){
+
+		System.out.println("in getPublicatation title");
+		System.out.println("month is "+month);
+		System.out.println("yea is r_"+year);
+		System.out.println("publication is "+publication);
+
+
+		List<ImagesVM> usList= new ArrayList<ImagesVM>();
+		List<ImagesVM> ukList= new ArrayList<ImagesVM>();
+
+		List<Map<String,Object>> parentImageList = new ArrayList<Map<String,Object>>();
+		String sql="select p.DN_ID,u.DC_FIRSTNAME,u.DC_LASTNAME,p.DC_IMAGENAME,p.DN_STATUS,p.DC_PUBLICATION_TITLE"
+				+ ",p.DD_ISSUE_DATE,t.DC_PUBLICATION_TITLE as publication " 
+				+" from tbl_parent_image p,tbl_publication t,tbl_user u where p.DC_PUBLICATION_TITLE=t.DN_ID  "
+				+ "and p.DN_CREATED_BY=u.DN_ID "
+				+ " and month(p.DD_ISSUE_DATE)='"+month+"' and year(p.DD_ISSUE_DATE)='"+year+"' and t.DC_PUBLICATION_TITLE "
+				+ "like '%"+publication+"%'";
+		parentImageList=jt.queryForList(sql);
+
+		for (Map<String, Object> pImage : parentImageList) {
+
+			ImagesVM imagesVM= new ImagesVM();
 			if(pImage.get("DC_IMAGENAME")!=null){
+
+				imagesVM.setDC_IMAGENAME(pImage.get("DC_IMAGENAME").toString());
+				String thumImageName=pImage.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+				imagesVM.setThumb(thumImageName);
+			}
+
+			if(pImage.get("DC_FIRSTNAME")!=null){
+				imagesVM.setCREATED_BY(pImage.get("DC_FIRSTNAME").toString());
+			}
+
+			if(pImage.get("DN_ID")!=null){
+				imagesVM.setDN_ID(Long.valueOf(pImage.get("DN_ID").toString()));
+			}
+
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			Object d=pImage.get("DD_ISSUE_DATE");
+
+			if(d!=null){
+				String dateInString1 =d.toString();
+				try {
+					Date date1 = formatter.parse(dateInString1);
+					imagesVM.setDD_ISSUE_DATE(date1);
+					imagesVM.setDateissue(formatter.format(date1));
+
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+
+			String id=pImage.get("DN_ID").toString();
+			List<Map<String,Object>> childImageList = new ArrayList<Map<String,Object>>();
+			String sql1="select m.DC_IMAGENAME,m.DN_ID from tbl_child_image m where m.DN_PARENT_IMAGE_ID="+id;
+			childImageList=jt.queryForList(sql1);
+			List<ChildImageVm> arrayList= new ArrayList<ChildImageVm>();
+			for (Map<String, Object> map : childImageList) {
+				ChildImageVm childVm= new ChildImageVm();
+
+				if(map.get("DN_ID")!=null){
+					childVm.setDN_ID(Long.valueOf(map.get("DN_ID").toString()));
+				}
+				if(map.get("DC_IMAGENAME")!=null){
+					childVm.setDC_IMAGENAME(map.get("DC_IMAGENAME").toString());
+					String thumChildImageName=map.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
+					childVm.setChildThumb(thumChildImageName);
+
+				}
+
+				arrayList.add(childVm);
+			}
+			imagesVM.getListVm().addAll(arrayList);
+
+			if(pImage.get("publication")!=null){
 				
-				vm.setImageName(pImage.get("DC_IMAGENAME").toString());
-			}
-			if(pImage.get("DD_CREATED_ON")!=null){
+				imagesVM.publication=pImage.get("publication").toString();
+				if(pImage.get("publication").toString().contains("UK")){
+					ukList.add(imagesVM);
+				}else{
+					usList.add(imagesVM);
+				}
 
-				vm.setCreatedDate(pImage.get("DD_CREATED_ON").toString());
 			}
-			if(pImage.get("DD_ISSUE_DATE")!=null){
 
-				vm.setIssueDate(pImage.get("DD_ISSUE_DATE").toString());
-			}
-			
-			listImage.add(vm);
 		}
-		System.out.println("size of image history list is"+listImage);
-	
-	return listImage;
+
+		String ukjson = new Gson().toJson(ukList);
+		String usjson = new Gson().toJson(usList);
+		System.out.println("ul lis is "+ukjson);
+		System.out.println("us list is "+usjson);
+
+		Map<String, List<ImagesVM>> vm= new HashMap<String, List<ImagesVM>>();
+
+		vm.put("us", usList);
+		vm.put("uk", ukList);
+
+
+		return vm;
 	}
 	
-*/	
-
-
-
+	
 	@RequestMapping(value="/get_publicatio_images/{month}/{year}", method=RequestMethod.POST)
 	@ResponseBody
 	public List<PublicationVm> getPublicatioImages(@PathVariable("month") String month,@PathVariable("year") String year){
 	
 		System.out.println("in getPublicatation title");
 		
-	//	System.out.println("month is "+month);
-	//	System.out.println("yea is r_"+year);
+		System.out.println("month is "+month);
+		System.out.println("yea is r_"+year);
 		List<PublicationVm> li= new ArrayList<PublicationVm>();
 		
 		
@@ -1540,27 +1785,69 @@ public class GalleryController {
 			
 		}
 		
-	//	String json = new Gson().toJson(li);
-	//	System.out.println("json is.. "+json);
+		String json = new Gson().toJson(li);
+		System.out.println("json is.. "+json);
 		
 		return li;
 	}
 	
+	
+	
+		
 
 	@RequestMapping(value="/update_task", method=RequestMethod.POST)
 	@ResponseBody
-	public String updateTask(@RequestBody TaskVm taskVm){
+	public String updateTask( HttpServletRequest request){
 		
-//		System.out.println("in save task method");
-//		System.out.println("name is "+taskVm.name);
-//		System.out.println("desc is "+taskVm.desc);
-//		System.out.println("status is "+taskVm.status);
-//		System.out.println("usertId is "+taskVm.id);
+		System.out.println("in save task method");
+
+		String name=request.getParameter("name");
+		String desc=request.getParameter("desc");
+		String status=request.getParameter("status");
+		String id=request.getParameter("id");
 		
+		long taskid=Long.parseLong(id);
+
+		System.out.println("name is "+name);
+		System.out.println("created by "+id);
 		
-		String sql="update tbl_task  set DN_NAME='"+taskVm.name+"',DN_DESCRIPTION='"+taskVm.desc+"',DN_STATUS='"+taskVm.status+"' where DN_ID="+taskVm.id;
+	
+		
+		String sql="update tbl_task  set DN_NAME='"+name+"',DN_DESCRIPTION='"+desc+"',DN_STATUS='"+status+"' where DN_ID="+taskid;
 	   
 		jt.execute(sql);
+		
+		
+		
+		
+		MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
+		if(!mRequest.getFileMap().isEmpty()){
+			System.out.println("in first loop");
+			for (MultipartFile file : mRequest.getFileMap().values()) {
+				System.out.println("in second loop");
+
+				
+				String sqlimage="INSERT into tbl_task_image (DN_TASK_ID) VALUES('"+id+"')";
+				jt.execute(sqlimage);
+				
+				long taskImageId = jt.queryForLong("select max(DN_ID) from tbl_task_image");
+				
+				
+				String[] str1 = file.getOriginalFilename().split(Pattern.quote("."));
+				
+				String extention = "."+str1[str1.length-1];
+				String contenttype=file.getContentType();
+				String fileName=file.getOriginalFilename();
+				String size=Long.toString(file.getSize());
+				
+				String filePath = saveFileToSystem(file,taskid,taskImageId); 
+				System.out.println("filePath is "+filePath);
+				String sqlupdate="update tbl_task_image set DN_IMAGENAME ='"+file.getOriginalFilename()+"' where DN_ID="+taskImageId;
+				jt.execute(sqlupdate);
+				
+			}			
+		}
+		
 	   
 		return "success";
 		
@@ -1568,20 +1855,340 @@ public class GalleryController {
 	
 	@RequestMapping(value="/save_task", method=RequestMethod.POST)
 	@ResponseBody
-	public String saveTask(@RequestBody TaskVm taskVm){
+	public String saveTask( HttpServletRequest request){
 		
-//		System.out.println("in save task method");
-//		System.out.println("name is "+taskVm.name);
-//		System.out.println("desc is "+taskVm.desc);
-//		System.out.println("status is "+taskVm.status);
+		System.out.println("in save task method");
 		
-		String sql="insert into tbl_task (DN_NAME,DN_DESCRIPTION,DN_STATUS,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+taskVm.name+"','"+taskVm.desc+"','"+taskVm.status+"','"+taskVm.createdBy+"',CURRENT_DATE())";
+		
+
+		String name=request.getParameter("name");
+		String desc=request.getParameter("desc");
+		String status=request.getParameter("status");
+		String createdBy=request.getParameter("createdBy");
+
+		System.out.println("name is "+name);
+		System.out.println("created by "+createdBy);
+		
+		
+		String sql="insert into tbl_task (DN_NAME,DN_DESCRIPTION,DN_STATUS,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+name+"','"+desc+"','"+status+"','"+createdBy+"',CURRENT_DATE())";
+		jt.execute(sql);
+		
+		
+		long taskId = jt.queryForLong("select max(DN_ID) from tbl_task");
+		
+		MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
+		if(!mRequest.getFileMap().isEmpty()){
+			System.out.println("in first loop");
+			for (MultipartFile file : mRequest.getFileMap().values()) {
+				System.out.println("in second loop");
+
+				
+				String sqlimage="INSERT into tbl_task_image (DN_TASK_ID) VALUES("+taskId+")";
+				jt.execute(sqlimage);
+				
+				long taskImageId = jt.queryForLong("select max(DN_ID) from tbl_task_image");
+				
+				
+				String[] str1 = file.getOriginalFilename().split(Pattern.quote("."));
+				
+				String extention = "."+str1[str1.length-1];
+				String contenttype=file.getContentType();
+				String fileName=file.getOriginalFilename();
+				String size=Long.toString(file.getSize());
+				
+				String filePath = saveFileToSystem(file,taskId,taskImageId); 
+				System.out.println("filePath is "+filePath);
+				String sqlupdate="update tbl_task_image set DN_IMAGENAME ='"+file.getOriginalFilename()+"' where DN_ID="+taskImageId;
+				jt.execute(sqlupdate);
+				
+			}			
+		}
+		
+		
+		
+		
+		
+		/*String sql="insert into tbl_task (DN_NAME,DN_DESCRIPTION,DN_STATUS,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+taskVm.name+"','"+taskVm.desc+"','"+taskVm.status+"','"+taskVm.createdBy+"',CURRENT_DATE())";
 	   
 		jt.execute(sql);
+	   */
+		return "success";
+		
+	}
+	
+	
+	@RequestMapping(value="/update_faq", method=RequestMethod.POST)
+	@ResponseBody
+	public String updateFAQ( HttpServletRequest request){
+		
+		System.out.println("in update task method");
+
+		String Operation=request.getParameter("Operation");
+		String desc=request.getParameter("desc");
+		String data=request.getParameter("data");
+		String alert=request.getParameter("alert");
+		String id=request.getParameter("id");
+
+		long faqId=Long.parseLong(id);
+
+		
+	
+		
+		String sql="update tbl_faq set DN_OPERATION='"+Operation+"',DN_ALERT='"+alert+"',DN_DESCRIPTION='"+desc+"',DN_DATAFIELD='"+data+"' where DN_ID="+faqId;
+	   
+		jt.execute(sql);
+		
+		MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
+		if(!mRequest.getFileMap().isEmpty()){
+			System.out.println("in first loop");
+			for (MultipartFile file : mRequest.getFileMap().values()) {
+				System.out.println("in second loop");
+
+				
+				String sqlimage=" insert INTO tbl_faq_images (DN_FAQ_ID) VALUES('"+faqId+"')";
+				jt.execute(sqlimage);
+				
+				long faqImageId = jt.queryForLong("select max(DN_ID) from tbl_faq_images");
+				
+				
+				String[] str1 = file.getOriginalFilename().split(Pattern.quote("."));
+				
+				String extention = "."+str1[str1.length-1];
+				String contenttype=file.getContentType();
+				String fileName=file.getOriginalFilename();
+				String size=Long.toString(file.getSize());
+				
+				String filePath = saveFileToSystemfaq(file,faqId,faqImageId); 
+				System.out.println("filePath is "+filePath);
+				String sqlupdate="update tbl_faq_images set DN_IMAGENAME ='"+file.getOriginalFilename()+"' where DN_ID="+faqImageId;
+				jt.execute(sqlupdate);
+				
+			}			
+		}
+		
 	   
 		return "success";
 		
 	}
+
+
+	
+	
+	@RequestMapping(value="/save_faq", method=RequestMethod.POST)
+	@ResponseBody
+	public String saveFAQ( HttpServletRequest request){
+		
+		System.out.println("in save FAQ method");
+
+		/*
+		$scope.json={
+				"Operation":task.Operation,
+				"desc":task.desc,
+				"data":task.data,
+				"createdBy":$scope.loginUserId,
+				"alert":task.alert
+		};*/
+		
+		String Operation=request.getParameter("Operation");
+		String desc=request.getParameter("desc");
+		String data=request.getParameter("data");
+		String createdBy=request.getParameter("createdBy");
+		String alert=request.getParameter("alert");
+
+		System.out.println("name is "+Operation);
+		System.out.println("created by "+data);
+		
+		
+		
+		String sql="insert INTO tbl_faq (DN_OPERATION,DN_ALERT,DN_DESCRIPTION,DN_DATAFIELD,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+Operation+"','"+alert+"','"+desc+"','"+data+"','"+createdBy+"',CURRENT_DATE())";
+		jt.execute(sql);
+		
+		
+		long faqId = jt.queryForLong("select max(DN_ID) from tbl_faq");
+		
+		MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
+		if(!mRequest.getFileMap().isEmpty()){
+			System.out.println("in first loop");
+			for (MultipartFile file : mRequest.getFileMap().values()) {
+				System.out.println("in second loop");
+
+				
+				String sqlimage="insert into tbl_faq_images (DN_FAQ_ID) VALUES("+faqId+")";
+				jt.execute(sqlimage);
+				
+				long faqImageId = jt.queryForLong("select max(DN_ID) from tbl_faq_images");
+				
+				String[] str1 = file.getOriginalFilename().split(Pattern.quote("."));
+				
+				String extention = "."+str1[str1.length-1];
+				String contenttype=file.getContentType();
+				String fileName=file.getOriginalFilename();
+				String size=Long.toString(file.getSize());
+				
+				String filePath = saveFileToSystemfaq(file,faqId,faqImageId); 
+				System.out.println("filePath is "+filePath);
+				String sqlupdate="update tbl_faq_images set DN_IMAGENAME ='"+file.getOriginalFilename()+"' where DN_ID="+faqImageId;
+				jt.execute(sqlupdate);
+				
+			}			
+		}
+		
+		
+		
+		
+		
+		/*String sql="insert into tbl_task (DN_NAME,DN_DESCRIPTION,DN_STATUS,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+taskVm.name+"','"+taskVm.desc+"','"+taskVm.status+"','"+taskVm.createdBy+"',CURRENT_DATE())";
+	   
+		jt.execute(sql);
+	   */
+		return "success";
+		
+	}
+
+	
+
+
+
+	private String saveFileToSystem(MultipartFile file, long taskId, long taskImageId){
+
+
+
+		String s=fullImagePath;
+		System.out.println("path is s"+s);
+
+		File file3 = new File(fullImagePath+"taskImages/"+taskId+ "/" +taskImageId+"/");
+		if (!file3.exists()) {
+			file3.mkdirs();
+		}
+
+
+		//		File storePath = new File(path);
+		//		storePath.mkdirs();
+		String fullpath = fullImagePath+"taskImages/"+taskId+ "/" +taskImageId+"/"+file.getOriginalFilename();
+		System.out.println("path is "+fullpath);
+		File savefile = new File(fullpath);
+		try {
+			file.transferTo(savefile);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return savefile.getAbsolutePath();
+	}
+
+
+	private String saveFileToSystemfaq(MultipartFile file, long taskId, long taskImageId){
+
+
+
+		String s=fullImagePath;
+		System.out.println("path is s"+s);
+
+		File file3 = new File(fullImagePath+"faqImages/"+taskId+ "/" +taskImageId+"/");
+		if (!file3.exists()) {
+			file3.mkdirs();
+		}
+
+
+		//		File storePath = new File(path);
+		//		storePath.mkdirs();
+		String fullpath = fullImagePath+"faqImages/"+taskId+ "/" +taskImageId+"/"+file.getOriginalFilename();
+		System.out.println("path is "+fullpath);
+		File savefile = new File(fullpath);
+		try {
+			file.transferTo(savefile);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return savefile.getAbsolutePath();
+	}
+
+
+	@RequestMapping(value="/get_all_faq", method=RequestMethod.GET)
+	@ResponseBody
+	public List getAllFAQ(){
+
+		List<Map<String,Object>> taskList = new ArrayList<Map<String,Object>>();
+		/*String sql="select * from tbl_task t ORDER BY t.DN_ID desc";*/
+		String sql="select t.DN_ID,t.DN_DESCRIPTION,t.DN_OPERATION,t.DD_CREATED_BY,t.DD_CREATED_ON,u.DC_FIRSTNAME ,"
+				+ " u.DC_LASTNAME,t.DN_ALERT,t.DN_DATAFIELD from tbl_faq t inner join tbl_user u "
+				+ " on t.DD_CREATED_BY=u.DN_ID  ORDER BY t.DN_ID desc ";
+		taskList=jt.queryForList(sql);
+
+		List<TaskVm> li= new ArrayList<TaskVm>();
+		for (Map<String, Object> pImage : taskList) {
+
+			TaskVm tVm= new TaskVm();
+
+
+			if(pImage.get("DN_DESCRIPTION")!=null){
+
+				tVm.desc=pImage.get("DN_DESCRIPTION").toString();
+			}
+			if(pImage.get("DN_OPERATION")!=null){
+
+				tVm.operation=pImage.get("DN_OPERATION").toString();
+			}
+			if(pImage.get("DN_ALERT")!=null){
+
+				tVm.alert=pImage.get("DN_ALERT").toString();
+			}
+			if(pImage.get("DN_DATAFIELD")!=null){
+
+				tVm.dataField=pImage.get("DN_DATAFIELD").toString();
+			}
+			if(pImage.get("DD_CREATED_BY")!=null){
+
+				tVm.createdBy=pImage.get("DD_CREATED_BY").toString();
+			}
+			if(pImage.get("DD_CREATED_ON")!=null){
+
+				tVm.createdOn=pImage.get("DD_CREATED_ON").toString();
+			}
+			if(pImage.get("DC_FIRSTNAME")!=null){
+
+				tVm.firstName=pImage.get("DC_FIRSTNAME").toString();
+			}
+			if(pImage.get("DC_LASTNAME")!=null){
+
+				tVm.lastName=pImage.get("DC_LASTNAME").toString();
+			}
+
+
+			if(pImage.get("DN_ID")!=null){
+
+				List<TaskImageVm> arrayList= new ArrayList<TaskImageVm>();
+
+				Long id=Long.parseLong(pImage.get("DN_ID").toString());
+				tVm.id=id;
+
+				List<Map<String,Object>> taskImageList = new ArrayList<Map<String,Object>>();
+				String sqlforChild="select * from tbl_faq_images f where f.DN_FAQ_ID="+id;
+				taskImageList=jt.queryForList(sqlforChild);
+				for (Map<String, Object> map : taskImageList) {
+					TaskImageVm vm = new TaskImageVm();
+					if(map.get("DN_ID")!=null){
+
+						vm.taskImageId=Long.parseLong(map.get("DN_ID").toString());
+					}
+					if(map.get("DN_IMAGENAME")!=null){
+						vm.imageName=map.get("DN_IMAGENAME").toString();
+					}
+					arrayList.add(vm);
+				}
+
+				tVm.getListVm().addAll(arrayList);
+			}
+
+			li.add(tVm);
+		}
+		return li;
+	}
+
+
 	
 	@RequestMapping(value="/get_all_task", method=RequestMethod.GET)
 	@ResponseBody
@@ -1599,10 +2206,7 @@ public class GalleryController {
 
 			TaskVm tVm= new TaskVm();
 			
-			if(pImage.get("DN_ID")!=null){
-
-				tVm.id=Long.parseLong(pImage.get("DN_ID").toString());
-			}
+			
 			if(pImage.get("DN_NAME")!=null){
 
 				tVm.name=pImage.get("DN_NAME").toString();
@@ -1630,6 +2234,32 @@ public class GalleryController {
 			if(pImage.get("DC_LASTNAME")!=null){
 
 				tVm.lastName=pImage.get("DC_LASTNAME").toString();
+			}
+			
+			
+			if(pImage.get("DN_ID")!=null){
+
+				List<TaskImageVm> arrayList= new ArrayList<TaskImageVm>();
+			
+				Long id=Long.parseLong(pImage.get("DN_ID").toString());
+				tVm.id=id;
+				
+				List<Map<String,Object>> taskImageList = new ArrayList<Map<String,Object>>();
+				String sqlforChild="select * from tbl_task_image t where t.DN_TASK_ID="+id;
+				taskImageList=jt.queryForList(sqlforChild);
+				for (Map<String, Object> map : taskImageList) {
+					TaskImageVm vm = new TaskImageVm();
+					if(map.get("DN_ID")!=null){
+						
+						vm.taskImageId=Long.parseLong(map.get("DN_ID").toString());
+					}
+					if(map.get("DN_IMAGENAME")!=null){
+						vm.imageName=map.get("DN_IMAGENAME").toString();
+					}
+					arrayList.add(vm);
+				}
+				
+				tVm.getListVm().addAll(arrayList);
 			}
 			
 			li.add(tVm);
@@ -1794,7 +2424,10 @@ public class GalleryController {
 		}
 		System.out.println("count is "+l);
 		Collections.reverse(li);
-	//	String json = new Gson().toJson(li);
+		String json = new Gson().toJson(li);
+		System.out.println("json is.. "+json);
 		return li;
 	}
+	
+	
 }

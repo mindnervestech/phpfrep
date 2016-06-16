@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -386,38 +385,24 @@ input[type='checkbox'] {
 								<div class="tab_border p-0">
 									<div class="col-sm-12">
 										<div class="row">
-											<span ng-if="taskList.lenght==0" style="margin-left: 100px">No
-												Image found</span>
 
 											<div>
 												<div class="row">
 													<div class="col-xs-4 col-sm-4 col-md-4">
-														Search :
-														<!--  <input class="form-control" type="text" style="width: 60%" 
-													ng-model="searchTask" ng-change="searchTaskByStatus(searchTask)"></input> -->
-
-														<select name="singleSelect" style="width: 40%;margin: 1%" class="form-control"
-															id="status" ng-model="searchTask" ng-change="searchTaskByStatus(searchTask)">
-															<option value="All">All</option>
-															<option value="Assign">Assign</option>
-															<option value="Inprogress">Inprogress</option>
-															<option value="Fixed">Fixed</option>
-															<option value="Closed">Closed</option>
-														</select>
+														
 													</div>
 													<div class="col-xs-5 col-sm-5 col-md-5"></div>
 													<div class="col-xs-3 col-sm-3 col-md-3">
 														<button class="btn btn-primary"
-															ng-click="openCreateTaskPopup()"
-															style="float: right; margin: 1%;width: 60%">Create New Task</button>
+															ng-click="openCreatefaqPopup()"
+															style="float: right; margin: 1%;width: 60%">New FAQ</button>
 
 													</div>
 
 												</div>
-												
-												<div class="row">
+																								<div class="row">
 													<div id="div_photo_list">
-														<div ng-repeat="list in taskList track by $index">
+														<div ng-repeat="list in faqList track by $index">
 															<div class="col-md-1"></div>
 															<div class="col-xs-12 col-sm-12 col-md-12">
 																<div class="panel panel-default">
@@ -435,59 +420,47 @@ input[type='checkbox'] {
 																								<div class="col-md-6">
 																									<div class="col-xs-5 col-sm-5 col-md-5">
 																										<h4>
-																											<strong>Task Name :</strong>
+																											<strong>Operation :</strong>
 																										</h4>
 																									</div>
 																									<div class="col-xs-6 col-sm-6 col-md-6">
 																										<h4>
-																											<span style=""> {{list.name}}</span>
+																											<span style=""> {{list.operation}}</span>
 																										</h4>
 																									</div>
-																								</div>
-																								<div class="col-md-6">
-																									<div class="col-xs-5 col-sm-5 col-md-5">
-																										<h4>
-																											<strong>Status :</strong>
-																										</h4>
-																									</div>
-																									<div class="col-xs-6 col-sm-6 col-md-6">
-																										<h4>
-																											<span style="">{{list.status}}</span>
-																										</h4>
-																									</div>
-
 																								</div>
 																								
 
 																							</div>
+																							<div class="row">
+																																						<div class="col-md-6">
+																									<div class="col-xs-5 col-sm-5 col-md-5">
+																										<h4>
+																											<strong>Data Field :</strong>
+																										</h4>
+																									</div>
+																									<div class="col-xs-6 col-sm-6 col-md-6">
+																										<h4>
+																											<span style="">{{list.dataField}}</span>
+																										</h4>
+																									</div>
 
+																								</div>
+																							</div>
 																							<div class="row">
 																								<div class="col-md-6">
 																									<div class="col-xs-5 col-sm-5 col-md-5">
 																										<h4>
-																											<strong>Created By :</strong>
+																											<strong>Alert :</strong>
 																										</h4>
 																									</div>
 																									<div class="col-xs-7 col-sm-7 col-md-7">
 																										<h4>
-																											<span style="">{{list.firstName+"
-																												"+list.lastName}}</span>
+																											<span style="">{{list.alert}}</span>
 																										</h4>
 																									</div>
 																								</div>
-																								<div class="col-md-6">
-																									<div class="col-xs-5 col-sm-5 col-md-5">
-																										<h4>
-																											<strong>Created On :</strong>
-																										</h4>
-																									</div>
-
-																									<div class="col-xs-7 col-sm-7 col-md-7">
-																										<h4>
-																											<span style="">{{list.createdOn}}</span>
-																										</h4>
-																									</div>
-																								</div>
+																								
 
 																							</div>
 																							
@@ -512,7 +485,7 @@ input[type='checkbox'] {
 																									<div class="col-xs-2 col-sm-2 col-md-2">
 																										<button class="btn btn-primary"
 																											style="margin-top:12%"
-																											ng-click="editTask($index)">Edit</button>
+																											ng-click="editfaq($index)">Edit</button>
 																									</div>
 																								</div>
 																							</div>
@@ -528,10 +501,10 @@ input[type='checkbox'] {
 																									
 																										<a href="#" ng-click="openImagePopup(image.taskImageId,list.id,image.imageName)"> <img id="childImg"
 																											style="display: block;"
-																											ng-src="http://www.enter-fracts.com/files/fracts_files/images/child/16325/13996/crp_788_13996_thumb.jpg" />
+																											ng-src="http://www.enter-fracts.com/files/fracts_files/images/faqImages/{{list.id}}/{{image.taskImageId}}/{{image.imageName}}" />
 																											
 																										</a>
-																										<!-- ng-src="D:/dev/stsWorkspace/mark/fracts/WebContent/files/fracts_files/images/taskImages/{{list.DN_ID}}/{{image.DN_ID}}/{{image.imageName}} -->
+																										<!-- ng-src="http://www.enter-fracts.com/files/fracts_files/images/taskImages/{{list.id}}/{{image.taskImageId}}/{{image.imageName}}" -->
 																									
 																									</div>
 																								</div>
@@ -556,6 +529,10 @@ input[type='checkbox'] {
 														</div>
 													</div>
 												</div>
+												
+												
+												
+											
 											</div>
 										</div>
 									</div>
@@ -583,35 +560,33 @@ input[type='checkbox'] {
 									<form name="myform">
 
 										<fieldset class="form-group">
-											<label for="taskName">Task Name</label> <input type="text"
-												ng-model="task.name" class="form-control" id="taskName"
-												placeholder="Enter task name" required />
+											<label for="taskName">Operation</label> <input type="text"
+												ng-model="task.Operation" class="form-control" id="taskName"
+												placeholder="" required />
 										</fieldset>
 										<fieldset class="form-group">
 											<label for="Description">Description</label>
 											<textarea ng-model="task.desc" class="form-control"
 												id="Description" rows="3" required></textarea>
 										</fieldset>
-
-										
+										<fieldset class="form-group">
+											<label for="taskName">Data Field</label> <input type="text"
+												ng-model="task.dataField" class="form-control" id="taskName"
+												placeholder="" required />
+										</fieldset>	
+										<fieldset class="form-group">
+											<label for="taskName">Alert</label> <input type="text"
+												ng-model="task.alert" class="form-control" id="taskName"
+												placeholder="" required />
+										</fieldset>
 
 										<fieldset class="form-group">
 											<label for="exampleInputFile">Image Upload</label>
 											<input type="file" id="exampleInputFile" data-ng-file-select="uploadFile($files)" accept="*" style="" multiple="multiple" />
 										</fieldset>
-										
-										<fieldset class="form-group">
-											<label for="status">Status</label> <select
-												name="singleSelect" class="form-control" id="status"
-												ng-model="task.status" required>
-												<option value="Assign">Assign</option>
-												<option value="Inprogress">Inprogress</option>
-												<option value="Fixed">Fixed</option>
-												<option value="Closed">Closed</option>
-											</select>
-										</fieldset>
+
 										<button class="btn btn-primary"
-											ng-click="myform.$valid && newTaskForm(task)">Submit</button>
+											ng-click="myform.$valid && newfaqForm(task)">Submit</button>
 										<button type="button" class="btn btn-primary"
 											data-dismiss="modal">Close</button>
 									</form> 
@@ -637,34 +612,34 @@ input[type='checkbox'] {
 									<form name="editTaskModal">
 
 										<fieldset class="form-group">
-											<label for="taskName">Task Name</label> <input type="text"
-												ng-model="editModel.name" class="form-control" id="taskName"
-												placeholder="Enter task name" required />
+											<label for="taskName">Operation</label> <input type="text"
+												ng-model="editModel.operation" class="form-control" id="taskName"
+												placeholder="" required />
 										</fieldset>
 										<fieldset class="form-group">
 											<label for="Description">Description</label>
 											<textarea ng-model="editModel.desc" class="form-control"
 												id="Description" rows="3" required></textarea>
 										</fieldset>
+										<fieldset class="form-group">
+											<label for="taskName">Data Field</label> <input type="text"
+												ng-model="editModel.dataField" class="form-control" id="taskName"
+												placeholder="" required />
+										</fieldset>	
+										<fieldset class="form-group">
+											<label for="taskName">Alert</label> <input type="text"
+												ng-model="editModel.alert" class="form-control" id="taskName"
+												placeholder="" required />
+										</fieldset>
+										
 
 										<fieldset class="form-group">
 											<label for="example">Image Upload</label>
 											<input type="file" id="example" data-ng-file-select="uploadFile($files)" accept="*" style="" multiple="multiple" />
 										</fieldset>
 										
-
-										<fieldset class="form-group">
-											<label for="status">Status</label> <select
-												name="singleSelect" class="form-control" id="status"
-												ng-model="editModel.status" required>
-												<option value="Assign">Assign</option>
-												<option value="Inprogress">Inprogress</option>
-												<option value="Fixed">Fixed</option>
-												<option value="Closed">Closed</option>
-											</select>
-										</fieldset>
 										<button class="btn btn-primary"
-											ng-click="editTaskModal.$valid && updateTaskForm(editModel)">Update</button>
+											ng-click="editTaskModal.$valid && updatefaqForm(editModel)">Update</button>
 										<button type="button" class="btn btn-primary"
 											data-dismiss="modal">Close</button>
 									</form>
@@ -675,13 +650,8 @@ input[type='checkbox'] {
 
 						</div>
 					</div>
-
-
-
-
-
-				
-							<div id="myModalchild" class="modal fade" role="dialog">
+					
+												<div id="myModalchild" class="modal fade" role="dialog">
 								<div class="modal-dialog">
 
 									<!-- Modal content-->
@@ -693,7 +663,7 @@ input[type='checkbox'] {
 										<div class="modal-body">
 											<div>
 												 <img id="childImagePopup"	
-												 ng-src="http://www.enter-fracts.com/files/fracts_files/images/taskImages/{{parentidForDisplay}}/{{childIdForDisplay}}/{{imageNameForDisplay}}"
+												 ng-src="http://www.enter-fracts.com/files/fracts_files/images/faqImages/{{parentidForDisplay}}/{{childIdForDisplay}}/{{imageNameForDisplay}}"
 												style="max-width: 100%;"/>
 											</div>
 										</div>
@@ -710,11 +680,12 @@ input[type='checkbox'] {
 
 
 
+
 				</div>
 			</div>
 
 
-				
+
 
 
 			<!-- end of main content -->
@@ -787,9 +758,9 @@ input[type='checkbox'] {
 	<script
 		src="https://rawgithub.com/angular-ui/ui-select2/master/src/select2.js"></script>
 	<script type="text/javascript"
-		src="/webapp/fracts/js/create_task-app.js"></script>
+		src="/webapp/fracts/js/faq-app.js"></script>
 	<script type="text/javascript"
-		src="/webapp/fracts/js/create_task-controller.js"></script>
+		src="/webapp/fracts/js/faq-controller.js"></script>
 	<script src="/webapp/assets/js/application.js"></script>
 
 

@@ -1,4 +1,4 @@
-app.controller('MainController',function($scope,$http,$filter,ngDialog) {
+app.controller('MainController',function($scope,$http,$filter,$upload,ngDialog) {
 
 	$scope.task={};
 	
@@ -43,11 +43,15 @@ app.controller('MainController',function($scope,$http,$filter,ngDialog) {
 	};
 	
 	
+	
+	
+	
 	$scope.openCreateTaskPopup=function(){
 		console.log("in openCreateTaskPopup function");
 		 $('#myModal').modal('show');
 
 	};
+	
 	
 	
 	$scope.updateTaskForm=function(tempTask){
@@ -64,7 +68,41 @@ app.controller('MainController',function($scope,$http,$filter,ngDialog) {
 		};
 		
 		
-		$http({url:'/webapp/gallery/update_task',method:'POST',data:$scope.UpdateJson}).success(function(data) {
+		$upload.upload({
+	           url: '/webapp/gallery/update_task',
+	           method: 'POST',
+	           file: $scope.uploadedfile,
+	           data: $scope.UpdateJson
+	       }).success(function(data) {
+	    	   $scope.loading = false;
+	    	   $scope.uploadedfile=[];
+	    	   $scope.init();
+				$('#editTaskModal').modal('hide');
+				
+	    	   $(function(){
+					new PNotify({
+						title: 'Success Notice',
+						text: 'Task Save Successfully'
+
+					});
+				});
+	    	   
+	       }).error(function() {
+				$scope.loading = false;
+				$(function(){
+					new PNotify({
+						
+						title: 'failure Notice',
+						text: 'Failed'
+
+					});
+				});
+				
+			});
+		
+
+		
+	/*	$http({url:'/webapp/gallery/update_task',method:'POST',data:$scope.UpdateJson}).success(function(data) {
 			$scope.init();
 			$('#editTaskModal').modal('hide');
 			
@@ -86,15 +124,30 @@ app.controller('MainController',function($scope,$http,$filter,ngDialog) {
 				});
 			});
 			
-		});
+		});*/
 		
 		
 	};
 	
+	
+
+	$scope.uploadedfile=[];
+	$scope.uploadFile = function($files){
+		console.log("in $upload function");
+		console.log($files);
+		$files.forEach(function(value){
+			console.log("value===");
+			console.log(value);
+			$scope.uploadedfile.push(value);
+		});		 
+	};
+	
 	$scope.newTaskForm=function(task){
-		console.log("in newTaskForm method");
-		$scope.task={};
 		
+		
+		console.log("in newTaskForm method");
+		$scope.loading = true;
+		$scope.task={};
 		
 		$scope.json={
 				"name":task.name,
@@ -105,7 +158,40 @@ app.controller('MainController',function($scope,$http,$filter,ngDialog) {
 		
 		$('#myModal').modal('hide');
 		console.log('task is ',task);
-		$http({url:'/webapp/gallery/save_task',method:'POST',data:$scope.json}).success(function(data) {
+		console.log('$scope.uploadedfile',$scope.uploadedfile);
+		
+		$upload.upload({
+	           url: '/webapp/gallery/save_task',
+	           method: 'POST',
+	           file: $scope.uploadedfile,
+	           data: $scope.json
+	       }).success(function(data) {
+	    	   $scope.loading = false;
+	    	   $scope.init();
+	    	   $scope.uploadedfile=[];
+				$(function(){
+					new PNotify({
+						title: 'Success Notice',
+						text: 'Task Save Successfully'
+
+					});
+				});
+	    	   
+	       }).error(function() {
+				$scope.loading = false;
+				$(function(){
+					new PNotify({
+						
+						title: 'failure Notice',
+						text: 'Failed'
+
+					});
+				});
+				
+			});
+		
+		
+/*		$http({url:'/webapp/gallery/save_task',method:'POST',data:$scope.json}).success(function(data) {
 			$scope.init();
 			
 			$(function(){
@@ -126,7 +212,7 @@ app.controller('MainController',function($scope,$http,$filter,ngDialog) {
 				});
 			});
 			
-		});
+		});*/
 		
 	};
 	
@@ -173,6 +259,28 @@ app.controller('MainController',function($scope,$http,$filter,ngDialog) {
 		
 		
 	};
+	
+	
+	$scope.openImagePopup=function(childid,parentId,imageName){
+		console.log("in open Child image");
+		
+		console.log('childid',childid);
+		console.log('parent',parentId);
+		console.log('imageName',imageName);
+		
+		$scope.childIdForDisplay=childid;
+		$scope.parentidForDisplay=parentId;
+		$scope.imageNameForDisplay=imageName;
+		
+		console.log('$scope.childIdForDisplay',$scope.childIdForDisplay);
+		console.log('$scope.childIdForDisplay',$scope.parentidForDisplay);
+		console.log('$scope.childIdForDisplay',$scope.imageNameForDisplay);
+		console.log("in open child image");
+		
+			 $('#myModalchild').modal('show');
+		
+	};
+
 	
 	
 

@@ -59,11 +59,13 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		$http.get('/webapp/gallery/all_image_list').success(function(data) {
 			$scope.loading = false;
 			$scope.status = true; 
+			console.log("in all data");			
+			console.log("data is "+data);
 			$scope.allImageList=data;
 			$scope.dataForComment=data;
 
 
-			console.log("in all data");
+			
 			console.log($scope.allImageList);
 			//    console.log('lemgth is ',$scope.allImageList.length);
 			if($scope.allImageList.length == 0 ) {
@@ -203,10 +205,19 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 
 	$scope.closeAll = function () {
 		console.log("close button");
-		  ngDialog.closeAll();
-		};
-		
-		
+		ngDialog.closeAll();
+	};
+
+	$scope.createThumnail=function(){
+		console.log("in create thumbnail images");
+
+		$http.get('/webapp/gallery/create_thumnail_images').success(function(data){
+			$scope.publications=data;
+
+
+		});
+	};	
+
 	$scope.commentVar=[];
 	$scope.saveComment=function(index,pagesize,currentpage,pId,com){
 		$scope.loading = true;
@@ -509,6 +520,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		
 		$scope.newDate =new Date($scope.updatedIssueDate);
 		console.log('$scope.universalNumber',$scope.universalNumber);
+		console.log('$scope.newDate',$scope.newDate);
 		
 		/*$scope.allImageList[$scope.universalNumber].DC_PAGE=$scope.pageModel;
 		$scope.allImageList[$scope.universalNumber].DD_ISSUE_DATE=$scope.newDate;
@@ -561,16 +573,21 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 	$scope.myCrop=function(){
 		$scope.loading = true;
 		console.log("in make crop function");
-
+//		console.log('$scope.loginUserId',$scope.loginUserId);
 		$scope.x1= document.getElementById("x1").value;
 		$scope.x2= document.getElementById("x2").value;
 		$scope.y1= document.getElementById("y1").value;
 		$scope.y2= document.getElementById("y2").value;
 		$scope.w= document.getElementById("w").value;
 		$scope.h= document.getElementById("h").value;
-		
-	
-		
+
+		console.log('$scope.x1',$scope.x1);
+		console.log('$scope.x2',$scope.x2);
+		console.log('$scope.y1',$scope.y1);
+		console.log('$scope.y2',$scope.y2);
+		console.log('$scope.w',$scope.w);
+		console.log('$scope.h',$scope.h);
+
 		$scope.imagejsonData={
 				id:$scope.parentImageId,
 				x1:$scope.x1,
@@ -583,7 +600,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		};
 
 
-	
+//		console.log('$scope.parentImageId',$scope.parentImageId);
 
 
 		$http({url:'/webapp/gallery/save_crop_image',method:'POST',data: $scope.imagejsonData,cache: false,
@@ -665,6 +682,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			contentType: "application/x-www-form-urlencoded"}).success(function(data) {
 			//	$scope.cropImageVm.push(data);
 				$scope.childImageArray.push(data);
+				console.log('$scope.childImageArray',$scope.childImageArray);
 				$scope.loading = false;
 				
 				$(function(){
@@ -724,9 +742,42 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			});
 
 	};
+
+
+	/*	$scope.editchidImage=function(index,pagesize,currentpage,parentId,childId,childIndex,imageUrl,imageName){
+		console.log("in edit child image popup");
+		console.log('index',index);
+		console.log('pagesize',pagesize);
+		console.log('currentpage',currentpage);
+		console.log('parentId',parentId);
+		console.log('childId',childId);
+		console.log('childIndex',childIndex);
+		console.log('imageUrl',imageUrl);
+
+		$scope.parentImageIdForEdit=parentId;
+		$scope.childImageIdForEdit=childId;
+		$scope.childImageNameForEdit=imageName;
+
+		ngDialog.openConfirm({template: '/webapp/assets/templates/edit_child_image.html',
+			className: 'ngdialog-theme-plain custom-width',
+			overlay: false,
+			scope: $scope //Pass the scope object if you need to access in the template
+		}).then(
+				function(value) {
+					//save the contact form
+				},
+				function(value) {
+					//Cancel or do nothing
+				}
+		);
+
+
+	};*/
+
+
 	$scope.cropImage=function(index,pagesize,currentpage,parentImageId,imageUrl,imageName){
 		$scope.parentImageId=parentImageId;
-		
+
 		$scope.parentImageName=imageName;
 		console.log('$scope.parentImageName',$scope.parentImageName);
 		console.log('in image crop');
@@ -741,12 +792,12 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		$scope.url=$scope.cropparentImageId+"&"+$scope.timeimilli;
 		var id=parentImageId;
 		$scope.cropImageVm=[];
-		
-		
+		console.log('original data is',$scope.allImageList);
+
 		$scope.childImageArray=[];
 		$scope.childImageArray=$scope.allImageList[$scope.imagenumberforcrop].listVm;
-		
-		
+		console.log('childImageArray',$scope.childImageArray);
+
 		ngDialog.openConfirm({template: '/webapp/assets/templates/temp.html',
 			preCloseCallback:function(){
 				$http.get('/webapp/gallery/refresh_crop_image/'+id).success(function(data){
@@ -926,12 +977,13 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 			var m=tempId[k]-k;
 			$scope.resultArray.splice(m,1);
 		}*/
-	
+	//	console.log('tr',tr);
+	//	console.log('tempId',tempId);
 
 		$scope.allImageList=$scope.resultArray;
 		$http({url:'/webapp/gallery/move_to_advertorial',method:'POST',data:tr}).success(function(data) {
 			$scope.loading = false;	
-			console.log("in ajax call advetorial");
+//			console.log("in ajax call advetorial");
 			for(var k=0;k<tempId.length;k++){
 				var m=tempId[k]-k;
 				$scope.resultArray[m].imageComment='';
@@ -1000,7 +1052,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		console.log("in delete image dialog");
 		$scope.deletImageNumber = (index) + (currentpage) * pagesize;
 		$scope.deleteImageIdNum=id;
-	
+//		console.log('image no is ',$scope.deletImageNumber);
 		
 		$('#myModalDelete').modal('show');
 		
@@ -1009,7 +1061,8 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 	
 	$scope.deleteParentImage=function(deletImageNo,id){
 		$scope.loading = true;
-	
+//		console.log("in delete parent image");
+//		console.log('image id is ',deletImageNo);
 		//$scope.imageNumber = (index) + (currentpage) * pagesize;
 		/*$scope.allImageList.slice($scope.imageNumber,$scope.imageNumber+1);
 		$scope.resultArray=$scope.allImageList.splice($scope.imageNumber,1);

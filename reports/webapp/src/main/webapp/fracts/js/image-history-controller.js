@@ -50,27 +50,21 @@ app.controller('ImageHistoryController',function($scope,$http,$filter) {
 		$http({url:'/webapp/gallery/all_image_history',method:'POST',data:$scope.imageHistoryJsonInit}).success(function(data) {
 			$scope.allImageHistory=data;
 			$scope.loading = false;
-		//	console.log('$scope.allImageHistory',$scope.allImageHistory);
+			console.log('$scope.allImageHistory',$scope.allImageHistory);
 			
 		
 		});
 		
-	/*	$http.get('/webapp/gallery/all_image_history').success(function(data) {
-			$scope.allImageHistory=data;
-			$scope.loading = false;
-			console.log('$scope.allImageHistory',$scope.allImageHistory);
-			
-			
-		});*/
+	
 	};
 	
 	$scope.listOfImageHistry=[];
 	$scope.filterImageHistory=function(dateFrom,dateTo){
 		
 		$scope.loading = true;
-	//	console.log("in filterImageHistory function");
-	//	console.log('date from is ',dateFrom);
-	//	console.log('date to is ',dateTo);
+		console.log("in filterImageHistory function");
+		console.log('date from is ',dateFrom);
+		console.log('date to is ',dateTo);
 		
 		
 		$scope.imageHistoryJson={
@@ -83,7 +77,7 @@ app.controller('ImageHistoryController',function($scope,$http,$filter) {
 			console.log("in success");	
 			$scope.listOfImageHistry=data;
 			$scope.allImageHistory=data;
-	//		console.log('listOfImageHistry',$scope.listOfImageHistry);
+			console.log('listOfImageHistry',$scope.listOfImageHistry);
 			$scope.loading = false;
 			if($scope.listOfImageHistry.length==0){
 				$(function(){

@@ -67,7 +67,14 @@
 								<span class="sidebar-text">Settings</span>
 								<f:param name="menuId" value="8" />
 							</h:commandLink></li>
-								<li id="menu29" title="Create Task"><h:commandLink
+							<li id="menu31" title="FAQ"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
+								<i class="fa fa-question-circle"></i>
+								<span class="sidebar-text">FAQ</span>
+								<f:param name="menuId" value="31" />
+							</h:commandLink></li>
+							<li id="menu29" title="Create Task"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
 								<i class="glyphicon glyphicon-tasks"></i>
@@ -147,7 +154,14 @@
 								<i class="glyphicon glyphicon-folder-open"></i>
 								<span class="sidebar-text">Publication</span>
 								<f:param name="menuId" value="28" />
-							</h:commandLink></li>	
+							</h:commandLink></li>
+						<li id="menu30" title="Publication Gallery"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								<i class="glyphicon glyphicon-folder-open"></i>
+								<span class="sidebar-text">Publication Gallery</span>
+								<f:param name="menuId" value="30" />
+							</h:commandLink></li>			
 								
 					</ul>
 				</div>
@@ -172,6 +186,8 @@
 				document.getElementById("menu7").setAttribute("class", "current active");
 			} else if (menuval == "29") {
 				document.getElementById("menu29").setAttribute("class", "current active");
+			} else if (menuval == "31") {
+				document.getElementById("menu31").setAttribute("class", "current active");
 			}else if (menuval == "8") {
 				document.getElementById("menu8").setAttribute("class", "current active");
 			} else if (menuval == "9") {

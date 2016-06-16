@@ -30,7 +30,12 @@ public class ImagesVM {
 	
 	public String thumb;
 	public String thumbChild;
+	public String publication;
 	
+	
+	public Long DN_PARENT_IMAGE_ID;
+	
+	public List<ChildImageVm> listVm = new ArrayList<ChildImageVm>();
 	
 	public String getCreateDate() {
 		return createDate;
@@ -62,9 +67,7 @@ public class ImagesVM {
 	}
 
 
-	public Long DN_PARENT_IMAGE_ID;
-	
-	public List<ChildImageVm> listVm = new ArrayList<ChildImageVm>();
+
 	
 	
 	public String getDateissue() {
