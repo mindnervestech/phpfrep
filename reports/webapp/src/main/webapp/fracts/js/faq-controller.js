@@ -18,7 +18,7 @@ app.controller('MainController',function($scope,$http,$filter,$upload,ngDialog) 
 		var param1 = getParamValue('param1');
 		$scope.loginUserId=param1;
 		
-		console.log('login user is ',$scope.loginUserId);
+	
 		
 		
 		
@@ -26,7 +26,7 @@ app.controller('MainController',function($scope,$http,$filter,$upload,ngDialog) 
 		$http.get('/webapp/gallery/get_all_faq').success(function(data) {
 			
 			$scope.faqList=data;
-			console.log('data is ',$scope.faqList);
+		
 			
 			if($scope.faqList.length==0){
 
@@ -58,7 +58,7 @@ app.controller('MainController',function($scope,$http,$filter,$upload,ngDialog) 
 	$scope.uploadedfile=[];
 	$scope.uploadFile = function($files){
 		console.log("in $upload function");
-		console.log($files);
+	
 		$files.forEach(function(value){
 			console.log("value===");
 			console.log(value);
@@ -82,8 +82,7 @@ app.controller('MainController',function($scope,$http,$filter,$upload,ngDialog) 
 		};
 		
 		$('#myModal').modal('hide');
-		console.log('task is ',task);
-		console.log('$scope.uploadedfile',$scope.uploadedfile);
+	
 		
 		$upload.upload({
 	           url: '/webapp/gallery/save_faq',
@@ -141,17 +140,8 @@ app.controller('MainController',function($scope,$http,$filter,$upload,ngDialog) 
 	
 	$scope.updatefaqForm=function(task){
 		
-		console.log("in update task method");
-		console.log('tempTask',task);
-		console.log('user iD is ',$scope.userId);
-		
-	/*	$scope.UpdateJson={
-				"name":tempTask.name,
-				"id":$scope.userId,
-				"desc":tempTask.desc,
-				"status":tempTask.status
-		};*/
-		
+		$scope.loading = true;
+	
 		
 		
 		$scope.UpdateJson={
@@ -163,6 +153,8 @@ app.controller('MainController',function($scope,$http,$filter,$upload,ngDialog) 
 				
 		};
 		
+		$('#editTaskModal').modal('hide');
+		
 		$upload.upload({
 	           url: '/webapp/gallery/update_faq',
 	           method: 'POST',
@@ -172,7 +164,7 @@ app.controller('MainController',function($scope,$http,$filter,$upload,ngDialog) 
 	    	   $scope.loading = false;
 	    	   $scope.uploadedfile=[];
 	    	   $scope.init();
-				$('#editTaskModal').modal('hide');
+				
 				
 	    	   $(function(){
 					new PNotify({
@@ -198,11 +190,7 @@ app.controller('MainController',function($scope,$http,$filter,$upload,ngDialog) 
 	
 	
 	$scope.openImagePopup=function(childid,parentId,imageName){
-		console.log("in open Child image");
-		
-		console.log('childid',childid);
-		console.log('parent',parentId);
-		console.log('imageName',imageName);
+	
 		
 		$scope.childIdForDisplay=childid;
 		$scope.parentidForDisplay=parentId;

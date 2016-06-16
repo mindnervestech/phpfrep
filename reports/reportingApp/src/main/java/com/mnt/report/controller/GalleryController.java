@@ -1931,25 +1931,18 @@ public class GalleryController {
 
 		long faqId=Long.parseLong(id);
 
-		
-	
-		
 		String sql="update tbl_faq set DN_OPERATION='"+Operation+"',DN_ALERT='"+alert+"',DN_DESCRIPTION='"+desc+"',DN_DATAFIELD='"+data+"' where DN_ID="+faqId;
 	   
 		jt.execute(sql);
 		
 		MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
 		if(!mRequest.getFileMap().isEmpty()){
-			System.out.println("in first loop");
 			for (MultipartFile file : mRequest.getFileMap().values()) {
-				System.out.println("in second loop");
 
-				
 				String sqlimage=" insert INTO tbl_faq_images (DN_FAQ_ID) VALUES('"+faqId+"')";
 				jt.execute(sqlimage);
 				
 				long faqImageId = jt.queryForLong("select max(DN_ID) from tbl_faq_images");
-				
 				
 				String[] str1 = file.getOriginalFilename().split(Pattern.quote("."));
 				
@@ -1979,26 +1972,13 @@ public class GalleryController {
 	public String saveFAQ( HttpServletRequest request){
 		
 		System.out.println("in save FAQ method");
-
-		/*
-		$scope.json={
-				"Operation":task.Operation,
-				"desc":task.desc,
-				"data":task.data,
-				"createdBy":$scope.loginUserId,
-				"alert":task.alert
-		};*/
-		
+	
 		String Operation=request.getParameter("Operation");
 		String desc=request.getParameter("desc");
 		String data=request.getParameter("data");
 		String createdBy=request.getParameter("createdBy");
 		String alert=request.getParameter("alert");
 
-		System.out.println("name is "+Operation);
-		System.out.println("created by "+data);
-		
-		
 		
 		String sql="insert INTO tbl_faq (DN_OPERATION,DN_ALERT,DN_DESCRIPTION,DN_DATAFIELD,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+Operation+"','"+alert+"','"+desc+"','"+data+"','"+createdBy+"',CURRENT_DATE())";
 		jt.execute(sql);
@@ -2008,10 +1988,8 @@ public class GalleryController {
 		
 		MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
 		if(!mRequest.getFileMap().isEmpty()){
-			System.out.println("in first loop");
+			
 			for (MultipartFile file : mRequest.getFileMap().values()) {
-				System.out.println("in second loop");
-
 				
 				String sqlimage="insert into tbl_faq_images (DN_FAQ_ID) VALUES("+faqId+")";
 				jt.execute(sqlimage);
@@ -2026,7 +2004,6 @@ public class GalleryController {
 				String size=Long.toString(file.getSize());
 				
 				String filePath = saveFileToSystemfaq(file,faqId,faqImageId); 
-				System.out.println("filePath is "+filePath);
 				String sqlupdate="update tbl_faq_images set DN_IMAGENAME ='"+file.getOriginalFilename()+"' where DN_ID="+faqImageId;
 				jt.execute(sqlupdate);
 				
@@ -2034,13 +2011,6 @@ public class GalleryController {
 		}
 		
 		
-		
-		
-		
-		/*String sql="insert into tbl_task (DN_NAME,DN_DESCRIPTION,DN_STATUS,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+taskVm.name+"','"+taskVm.desc+"','"+taskVm.status+"','"+taskVm.createdBy+"',CURRENT_DATE())";
-	   
-		jt.execute(sql);
-	   */
 		return "success";
 		
 	}
@@ -2054,18 +2024,13 @@ public class GalleryController {
 
 
 		String s=fullImagePath;
-		System.out.println("path is s"+s);
 
 		File file3 = new File(fullImagePath+"taskImages/"+taskId+ "/" +taskImageId+"/");
 		if (!file3.exists()) {
 			file3.mkdirs();
 		}
 
-
-		//		File storePath = new File(path);
-		//		storePath.mkdirs();
 		String fullpath = fullImagePath+"taskImages/"+taskId+ "/" +taskImageId+"/"+file.getOriginalFilename();
-		System.out.println("path is "+fullpath);
 		File savefile = new File(fullpath);
 		try {
 			file.transferTo(savefile);
@@ -2083,7 +2048,6 @@ public class GalleryController {
 
 
 		String s=fullImagePath;
-		System.out.println("path is s"+s);
 
 		File file3 = new File(fullImagePath+"faqImages/"+taskId+ "/" +taskImageId+"/");
 		if (!file3.exists()) {
@@ -2091,10 +2055,7 @@ public class GalleryController {
 		}
 
 
-		//		File storePath = new File(path);
-		//		storePath.mkdirs();
 		String fullpath = fullImagePath+"faqImages/"+taskId+ "/" +taskImageId+"/"+file.getOriginalFilename();
-		System.out.println("path is "+fullpath);
 		File savefile = new File(fullpath);
 		try {
 			file.transferTo(savefile);
