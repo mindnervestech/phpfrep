@@ -1,4 +1,4 @@
-app.controller('MainController',function($scope,$http,$filter,$upload,ngDialog) {
+app.controller('MainController',function($scope,$http,$filter,$upload) {
 
 	$scope.task={};
 	
