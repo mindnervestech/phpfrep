@@ -1,1 +1,1 @@
-var app = angular.module('FractsApp',['angularFileUpload','ngDialog']);
+var app = angular.module('FractsApp',['angularFileUpload']);
