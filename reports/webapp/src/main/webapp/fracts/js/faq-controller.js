@@ -3,6 +3,7 @@ app.controller('MainController',function($scope,$http,$filter,$upload) {
 	$scope.task={};
 	
 	$scope.faqList=[];
+	$scope.userStatus=false;
 	$scope.init=function(){
 		console.log("in init method");
 		$scope.searchTask='All';
@@ -17,6 +18,9 @@ app.controller('MainController',function($scope,$http,$filter,$upload) {
 		};
 		var param1 = getParamValue('param1');
 		$scope.loginUserId=param1;
+		if($scope.loginUserId==1){
+			$scope.userStatus=true;
+		}
 		
 	
 		
