@@ -55,7 +55,7 @@ app.controller('MainController',function($scope,$http,$filter,$upload,ngDialog) 
 	
 	
 	$scope.updateTaskForm=function(tempTask){
-		
+		$scope.loading = true;
 		console.log("in update task method");
 		console.log('tempTask',tempTask);
 		console.log('user iD is ',$scope.userId);
@@ -66,7 +66,7 @@ app.controller('MainController',function($scope,$http,$filter,$upload,ngDialog) 
 				"desc":tempTask.desc,
 				"status":tempTask.status
 		};
-		
+		$('#editTaskModal').modal('hide');
 		
 		$upload.upload({
 	           url: '/webapp/gallery/update_task',
@@ -77,7 +77,7 @@ app.controller('MainController',function($scope,$http,$filter,$upload,ngDialog) 
 	    	   $scope.loading = false;
 	    	   $scope.uploadedfile=[];
 	    	   $scope.init();
-				$('#editTaskModal').modal('hide');
+				
 				
 	    	   $(function(){
 					new PNotify({

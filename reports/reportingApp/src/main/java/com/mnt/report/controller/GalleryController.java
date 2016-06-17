@@ -1304,10 +1304,7 @@ public class GalleryController {
 
 			TaskVm tVm= new TaskVm();
 			
-			if(pImage.get("DN_ID")!=null){
-
-				tVm.id=Long.parseLong(pImage.get("DN_ID").toString());
-			}
+			
 			if(pImage.get("DN_NAME")!=null){
 
 				tVm.name=pImage.get("DN_NAME").toString();
@@ -1336,7 +1333,39 @@ public class GalleryController {
 
 				tVm.lastName=pImage.get("DC_LASTNAME").toString();
 			}
+			if(pImage.get("DN_ID")!=null){
 			
+			//	tVm.id=Long.parseLong(pImage.get("DN_ID").toString());
+
+
+				List<TaskImageVm> arrayList= new ArrayList<TaskImageVm>();
+
+				Long id=Long.parseLong(pImage.get("DN_ID").toString());
+				tVm.id=id;
+
+				List<Map<String,Object>> taskImageList = new ArrayList<Map<String,Object>>();
+				String sqlforChild="select * from tbl_task_image t where t.DN_TASK_ID="+id;
+				taskImageList=jt.queryForList(sqlforChild);
+				for (Map<String, Object> map : taskImageList) {
+					TaskImageVm vm = new TaskImageVm();
+					if(map.get("DN_ID")!=null){
+
+						vm.taskImageId=Long.parseLong(map.get("DN_ID").toString());
+					}
+					if(map.get("DN_IMAGENAME")!=null){
+
+						String image=map.get("DN_IMAGENAME").toString();
+						vm.imageName=image;
+						vm.thumbImageName=image.split("\\.")[0]+"_thumb.jpg";
+
+					}
+					arrayList.add(vm);
+				}
+
+				tVm.getListVm().addAll(arrayList);
+			}
+
+
 			li.add(tVm);
 
 		}
