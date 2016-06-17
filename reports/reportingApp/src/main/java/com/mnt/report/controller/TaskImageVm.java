@@ -4,6 +4,7 @@ public class TaskImageVm {
 
 	public Long taskImageId;
 	public String imageName;
+	public String thumbImageName;
 	
 	
 }

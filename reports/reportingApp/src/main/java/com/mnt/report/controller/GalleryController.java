@@ -1832,13 +1832,45 @@ public class GalleryController {
 				
 				long taskImageId = jt.queryForLong("select max(DN_ID) from tbl_task_image");
 				
-				
-				String[] str1 = file.getOriginalFilename().split(Pattern.quote("."));
-				
-				String extention = "."+str1[str1.length-1];
-				String contenttype=file.getContentType();
 				String fileName=file.getOriginalFilename();
-				String size=Long.toString(file.getSize());
+
+				File file3 = new File(fullImagePath+"taskImages/"+id+"/" +taskImageId+"/");
+				if (!file3.exists()) {
+					file3.mkdirs();
+				}
+
+				String fullpath = fullImagePath+"taskImages/"+id+"/" +taskImageId+"/"+fileName;
+				File savefile = new File(fullpath);
+				try {
+					file.transferTo(savefile);
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				try {	
+					Thumbnails.of(new File(fullpath))
+					.width(200).keepAspectRatio(true)
+					.outputFormat("jpg")
+					.toFile(fullImagePath+"taskImages/"+id+"/"+taskImageId+"/"+fileName.split("\\.")[0]+"_thumb.jpg");
+					
+					String s=fullImagePath+"taskImages/"+id+"/"+taskImageId+"/"+fileName.split("\\.")[0]+"_thumb.jpg";
+					System.out.println("thumnail created");
+					System.out.println("parent path is "+fullpath);
+					System.out.println("thum path is :"+s);
+				} catch (IOException e1) {
+					System.out.println("problame to create thumnail");
+					e1.printStackTrace();
+				}
+
+				
+				
+				
+				
+				
+				
+				
 				
 				String filePath = saveFileToSystem(file,taskid,taskImageId); 
 				System.out.println("filePath is "+filePath);
@@ -1856,10 +1888,8 @@ public class GalleryController {
 	@RequestMapping(value="/save_task", method=RequestMethod.POST)
 	@ResponseBody
 	public String saveTask( HttpServletRequest request){
-		
+
 		System.out.println("in save task method");
-		
-		
 
 		String name=request.getParameter("name");
 		String desc=request.getParameter("desc");
@@ -1868,52 +1898,69 @@ public class GalleryController {
 
 		System.out.println("name is "+name);
 		System.out.println("created by "+createdBy);
-		
-		
+
 		String sql="insert into tbl_task (DN_NAME,DN_DESCRIPTION,DN_STATUS,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+name+"','"+desc+"','"+status+"','"+createdBy+"',CURRENT_DATE())";
 		jt.execute(sql);
-		
-		
+
 		long taskId = jt.queryForLong("select max(DN_ID) from tbl_task");
-		
+
 		MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
 		if(!mRequest.getFileMap().isEmpty()){
 			System.out.println("in first loop");
 			for (MultipartFile file : mRequest.getFileMap().values()) {
 				System.out.println("in second loop");
 
-				
 				String sqlimage="INSERT into tbl_task_image (DN_TASK_ID) VALUES("+taskId+")";
 				jt.execute(sqlimage);
-				
+
 				long taskImageId = jt.queryForLong("select max(DN_ID) from tbl_task_image");
-				
-				
+
+
 				String[] str1 = file.getOriginalFilename().split(Pattern.quote("."));
-				
+
 				String extention = "."+str1[str1.length-1];
 				String contenttype=file.getContentType();
 				String fileName=file.getOriginalFilename();
-				String size=Long.toString(file.getSize());
-				
-				String filePath = saveFileToSystem(file,taskId,taskImageId); 
-				System.out.println("filePath is "+filePath);
-				String sqlupdate="update tbl_task_image set DN_IMAGENAME ='"+file.getOriginalFilename()+"' where DN_ID="+taskImageId;
+
+
+				File file3 = new File(fullImagePath+"taskImages/"+taskId+ "/" +taskImageId+"/");
+				if (!file3.exists()) {
+					file3.mkdirs();
+				}
+
+				String fullpath = fullImagePath+"taskImages/"+taskId+ "/" +taskImageId+"/"+fileName;
+				File savefile = new File(fullpath);
+				try {
+					file.transferTo(savefile);
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				try {	
+					Thumbnails.of(new File(fullpath))
+					.width(200).keepAspectRatio(true)
+					.outputFormat("jpg")
+					.toFile(fullImagePath+"taskImages/"+taskId+"/"+taskImageId+"/"+fileName.split("\\.")[0]+"_thumb.jpg");
+					
+					String s=fullImagePath+"taskImages/"+taskId+"/"+taskImageId+"/"+fileName.split("\\.")[0]+"_thumb.jpg";
+					System.out.println("thumnail created");
+					System.out.println("parent path is "+fullpath);
+					System.out.println("thum path is :"+s);
+				} catch (IOException e1) {
+					System.out.println("problame to create thumnail");
+					e1.printStackTrace();
+				}
+
+				String sqlupdate="update tbl_task_image set DN_IMAGENAME ='"+fileName+"' where DN_ID="+taskImageId;
 				jt.execute(sqlupdate);
-				
+
 			}			
 		}
-		
-		
-		
-		
-		
-		/*String sql="insert into tbl_task (DN_NAME,DN_DESCRIPTION,DN_STATUS,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+taskVm.name+"','"+taskVm.desc+"','"+taskVm.status+"','"+taskVm.createdBy+"',CURRENT_DATE())";
-	   
-		jt.execute(sql);
-	   */
+
 		return "success";
-		
+
 	}
 	
 	
@@ -1944,15 +1991,36 @@ public class GalleryController {
 				
 				long faqImageId = jt.queryForLong("select max(DN_ID) from tbl_faq_images");
 				
-				String[] str1 = file.getOriginalFilename().split(Pattern.quote("."));
-				
-				String extention = "."+str1[str1.length-1];
-				String contenttype=file.getContentType();
 				String fileName=file.getOriginalFilename();
-				String size=Long.toString(file.getSize());
 				
-				String filePath = saveFileToSystemfaq(file,faqId,faqImageId); 
-				System.out.println("filePath is "+filePath);
+				
+				File file3 = new File(fullImagePath+"faqImages/"+faqId+ "/" +faqImageId+"/");
+				if (!file3.exists()) {
+					file3.mkdirs();
+				}
+
+				String fullpath = fullImagePath+"faqImages/"+faqId+"/"+faqImageId+"/"+fileName;
+				File savefile = new File(fullpath);
+				try {
+					file.transferTo(savefile);
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				
+				try {	
+					Thumbnails.of(new File(fullpath))
+					.width(200).keepAspectRatio(true)
+					.outputFormat("jpg")
+					.toFile(fullImagePath+"faqImages/"+faqId+"/"+faqImageId+"/"+fileName.split("\\.")[0]+"_thumb.jpg");
+					
+				} catch (IOException e1) {
+					System.out.println("problame to create thumnail");
+					e1.printStackTrace();
+				}
+				
 				String sqlupdate="update tbl_faq_images set DN_IMAGENAME ='"+file.getOriginalFilename()+"' where DN_ID="+faqImageId;
 				jt.execute(sqlupdate);
 				
@@ -1996,14 +2064,36 @@ public class GalleryController {
 				
 				long faqImageId = jt.queryForLong("select max(DN_ID) from tbl_faq_images");
 				
-				String[] str1 = file.getOriginalFilename().split(Pattern.quote("."));
-				
-				String extention = "."+str1[str1.length-1];
-				String contenttype=file.getContentType();
 				String fileName=file.getOriginalFilename();
-				String size=Long.toString(file.getSize());
+			
 				
-				String filePath = saveFileToSystemfaq(file,faqId,faqImageId); 
+				File file3 = new File(fullImagePath+"faqImages/"+faqId+ "/" +faqImageId+"/");
+				if (!file3.exists()) {
+					file3.mkdirs();
+				}
+
+				String fullpath = fullImagePath+"faqImages/"+faqId+"/"+faqImageId+"/"+fileName;
+				File savefile = new File(fullpath);
+				try {
+					file.transferTo(savefile);
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				
+				try {	
+					Thumbnails.of(new File(fullpath))
+					.width(200).keepAspectRatio(true)
+					.outputFormat("jpg")
+					.toFile(fullImagePath+"faqImages/"+faqId+"/"+faqImageId+"/"+fileName.split("\\.")[0]+"_thumb.jpg");
+					
+				} catch (IOException e1) {
+					System.out.println("problame to create thumnail");
+					e1.printStackTrace();
+				}
+				
 				String sqlupdate="update tbl_faq_images set DN_IMAGENAME ='"+file.getOriginalFilename()+"' where DN_ID="+faqImageId;
 				jt.execute(sqlupdate);
 				
@@ -2136,7 +2226,9 @@ public class GalleryController {
 						vm.taskImageId=Long.parseLong(map.get("DN_ID").toString());
 					}
 					if(map.get("DN_IMAGENAME")!=null){
-						vm.imageName=map.get("DN_IMAGENAME").toString();
+						String image=map.get("DN_IMAGENAME").toString();
+						vm.imageName=image;
+						vm.thumbImageName=image.split("\\.")[0]+"_thumb.jpg";
 					}
 					arrayList.add(vm);
 				}
@@ -2215,7 +2307,11 @@ public class GalleryController {
 						vm.taskImageId=Long.parseLong(map.get("DN_ID").toString());
 					}
 					if(map.get("DN_IMAGENAME")!=null){
-						vm.imageName=map.get("DN_IMAGENAME").toString();
+						
+						String image=map.get("DN_IMAGENAME").toString();
+						vm.imageName=image;
+						vm.thumbImageName=image.split("\\.")[0]+"_thumb.jpg";
+						
 					}
 					arrayList.add(vm);
 				}
