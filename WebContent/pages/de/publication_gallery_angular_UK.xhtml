@@ -250,7 +250,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 	<f:viewParam name="msgWarnLabel" value="#{deBean.msgWarnLabel}" />
 	<f:event type="preRenderView" listener="#{deBean.loadMessage}" />
 	<f:viewParam name="img" id="loginuserid" value="#{deBean.id}" />
-	
+
 </f:metadata>
 <h:body data-page="file_upload" >
 	<ui:include src="/pages/header_admin.xhtml" />
@@ -277,7 +277,7 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 	<script type="text/javascript">
 			var loginUserId = $('#x2').val();
 			$('#myIframe').attr('src',
-					"/webapp/fracts/gallery_crop.html?param1=" + loginUserId);
+					"/webapp/fracts/publication_gallery_UK.html?param1=" + loginUserId);
 		function confirmDelete() {
 			if (confirm('Are you sure, you want to delete the Job?'))
 				return true;
@@ -321,11 +321,11 @@ Popup Design -->.ui-dialog.ui-widget-content .ui-dialog-title {
 			});
 		}
 
-	    function makeDisabled(index) {
-	    	console.log(index);
-	    	$("#containerDiv"+index).hide();	    
-	    } 
-	    </script>
+		function makeDisabled(index) {
+			console.log(index);
+			$("#containerDiv" + index).hide();
+		}
+	</script>
 	<!-- BEGIN MANDATORY SCRIPTS -->
 	<script
 		src="#{request.contextPath}/assets/plugins/jquery-1.11.1.min.js"></script>

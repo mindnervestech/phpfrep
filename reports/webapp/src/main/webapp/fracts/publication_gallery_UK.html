@@ -370,7 +370,7 @@ input[type='checkbox'] {
 					<div class="row media-manager">
 						<div class="row" style="margin: 1%">
 								<div class="col-xs-2 col-sm-2 col-md-2">
-									 <select class="dropdown" style="width: 100%;margin: 2%" 
+									 <select class="dropdown" style="width: 100%;margin: 2%"
 										ng-options="option.DC_PUBLICATION_TITLE for option in allPublicationList"
 										name="repeatSelect" id="repeatSelect" ng-model="publicationModel" ng-change="publicationChange(publicationModel)"
 										value="{{option.DC_PUBLICATION_TITLE}}">
@@ -399,11 +399,6 @@ input[type='checkbox'] {
 												ng-class="(year.name == selectedyear)?'btn-warning':'btn-primary'">{{year.name}}</button>
 
 										</div>
-										<div class="col-xs-2 col-sm-2 col-md-2">
-										</div>
-										<div class="col-xs-1 col-sm-1 col-md-1">
-										<!-- 	<button class="btn btn-primary" ng-click="markGloble()">Mark Global</button> -->
-										</div>
 
 								</div>
 							</div>
@@ -420,7 +415,6 @@ input[type='checkbox'] {
 											<!-- <button style="margin: 2%; width: 97%"
 												ng-click="searchData(publication)"
 												class="btn btn-warning col-xs-1 col-sm-1 col-md-1">search</button> -->
-											<button class="btn btn-warning col-xs-1 col-sm-1 col-md-1" style="margin: 2%; width: 97%" ng-click="markGloble()">Mark Global</button>	
 								</div>
 							
 						</div>
@@ -442,7 +436,7 @@ input[type='checkbox'] {
 															<div class="col-xs-6 col-sm-6 col-md-6">
 																<!-- <span><h3><strong>US</strong> Publication</h3></span> -->
 															</div>
-													</div>
+														</div>
 													<div ng-repeat="m in publicationResultList">
 														<div class="col-xs-12 col-sm-12 col-md-12">
 															<div class="panel panel-default">
@@ -490,13 +484,7 @@ input[type='checkbox'] {
 																								<div ng-repeat="la in m.listVm">
 
 																									<div class="col-xs-6 col-sm-6 col-md-6" >
-																										<div style="width: 100px">
-																										<input class="chackboxclass"
-																											value="" type="checkbox"
-																											 name="selectInput"
-																											 ng-model="ids[la.DN_ID]"
-																											/>
-																										</div>
+																										
 																									<div class="incomplete thumbnail childImg"
 																										style="float: left; padding: 2px;">
 																										<a href="#"> <img id="childImg"
@@ -534,126 +522,6 @@ input[type='checkbox'] {
 														</div>
 														</div>
 														
-<!-- 														
-														<div class="col-xs-6 col-sm-6 col-md-6">
-														<div class="col-xs-12 col-sm-12 col-md-12">
-															<div class="col-xs-6 col-sm-6 col-md-6">
-																<span><h3><strong>UK </strong> Publication</h3></span>
-															</div>
-														</div>
-														<div ng-repeat="mo in publicationList.uk">
-														<div class="col-xs-12 col-sm-12 col-md-12">
-															<div class="panel panel-default">
-																<div class="panel-body" style="">
-																	<div class="thmb">
-																		<div class="thmb-prev">
-																			<div class="panel-body thumbnail" style="">
-																				<div class="col-md-4">
-
-																					<img class="yourClass"
-																						style="height: 190px; width: 145px"
-																						ng-src="http://www.enter-fracts.com/files/fracts_files/images/parent/{{mo.DN_ID}}/{{mo.thumb}}"
-																						class="img-responsive m-10" />
-																				</div>
-
-																				<div class="col-md-8">
-																					<div class="col-md-12 p-0">
-																						<div class="col-md-6">
-																							<div class="">
-																								<div class="">
-																										<div style="font-weight: bold; float: left">Job
-																											ID :</div>
-																										<div class="f_l p-l-10">
-																											<span>{{mo.DN_ID}}</span>
-																										</div>
-																									</div>
-																							</div>
-																						</div>
-																						<div class="col-md-6">
-																							<div class="">
-																								<div class="">
-																										<div style="font-weight: bold; float: left">Publication :</div>
-																										<div class="f_l p-l-10">
-																											<span>{{mo.publication}}</span>
-																										</div>
-																									</div>
-																							</div>
-																						</div>
-																						
-																								
-																					</div>
-																					
-
-																					<div class="col-md-12">
-																							<div class="col-md-12" style="margin-left: -13px">
-																								<div ng-repeat="la in mo.listVm" track by $index>
-																								
-																								<div class="col-md-6">
-																									<div style="width: 100px">
-																										<input class="chackboxclass"
-																											value="" type="checkbox"
-																											 name="selectInput"
-																											/>
-																										</div>
-																									<div class="incomplete thumbnail childImg"
-																										style="float: left; padding: 2px;">
-																										<a href="#"> <img id="childImg"
-																											style="display: block;"
-																											ng-src="http://www.enter-fracts.com/files/fracts_files/images/child/{{mo.DN_ID}}/{{la.DN_ID}}/{{la.childThumb}}"/>
-																										</a>
-																										<div class="overlay"
-																											style="height: 18%; height: 15%;">
-																											<div class="thumbnail-actions"
-																												style="margin-top: -8px;">
-																												<small class="text-muted pull-center"
-																													style="margin-left: 30px;"> </small>
-																											</div>
-																										</div>
-																									</div>
-																								</div>	
-																								</div>
-																							</div>
-																							
-																						<div class="col-md-2 p-0"></div>
-																					</div>
-																					<div class="col-md-12 p-0">
-																						<div class="p-0 f_l">
-																							<div class="row m-5 f_l"></div>
-																						</div>
-																						<div class="p-0 f_l">
-																							<div class="row m-5 f_l"></div>
-																						</div>
-																						<div class="p-0 f_l">
-																							<div class="row m-5 f_l"></div>
-																						</div>
-																						<div class="p-0 f_l">
-																							<div class="row m-5 f_l"></div>
-																						</div>
-																					</div>
-																				</div>
-																				<div class="col-md-1 m-t-10 col1half"></div>
-
-																			</div>
-																		</div>
-																		<div
-																			style="width: 228px; height: 28px; word-wrap: break-word; display: none;">
-
-																		</div>
-																	</div>
-																</div>
-															</div>
-																														
-														</div>
-														
-														</div>
-														</div> -->
-														
-														
-														
-														
-													
-
-													<!-- end ng-repeat -->
 
 												</div>
 											</div>
@@ -733,9 +601,9 @@ input[type='checkbox'] {
 	<script
 		src="https://rawgithub.com/angular-ui/ui-select2/master/src/select2.js"></script>
 	<script type="text/javascript"
-		src="/webapp/fracts/js/publication-gallery-app.js"></script>
+		src="/webapp/fracts/js/publication-gallery-UK-app.js"></script>
 	<script type="text/javascript"
-		src="/webapp/fracts/js/publication-gallery-controller.js"></script>
+		src="/webapp/fracts/js/publication-gallery-UK-controller.js"></script>
 	<script src="/webapp/assets/js/application.js"></script>
 
 

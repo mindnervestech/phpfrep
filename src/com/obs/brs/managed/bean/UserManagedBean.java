@@ -1445,9 +1445,15 @@ implements Serializable
 		case 29:
 			redirectLink = "/pages/de/create_task_angular.xhtml";
 			break;
+		case 30:
+			redirectLink = "/pages/de/publication_gallery_angular_US.xhtml";
+			break;
+		case 32:
+			redirectLink = "/pages/de/publication_gallery_angular_UK.xhtml";
+			break;
 		case 31:
 			redirectLink = "/pages/de/faq_angular.xhtml";
-			break;	
+			break;		
 		
 		}
 		this.sessionManager.setSessionAttributeInSession("pageChanged", "1");

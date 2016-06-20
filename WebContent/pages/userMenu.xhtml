@@ -139,7 +139,21 @@
 								<span class="sidebar-text">Publication</span>
 								<f:param name="menuId" value="28" />
 							</h:commandLink></li>
-<li id="menu31" title="FAQ"><h:commandLink
+						<li id="menu30" title="Publication Gallery US"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								<i class="glyphicon glyphicon-th-large"></i>
+								<span class="sidebar-text">Publication Gallery</span>
+								<f:param name="menuId" value="30" />
+							</h:commandLink></li>
+						<li id="menu32" title="Publication Gallery UK"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								<i class="glyphicon glyphicon-th-large"></i>
+								<span class="sidebar-text">Publication Gallery</span>
+								<f:param name="menuId" value="32" />
+							</h:commandLink></li>	
+						<li id="menu31" title="FAQ"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{userBean.loginUser.userType.userType=='Super Admin' || userBean.loginUser.userType.userType=='Data Entry'}">
 								<i class="fa fa-question-circle"></i>
@@ -153,7 +167,6 @@
 								<span class="sidebar-text">Create Task</span>
 								<f:param name="menuId" value="29" />
 							</h:commandLink></li>
-							
 								
 					</ul>
 				</div>
@@ -202,11 +215,15 @@
 				document.getElementById("menu26").setAttribute("class", "current active");
 			} else if (menuval == "27") {
 				document.getElementById("menu27").setAttribute("class", "current active");
+			}else if (menuval == "30") {
+				document.getElementById("menu30").setAttribute("class", "current active");
 			}else if (menuval == "28") {
 				document.getElementById("menu28").setAttribute("class", "current active");
 			}else if (menuval == "111") {
 				document.getElementById("menu111").setAttribute("class", "");
-			} else {
+			}else if (menuval == "32") {
+				document.getElementById("menu32").setAttribute("class", "");
+			}else {
 				document.getElementById("menu2").setAttribute("class", "current active");
 			}
 		});
