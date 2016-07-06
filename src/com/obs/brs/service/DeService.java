@@ -214,6 +214,13 @@ public class DeService implements IDeService{
 	public List<DeJob> getDeJobBySeachCriteria() {
 		return getDeServiceDAO().getDeJobBySeachCriteria();
 	}
+	
+	@Override
+	public List<DeJob> getDeJobBySeachCriteriaGallery() {
+		return getDeServiceDAO().getDeJobBySeachCriteria();
+	}
+	
+	
     /*
      * (non-Javadoc)
      * @see com.obs.brs.service.IDeService#getDeJobBySeachCriteria(java.lang.String)

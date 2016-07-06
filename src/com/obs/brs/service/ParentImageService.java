@@ -99,6 +99,13 @@ public class ParentImageService implements IParentImageService {
 	
 	@Override
 	@Transactional(readOnly=false)
+	public void updateParentImagesStatusToGallery(Map<Long, Boolean> selectedIds) {
+		// TODO Auto-generated method stub
+		 getParentImageDAO().updateParentImageStatusByIdToGallery(selectedIds);
+	}
+	
+	@Override
+	@Transactional(readOnly=false)
 	public void updateParentImagesStatusLive(Map<Long, Boolean> selectedIds) {
 		// TODO Auto-generated method stub
 		 getParentImageDAO().updateParentImageStatusLiveById(selectedIds);

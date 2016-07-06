@@ -34,6 +34,7 @@ import javax.faces.model.SelectItem;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
@@ -42,6 +43,7 @@ import com.obs.brs.ocr.Ocr;
 import net.coobird.thumbnailator.Thumbnails;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.apache.myfaces.custom.datascroller.ScrollerActionEvent;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -386,10 +388,31 @@ public class DeManagedBean implements Serializable{
 		this.liveStatusId = liveStatusId;
 	}
 
+	
+	private Map<Long, Boolean> idsOfImages = new HashMap<Long, Boolean>();
+	
+	public Map<Long, Boolean> getIdsOfImages() {
+		return idsOfImages;
+	}
+
+	public void setIdsOfImages(Map<Long, Boolean> idsOfImages) {
+		this.idsOfImages = idsOfImages;
+	}
+
+	
+
 	private Map<Long, Boolean> selectedIds = new HashMap<Long, Boolean>();
+	
 	  public Map<Long, Boolean> getSelectedIds() {
-		  //System.out.println("selectedIds : "+selectedIds.size());
+		 // System.out.println("selectedIds : "+selectedIds.size());
 	    return selectedIds;
+	  }
+	  
+	  
+	  private Map<Long, Boolean> selectedSciIds = new HashMap<Long, Boolean>();
+	  public Map<Long, Boolean> getSelectedSciIds() {
+		  //System.out.println("selectedIds : "+selectedIds.size());
+	    return selectedSciIds;
 	  }
 	
 	public int getCount() {
@@ -4085,6 +4108,25 @@ public class DeManagedBean implements Serializable{
 		return deJobList;
 	}
 	
+	
+	public List<DeJob> getDeJobGallery() {
+		
+		if(deJobList != null){
+			deJobList = new ArrayList<DeJob>();
+
+			deJobList.addAll(getDeService().getDeJobBySeachCriteriaGallery());
+			
+			Collections.reverse(deJobList);
+		}else{
+			deJobList = new ArrayList<DeJob>();
+
+			deJobList.addAll(getDeService().getDeJobBySeachCriteriaGallery());
+			
+			Collections.reverse(deJobList);
+		}
+		return deJobList;
+	}
+	
 	public String getStatus(int id) {
 		//Object sessionObj = sessionManager.getSessionAttribute(SessionManager.CROPIMAGE);
 	
@@ -6565,6 +6607,29 @@ public List<String> getcompaniesId(String query) {
 		buildParentImageList();
 		selectedIds = new HashMap<Long, Boolean>();
 	}
+	
+	public List<DeJob> moveToGallery(){
+		
+		System.out.println("in gallery");
+	//	System.out.println("...........");
+		//System.out.println(this.getDeJobListBySeachCriteria().size());
+	//	System.out.println("......................"); 
+		count   = 1;
+	//	System.out.println("before");
+		getParentImageService().updateParentImagesStatusToGallery(selectedIds);	
+		//buildParentImageList();
+	//	System.out.println("after");
+	//	System.out.println("before getjob list");
+		 
+		// System.out.println( this.getDeJobListBySeachCriteria().size());
+	//	 System.out.println("after getjob list");
+		 
+		selectedIds = new HashMap<Long, Boolean>();
+		return getDeJobGallery();
+	
+		
+	}
+	
 	public void makeLive(){
 		count   = 1;
 		getParentImageService().updateParentImagesStatusLive(selectedIds);	

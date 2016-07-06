@@ -142,6 +142,8 @@ public interface IDeService {
 	 * 
 	 * @return
 	 */
+	public List<DeJob> getDeJobBySeachCriteriaGallery();
+	
 	public List<DeJob> getDeJobBySeachCriteria();
 	/**
 	 * 

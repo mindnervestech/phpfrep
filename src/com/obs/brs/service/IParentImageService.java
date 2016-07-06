@@ -51,6 +51,7 @@ public interface IParentImageService {
 	List<ParentImage>getParentImageForSciByFilter(String filter);
 
 	public void updateParentImagesStatus(Map<Long, Boolean> selectedIds);
+	public void updateParentImagesStatusToGallery(Map<Long, Boolean> selectedIds);
 	public void updateParentImagesStatusLive(Map<Long, Boolean> selectedIds);
 	public void updateOcrTextIDDupDetails(String id,Long liveId);
 	

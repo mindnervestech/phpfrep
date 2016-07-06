@@ -50,7 +50,7 @@ public class DeServiceDAO implements IDeServiceDAO {
 	public Long addDataEntry(DataEntry dataEntry) {
 		return (Long)getSessionFactory().getCurrentSession().save(dataEntry);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see ccom.obs.brs.dao.DeServiceDAO#updateDataEntry(com.obs.brs.model.DataEntry)
 	 */
@@ -201,7 +201,13 @@ public class DeServiceDAO implements IDeServiceDAO {
 		String 	SQL = "From DeJob as m where m.isDeleted=0 and m.status = 0 and m.parentImage.status = 2";
 		return getSessionFactory().getCurrentSession().createQuery(SQL).list();
 	}
-
+	
+	@Override
+	public List<DeJob> getDeJobBySeachCriteriaGallery() {
+		String 	SQL = "From DeJob as m where m.isDeleted=0 and m.status = 0 and m.parentImage.status = 2";
+		return getSessionFactory().getCurrentSession().createQuery(SQL).list();
+	}
+	
 	@Override
 	public List<DeJob> getDeJobBySeachCriteria(String searchValue) {
 		String appendStr = "";

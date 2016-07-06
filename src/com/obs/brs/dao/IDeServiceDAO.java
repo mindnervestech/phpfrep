@@ -144,6 +144,8 @@ public interface IDeServiceDAO {
 	 * @return
 	 */
 	public List<DeJob> getDeJobBySeachCriteria();
+	
+	public List<DeJob> getDeJobBySeachCriteriaGallery();
 	/**
 	 * 
 	 * @param searchValue

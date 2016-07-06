@@ -49,6 +49,7 @@ public interface IParentImageDAO {
 	List<ParentImage> getParentImageForSciByFilter(String filter);
 
 	public void updateParentImageStatusById(Map<Long, Boolean> selectedIds);
+	public void updateParentImageStatusByIdToGallery(Map<Long, Boolean> selectedIds);
 	public void updateParentImageStatusLiveById(Map<Long, Boolean> selectedIds);
 	public void updateOcrTextIDDupDetails(String id, Long liveId);
 

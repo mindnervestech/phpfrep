@@ -35,9 +35,11 @@
 		rel="stylesheet" />
 	<link href="#{request.contextPath}/assets/css/bootstrap.min.css"
 		rel="stylesheet" />
-	<link href="#{request.contextPath}/assets/css/plugins.min.css"
-		rel="stylesheet" />
+	
+	
 	<link href="#{request.contextPath}/assets/css/style.min.css"
+		rel="stylesheet" />
+	 <link href="#{request.contextPath}/assets/css/plugins.min.css"
 		rel="stylesheet" />
 	<link href="#{request.contextPath}/assets/css/my_style.css"
 		rel="stylesheet" />
@@ -71,16 +73,18 @@
 	.iradio_flat-pink,.table thead .iradio_flat-purple {
 	margin-left: 19px !important;
 	height:30px;
+	margin:-30%;
 }
 
 .table tbody .icheckbox_flat,.table tbody .icheckbox_flat-red,.table tbody .icheckbox_flat-green,.table tbody .icheckbox_flat-blue,.table tbody .icheckbox_flat-aero,.table tbody .icheckbox_flat-grey,.table tbody .icheckbox_flat-orange,.table tbody .icheckbox_flat-yellow,.table tbody .icheckbox_flat-pink,.icheckbox_flat-purple,.table tbody .iradio_flat,.iradio_flat-red,.table tbody .iradio_flat-green,.table tbody .iradio_flat-blue,.table tbody .iradio_flat-aero,.table tbody .iradio_flat-grey,.table tbody .iradio_flat-orange,.table tbody .iradio_flat-yellow,.table tbody .iradio_flat-pink,.table tbody .iradio_flat-purple
 	{
 	margin-left: -2px !important;
 	height:30px;
+	margin:-30%;
 }
 
 .btn {
-	padding: 2px 9px !important;;
+	padding: 2px 9px !important;
 }
 .search_box {
      padding: 5px 2px 0 9px;
@@ -178,7 +182,12 @@ margin:6px;
 .pagination li {
 	margin-left: 0 !important;
 }
+
+
+
 </style>
+
+
 <script>
 function changeColor(clicked) {
 	$(".pagination a").css('color','#636e7b');
@@ -214,6 +223,13 @@ function changeColor(clicked) {
 							</p:ajaxStatus>
 							<h:inputHidden id="activeFilter" value="#{userBean.statusFilter}" />
 							<p:messages closable="true" showDetail="true" showSummary="false" />
+							<div class="col-md-12 p-0 p-b-30"  >
+								<div class="col-md-6 p-10">
+									<p:commandButton  styleClass="btn btn-primary" value="Move To Gallery" action="#{deBean.moveToGallery}" style="margin-left:1%;"  
+									  ajax="true" update = "@all" >
+										 </p:commandButton>
+								</div>
+							</div>	
 							<div class="col-md-12 p-0 p-b-30"  >
 								<div class="col-md-6 p-10">
 									 <div class="manage_button" style="width:62%">
@@ -319,6 +335,7 @@ function changeColor(clicked) {
 													<table class="table table-striped table-hover">
 													<thead>
 														<tr>
+															<th class="no-bd" scope="col"></th>
 															<th class="no-bd" scope="col">Job Id</th>
 															<th class="no-bd" scope="col">
 																<p:commandLink action="#{deBean.sortDeJobList('imageName')}" ajax="true"
@@ -349,31 +366,18 @@ function changeColor(clicked) {
 													size="#{deBean.rowsPerPage-1}" id= "dt_orgList" offset="#{deBean.reviewPageOffset}"
 													varStatus="status">
 												<tr>	
-											<!-- <h:column headerClass="no-bd">
-												<f:facet name="header">
-													<h:selectBooleanCheckbox styleClass="toggle_checkbox" />
-												</f:facet>
-												<div class="div_checkbox">
-													<h:selectBooleanCheckbox styleClass="uniform"
-														value="#{deBean.checkedDe[o.id]}" />
-												</div>
-											</h:column>
-											 -->	<!-- <h:column headerClass="no-bd">
-												<f:facet name="header">
-													<h:outputText value="Parent Image" />
-												</f:facet>
-												<t:div styleClass="data_image m-b-20" style ="max-width:50px;max-hieght:35px"
-											rendered="#{deBean.childImageId ==0}">
-											<img style="width: 50px;"
-												src="#{global['baseURL']}#{global['contextPath']}#{global['imageContextPath']}#{global['parentImagePath']}#{o.parentImage.id}/#{o.parentImage.imageName}"
-												class="img-responsive" alt="#{deBean.parentImageName}" />
-											</t:div>
-											</h:column> -->
+												
+													<td>
+														<div class = "col-md-1">
+														 <h:selectBooleanCheckbox value="#{deBean.selectedIds[o.parentImage.id]}"  style="" class = "checkbox">
+                                                 		 </h:selectBooleanCheckbox> 
+                                                 		</div> 
+													</td>
 													<td>
 														<h:column headerClass="no-bd">
 															<p:commandLink action="#{deBean.loadAddOrEditDe}"
 																value="#{o.parentImage.id}" style="margin-bottom: -3px;height: 27px; margin-top: -6px;margin: -4px;color:#333;">
-																<f:param name="deJobId" value="#{o.id}" />
+																<f:param name="deJobId" value="#{o.parentImage.id}" />
 															</p:commandLink>
 														</h:column>
 													</td>
