@@ -34,22 +34,15 @@ import javax.faces.model.SelectItem;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
-import com.ning.http.client.AsyncCompletionHandler;
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.Response;
-import com.obs.brs.ocr.Ocr;
-
 import net.coobird.thumbnailator.Thumbnails;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.apache.myfaces.custom.datascroller.ScrollerActionEvent;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
-import org.springframework.expression.spel.ast.OpNE;
-import org.springframework.scheduling.annotation.Scheduled;
 
+import com.ning.http.client.AsyncCompletionHandler;
+import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.Response;
 import com.obs.brs.controller.ScoreData;
 import com.obs.brs.messages.IMessagesService;
 import com.obs.brs.model.ChildImage;
@@ -62,8 +55,6 @@ import com.obs.brs.model.ParentImage;
 import com.obs.brs.model.Publication;
 import com.obs.brs.model.States;
 import com.obs.brs.model.User;
-import com.obs.brs.service.ChildImageService;
-import com.obs.brs.service.DeService;
 import com.obs.brs.service.IChildImageService;
 import com.obs.brs.service.IDeService;
 import com.obs.brs.service.IDeletedImageService;
