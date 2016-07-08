@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -303,21 +302,22 @@ public class DeManagedBean implements Serializable{
 	}
 
 	public List<String> getSuccessfullFileNames() {
-		System.out.println("in getSuccessfullFileNames list");
-		
-		
-		
 		return this.successfullFileNames;
 	}
 
 	
 	public void setSuccessfullFileNames(List<String> successfullFileNames) {
-		System.out.println("in setSuccessfullFileNames lis");
 		this.successfullFileNames = successfullFileNames;
 		
 	}
 
-	
+	public String getSelectedCommonPub() {
+		return selectedCommonPub;
+	}
+
+	public void setSelectedCommonPub(String selectedCommonPub) {
+		this.selectedCommonPub = selectedCommonPub;
+	}
 
 	public String getSelectedPub() {
 		return selectedPub;
@@ -395,7 +395,6 @@ public class DeManagedBean implements Serializable{
 	private Map<Long, Boolean> selectedIds = new HashMap<Long, Boolean>();
 	
 	  public Map<Long, Boolean> getSelectedIds() {
-		 // System.out.println("selectedIds : "+selectedIds.size());
 	    return selectedIds;
 	  }
 	  
@@ -574,7 +573,7 @@ public class DeManagedBean implements Serializable{
 		if(origRequest.getRequestURI().indexOf("gallery")!=-1) {
 			loadPagination();
 		}
-		System.out.println("origRequest.getRequestURI(): "+origRequest.getRequestURI());
+	
 		if(origRequest.getRequestURI().indexOf("ocr_releavance")!=-1) {
 			loadPaginationOcr();
 		}
@@ -2020,8 +2019,10 @@ public class DeManagedBean implements Serializable{
 	 * 	  save ad Details 
 	 *    add new DE
 	 */
+	
 	public String saveAndExitDeData() 
 	{
+		
 		String flag=null;
 		try
 		{
@@ -2030,8 +2031,8 @@ public class DeManagedBean implements Serializable{
 			{
 				Object sessionObj = sessionManager.getSessionAttribute(SessionManager.EDITUSER);
 				int deJobId  = sessionObj!=null?((Integer)sessionObj).intValue():0;
-				DeJob deJob = 	deService.getDeJobById(deJobId);
-				//DeJob deJob = deService.getDeJobByParentImageId(deJobid);
+				//DeJob deJob = 	deService.getDeJobById(deJobId);
+				DeJob deJob = deService.getDeJobByParentImageId(deJobId);
 				if(deJob != null){
 					DataEntry dataEntry = deService.getDataEntryByParentImageId(deJob.getParentImage().getId());
 					List<ChildImage> childImageList=childImageService.getChildImagesByParent(deJob.getParentImage().getId());
@@ -2229,15 +2230,20 @@ public class DeManagedBean implements Serializable{
 	 */
 	public void loadDeInfo(ComponentSystemEvent event)
 	{
+		
+		
 		try {
 			if (!FacesContext.getCurrentInstance().isPostback()) 
 			{
 				Object sessionObj = sessionManager.getSessionAttribute(SessionManager.EDITUSER);
 				this.id   = sessionObj!=null?((Integer)sessionObj).intValue():0; // get job id
 				this.checkPreVal=true;
+				
+				
 				if(this.id >0)
 				{
-					DeJob deJob = 	deService.getDeJobById(this.id);
+					//DeJob deJob = deService.getDeJobById(this.id);
+					DeJob deJob =deService.getDeJobByParentImageId(this.id);
 					if(deJob != null){
 						this.publicationTitle = deJob.getParentImage().getPublicationTitle().getPublicationTitle(); 
 						this.issueDate =  deJob.getParentImage().getIssueDate();
@@ -2326,8 +2332,10 @@ public class DeManagedBean implements Serializable{
 	 */
 	public String loadAddOrEditDe(){
 		String flag=null;
+		
 		sessionManager.removeSessionAttributeInSession(SessionManager.CHILDIMAGEID);
 		String val = facesUtils.getRequestParameterMap("deJobId");
+		
 		int deJobId = Integer.valueOf(val!=null?val:"0");
 		if(deJobId >0){
 			sessionManager.setSessionAttributeInSession(SessionManager.EDITUSER, deJobId);
@@ -2557,10 +2565,14 @@ public class DeManagedBean implements Serializable{
 	}
 	
 	public List<ScoreData> getDeReleavanceImageList() {
-		if(deReleavanceImageList == null || deReleavanceImageList.isEmpty() ) {
+		if(deReleavanceImageList == null || deReleavanceImageList.isEmpty()) {
+			//System.out.println("before get");
 			deReleavanceImageList = deService.getDeoByReleavance();
+			//deReleavanceImageListCopy = deReleavanceImageList;
+			//System.out.println("after get");
 			liveStatusArr = new Long[deReleavanceImageList.size()];
-		}
+		} 
+		
 		return deReleavanceImageList;
 	}
 
@@ -4907,7 +4919,10 @@ public List<String> getcompaniesId(String query) {
 				this.id   = sessionObj!=null?((Integer)sessionObj).intValue():0;
 				if(this.id >0)
 				{
-					DeJob deJob =  deService.getDeJobById(this.id);
+				
+				//	DeJob deJob =  deService.getDeJobById(this.id);
+					DeJob deJob =  deService.getDeJobByParentImageId(this.id);
+					
 					if(deJob != null){
 						//childImageList = childImageService.getChildImagesByParent(deJob.getParentImage().getId());
 						childImagesDataList=deService.getImagesByJobid(deJob.getId());
@@ -5782,6 +5797,9 @@ public List<String> getcompaniesId(String query) {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
 	/**
 	 * for previous page
 	 */
@@ -6155,6 +6173,7 @@ public List<String> getcompaniesId(String query) {
 			
 			FacesUtils facesUtils = new FacesUtils();
 			long deDataId = Long.valueOf(facesUtils.getRequestParameterMap("baseId"));
+			
 			if(deDataId >0){
 				DataEntry dataEntry = deService.getDataEntryById(deDataId);
 				if(dataEntry != null && this.selectedCompany != null ){
@@ -6168,7 +6187,6 @@ public List<String> getcompaniesId(String query) {
 					} else {
 						deCompany = duplicate;
 					}
-					
 					
 					/*else{
 						messageService.messageFatal(null, "CompanyName already exist.");

@@ -524,14 +524,18 @@ public class DeServiceDAO implements IDeServiceDAO {
 		HashSet<Integer> ids = new HashSet<>();
 		ids.add(Integer.parseInt("1"));
 		ids.add(Integer.parseInt("2"));
-		List <DeJob> deChildList = getSessionFactory().getCurrentSession().createQuery("From DeJob as m where m.status in (:ids)").setParameterList("ids", ids).list();
+		List <DeJob> deChildList = getSessionFactory().getCurrentSession().createQuery("From DeJob where status in (:ids)").setParameterList("ids", ids).list();
 		HashSet <Long> idss = new HashSet<>();
 	
 		for(DeJob d : deChildList){
 			idss.add(d.getId());
 		}
-		
-		List <DataEntry> deChildLiveList = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.deJobid.id in (:idss)").setParameterList("idss", idss).list();
+		List <DataEntry> deChildLiveList = null;
+		if (idss.isEmpty()) {
+			deChildLiveList = getSessionFactory().getCurrentSession().createQuery("From DataEntry").list();
+		} else {
+			deChildLiveList = getSessionFactory().getCurrentSession().createQuery("From DataEntry where deJobid.id in (:idss)").setParameterList("idss", idss).list();
+		}
 		return deChildLiveList;
 	}
 
@@ -602,8 +606,9 @@ public class DeServiceDAO implements IDeServiceDAO {
 				List<DataEntry> dataSubEntries = new ArrayList<>();
 		
 				if(sublistIds.size() != 0){
-					dataSubEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:sublistIds)").setParameterList("sublistIds", sublistIds).list();			    	
+					dataSubEntries = getSessionFactory().getCurrentSession().createQuery("From DataEntry as m where m.id in (:sublistIds)").setParameterList("sublistIds", sublistIds).list();
 		    	}
+				
 				List<DataEntry> dataE = new ArrayList<>();
 				if(dataSubEntries.size() >=2){
 					
