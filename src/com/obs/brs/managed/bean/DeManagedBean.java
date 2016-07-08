@@ -290,6 +290,10 @@ public class DeManagedBean implements Serializable{
 	private long liveStatusId;
 	private Long[] liveStatusArr;
 	private String selectedPub;
+	
+	
+
+	
 	public long getLiginUserId() {
 		User user = (User)this.sessionManager.getSessionAttribute("login_user");
 		liginUserId=user.getId();
@@ -311,13 +315,6 @@ public class DeManagedBean implements Serializable{
 		
 	}
 
-	public String getSelectedCommonPub() {
-		return selectedCommonPub;
-	}
-
-	public void setSelectedCommonPub(String selectedCommonPub) {
-		this.selectedCommonPub = selectedCommonPub;
-	}
 
 	public String getSelectedPub() {
 		return selectedPub;
