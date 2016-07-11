@@ -526,6 +526,11 @@ public class FractsController {
 		public Long parentImageId;
 		public String childImageName;
 		public String childImageThumb;
+		public String cropWidth;
+		public String cropLength;
+		public String liveWidth;
+		public String liveLength;
+		
 		public List<CroppedVM> revelanceList;
 	}
 }
