@@ -47,12 +47,16 @@ public class FractsController {
 	@RequestMapping(value="/get-relevance-list" , method = RequestMethod.GET)
 	public @ResponseBody List getRelevanceList() {
 		String query = "select cropped.DN_ID as 'croppedId',"+
-				"live.DN_ID as 'liveId' ,"+
-				"cropped.DN_CHILD_IMAGE_ID as 'croppedChildImageId',"+
-				"live.DN_CHILD_IMAGE_ID as 'liveChildImageId' "+
-				"from tbl_ocr_text_match_result ocr, tbl_de_data live, tbl_de_data cropped "+ 
-				"where "+
-				"ocr.DC_IS_DUPLICATE = '0' and " +
+				" cropped.DC_WIDTH as cropWidth, "+
+				" cropped.DC_LENGTH as cropLenght,"+
+				" live.DC_WIDTH as liveWidth,"+
+				" live.DC_LENGTH as liveLength,"+
+				" live.DN_ID as 'liveId' ,"+
+				" cropped.DN_CHILD_IMAGE_ID as 'croppedChildImageId',"+
+				" live.DN_CHILD_IMAGE_ID as 'liveChildImageId' "+
+				" from tbl_ocr_text_match_result ocr, tbl_de_data live, tbl_de_data cropped "+ 
+				" where "+
+				" ocr.DC_IS_DUPLICATE = '0' and " +
 				"ocr.STATUS_CHANGED_DATE IS NULL and "+
 				"ocr.DC_CROPPED_JOBID = cropped.DN_ID and "+ 
 				"ocr.DC_LIVE_JOBID = live.DN_ID and "+ 
@@ -70,6 +74,12 @@ public class FractsController {
 			//	liveVM.id = Long.valueOf(map.get("liveId").toString());
 				if(map.get("liveChildImageId")!=null){
 					liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
+					if(map.get("liveWidth")!=null){
+						liveVM.liveWidth=map.get("liveWidth").toString();
+					}
+					if(map.get("liveLength")!=null){
+						liveVM.liveLength=map.get("liveLength").toString();
+					}
 					
 					try {
 						
@@ -106,6 +116,12 @@ public class FractsController {
 				if(map.get("croppedChildImageId")!=null){
 					croppedVM.childImageId = Long.valueOf(map.get("croppedChildImageId").toString());
 					
+					if(map.get("cropWidth")!=null){
+						croppedVM.cropWidth=map.get("cropWidth").toString();
+					}
+					if(map.get("cropLenght")!=null){
+						croppedVM.cropLength=map.get("cropLenght").toString();
+					}
 					
 					try {
 						
@@ -142,6 +158,12 @@ public class FractsController {
 			//	liveVM.id = Long.valueOf(map.get("liveId").toString());
 				if(map.get("liveChildImageId")!=null){
 					liveVM.childImageId = Long.valueOf(map.get("liveChildImageId").toString());
+					if(map.get("liveWidth")!=null){
+						liveVM.liveWidth=map.get("liveWidth").toString();
+					}
+					if(map.get("liveLength")!=null){
+						liveVM.liveLength=map.get("liveLength").toString();
+					}
 					
 					try {
 

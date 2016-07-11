@@ -209,7 +209,7 @@ function changeColor(clicked) {
 		<div id="main-content">
 			<div class="page-title">
 				<i class="icon-custom-left"></i>
-				<h3>Manage Data Entry</h3>
+				<h3>Transcription</h3>
 			</div>
 			<div class="row">
 				<div class="col-md-12">
@@ -225,9 +225,9 @@ function changeColor(clicked) {
 							<p:messages closable="true" showDetail="true" showSummary="false" />
 							<div class="col-md-12 p-0 p-b-30"  >
 								<div class="col-md-6 p-10">
-									<p:commandButton  styleClass="btn btn-primary" value="Move To Gallery" action="#{deBean.moveToGallery}" style="margin-left:1%;"  
+									<p:commandButton  styleClass="btn btn-primary" value="Move To Gallery" action="#{deBean.moveToGallery}" style="margin-left:1%; display: none"  
 									  ajax="true" update = "@all" >
-										 </p:commandButton>
+										 </p:commandButton> 
 								</div>
 							</div>	
 							<div class="col-md-12 p-0 p-b-30"  >
@@ -335,7 +335,7 @@ function changeColor(clicked) {
 													<table class="table table-striped table-hover">
 													<thead>
 														<tr>
-															<th class="no-bd" scope="col"></th>
+															<!-- <th class="no-bd" scope="col"></th> -->
 															<th class="no-bd" scope="col">Job Id</th>
 															<th class="no-bd" scope="col">
 																<p:commandLink action="#{deBean.sortDeJobList('imageName')}" ajax="true"
@@ -367,12 +367,12 @@ function changeColor(clicked) {
 													varStatus="status">
 												<tr>	
 												
-													<td>
+												<!-- 	<td>
 														<div class = "col-md-1">
 														 <h:selectBooleanCheckbox value="#{deBean.selectedIds[o.parentImage.id]}"  style="" class = "checkbox">
                                                  		 </h:selectBooleanCheckbox> 
                                                  		</div> 
-													</td>
+													</td> -->
 													<td>
 														<h:column headerClass="no-bd">
 															<p:commandLink action="#{deBean.loadAddOrEditDe}"
@@ -387,6 +387,11 @@ function changeColor(clicked) {
 																value="#{o.parentImage.imageName}" />
 														</h:column>
 													</td>
+													<!-- <td>
+														<a href="" title="Send back for repair" ng-click="" >
+															<i class="glyphicon glyphicon-chevron-left"></i>
+														</a>
+													</td> -->
 													<td>
 														<h:column headerClass="no-bd">
 															<h:outputText styleClass="text-left color-success no-bd-y"

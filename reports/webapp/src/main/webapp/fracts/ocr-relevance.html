@@ -316,10 +316,10 @@ input[type='checkbox'] {
 														ng-repeat="r in relevanceData | startFrom:currentPage*pageSize | limitTo:pageSize">
 
 														<div class="panel panel-default">
-															<div class="panel-body" style="height: 300px;">
+															<div class="panel-body" style="height: 320px;">
 																<div class="thmb">
 																	<div class="thmb-prev">
-																		<div class="thumbnail" style="height: 285px;">
+																		<div class="panel-body thumbnail" style="height: 307px;">
 
 																			<div class="col-md-3">
 																				<div class="col-md-8 p-0"
@@ -330,14 +330,27 @@ input[type='checkbox'] {
 																								<div style="font-weight: bold; float: left">
 																									Job ID : <span>{{r.id}}</span>
 																								</div>
-																								<div class="f_l p-l-10">
-																								 <a ng-click="openCroppedPopup($index)"> <img
+																								
+																									<!-- <a ng-click="openCroppedPopup($index)"> <img
+																										style="height: 240px; width: 213px"
+																										src="/webapp/get-child-image?id={{r.childImageId}}"
+																										class="img-responsive m-10" alt="" />
+																									</a> -->
+																									 <a ng-click="openCroppedPopup($index)"> <img
 																										style="height: 240px; width: 213px"
 																										src="http://www.enter-fracts.com/files/fracts_files/images/child/{{r.parentImageId}}/{{r.childImageId}}/{{r.childImageThumb}}"
 																										class="img-responsive m-10" alt="" />
 																									</a> 
-																									<input type="checkbox" ng-model="r.isChecked" style="top: -150px;left: -125px;position: relative;"/>	
-																								</div>
+																									<!-- <a ng-click="openCroppedPopup($index)"> <img
+																										style="height: 240px; width: 213px"
+																										src="D:/dev/stsWorkspace/mark/fracts/WebContent/files/fracts_files/images/child/{{r.parentImageId}}/{{r.childImageId}}/{{r.childImageThumb}}"
+																										class="img-responsive m-10" alt="" />
+																									</a> -->
+																									<input type="checkbox" ng-model="r.isChecked" style="top: -150px;left: -125px;position: relative;"/>
+																									<div style="font-weight: bold;margin-left: -3%;margin-top:-10%">
+																										Ad size : <span> {{r.cropWidth}} X {{r.cropLength}}</span>
+																									</div>
+																								
 																							</div>
 																						</div>
 																					</div>
@@ -357,12 +370,18 @@ input[type='checkbox'] {
 																									<div style="font-weight: bold; float: left">
 																										Live Job ID {{$index+1}} : <span>{{l.id}}  </span>
 																									</div>
-																								
-																									                          
-																									<a ng-click="comparePopup($parent.$index,l.childImageId)"> <img class="img-responsive m-10" alt=""
+																									 <a ng-click="comparePopup($parent.$index,l.childImageId)"> <img class="img-responsive m-10" alt=""
 																										src="http://www.enter-fracts.com/files/fracts_files/images/child/{{l.parentImageId}}/{{l.childImageId}}/{{l.childImageThumb}}"
 																										style="height: 240px; width: 213px"></img>
-																									</a>					
+																									</a> 
+																									<!-- <a ng-click="comparePopup($parent.$index,l.childImageId)"> <img class="img-responsive m-10" alt=""
+																										src="D:/dev/stsWorkspace/mark/fracts/WebContent/files/fracts_files/images/child/{{l.parentImageId}}/{{l.childImageId}}/{{l.childImageThumb}}"
+																										style="height: 240px; width: 213px"></img>
+																									</a> -->
+																									<div style="font-weight: bold">
+																										Ad size : <span> {{l.liveWidth}} X {{l.liveLength}}</span>
+																									</div>
+																									
 																								</div>
 																							</div>
 																						</div>
