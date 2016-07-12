@@ -53,4 +53,7 @@ public interface IParentImageDAO {
 	public void updateParentImageStatusLiveById(Map<Long, Boolean> selectedIds);
 	public void updateOcrTextIDDupDetails(String id, Long liveId);
 
+	public void updateParentImageStatusByIdToRepair(String imgId);
+
+
 }

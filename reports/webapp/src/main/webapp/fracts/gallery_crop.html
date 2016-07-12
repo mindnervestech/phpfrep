@@ -639,8 +639,9 @@ input[type='checkbox'] {
 																		<div class="col-md-1 m-t-10 col1half">
 																			
 																		  <button class="btn btn-primary" ng-click="openEditImageForm($index,pageSize,currentPage,list.DN_ID,list.DC_IMAGENAME)" style="margin-top: -8%;">Edit</button>	
+																		  <button class="btn btn-primary" ng-click="singleAdvetorial($index,pageSize,currentPage,list.DN_ID,list.DC_IMAGENAME)" style="margin-top: 12%">Advetorial</button>	
 																			
-																			<a title="Move To Transcription " alt="Move To Transcription" ><span ng-click="moveToTranscription($index,pageSize,currentPage,list.DN_ID)" style=""><i class="glyphicon glyphicon-play yourClass"style="font-size: 45px;color: #3276b1;margin-top: 35%;margin-left: 56%"></i></span>
+																			<a title="Move To Transcription " alt="Move To Transcription" ><span ng-click="moveToTranscription($index,pageSize,currentPage,list.DN_ID)" style=""><i class="glyphicon glyphicon-play yourClass"style="font-size: 45px;color: #3276b1;margin-top: 12%;margin-left: 56%"></i></span>
 																			</a>
 																			<div style="width:100px;height:30px">
 																			<h3><span ng-show="list.duplicate" style="margin: 15px;color:red">Duplicate</span></h3>
@@ -762,9 +763,7 @@ input[type='checkbox'] {
 																		style="width: 228px; height: 28px; word-wrap: break-word;">
 																		<h5 class="media-title">
 																			<a href="#">{{list.DC_IMAGENAME}}</a>
-																			<!-- <h:commandLink action="#{deBean.callChildPage}">
-																				<f:param name="img" value="#{val.id}" />#{val.imageName}
-																	        </h:commandLink> -->
+																			
 																		</h5>
 																		<small class="text-muted pull-left"
 																						style="margin-top: 0px;">

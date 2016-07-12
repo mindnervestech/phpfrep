@@ -54,5 +54,8 @@ public interface IParentImageService {
 	public void updateParentImagesStatusToGallery(Map<Long, Boolean> selectedIds);
 	public void updateParentImagesStatusLive(Map<Long, Boolean> selectedIds);
 	public void updateOcrTextIDDupDetails(String id,Long liveId);
+
+	public void updateParentImagesStatusToRepair(String imgId);
+
 	
 }

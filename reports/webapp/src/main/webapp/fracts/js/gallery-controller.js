@@ -382,14 +382,45 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		});
 	};
 
+	
+	
+	$scope.singleAdvetorial=function(index,pagesize,currentpage,id){
+		$scope.loading = true;
+		console.log("in single adv");
+		var number = (index) + (currentpage) * pagesize;
+		
+		$http.post('/webapp/gallery/moveToAvertorial_parent/'+id).success(function(data){
+			$scope.loading = false;
+			console.log("in ajax root");
+			
+			$scope.allImageList[number].imageComment='';
+			$scope.allImageList.splice(number,1);
+			$scope.loading = false;
+			$(function(){
+				new PNotify({
+					title: 'Success Notice',
+					text: 'Successfully Done'
+
+				});
+			});
+		}).error(function() {
+			$scope.loading = false;
+			$(function(){
+				new PNotify({
+					title: 'failure Notice',
+					text: 'Failed'
+
+				});
+			});
+			
+		});
+		
+		
+	};
+	
     $scope.tempChildArray=[];
 	$scope.moveToTranscription=function(index,pagesize,currentpage,id){
 		$scope.loading = true;
-//		console.log("inmove to transcription ");
-//		console.log('index',index);
-//		console.log('currentpage',currentpage);
-//		console.log('pagesize',pagesize);
-		
 		var number = (index) + (currentpage) * pagesize;
 		
 		$scope.parentImageIdForTrans=id;
@@ -641,10 +672,7 @@ app.controller('MainController',function($scope,$state,$http,$filter,$window,$ro
 		
 		$http({url:'/webapp/gallery/save_whole_crop_image',method:'POST',data: $scope.captureWholeImagejson,cache: false,
 			contentType: "application/x-www-form-urlencoded"}).success(function(data) {
-			//	$scope.cropImageVm.push(data);
-				/*$scope.childImageArray.push(data);
-				console.log('$scope.childImageArray',$scope.childImageArray);
-				$scope.loading = false;*/
+			
 				console.log('parent is',$scope.allImageList[$scope.number]);
 				$scope.allImageList[$scope.number].listVm.push(data);
 				$scope.loading = false;

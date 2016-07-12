@@ -3189,6 +3189,28 @@ public class DeManagedBean implements Serializable{
 	/**
 	 * delete parent image from db and path
 	 */
+public List<DeJob> moveToGallery(){
+		
+		count   = 1;
+		getParentImageService().updateParentImagesStatusToGallery(selectedIds);	
+		 
+		selectedIds = new HashMap<Long, Boolean>();
+		return getDeJobGallery();
+	
+		
+	}
+	
+	public List<DeJob> sendBackToRepair(){
+		
+		System.out.println("in sendBackToRepair");
+		String imgId = facesUtils.getRequestParameterMap("imageIds");
+		if(imgId!=null){
+				getParentImageService().updateParentImagesStatusToRepair(imgId);
+		
+		}	
+		return getDeJobGallery();
+	}
+	
 	public void deleteParentImage(){
 		parentImageList = new ArrayList<ParentImage>();
 		long start = System.currentTimeMillis();
@@ -6614,27 +6636,6 @@ public List<String> getcompaniesId(String query) {
 		selectedIds = new HashMap<Long, Boolean>();
 	}
 	
-	public List<DeJob> moveToGallery(){
-		
-		System.out.println("in gallery");
-	//	System.out.println("...........");
-		//System.out.println(this.getDeJobListBySeachCriteria().size());
-	//	System.out.println("......................"); 
-		count   = 1;
-	//	System.out.println("before");
-		getParentImageService().updateParentImagesStatusToGallery(selectedIds);	
-		//buildParentImageList();
-	//	System.out.println("after");
-	//	System.out.println("before getjob list");
-		 
-		// System.out.println( this.getDeJobListBySeachCriteria().size());
-	//	 System.out.println("after getjob list");
-		 
-		selectedIds = new HashMap<Long, Boolean>();
-		return getDeJobGallery();
-	
-		
-	}
 	
 	public void makeLive(){
 		count   = 1;

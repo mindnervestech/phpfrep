@@ -163,6 +163,26 @@ public class ParentImageDAO implements IParentImageDAO{
 	
 	
 	@Override
+	public void updateParentImageStatusByIdToRepair(String imgId) {
+		String sqlQuery = "from ParentImage";
+		sqlQuery = sqlQuery + " where id ="+imgId;
+		List<ParentImage> parentImage = getSessionFactory().getCurrentSession().createQuery(sqlQuery).list();
+		for(ParentImage p : parentImage ){
+			p.setStatus(0);
+			getSessionFactory().getCurrentSession().update(p);
+			String sqlQuerydejob = "from DeJob";
+			long  id =  p.getId();
+			sqlQuerydejob = sqlQuerydejob + " where  parentImage.id ="+id;
+			List<DeJob>  deJobs = getSessionFactory().getCurrentSession().createQuery(sqlQuerydejob).list();
+
+			for(DeJob d :deJobs){
+				d.setStatus(0);
+				getSessionFactory().getCurrentSession().update(d);
+			}
+		}	
+	}
+	
+	@Override
 	public void updateParentImageStatusById(Map<Long, Boolean> selectedIds) {
 		// TODO Auto-generated method stub
 		System.out.println("selectedIds.size  in move : "+selectedIds.size());

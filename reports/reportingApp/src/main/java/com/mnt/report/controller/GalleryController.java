@@ -1229,6 +1229,19 @@ public class GalleryController {
 		
 	}
 	
+	@RequestMapping(value="/moveToAvertorial_parent/{id}", method=RequestMethod.POST)
+	@ResponseBody
+	public void moveToAdvertorialParent(@PathVariable("id") String id){
+		
+			System.out.println("in moveToAdvertorialParent");
+			String sql="update tbl_parent_image m set m.DN_STATUS=2 where m.DN_ID="+id;
+			jt.execute(sql);
+			
+			String sqlforDejob="update tbl_de_job t set t.DN_STATUS=2 where t.DN_PARENT_IMAGE_ID="+id;
+			jt.execute(sqlforDejob);
+			
+	};
+	
 	@RequestMapping(value="/moveToTranscription_parent/{id}", method=RequestMethod.POST)
 	@ResponseBody
 	public void moveToTranscriptionParent(@PathVariable("id") String id){
