@@ -1091,65 +1091,7 @@ public class GalleryController {
 	
 	
 	
-	@RequestMapping(value="/get_filter_image_history", method=RequestMethod.POST)
-	@ResponseBody
-	public List getFilterImageHistory(@RequestBody ImageHistoryVm Ivm) throws ParseException{
-	
-		
-		
-		String[] arrTemp=Ivm.getDateFrom().split("/");
-		
-		
-		String dateFromT=arrTemp[2]+"-"+arrTemp[0]+"-"+arrTemp[1];
-		
 
-		
-		
-		String[] arrTempTo=Ivm.getDateTo().split("/");
-		
-		
-		String dateToT=arrTempTo[2]+"-"+arrTempTo[0]+"-"+arrTempTo[1];
-		
-		
-
-		List<ImageHistoryVm> listImage= new ArrayList<ImageHistoryVm>();
-		List<Map<String,Object>> imageHistoryList = new ArrayList<Map<String,Object>>();
-		
-		String sql="select * from tbl_parent_image t where date(t.DD_CREATED_ON) BETWEEN '"+dateFromT+"' and '"+dateToT+"'";
-		
-		imageHistoryList=jt.queryForList(sql);
-	
-		
-		int i=1;
-		for (Map<String, Object> pImage : imageHistoryList) {
-			ImageHistoryVm vm= new ImageHistoryVm();
-			
-			vm.setId(i);
-			i++;
-			if(pImage.get("DN_ID")!=null){
-			
-				vm.setJobId(Long.parseLong(pImage.get("DN_ID").toString()));
-			}
-			if(pImage.get("DC_IMAGENAME")!=null){
-				
-				vm.setImageName(pImage.get("DC_IMAGENAME").toString());
-			}
-			if(pImage.get("DD_CREATED_ON")!=null){
-
-				vm.setCreatedDate(pImage.get("DD_CREATED_ON").toString());
-			}
-			if(pImage.get("DD_ISSUE_DATE")!=null){
-
-				vm.setIssueDate(pImage.get("DD_ISSUE_DATE").toString());
-			}
-			
-			listImage.add(vm);
-		}
-		
-	
-	return listImage;
-		
-	}
 	
 	
 	@RequestMapping(value="/delete_child_image/{id}/{userId}", method=RequestMethod.POST)
@@ -1574,7 +1516,7 @@ public class GalleryController {
 	
 	
 	
-	
+/*	
 	@RequestMapping(value="/all_image_history", method=RequestMethod.POST)
 	@ResponseBody
 	public List getAllImageHistory(@RequestBody ImageHistoryVm Ivm) throws ParseException{
@@ -1618,9 +1560,59 @@ public class GalleryController {
 			listImage.add(vm);
 		}
 		return listImage;
+	}*/
+	
+	
+	@RequestMapping(value="/all_image_history", method=RequestMethod.POST)
+	@ResponseBody
+	public List getAllImageHistory(@RequestBody ImageHistoryVm Ivm) throws ParseException{
+
+		String[] arrTemp=Ivm.getDateFrom().split("/");
+		String dateFromT=arrTemp[2]+"-"+arrTemp[0]+"-"+arrTemp[1];
+		String[] arrTempTo=Ivm.getDateTo().split("/");
+		String dateToT=arrTempTo[2]+"-"+arrTempTo[0]+"-"+arrTempTo[1];
+		
+
+		List<Map<String,Object>> imageHistoryList = new ArrayList<Map<String,Object>>();
+		
+		/*String sql="select * from tbl_parent_image t where date(t.DD_CREATED_ON) BETWEEN '"+dateFromT+"' and '"+dateToT+"'";
+		imageHistoryList=jt.queryForList(sql);*/
+		
+		String sqlForHistory="select *,date(t.DD_CREATED_ON) as date from tbl_parent_image t "
+				+ "where date(t.DD_CREATED_ON) BETWEEN '"+dateFromT+"' and '"+dateToT+"' "
+				+ "order by date(t.DD_CREATED_ON) desc";
+	
+		imageHistoryList=jt.queryForList(sqlForHistory);
+		return imageHistoryList;
 	}
 	
 	
+	@RequestMapping(value="/get_filter_image_history", method=RequestMethod.POST)
+	@ResponseBody
+	public List getFilterImageHistory(@RequestBody ImageHistoryVm Ivm) throws ParseException{
+	
+		String[] arrTemp=Ivm.getDateFrom().split("/");
+		String dateFromT=arrTemp[2]+"-"+arrTemp[0]+"-"+arrTemp[1];
+		String[] arrTempTo=Ivm.getDateTo().split("/");
+		String dateToT=arrTempTo[2]+"-"+arrTempTo[0]+"-"+arrTempTo[1];
+
+		List<ImageHistoryVm> listImage= new ArrayList<ImageHistoryVm>();
+		List<Map<String,Object>> imageHistoryList = new ArrayList<Map<String,Object>>();
+		
+		/*String sql="select * from tbl_parent_image t where date(t.DD_CREATED_ON) BETWEEN '"+dateFromT+"' and '"+dateToT+"'";
+		imageHistoryList=jt.queryForList(sql);*/
+		
+		
+		String sqlForHistory="select *,date(t.DD_CREATED_ON) as date from tbl_parent_image t "
+				+ "where date(t.DD_CREATED_ON) BETWEEN '"+dateFromT+"' and '"+dateToT+"' "
+				+ "order by date(t.DD_CREATED_ON) desc";
+	
+		imageHistoryList=jt.queryForList(sqlForHistory);
+	
+		return imageHistoryList;
+	}
+	
+
 	@RequestMapping(value="/get_all_dates/{month}/{year}/{publication}", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> getAllDates(@PathVariable("month") String month,@PathVariable("year") String year,@PathVariable("publication") String publication ){
@@ -1812,96 +1804,22 @@ public class GalleryController {
 		return vm;
 	}
 	
-	
 	@RequestMapping(value="/get_publicatio_images/{month}/{year}", method=RequestMethod.POST)
 	@ResponseBody
-	public List<PublicationVm> getPublicatioImages(@PathVariable("month") String month,@PathVariable("year") String year){
+	public List<Map<String, Object>> getPublicatioImages(@PathVariable("month") String month,@PathVariable("year") String year){
 	
-		List<PublicationVm> li= new ArrayList<PublicationVm>();
-		List<Map<String,Object>> imageList = new ArrayList<Map<String,Object>>();
-		String sqlForTitle="select * from tbl_publication t where t.DC_PUBLICATION_TYPE=2";
-		imageList=jt.queryForList(sqlForTitle);
+		System.out.println("in getPublicatioImages");
 		
-		for (Map<String, Object> map : imageList) {
-			
-			List<Map<String,Object>> childImageList = new ArrayList<Map<String,Object>>();
-			Long titleId=Long.parseLong(map.get("DN_ID").toString());
-			
-			
-			String sqlforpublicationChildImages="select c.DN_ID,c.DC_IMAGENAME,c.DN_PARENT_IMAGE_ID, p.DN_STATUS "+
-					 "as parrentStatus, j.DN_STATUS as jobStatus "+
-					" from tbl_child_image c, tbl_parent_image p, tbl_de_job j"+
-					" where "+
-					" c.DN_PARENT_IMAGE_ID = p.DN_ID and "+
-					" p.DN_ID = j.DN_PARENT_IMAGE_ID and "+
-					" MONTH(p.DD_ISSUE_DATE)='"+month+"' and "+
-					" year(p.DD_ISSUE_DATE)='"+year+"' and "+
-					" p.DC_PUBLICATION_TITLE = '"+titleId+"' ORDER by p.DD_ISSUE_DATE";
-
-			childImageList=jt.queryForList(sqlforpublicationChildImages);
-			
-			if(childImageList.size()>0){
-				PublicationVm pVm= new PublicationVm();				
-				pVm.setPublication(map.get("DC_PUBLICATION_TITLE").toString());
-				
-				List<ChildPublicationVm> arrayList= new ArrayList<ChildPublicationVm>();
-				
-				for (Map<String, Object> map2 : childImageList) {
-					ChildPublicationVm cVm= new ChildPublicationVm();
-					
-					cVm.setDN_ID(Long.parseLong(map2.get("DN_ID").toString()));
-					cVm.setDN_PARENT_IMAGE_ID(Long.parseLong(map2.get("DN_PARENT_IMAGE_ID").toString()));
-					cVm.setDC_IMAGENAME(map2.get("DC_IMAGENAME").toString());
-					
-					
-					String thumChildImageName=map2.get("DC_IMAGENAME").toString().split("\\.")[0]+"_thumb.jpg";
-					cVm.setChildThumb(thumChildImageName);
-					
-					
-					if(Integer.parseInt(map2.get("parrentStatus").toString())==0 &&
-							Integer.parseInt(map2.get("jobStatus").toString())==0){
-						
-						cVm.setImageStatus(0);
-						cVm.setStatus("Gallery");
-						cVm.setColor("red");
-						
-					}else if(Integer.parseInt(map2.get("parrentStatus").toString())==2 &&
-							Integer.parseInt(map2.get("jobStatus").toString())==1){
-						
-						cVm.setImageStatus(1);
-						cVm.setStatus("Live");
-						cVm.setColor("green");
-						
-						
-					}else if(Integer.parseInt(map2.get("parrentStatus").toString())==2 &&
-							Integer.parseInt(map2.get("jobStatus").toString())==0){
-						
-						cVm.setImageStatus(2);
-						cVm.setStatus("Transcription");
-						cVm.setColor("yellow");
-						
-					}else {
-						cVm.setImageStatus(3);
-						cVm.setStatus("Advertorial");
-						cVm.setColor("blue");
-						
-					}
-					
-					arrayList.add(cVm);
-
-				}
-				pVm.getListVm().addAll(arrayList);
-				li.add(pVm);
-			}
-			
-			
-		}
+		String sqlAll="select p.DN_ID,p.DD_ISSUE_DATE,pb.DC_PUBLICATION_TITLE,p.DC_IMAGENAME,p.DN_STATUS as parrentStatus,d.DN_STATUS as jobStatus "
+				+ "from tbl_parent_image p ,tbl_de_job d,tbl_publication pb where p.DN_ID=d.DN_PARENT_IMAGE_ID and p.DC_PUBLICATION_TITLE=pb.DN_ID "
+				+ "and MONTH(p.DD_ISSUE_DATE)='"+month+"' and year(p.DD_ISSUE_DATE)='"+year+"' group "
+				+ "by p.DD_ISSUE_DATE,p.DN_ID;";
 		
-		return li;
+		List<Map<String, Object>> allData=jt.queryForList(sqlAll);
+		return allData;
 	}
 	
 	
-
 	@RequestMapping(value="/update_task", method=RequestMethod.POST)
 	@ResponseBody
 	public String updateTask( HttpServletRequest request){
@@ -2410,6 +2328,7 @@ public class GalleryController {
 		
 		List<String> duplicate= new ArrayList<String>();
 		Set<String> duplicateNamess = new HashSet<String>();
+			
 		int l=0;
 		
 		for (Map<String, Object> pImage : parentImageList) {

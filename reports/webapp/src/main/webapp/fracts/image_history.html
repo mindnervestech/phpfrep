@@ -189,6 +189,12 @@ h3 {
 	border: 1px solid #DDDDDD;
 }
 
+.blank_row
+{
+    height: 10px !important; /* Overwrite any previous rules */
+    background-color: #FFFFFF;
+}
+
 .pagination>li>a,.pagination>li>span {
 	color: #636e7b !important;
 	border-color: #DDDDDD !important;
@@ -255,7 +261,7 @@ h3 {
 												style="margin-bottom: 0.5%;width:100%;">
 
 											</div>
-											<table class="table table-striped table-hover">
+											<table class="table table-striped">
 												<thead>
 													<tr>
 														<th class="no-bd" scope="col">Sr No</th>
@@ -265,14 +271,20 @@ h3 {
 														<th class="no-bd" scope="col">Issue Date</th>
 													</tr>
 												</thead>
-												<tbody ng-repeat="image in allImageHistory">
-													<tr>
-														<td><span class="no-bd">{{image.id}} </span></td>
-														<td><span class="no-bd">{{image.JobId}} </span></td>
-														<td><span class="no-bd">{{image.imageName}} </span></td>
-														<td><span class="no-bd"> {{image.CreatedDate}}</span></td>
-														<td><span class="no-bd"> {{image.IssueDate}}</span></td>
-														
+												<tbody ng-repeat="image in main">
+													<tr style=""><td colspan="5"><b>{{image[$index].date}}</b></td></tr>
+													<tr ng-repeat="list in image">
+														<td><span class="no-bd">{{list.id+1}} </span></td>
+														<td><span class="no-bd">{{list.DN_ID}} </span></td>
+														<td><span class="no-bd">{{list.DC_IMAGENAME}}</span></td>
+														<td><span class="no-bd">{{list.date}}</span></td>
+														<td><span class="no-bd">{{list.DD_ISSUE_DATE}}</span></td>
+													</tr>
+													<!-- <td><span class="no-bd">{{list.DN_ID}} </span></td>
+																		<td><span class="no-bd">1 </span></td>
+																		<td><span class="no-bd">{{list.DC_IMAGENAME}}</span></td>
+																		<td><span class="no-bd">{{list.date}}</span></td>
+																		<td><span class="no-bd">{{list.DD_ISSUE_DATE}}</span></td> -->
 													</tr>
 
 												</tbody>

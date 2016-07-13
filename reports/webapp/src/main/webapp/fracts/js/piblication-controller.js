@@ -5,10 +5,6 @@ app.controller('MainController',function($scope,$http,$filter) {
 	$scope.currentmonth = $filter('date')( $scope.FromDate, 'M');
 	$scope.day = $filter('date')($scope.FromDate, 'd'); 
 	$scope.currentYear = $filter('date')($scope.FromDate,'yyyy');
-	console.log('date is ',$scope.FromDate);
-	console.log('day is ',$scope.day);
-	console.log('$scope.currentmonth',$scope.currentmonth);
-	console.log('$scope.year',$scope.currentYear);
 
 	$scope.selectedyear =$scope.currentYear;
 	$scope.selectedmonth = $scope.currentmonth;
@@ -20,10 +16,9 @@ app.controller('MainController',function($scope,$http,$filter) {
 	};
 	$scope.searchData = function(){
 		$scope.loading=true;
-		console.log("month",$scope.selectedmonth,"year",$scope.selectedyear);
 		$http.post('/webapp/gallery/get_publicatio_images/'+$scope.selectedmonth+'/'+$scope.selectedyear).success(function(data) {
-			console.log("in ng-change responce");
 			$scope.publicationList=data;
+			
 			$scope.loading=false;
 			
 			if($scope.publicationList.length==0){
@@ -34,20 +29,80 @@ app.controller('MainController',function($scope,$http,$filter) {
 
 					});
 				});
+			}else{
+				
+				$scope.main=[];
+				var pub=[];
+				
+				var date=$scope.publicationList[0].DD_ISSUE_DATE;
+				var publication=$scope.publicationList[0].DC_PUBLICATION_TITLE;
+				var sub=[];
+				for(var i=0;i<$scope.publicationList.length;i++){
+					
+					if($scope.publicationList[i].DC_IMAGENAME!=null){
+						
+						var thumChildImageName=$scope.publicationList[i].DC_IMAGENAME.split(".")[0]+"_thumb.jpg";
+						$scope.publicationList[i].thumChildImageName=thumChildImageName;
+						
+					}
+					if($scope.publicationList[i].parrentStatus==0 &&
+							$scope.publicationList[i].jobStatus==0){
+						
+						$scope.publicationList[i].status="Gallery";
+						$scope.publicationList[i].color="red";
+						
+					}else if($scope.publicationList[i].parrentStatus==2 &&
+							$scope.publicationList[i].jobStatus==1){
+						
+						
+						$scope.publicationList[i].status="Live";
+						$scope.publicationList[i].color="green";
+						
+					}else if($scope.publicationList[i].parrentStatus==2 &&
+							$scope.publicationList[i].jobStatus==0){
+						
+						$scope.publicationList[i].status="Transcription";
+						$scope.publicationList[i].color="yellow";
+						
+					}else {
+						
+						$scope.publicationList[i].status="Advertorial";
+						$scope.publicationList[i].color="blue";
+						
+					}
+					
+					
+					if(publication==$scope.publicationList[i].DC_PUBLICATION_TITLE){
+						sub.push($scope.publicationList[i]);
+					}else{
+						sub.publication=publication;
+						pub.push(sub);
+						sub=[];
+						sub.push($scope.publicationList[i]);
+						var publication=$scope.publicationList[i].DC_PUBLICATION_TITLE;
+					}
+					if(date!=$scope.publicationList[i].DD_ISSUE_DATE){
+						pub.date=date;
+						$scope.main.push(pub);
+						pub=[];
+						var date=$scope.publicationList[i].DD_ISSUE_DATE;
+					}
+					
+					
+					
+					if(i==$scope.publicationList.length-1){
+						pub.date=date;
+						$scope.main.push(pub);
+					}
+				}
+				
 			}
-			
-			
-			console.log('$scope.publicationList',$scope.publicationList);
-			
 
 		});
-		
-		
 		
 	};
 	
 	$scope.yearId;
-	
 	
 	$scope.monthArray=['Jan','Feb','March','April','May','Jun','July','Aug','Sept','Oct','Nov','Dec'];
 	$scope.yearArray=['2014','2015','2016','2017','2018','2019','2020'];
@@ -65,7 +120,6 @@ app.controller('MainController',function($scope,$http,$filter) {
 	
 	
 	$scope.init = function() {
-		console.log("in publication init method");
 		$scope.loading=true;
 		
 		if($scope.year==2014){
@@ -79,13 +133,10 @@ app.controller('MainController',function($scope,$http,$filter) {
 		$scope.monthModel=$scope.monthdata.availableOptions[$scope.month-1];
 
 		
-		
 		$scope.publicationList=[];
 		$http.post('/webapp/gallery/get_publicatio_images/'+$scope.currentmonth+'/'+$scope.currentYear).success(function(data) {
-			console.log("in responce");
 			$scope.publicationList=data;
 			$scope.loading=false;
-			
 		
 			if($scope.publicationList.length==0){
 				$(function(){
@@ -96,14 +147,10 @@ app.controller('MainController',function($scope,$http,$filter) {
 					});
 				});
 			}
-			console.log('$scope.publicationList',$scope.publicationList);
-
 
 		});
 
 	};
-
-
 
 	$scope.monthdata = {
 			repeatSelect: null,
@@ -139,15 +186,11 @@ app.controller('MainController',function($scope,$http,$filter) {
 
 	
 	$scope.dateChange=function(month,year){
-		console.log('month is ',month);
-		console.log('year is ',year);
 		$scope.loading=true;
-		
 		var mnth=month.id;
 		var yr=year.id;
 		
 		$http.post('/webapp/gallery/get_publicatio_images/'+mnth+'/'+yr).success(function(data) {
-			console.log("in ng-change responce");
 			$scope.publicationList=data;
 			$scope.loading=false;
 			
@@ -161,24 +204,15 @@ app.controller('MainController',function($scope,$http,$filter) {
 				});
 			}
 			
-			
-			console.log('$scope.publicationList',$scope.publicationList);
-			
 
 		});
 	};
 	
 	
-	$scope.openChildImage=function(childid,parentId,imageName){
-		console.log("in open Child image");
-		$scope.childIdForDisplay=childid;
+	$scope.openChildImage=function(parentId,imageName){
 		$scope.parentidForDisplay=parentId;
 		$scope.imageNameForDisplay=imageName;
 		
-		console.log('$scope.childIdForDisplay',$scope.childIdForDisplay);
-		console.log('$scope.childIdForDisplay',$scope.parentidForDisplay);
-		console.log('$scope.childIdForDisplay',$scope.imageNameForDisplay);
-		console.log("in open child image");
 			 $('#myModalchild').modal('show');
 		
 	};

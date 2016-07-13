@@ -315,29 +315,17 @@ input[type='checkbox'] {
 						</div>
 						
 					</div>
-					<!-- 					
-					<div class="col-md-3">
-						<select class="form-control" ng-options="option.name for option in monthdata.availableOptions" name="repeatSelect" id="repeatSelect"
-							ng-model="monthModel" value="{{option.id}}">
-							
-						</select>
-
-
-					</div>
-					<div class="col-md-3">
-						<select class="form-control"  ng-options="option.name for option in yeardata.availableOptions" name="repeatSelect" id="repeatSelect"
-							ng-model="yearModel" value="{{option.id}}">
-							
-						</select>
-					</div>
-					<div class="col-md-3">
-					 <button class="btn btn-primary" style="height: 38px;" ng-click="dateChange(monthModel,yearModel)">search</button>
-					</div> -->
 					
 				</div>
 			</div>
 			
 			<div style="margin-top: 3%;">
+			<div ng-repeat="publicationList in main">
+			<div class="row">
+				<div class="col-md-2">
+						<span><h4 style="color:blue">{{publicationList.date}}</h4></span>
+				</div>
+			</div>
 			<div ng-repeat="list in publicationList">
 				<div class="row" style="border: 1px solid;border; border-color: #ccc;margin-bottom:1%">
 					<div class="col-md-2">
@@ -345,12 +333,12 @@ input[type='checkbox'] {
 					</div>
 					
 					<div class="col-md-10">
-						<div class="col-md-2" ng-repeat="la in list.listVm">
+						<div class="col-md-2" ng-repeat="la in list">
 						  <div class="row" style="height: 180px;margin:1%;width: 150px;border: 3px solid;" ng-style="{'border-color':la.color}">	
-							<a href="#"	 ng-click="openChildImage(la.DN_ID,la.DN_PARENT_IMAGE_ID,la.DC_IMAGENAME)" >
+							<a href="#"	 ng-click="openChildImage(la.DN_ID,la.DC_IMAGENAME)" >
 							
 							<img id="childImg" style="display: block;width:100%"
-								ng-src="http://www.enter-fracts.com/files/fracts_files/images/child/{{la.DN_PARENT_IMAGE_ID}}/{{la.DN_ID}}/{{la.childThumb}}" />
+								ng-src="http://www.enter-fracts.com/files/fracts_files/images/parent/{{la.DN_ID}}/{{la.thumChildImageName}}" />
 							
 							
 							<!-- <img id="childImg" style="display: block;width:100%"
@@ -365,7 +353,7 @@ input[type='checkbox'] {
 					</div>
 				</div>
 			</div>
-			
+			</div>
 						
 			</div>
 
@@ -388,7 +376,7 @@ input[type='checkbox'] {
 												style="max-width: 100%;"/> -->
 												
 												 <img id="childImagePopup"	
-												 ng-src="http://www.enter-fracts.com/files/fracts_files/images/child/{{parentidForDisplay}}/{{childIdForDisplay}}/{{imageNameForDisplay}}"
+												 ng-src="http://www.enter-fracts.com/files/fracts_files/images/parent/{{parentidForDisplay}}/{{imageNameForDisplay}}"
 												style="max-width: 100%;"/>
 											</div>
 										</div>

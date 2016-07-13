@@ -628,20 +628,27 @@ input[type='checkbox'] {
 																				<div class="p-0 f_l">
 																					<div class="row m-5 f_l">
 																						<div style="font-weight: bold; float: left">Uploaded
-																							By :</div>
+																							By :
+																							<div class="row">
+																							<button class="btn btn-primary" ng-click="singleAdvetorial($index,pageSize,currentPage,list.DN_ID,list.DC_IMAGENAME)" style="margin-top: 8%;width:90%;margin:5%">Advertorial</button>
+																						</div>
+																							
+																							</div>
 																						<div class="f_l p-l-10">
 																							<span>{{list.CREATED_BY}}</span>				
 																						</div>
+																						
 																					</div>
-																				</div>
+																				</div>	
+																			
 																			</div>
 																		</div>
 																		<div class="col-md-1 m-t-10 col1half">
 																			
 																		  <button class="btn btn-primary" ng-click="openEditImageForm($index,pageSize,currentPage,list.DN_ID,list.DC_IMAGENAME)" style="margin-top: -8%;">Edit</button>	
-																		  <button class="btn btn-primary" ng-click="singleAdvetorial($index,pageSize,currentPage,list.DN_ID,list.DC_IMAGENAME)" style="margin-top: 12%">Advetorial</button>	
+																		  <!-- <button class="btn btn-primary" ng-click="singleAdvetorial($index,pageSize,currentPage,list.DN_ID,list.DC_IMAGENAME)" style="margin-top: 12%">Advertorial</button> -->	
 																			
-																			<a title="Move To Transcription " alt="Move To Transcription" ><span ng-click="moveToTranscription($index,pageSize,currentPage,list.DN_ID)" style=""><i class="glyphicon glyphicon-play yourClass"style="font-size: 45px;color: #3276b1;margin-top: 12%;margin-left: 56%"></i></span>
+																			<a title="Move To Transcription " alt="Move To Transcription" ><span ng-click="moveToTranscription($index,pageSize,currentPage,list.DN_ID)" style=""><i class="glyphicon glyphicon-play yourClass"style="font-size: 45px;color: #3276b1;margin-top: 50%;margin-left: 56%"></i></span>
 																			</a>
 																			<div style="width:100px;height:30px">
 																			<h3><span ng-show="list.duplicate" style="margin: 15px;color:red">Duplicate</span></h3>
