@@ -1831,9 +1831,14 @@ public class GalleryController {
 		String id=request.getParameter("id");
 		
 		long taskid=Long.parseLong(id);
-
 		
-		String sql="update tbl_task  set DN_NAME='"+name+"',DN_DESCRIPTION='"+desc+"',DN_STATUS='"+status+"' where DN_ID="+taskid;
+	
+		String description=desc.replaceAll("\\'", "\\\\'");
+		
+	
+		
+		
+		String sql="update tbl_task  set DN_NAME='"+name+"',DN_DESCRIPTION='"+description+"',DN_STATUS='"+status+"' where DN_ID="+taskid;
 	   
 		jt.execute(sql);
 		
@@ -1896,8 +1901,10 @@ public class GalleryController {
 		String desc=request.getParameter("desc");
 		String status=request.getParameter("status");
 		String createdBy=request.getParameter("createdBy");
+		
+		String description=desc.replaceAll("\\'", "\\\\'");
 
-		String sql="insert into tbl_task (DN_NAME,DN_DESCRIPTION,DN_STATUS,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+name+"','"+desc+"','"+status+"','"+createdBy+"',CURRENT_DATE())";
+		String sql="insert into tbl_task (DN_NAME,DN_DESCRIPTION,DN_STATUS,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+name+"','"+description+"','"+status+"','"+createdBy+"',CURRENT_DATE())";
 		jt.execute(sql);
 
 		long taskId = jt.queryForLong("select max(DN_ID) from tbl_task");
@@ -1966,9 +1973,11 @@ public class GalleryController {
 		String alert=request.getParameter("alert");
 		String id=request.getParameter("id");
 
+		String description=desc.replaceAll("\\'", "\\\\'");
+		
 		long faqId=Long.parseLong(id);
 
-		String sql="update tbl_faq set DN_OPERATION='"+Operation+"',DN_ALERT='"+alert+"',DN_DESCRIPTION='"+desc+"',DN_DATAFIELD='"+data+"' where DN_ID="+faqId;
+		String sql="update tbl_faq set DN_OPERATION='"+Operation+"',DN_ALERT='"+alert+"',DN_DESCRIPTION='"+description+"',DN_DATAFIELD='"+data+"' where DN_ID="+faqId;
 	   
 		jt.execute(sql);
 		
@@ -2035,8 +2044,10 @@ public class GalleryController {
 		String createdBy=request.getParameter("createdBy");
 		String alert=request.getParameter("alert");
 
+		String description=desc.replaceAll("\\'", "\\\\'");
 		
-		String sql="insert INTO tbl_faq (DN_OPERATION,DN_ALERT,DN_DESCRIPTION,DN_DATAFIELD,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+Operation+"','"+alert+"','"+desc+"','"+data+"','"+createdBy+"',CURRENT_DATE())";
+		
+		String sql="insert INTO tbl_faq (DN_OPERATION,DN_ALERT,DN_DESCRIPTION,DN_DATAFIELD,DD_CREATED_BY,DD_CREATED_ON) VALUES('"+Operation+"','"+alert+"','"+description+"','"+data+"','"+createdBy+"',CURRENT_DATE())";
 		jt.execute(sql);
 		
 		
