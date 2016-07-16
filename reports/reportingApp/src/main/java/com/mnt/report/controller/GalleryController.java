@@ -1175,8 +1175,15 @@ public class GalleryController {
 	@ResponseBody
 	public void moveToAdvertorialParent(@PathVariable("id") String id){
 		
+		
+		
 			System.out.println("in moveToAdvertorialParent");
-			String sql="update tbl_parent_image m set m.DN_STATUS=2 where m.DN_ID="+id;
+			
+			String sqlForPublication="select p.DN_ID from tbl_publication p where p.DC_PUBLICATION_TITLE='Advertorial'";
+			int pubId=jt.queryForInt(sqlForPublication);
+			
+			
+			String sql="update tbl_parent_image set DN_STATUS=2,DC_SECTION='"+pubId+"' where DN_ID="+id;
 			jt.execute(sql);
 			
 			String sqlforDejob="update tbl_de_job t set t.DN_STATUS=2 where t.DN_PARENT_IMAGE_ID="+id;
@@ -1201,8 +1208,11 @@ public class GalleryController {
 	@ResponseBody
 	public void moveToAdvertorial(@RequestBody List<IdVm> idVm){
 		
+		String sqlForPublication="select p.DN_ID from tbl_publication p where p.DC_PUBLICATION_TITLE='Advertorial'";
+		int pubId=jt.queryForInt(sqlForPublication);
+		
 		for(IdVm liveVM : idVm) {
-			String sql="update tbl_parent_image m set m.DN_STATUS=2 where m.DN_ID="+liveVM.getId();
+			String sql="update tbl_parent_image m set m.DN_STATUS=2 ,m.DC_SECTION='"+pubId+"' where m.DN_ID="+liveVM.getId();
 			jt.execute(sql);
 			
 			
@@ -1618,7 +1628,7 @@ public class GalleryController {
 	public List<Map<String, Object>> getAllDates(@PathVariable("month") String month,@PathVariable("year") String year,@PathVariable("publication") String publication ){
 	
 		String sql=" select DISTINCT(t.DD_ISSUE_DATE) from tbl_publication p,tbl_parent_image t where  p.DN_ID=t.DC_PUBLICATION_TITLE "
-                    +" and p.DC_PUBLICATION_TITLE='"+publication+"' and MONTH(t.DD_ISSUE_DATE)='"+month+"' and YEAR(t.DD_ISSUE_DATE)='"+year+"'";
+                    +" and p.DC_PUBLICATION_TITLE='"+publication+"' and MONTH(t.DD_ISSUE_DATE)='"+month+"' and YEAR(t.DD_ISSUE_DATE)='"+year+"' ORDER by t.DD_ISSUE_DATE";
 		
 		List<Map<String,Object>> allDateList = new ArrayList<Map<String,Object>>();
 		allDateList=jt.queryForList(sql);
@@ -1636,7 +1646,7 @@ public class GalleryController {
 				+ ",p.DD_ISSUE_DATE,t.DC_PUBLICATION_TITLE as publication " 
 				+" from tbl_parent_image p,tbl_publication t,tbl_user u where p.DC_PUBLICATION_TITLE=t.DN_ID  "
 				+ "and p.DN_CREATED_BY=u.DN_ID "
-				+ " and DATE(p.DD_ISSUE_DATE)='"+date+"' and t.DC_PUBLICATION_TITLE='"+publication+"'";
+				+ " and DATE(p.DD_ISSUE_DATE)='"+date+"' and t.DC_PUBLICATION_TITLE='"+publication+"' ORDER BY p.DC_PAGE";
 		parentImageList=jt.queryForList(sql);
 
 		for (Map<String, Object> pImage : parentImageList) {
