@@ -1588,7 +1588,7 @@ public class GalleryController {
 		/*String sql="select * from tbl_parent_image t where date(t.DD_CREATED_ON) BETWEEN '"+dateFromT+"' and '"+dateToT+"'";
 		imageHistoryList=jt.queryForList(sql);*/
 		
-		String sqlForHistory="select *,t.DD_CREATED_ON as date from tbl_parent_image t "
+		String sqlForHistory="select *,date(t.DD_CREATED_ON) as date from tbl_parent_image t "
 				+ "where date(t.DD_CREATED_ON) BETWEEN '"+dateFromT+"' and '"+dateToT+"' "
 				+ "order by date(t.DD_CREATED_ON) desc";
 	
@@ -1613,7 +1613,7 @@ public class GalleryController {
 		imageHistoryList=jt.queryForList(sql);*/
 		
 		
-		String sqlForHistory="select *,t.DD_CREATED_ON as date from tbl_parent_image t "
+		String sqlForHistory="select *,date(t.DD_CREATED_ON) as date from tbl_parent_image t "
 				+ "where date(t.DD_CREATED_ON) BETWEEN '"+dateFromT+"' and '"+dateToT+"' "
 				+ "order by date(t.DD_CREATED_ON) desc";
 	
