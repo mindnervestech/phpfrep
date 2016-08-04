@@ -3359,10 +3359,10 @@ public List<DeJob> moveToGallery(){
 							file=file.replaceAll(" ", "_");
 							filename=file+"."+extension;
 							if(extension.equalsIgnoreCase("jpeg") || extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("gif")){
-								ParentImage duplicateImage = getParentImageService().getParentImageByName(filename);
+								/*ParentImage duplicateImage = getParentImageService().getParentImageByName(filename);
 								if(duplicateImage!=null) {
 									duplicateFileNames.add(filename);
-								}
+								}*/
 								parentImage.setImageName(filename);
 							
 								
