@@ -3343,6 +3343,8 @@ public List<DeJob> moveToGallery(){
 				File [] files = cropFile.listFiles();
 				if(files.length > 0){
 					for (int i = 0; i <files.length; i++){
+						if(files[i].isDirectory()) continue;
+						
 						String sourcePathImage = imageBasePath+CommonProperties.getParentImageTempPath()+"/"+currentUser.getId();
 						String targetPathImage = imageBasePath+CommonProperties.getParentImagePath();
 					
