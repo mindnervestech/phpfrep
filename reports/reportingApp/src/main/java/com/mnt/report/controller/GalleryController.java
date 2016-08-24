@@ -32,7 +32,6 @@ import net.sourceforge.tess4j.TesseractException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -927,8 +926,7 @@ public class GalleryController {
 
 		String sqlImagName="select DC_IMAGENAME from tbl_parent_image where DN_ID="+imageId;
 		String imageName=jt.queryForObject(sqlImagName, String.class);
-		String imageNameThumb=imageName.split("\\.")[0]+"_thumb.jpg";
-		
+		  
 		String sqlcreate="INSERT INTO tbl_child_image (DN_PARENT_IMAGE_ID,DN_CREATED_BY) VALUES("+imageId+",'"+cropImageVm.getLoginUserId()+"')";
 		jt.execute(sqlcreate);
 		
@@ -936,40 +934,60 @@ public class GalleryController {
 		
 		int r = (int) (Math.random() * (1000 - 100)) + 100;
 		String fileimageName="crp_"+r+"_"+childid+".png";
-		String thumbImageName=fileimageName.split("\\.")[0]+"_thumb.jpg";
-		
 		createDir(fullImagePath,imageId,childid);
 		File file = new File(fullImagePath+"/" + "parent" + "/"+imageId+"/"+imageName);
-		File fileThumb = new File(fullImagePath+"/" + "parent" + "/"+imageId+"/"+imageNameThumb);
-		
+		File thumbFile = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
 		BufferedImage originalImage = ImageIO.read(file);
 		int height=originalImage.getHeight();
 		int width=originalImage.getWidth();
 		
-//		System.out.println("height before is "+height);
-//		System.out.println("widthCM before is "+width);
-		try {
-		    FileUtils.copyFile(file, new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName));
-		    FileUtils.copyFile(fileThumb,new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+thumbImageName));
-		    
-		} catch (IOException e) {
-		    e.printStackTrace();
+		BufferedImage croppedImage = originalImage.getSubimage(0, 0, width,height);
+
+//		Thumbnails.of(croppedImage).size(w, h).toFile(file);
+    	Thumbnails.of(croppedImage).size(width, height).toFile(thumbFile);
+    	
+    	
+    	try {	
+			Thumbnails.of(new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName))
+        	.width(200).keepAspectRatio(true)
+        	.outputFormat("jpg")
+        	.toFile(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName.split("\\.")[0]+"_thumb.jpg");
+		} catch (IOException e1) {
+			
+			e1.printStackTrace();
 		}
     	
     	final String heightCM=decimalFormat.format(((double)height/96)*2.54*0.9575);
 		final String widthCM=decimalFormat.format(((double)width/96)*2.54*0.9575);	
-		
-//		System.out.println("height is "+heightCM);
-//		System.out.println("widthCM is "+widthCM);
-		
     	
+		File newthumbFile = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
+		
+		
+		
+		ImageIO.write(croppedImage,"png",newthumbFile );
+		
+		
+		
 		final String result = null; //doOCR(newthumbFile);
+		
+	//	final String result=null;
 	
     	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now(),DC_HEIGHT='"+heightCM+"',DC_WIDTH='"+widthCM+"' where DN_ID="+childid;
 		jt.execute(updateSql);
+       
 
     	String sqlforjobId="select t.DN_ID from tbl_de_job t where t.DN_PARENT_IMAGE_ID="+imageId+" limit 1";
     	final String jobId=jt.queryForObject(sqlforjobId, String.class);
+    	
+    	
+    	File childImage = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
+    	
+    	
+    	
+    	
+    	/*String sqlforupdatededata1="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+imageId+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
+    	jt.execute(sqlforupdatededata1);
+    	*/
         
     	Calendar calendar = Calendar.getInstance();
 	    final java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
