@@ -955,7 +955,7 @@ public class GalleryController {
 		Thumbnails.of(originalImage).size(width, height).toFile(thumbFile);
 		
 		try {
-		    FileUtils.copyDirectory(thumbFile, thumbFileChild);
+		    FileUtils.copyFile(thumbFile, thumbFileChild);
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
