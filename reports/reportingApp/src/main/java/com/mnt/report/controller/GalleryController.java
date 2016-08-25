@@ -32,6 +32,7 @@ import net.sourceforge.tess4j.TesseractException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -926,7 +927,9 @@ public class GalleryController {
 
 		String sqlImagName="select DC_IMAGENAME from tbl_parent_image where DN_ID="+imageId;
 		String imageName=jt.queryForObject(sqlImagName, String.class);
-		  
+		
+		String parentImageThumb=imageName.split("\\.")[0]+"_thumb.jpg";
+		
 		String sqlcreate="INSERT INTO tbl_child_image (DN_PARENT_IMAGE_ID,DN_CREATED_BY) VALUES("+imageId+",'"+cropImageVm.getLoginUserId()+"')";
 		jt.execute(sqlcreate);
 		
@@ -934,20 +937,35 @@ public class GalleryController {
 		
 		int r = (int) (Math.random() * (1000 - 100)) + 100;
 		String fileimageName="crp_"+r+"_"+childid+".png";
+		String thumbimagename=fileimageName.split("\\.")[0]+"_thumb.jpg";
+		
 		createDir(fullImagePath,imageId,childid);
 		File file = new File(fullImagePath+"/" + "parent" + "/"+imageId+"/"+imageName);
+		File filethumb = new File(fullImagePath+"/" + "parent" + "/"+imageId+"/"+parentImageThumb);
+		
 		File thumbFile = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
+		File thumbFileChild = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+thumbimagename);
+	
 		BufferedImage originalImage = ImageIO.read(file);
 		int height=originalImage.getHeight();
 		int width=originalImage.getWidth();
 		
-		BufferedImage croppedImage = originalImage.getSubimage(0, 0, width,height);
+//		BufferedImage croppedImage = originalImage.getSubimage(0, 0, width,height);
 
+		Thumbnails.of(originalImage).size(width, height).toFile(thumbFile);
+		
+		try {
+		    FileUtils.copyDirectory(thumbFile, thumbFileChild);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		
+		
 //		Thumbnails.of(croppedImage).size(w, h).toFile(file);
-    	Thumbnails.of(croppedImage).size(width, height).toFile(thumbFile);
+//   	Thumbnails.of(croppedImage).size(width, height).toFile(thumbFile);
     	
     	
-    	try {	
+    	/*try {	
 			Thumbnails.of(new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName))
         	.width(200).keepAspectRatio(true)
         	.outputFormat("jpg")
@@ -955,18 +973,13 @@ public class GalleryController {
 		} catch (IOException e1) {
 			
 			e1.printStackTrace();
-		}
+		}*/
     	
     	final String heightCM=decimalFormat.format(((double)height/96)*2.54*0.9575);
 		final String widthCM=decimalFormat.format(((double)width/96)*2.54*0.9575);	
     	
-		File newthumbFile = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
-		
-		
-		
-		ImageIO.write(croppedImage,"png",newthumbFile );
-		
-		
+//		File newthumbFile = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
+//		ImageIO.write(originalImage,"png",newthumbFile );
 		
 		final String result = null; //doOCR(newthumbFile);
 		
@@ -980,10 +993,7 @@ public class GalleryController {
     	final String jobId=jt.queryForObject(sqlforjobId, String.class);
     	
     	
-    	File childImage = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
-    	
-    	
-    	
+   // 	File childImage = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
     	
     	/*String sqlforupdatededata1="INSERT INTO tbl_de_data (DC_CURRENCY,DC_OCR_TEXT,DN_CHILD_IMAGE_ID,DN_CREATED_BY,DD_CREATED_ON,DN_PARENT_IMAGE_ID,DE_JOB_ID,DC_LENGTH,DC_WIDTH) VALUES('0','"+result+"','"+childid+"','"+cropImageVm.getLoginUserId()+"',now(),'"+imageId+"','"+jobId+"','"+heightCM+"','"+widthCM+"')";
     	jt.execute(sqlforupdatededata1);
@@ -1014,7 +1024,7 @@ public class GalleryController {
     	CropImageVm cropVm=new CropImageVm();
     	cropVm.setDN_ID(childid);
     	cropVm.setDC_IMAGENAME(fileimageName);
-    	String thumbimagename=fileimageName.split("\\.")[0]+"_thumb.jpg";
+    	
     	cropVm.setChildThumb(thumbimagename);
         
         return cropVm;
