@@ -3353,7 +3353,7 @@ public List<DeJob> moveToGallery(){
 							String filename = files[i].getName();
 							String orgFilename = files[i].getName();
 							String fileNameOrg=orgFilename;
-							System.out.println("before orgFilename: "+orgFilename);
+					//		System.out.println("before orgFilename: "+orgFilename);
 							String[] split = filename.split("\\.");
 							extension = split[split.length - 1];
 							String file=split[split.length - 2];
@@ -3374,8 +3374,10 @@ public List<DeJob> moveToGallery(){
 								BufferedImage image = ImageIO.read(files[i]);
 								int height = image.getHeight();
 								int width = image.getWidth();
-								String heightCM=decimalFormat.format(((double)height/96)*2.54*0.9575);
-								String widthCM=decimalFormat.format(((double)width/96)*2.54*0.9575);								
+								
+								String heightCM=decimalFormat.format(((double)height*2.54)/300);
+								String widthCM=decimalFormat.format(((double)width*2.54)/300);		
+								
 								parentImage.setImageHeight(String.valueOf(heightCM));
 								parentImage.setImageWidth(String.valueOf(widthCM));
 								Long imgId = getParentImageService().addParentImage(parentImage);
@@ -4102,10 +4104,11 @@ public List<DeJob> moveToGallery(){
 		return deJobList;
 	}
 	
-	public void sendJobToQC() {
+	public String sendJobToQC() {
 		int jobid = Integer.valueOf( facesUtils.getRequestParameterMap("deJobId")!=null? facesUtils.getRequestParameterMap("deJobId"):"0");
 		getDeService().sendJobToQC(jobid);
 		isSendToQC = true;
+		return "/pages/de/ocr_relevance_angular.xhtml";
 	}
 	
 	
@@ -6232,7 +6235,6 @@ public List<String> getcompaniesId(String query) {
 				        }*/
 						
 				        deCompany = deService.getDeCompanySeachByCompanyNameId(this.selectedCompany.getId());
-						
 						
 					}else if(this.companyId > 0){
 						deCompany = deService.getDeCompanyById(this.companyId);

@@ -831,8 +831,9 @@ public class GalleryController {
 		}
     	
     	
-    	final String heightCM=decimalFormat.format(((double)h1/96)*2.54*0.9575);
-		final String widthCM=decimalFormat.format(((double)w1/96)*2.54*0.9575);	
+    	final String heightCM=decimalFormat.format(((double)h1*2.54)/300);
+		final String widthCM=decimalFormat.format(((double)w1*2.54)/300);	
+		
     	
 		
 		
@@ -959,24 +960,15 @@ public class GalleryController {
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
+	
+
+		final String heightCM=decimalFormat.format(((double)height*2.54)/300);
+		final String widthCM=decimalFormat.format(((double)width*2.54)/300);	
 		
 		
-//		Thumbnails.of(croppedImage).size(w, h).toFile(file);
-//   	Thumbnails.of(croppedImage).size(width, height).toFile(thumbFile);
-    	
-    	
-    	/*try {	
-			Thumbnails.of(new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName))
-        	.width(200).keepAspectRatio(true)
-        	.outputFormat("jpg")
-        	.toFile(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName.split("\\.")[0]+"_thumb.jpg");
-		} catch (IOException e1) {
-			
-			e1.printStackTrace();
-		}*/
-    	
-    	final String heightCM=decimalFormat.format(((double)height/96)*2.54*0.9575);
-		final String widthCM=decimalFormat.format(((double)width/96)*2.54*0.9575);	
+		
+    	/*final String heightCM=decimalFormat.format(((double)height/308.89)*2.54*0.9575);
+		final String widthCM=decimalFormat.format(((double)width/308.89)*2.54*0.9575);	*/
     	
 //		File newthumbFile = new File(fullImagePath+"/"+"child"+"/"+imageId+"/"+childid+"/"+fileimageName);
 //		ImageIO.write(originalImage,"png",newthumbFile );

@@ -472,7 +472,8 @@ function changeColor(clicked) {
 															<td><h:column headerClass="no-bd">
 																	<p:commandLink action="#{deBean.sendJobToQC}"
 																		rendered="#{o.isRender()}" ajax="true" update="@all"
-																		styleClass="glyphicon glyphicon-play"
+																		styleClass="glyphicon glyphicon-play" 
+																		onstart="if(confirmDelete())return true; else return false;"
 																		style="margin-bottom: -3px;height: 27px; margin-top: -6px;margin: -4px;color:#333;">
 																		<f:param name="deJobId" value="#{o.id}" />
 																	</p:commandLink>
@@ -557,6 +558,14 @@ function changeColor(clicked) {
 
 	<script type="text/javascript">
 	
+		function confirmDelete() {
+			if (confirm('new ad might have a live ad duplicate?'))
+				return true;
+			else
+				return false;
+	
+		}
+
 		$(document).ready(function() {
 			$(".sidebar-nav > li").removeClass();
 			$("#menu4").addClass("current active");
