@@ -59,6 +59,9 @@ import sun.util.locale.StringTokenIterator;
 import com.google.gson.Gson;
 import com.mnt.report.util.CommonUtils;
 import com.mysql.jdbc.PreparedStatement;
+import com.ning.http.client.AsyncCompletionHandler;
+import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.Response;
 
 
 
@@ -888,7 +891,21 @@ public class GalleryController {
 			}  
     	    });
     	
-    	
+    	try {
+			AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+			asyncHttpClient.prepareGet("http://localhost:8080/webapp/addUnProcessedOcr").execute(new AsyncCompletionHandler<Response>(){
+				
+				@Override
+				public Response onCompleted(Response response) throws Exception{
+					return response;
+				}
+
+				@Override
+				public void onThrowable(Throwable t){
+				}
+			});
+		} catch(Exception e){
+		}
     	
     	
     	CropImageVm cropVm=new CropImageVm();
@@ -897,6 +914,8 @@ public class GalleryController {
     	cropVm.setDC_IMAGENAME(fileimageName);
     	String thumbimagename=fileimageName.split("\\.")[0]+"_thumb.jpg";
     	cropVm.setChildThumb(thumbimagename);
+    	
+    	
     	
        return cropVm;
        
@@ -1018,7 +1037,27 @@ public class GalleryController {
     	cropVm.setDC_IMAGENAME(fileimageName);
     	
     	cropVm.setChildThumb(thumbimagename);
+    	
+    	
+    	
+    	try {
+			AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+			asyncHttpClient.prepareGet("http://localhost:8080/webapp/addUnProcessedOcr").execute(new AsyncCompletionHandler<Response>(){
+				
+				@Override
+				public Response onCompleted(Response response) throws Exception{
+					return response;
+				}
+
+				@Override
+				public void onThrowable(Throwable t){
+				}
+			});
+		} catch(Exception e){
+			e.printStackTrace();
+		}
         
+    	
         return cropVm;
         
 	}

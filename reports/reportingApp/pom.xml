@@ -143,7 +143,11 @@
 	<artifactId>commons-codec</artifactId>
 	<version>1.4</version>
 </dependency>
-
+<dependency>
+    <groupId>com.ning</groupId>
+    <artifactId>async-http-client</artifactId>
+    <version>1.9.31</version>
+</dependency>
 
 <dependency>
 	<groupId>org.elasticsearch</groupId>
