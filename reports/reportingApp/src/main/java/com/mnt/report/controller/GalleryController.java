@@ -785,7 +785,7 @@ public class GalleryController {
 	@ResponseBody
 	public CropImageVm saveCropImage(@RequestBody CropImageVm cropImageVm) throws IOException{
 	
-		
+		System.out.println("in saveCropImage ");
 		
 		Double x1,x2,y1,y2,w,h;
 		
@@ -904,7 +904,9 @@ public class GalleryController {
 				public void onThrowable(Throwable t){
 				}
 			});
+		System.out.println("addUnProcessedOcr method ");	
 		} catch(Exception e){
+			e.printStackTrace();
 		}
     	
     	
@@ -943,6 +945,7 @@ public class GalleryController {
 	@ResponseBody
 	public CropImageVm SaveWholeCropImage(@RequestBody final CropImageVm cropImageVm) throws IOException, SQLException, ClassNotFoundException{
 		
+		System.out.println("in whole image crop");
 		final Long imageId=Long.parseLong(cropImageVm.getId().toString());
 
 		String sqlImagName="select DC_IMAGENAME from tbl_parent_image where DN_ID="+imageId;
@@ -1053,6 +1056,7 @@ public class GalleryController {
 				public void onThrowable(Throwable t){
 				}
 			});
+			System.out.println("addUnProcessedOcr method ");	
 		} catch(Exception e){
 			e.printStackTrace();
 		}
