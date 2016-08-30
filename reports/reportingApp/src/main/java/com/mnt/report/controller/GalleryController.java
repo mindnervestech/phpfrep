@@ -893,7 +893,7 @@ public class GalleryController {
     	
     	try {
 			AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-			asyncHttpClient.prepareGet("http://localhost:8080/webapp/addUnProcessedOcr").execute(new AsyncCompletionHandler<Response>(){
+			asyncHttpClient.prepareGet("http://enter-fracts.com/webapp/addUnProcessedOcr").execute(new AsyncCompletionHandler<Response>(){
 				
 				@Override
 				public Response onCompleted(Response response) throws Exception{
@@ -1045,7 +1045,7 @@ public class GalleryController {
     	
     	try {
 			AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-			asyncHttpClient.prepareGet("http://localhost:8080/webapp/addUnProcessedOcr").execute(new AsyncCompletionHandler<Response>(){
+			asyncHttpClient.prepareGet("http://enter-fracts.com/webapp/addUnProcessedOcr").execute(new AsyncCompletionHandler<Response>(){
 				
 				@Override
 				public Response onCompleted(Response response) throws Exception{
