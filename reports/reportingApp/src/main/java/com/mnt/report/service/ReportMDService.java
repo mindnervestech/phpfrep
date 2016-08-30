@@ -128,6 +128,8 @@ public class ReportMDService {
 	@RequestMapping(value="/addUnProcessedOcr",method=RequestMethod.GET)
 	@ResponseBody 
 	public String addUnProcessedOcr() {
+		
+		System.out.println("in /addUnProcessedOcr api");
 		try {
 		
 			List<DataEntryVM> unProcessedList =  jt.query("Select DN_ID as 'id',DC_OCR_TEXT as 'ocrText' from tbl_de_data where DB_IS_PROCESSED_OCR = 0", new RowMapper<DataEntryVM>(){
@@ -147,6 +149,8 @@ public class ReportMDService {
 				}
 				
 			});
+			
+			System.out.println("size of addUnProcessedOcr is"+unProcessedList.size());
 			KeyHolder keyHolder=new GeneratedKeyHolder();
 			for(final DataEntryVM vm :unProcessedList) {
 				IndexResponse response = client.prepareIndex("fracts", "DataEntry",vm.id+"")
@@ -156,6 +160,8 @@ public class ReportMDService {
 						    .endObject())
 						.execute()
 						.actionGet();
+				
+				
 				try {
 					jt.update(new PreparedStatementCreator(){
 						public PreparedStatement createPreparedStatement(    Connection connection) throws SQLException {
@@ -170,6 +176,8 @@ public class ReportMDService {
 					e.printStackTrace();
 					return "error";
 				}
+				
+				System.out.println("record updated");
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
