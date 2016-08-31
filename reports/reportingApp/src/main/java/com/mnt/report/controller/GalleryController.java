@@ -845,7 +845,6 @@ public class GalleryController {
 		
 		final String result = null; //doOCR(newChild);
 		
-
 		
     	String updateSql="update tbl_child_image set DC_IMAGENAME='"+fileimageName+"',DD_CREATED_ON=now(),DC_HEIGHT='"+heightCM+"',DC_WIDTH='"+widthCM+"' where DN_ID="+childid;
     	jt.execute(updateSql);
@@ -893,8 +892,8 @@ public class GalleryController {
     	
     	try {
 			AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-			asyncHttpClient.prepareGet("http://localhost:8080/webapp/addUnProcessedOcr").execute(new AsyncCompletionHandler<Response>(){
-				
+			asyncHttpClient.prepareGet("http://106.187.35.163/webapp/addUnProcessedOcr").execute(new AsyncCompletionHandler<Response>(){
+									
 				@Override
 				public Response onCompleted(Response response) throws Exception{
 					return response;
@@ -1045,7 +1044,7 @@ public class GalleryController {
     	
     	try {
 			AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-			asyncHttpClient.prepareGet("http://localhost:8080/webapp/addUnProcessedOcr").execute(new AsyncCompletionHandler<Response>(){
+			asyncHttpClient.prepareGet("http://106.187.35.163/webapp/addUnProcessedOcr").execute(new AsyncCompletionHandler<Response>(){
 				
 				@Override
 				public Response onCompleted(Response response) throws Exception{
