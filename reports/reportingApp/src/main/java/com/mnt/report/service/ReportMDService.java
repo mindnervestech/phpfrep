@@ -104,7 +104,7 @@ public class ReportMDService {
 	
 	static {
 		Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", "Fracts").build();
-		client  = new TransportClient(settings).transportClient.addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
+		client  = new TransportClient(settings).addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
 		
 	}
 	
