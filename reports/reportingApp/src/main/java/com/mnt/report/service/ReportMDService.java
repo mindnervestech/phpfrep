@@ -104,9 +104,9 @@ public class ReportMDService {
 	
 	static {
 		Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", "Fracts").build();
-		TransportClient transportClient = new TransportClient(settings);
-		transportClient = transportClient.addTransportAddress(new InetSocketTransportAddress("localhost", 9200));
-		client  = (Client)transportClient;
+		client  = new TransportClient(settings).
+				transportClient.addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
+		
 	}
 	
 	@RequestMapping(value="/searchDataEntry",method=RequestMethod.GET)
