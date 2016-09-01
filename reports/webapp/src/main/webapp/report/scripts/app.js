@@ -220,17 +220,46 @@
 		$scope.months = [];
 		$scope.days = [];
 		$scope.selectedPublications = [];
+		
+		
+		
+		$scope.allImage=22;
+		
+		$scope.setAdvertorial=function(){
+			
+	
+			$scope.storyboard.advetorialId=$scope.allImage;
+			
+			if($scope.filterStatus==1){
+				$scope.getPublicationYear();
+			}else if($scope.filterStatus==2){
+				$scope.getYearData();
+			}else if($scope.filterStatus==3){
+				$scope.getMonthData();
+			}else if($scope.filterStatus==4){
+				$scope.getDatePublication();
+			}
+			
+		};
+		
+		$scope.filterStatus=0;
+		
 		$scope.getPublicationYear = function() {
+			$scope.loading=true;
+			$scope.filterStatus=1;
+			$scope.storyboard.advetorialId=$scope.allImage;
 			$scope.storyboard.DC_PUBLICATION_TITLE = [];
 			for (var i = 0; i < $scope.selectedPublications.length; i++) {
 				if($scope.selectedPublications[i]) {
 					$scope.storyboard.DC_PUBLICATION_TITLE.push($scope.publications[i].value);
 				}
 			}
+			
 			if ($scope.storyboard.DC_PUBLICATION_TITLE.length > 0) {
 				$http.post('/webapp/getAllPublicationData',$scope.storyboard).success(function(data){
 					$scope.years = data.years;
 					$scope.gridData = data.reports;
+					$scope.loading=false;
 				});
 			} else {
 				$scope.gridData = [];
@@ -244,26 +273,38 @@
 		};
 		
 		$scope.getYearData = function() {
+			$scope.storyboard.advetorialId=$scope.allImage;
+			$scope.loading=true;
+			$scope.filterStatus=2;
 			$scope.storyboard.PUBLICATION_MONTH = "";
 			$scope.storyboard.PUBLICATION_DATE = "";
 			$http.post('/webapp/get-year-publication',$scope.storyboard).success(function(data) {
 				$scope.months = data.months;
 				$scope.gridData = data.reports;
+				$scope.loading=false;
 			});
-		};
+		};	
 		
 		$scope.getMonthData = function() {
+			$scope.storyboard.advetorialId=$scope.allImage;
+			$scope.loading=true;
+			$scope.filterStatus=3;
 			$scope.storyboard.PUBLICATION_DATE = "";
 			$http.post('/webapp/get-month-publication',$scope.storyboard).success(function(data) {
 				$scope.days = data.days;
 				$scope.gridData = data.reports;
+				$scope.loading=false;
 			});
 		};
 		
 		$scope.getDatePublication = function(date) {
+			$scope.storyboard.advetorialId=$scope.allImage;
+			$scope.loading=true;
+			$scope.filterStatus=4;
 			$scope.storyboard.PUBLICATION_DATE = date;
 			$http.post('/webapp/get-date-publication',$scope.storyboard).success(function(data) {
 				$scope.gridData = data.reports;
+				$scope.loading=false;
 			});
 		};
 		

@@ -20,9 +20,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
+import net.coobird.thumbnailator.Thumbnails;
+
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -45,18 +56,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.ImmutableSettings;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
 
-import net.coobird.thumbnailator.Thumbnails;
+
 
 @Controller
 public class ReportMDService {
@@ -663,14 +664,12 @@ public class ReportMDService {
 				Object value = jsonObject.get(key);
 				if (value instanceof String) {
 					if(!((String) value).isEmpty()) {
-						System.out.println("key :"+key.toString());
-						System.out.println("value :"+value.toString());
+						
 						parameters.put(key.toString(), value);
 					}
 				}
 				if (value instanceof Long || value instanceof Integer || value instanceof Double || value instanceof Float) {
-					System.out.println("key :"+key.toString());
-					System.out.println("value :"+value.toString());
+					
 					parameters.put(key.toString(), value);
 				}
 				if (value instanceof JSONArray) {
@@ -678,12 +677,10 @@ public class ReportMDService {
 				    int len = jsonArray.size();
 				    if(len > 0) {
 				      List<String> inValues = new ArrayList<String>();
-				      System.out.println("key :"+key.toString());
-				      for (int i=0;i<len;i++){ 
-				    	  System.out.println("value :"+jsonArray.get(i).toString());
+				      for (int i=0;i<len;i++) { 
+				    	 
 				    	  inValues.add(jsonArray.get(i).toString());
-				    	  System.out.println("pub title :"+key.toString().equals("DC_PUBLICATION_TITLE"));
-				    	  System.out.println("value :"+jsonArray.get(i).toString().equals("1086"));
+				    	 
 				    	  if(key.toString().equals("DC_PUBLICATION_TITLE") && jsonArray.get(i).toString().equals("1086")) {
 				    		  if(!inValues.contains("1084")) {
 				    			  inValues.add("1084");
@@ -698,8 +695,12 @@ public class ReportMDService {
 				    }
 				}
 			}
-			rs = namedJdbcTemplate.queryForList(mdResult.get("query").toString(),parameters);
-    	}catch (Exception e) {}
+			
+			
+			rs = namedJdbcTemplate.queryForList(query,parameters);
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    	}
     	return rs;
     }
     
@@ -729,7 +730,7 @@ public class ReportMDService {
 	@Transactional
 	public List<ReportMDVM> getReports(@RequestParam("subscriberId") final Long subscriberId) {
 		//return sessionFactory.getCurrentSession().createQuery("FROM ReportMD1").list();
-		System.out.println("subscriberId:"+subscriberId);
+	//	System.out.println("subscriberId:"+subscriberId);
 		String ids = "";
 		if(subscriberId==-1)
 			ids = "(1,3)";
