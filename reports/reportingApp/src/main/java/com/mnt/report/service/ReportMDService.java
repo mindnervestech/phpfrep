@@ -645,8 +645,25 @@ public class ReportMDService {
     	try {
 			JSONObject jsonObject = (JSONObject)new JSONParser().parse(filter);
 			Long id = Long.parseLong(jsonObject.get("id").toString());
+			Long advetorialId=Long.parseLong(jsonObject.get("advetorialId").toString());
+			
 			Map<String,Object> mdResult = jt.queryForMap("Select query from reportmd where id =" + id);
-			String query = mdResult.get("query").toString();	
+			String query=null;
+			if(advetorialId==23){
+				query="SELECT PARENT.DN_ID AS 'ID',PARENT.DC_IMAGENAME AS 'IMAGE_NAME', PARENT.DD_ISSUE_DATE AS 'ISSUE_DATE',"
+						+ " PARENT.DC_PAGE AS 'PAGE',P.DC_PUBLICATION_TITLE AS 'PUBLICATION_TITLE',S.DC_PUBLICATION_TITLE AS 'SECTION_TITLE',"
+						+ " D.DN_STATUS AS 'STATUS' FROM tbl_parent_image PARENT, tbl_publication P,tbl_publication S, tbl_de_job D WHERE D.DN_PARENT_IMAGE_ID = PARENT.DN_ID AND"
+						+ "  PARENT.DN_ID IN (SELECT DN_ID FROM tbl_parent_image  where DC_SECTION='1088') AND P.DN_ID = PARENT.DC_PUBLICATION_TITLE AND "
+						+ " S.DN_ID = PARENT.DC_SECTION AND (PARENT.DC_PUBLICATION_TITLE IN (:DC_PUBLICATION_TITLEin) OR :DC_PUBLICATION_TITLE IS NULL) AND "
+						+ " (YEAR(PARENT.DD_ISSUE_DATE) = :PUBLICATION_YEAR OR  :PUBLICATION_YEAR IS NULL) AND (MONTH(PARENT.DD_ISSUE_DATE) = :PUBLICATION_MONTH OR  :PUBLICATION_MONTH IS NULL) AND "
+						+ " (PARENT.DD_ISSUE_DATE = :PUBLICATION_DATE OR  :PUBLICATION_DATE IS NULL)";
+						
+						
+			}else{
+				query = mdResult.get("query").toString();
+			}
+			
+			
 			String[] namedParameters =  query.split(":");
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			
