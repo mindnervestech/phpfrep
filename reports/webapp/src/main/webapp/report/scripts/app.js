@@ -522,7 +522,7 @@
         			$(".modal-backdrop").removeClass("modal-backdrop");
         		});
         	}
-        }
+        };
 
         
         $scope.runReport = function (option) {
@@ -540,9 +540,14 @@
 				obj.id = $scope.searchConfig.id;
 			
 			executeReport(obj);
-		}
+		};
+		
         $scope.backButton = false;
 		executeReport = function(obj) {
+			
+		
+			obj.SUBSCRIBER_ID=$scope.subscriberId;
+		
 			$("#loading").show();
 			$http.post('/webapp/report/run',obj).success(function(data){
 				$("#loading").hide();

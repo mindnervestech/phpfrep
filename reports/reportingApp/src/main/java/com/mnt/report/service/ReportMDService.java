@@ -341,6 +341,9 @@ public class ReportMDService {
     	try {
 			JSONObject jsonObject = (JSONObject)new JSONParser().parse(filter);
 			Long id = Long.parseLong(jsonObject.get("id").toString());
+			Long SUBSCRIBER_ID=Long.parseLong(jsonObject.get("SUBSCRIBER_ID").toString());
+		
+			
 			Map<String,Object> mdResult = jt.queryForMap("Select query,columns,hiddenpivotcol,isJava from reportmd where id =" + id);//.query("Select query from reportmd where id = ?",new Object[]{id},);
 			String query = mdResult.get("query").toString();	
 			String[] namedParameters =  query.split(":");
