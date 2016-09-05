@@ -1,7 +1,7 @@
 	var App = angular.module('datatableApp', ['schemaForm','mgcrea.ngStrap',
 	                                          'schemaForm-datepicker', 'schemaForm-timepicker', 'schemaForm-datetimepicker'/*'datatables','datatables.bootstrap'*/]);
 
-	App.controller('datatableCtrl', function ($scope, $http) {
+	App.controller('datatableCtrl', function ($scope, $http,$filter) {
 		$.extend({
 			getUrlVars:function() {
 				var vars = [],hash;

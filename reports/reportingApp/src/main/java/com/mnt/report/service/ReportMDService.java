@@ -470,7 +470,7 @@ public class ReportMDService {
     	for(Map<String,Object> m:  mdResult){
     		SelectItem selectItem = new SelectItem();
 			selectItem.name = m.get("DC_PUBLICATION_TITLE").toString();
-			selectItem.value = (m.get("DN_ID").toString());
+			selectItem.value = Integer.parseInt(m.get("DN_ID").toString());
 			selectItems.add(selectItem);
     	}
         return selectItems;
@@ -590,7 +590,7 @@ public class ReportMDService {
 	    		cal.setTime((Date)m.get("ISSUE_DATE"));
 	    		if ( buffer.add((cal.get(Calendar.MONTH)+1)+"") ) {
 	    			item.name = monthsStr[cal.get(Calendar.MONTH)];
-	    			item.value = (cal.get(Calendar.MONTH)+1)+"";
+	    			item.value = (cal.get(Calendar.MONTH)+1);
 					months.add(item);
 	    		}
 	    	}
@@ -616,7 +616,13 @@ public class ReportMDService {
 	    			days.add(df.format((Date)m.get("ISSUE_DATE")));
 	    		} catch(Exception e) {}
 	    	}
-	    	map.put("days", days);
+	    	
+	    	List list = new ArrayList(days);
+	    	Collections.sort(list);
+	    
+	    	
+	    	
+	    	map.put("days", list);
 	    	map.put("reports", mdResult);
     	} catch(Exception e) {}
         return map;
@@ -982,7 +988,7 @@ public class ReportMDService {
 				try {
 					SelectItem selectItem = new SelectItem();
 					selectItem.name = arg0.getString("name");
-					selectItem.value = arg0.getString("value");
+					selectItem.value = Integer.parseInt(arg0.getString("value"));
 					return selectItem;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -1002,7 +1008,7 @@ public class ReportMDService {
 				try {
 					SelectItem selectItem = new SelectItem();
 					selectItem.name = arg0.getString("name");
-					selectItem.value = arg0.getString("value");
+					selectItem.value = Integer.parseInt(arg0.getString("value"));
 					return selectItem;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -1022,7 +1028,7 @@ public class ReportMDService {
 				try {
 					SelectItem selectItem = new SelectItem();
 					selectItem.name = arg0.getString("name");
-					selectItem.value = arg0.getString("value");
+					selectItem.value = Integer.parseInt(arg0.getString("value"));
 					return selectItem;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -1042,7 +1048,7 @@ public class ReportMDService {
 				try {
 					SelectItem selectItem = new SelectItem();
 					selectItem.name = arg0.getString("name");
-					selectItem.value = arg0.getString("value");
+					selectItem.value = Integer.parseInt(arg0.getString("value"));
 					return selectItem;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -1221,7 +1227,7 @@ public class ReportMDService {
 	
 	public static class SelectItem {
 		public String name;
-		public String value;
+		public Integer value;
 	}
 	
 	public static class DEVM {

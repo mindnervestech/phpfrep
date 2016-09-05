@@ -349,7 +349,7 @@ body {
  	                <div class="row"><label style="font-weight:400;font-size:13px">Month</label></div>
 		       		<div class="row">
 		       			<select ng-model="storyboard.PUBLICATION_MONTH" style="width: 100px;" ng-change="getMonthData()">
-		       				<option ng-repeat="m in months" value="{{m.value}}">{{m.name}}</option>
+		       				<option ng-repeat="m in months |orderBy:'value'" value="{{m.value}}">{{m.name}}</option>
 		       			</select>
 		       		</div>
 		       	</div>
@@ -629,7 +629,7 @@ body {
     		</div><!-- /.modal-content -->
   		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-	<div id="parent-zoom-popup" class="modal fade" style="width: 25%;top:150px;height:600px;left:10px;position:fixed;overflow: hidden;">
+	<div id="parent-zoom-popup" class="modal fade" style="width: 25%;top:120px;height:500px;left:10px;position:fixed;overflow: hidden;">
   		<div class="modal-dialog"  style="width:100%;margin-left: 0;margin-top: 0;">
     		<div class="modal-content">
       			<div class="modal-header">
