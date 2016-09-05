@@ -199,6 +199,12 @@
 			} else {
 				$("#notPlugnin").show();
 				$("plugnin").hide();
+				
+				$("#table-view1").show();
+        		$("#table-view").hide();
+				
+				$scope.reportData=[];
+				
 				$scope.storyboard = {
 					DC_PUBLICATION_TITLE:[],
 					PUBLICATION_YEAR:"",
@@ -207,6 +213,11 @@
 					id:report.id
 				};
 					
+				$scope.years=[];
+				$scope.months=[];
+				$scope.days = [];
+				$scope.selectedPublications=[];
+				$scope.gridData=[];
 				$scope.publications;
 				$http.get('/webapp/getAllPublication').success(function(data){
 	        		$scope.publications = data;
@@ -487,7 +498,7 @@
         		$("#table-view1").hide();
         		$("#table-view").show();
         	}
-        }
+        };
         
         $scope.TabIndex;
         $scope.setIndex = function(index){
@@ -545,9 +556,9 @@
         $scope.backButton = false;
 		executeReport = function(obj) {
 			
-		
+			console.log('in execute report method');
 			obj.SUBSCRIBER_ID=$scope.subscriberId;
-		
+			console.log('obj is',obj);
 			$("#loading").show();
 			$http.post('/webapp/report/run',obj).success(function(data){
 				$("#loading").hide();
