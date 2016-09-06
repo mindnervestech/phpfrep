@@ -103,13 +103,19 @@
 								<span class="sidebar-text">Dedup Match</span>
 								<f:param name="menuId" value="18" />
 							</h:commandLink></li>
-							<li id="menu19" title="Dedup No Match"><h:commandLink
-								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
-								<i class="glyphicon glyphicon-share" style="margin-left:-4px;"></i>
-								<span class="sidebar-text">Dedup No Match</span>
-								<f:param name="menuId" value="19" />
-							</h:commandLink></li>
+						<li id="menu19" title="Dedup No Match"><h:commandLink
+							action="#{userBean.redirctMenuLink}"
+							rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+							<i class="glyphicon glyphicon-share" style="margin-left:-4px;"></i>
+							<span class="sidebar-text">Dedup No Match</span>
+							<f:param name="menuId" value="19" />
+						</h:commandLink></li>
+						<li id="menu44" title="DEDUP Alert"><h:commandLink 
+								rendered="#{deBean.checkDedupeStatus()}" id="DedupStatus">
+								<i class="fa fa-circle" aria-hidden="true" style="color:red;"></i>
+								<span class="sidebar-text">alert</span>
+								<f:param name="menuId" value="44" />
+								</h:commandLink></li>	
 						<li id="menu4" title="Transcription"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{settingsBean.checkVisible(4)}" id="transcription">
@@ -223,7 +229,9 @@
 				document.getElementById("menu111").setAttribute("class", "");
 			}else if (menuval == "32") {
 				document.getElementById("menu32").setAttribute("class", "");
-			}else {
+			} else if (menuval == "44") {
+				document.getElementById("menu44").setAttribute("class", "current active");
+			} else {
 				document.getElementById("menu2").setAttribute("class", "current active");
 			}
 		});

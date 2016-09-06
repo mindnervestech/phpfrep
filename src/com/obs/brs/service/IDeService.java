@@ -2,6 +2,7 @@ package com.obs.brs.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.obs.brs.controller.ScoreData;
@@ -292,4 +293,6 @@ public interface IDeService {
 	public void saveOcrTextResult(OcrTextMatchResult ocr);
 
 	public List<ScoreData> getDeoByReleavance();
+
+	public List<Map<String, Object>> getDedupeStatusList();
 }

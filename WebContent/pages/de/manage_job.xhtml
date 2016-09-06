@@ -238,6 +238,10 @@ function changeColor(clicked) {
 			<div class="row">
 				<div class="col-md-12">
 					<div class="panel panel-default">
+						<div class="col-md-12">
+							<h4 style="color:red">NOTICE : Please process and approve jobs line by line.Then watch for red signal in nav bar 
+							indicating DEDUP is require.DO NOT approve transcription jobs in batches(more than one at a time)</h4>
+						</div> 
 						<h:form id="emp_stafflist" enctype="multipart/form-data">
 							<p:ajaxStatus
 								style="width:40px;height:40px;left:50%;top:50%;position:fixed;z-index:10">
@@ -378,7 +382,7 @@ function changeColor(clicked) {
 																ajax="true" update="deJob_List" styleClass="colhead">Parent Image Name <i
 																	class="fa fa-fw fa-sort"></i>
 															</p:commandLink></th>
-														<th class="no-bd" scope="col"></th>
+														<th class="no-bd" scope="col">Send Back</th>
 														<th class="no-bd" scope="col"><p:commandLink
 																action="#{deBean.sortDeJobList('publication')}"
 																ajax="true" update="deJob_List" styleClass="colhead">Publication <i
@@ -397,7 +401,7 @@ function changeColor(clicked) {
 														<th class="no-bd" scope="col">Page</th>
 														<th class="no-bd" scope="col">Created By</th>
 														<th class="no-bd" scope="col">Progress</th>
-														<th class="no-bd" scope="col">Actions</th>
+														<th class="no-bd" scope="col">Approve</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -408,19 +412,14 @@ function changeColor(clicked) {
 														offset="#{deBean.reviewPageOffset}" varStatus="status">
 														<tr>
 
-															<!-- 	<td>
-														<div class = "col-md-1">
-														 <h:selectBooleanCheckbox value="#{deBean.selectedIds[o.parentImage.id]}"  style="" class = "checkbox">
-                                                 		 </h:selectBooleanCheckbox> 
-                                                 		</div> 
-													</td> -->
 															<td><h:column headerClass="no-bd">
 																	<p:commandLink action="#{deBean.loadAddOrEditDe}"
 																		value="#{o.parentImage.id}"
-																		style="margin-bottom: -3px;height: 27px; margin-top: -6px;margin: -4px;color:#333;">
+																		style="margin-bottom: -3px;height: 27px; margin-top: -6px;margin: -4px;color:#0000EE;text-decoration: underline;">
 																		<f:param name="deJobId" value="#{o.parentImage.id}" />
 																	</p:commandLink>
-																</h:column></td>
+																</h:column>
+															</td>
 															<td><h:column headerClass="no-bd">
 																	<h:outputText
 																		styleClass="text-left color-success no-bd-y"
@@ -433,7 +432,7 @@ function changeColor(clicked) {
 																		title="Send back for repair"
 																		ajax="true" update="@all">
 																		<i class="fa fa-reply-all" aria-hidden="true"
-																		style="font-size: 23px; color: #121212" ></i>
+																		style="font-size: 23px; color: #0000EE" ></i>
 																		<f:param name="imageIds" value="#{o.parentImage.id}" />
 																	</p:commandLink>
 																	
@@ -474,7 +473,7 @@ function changeColor(clicked) {
 																		rendered="#{o.isRender()}" ajax="true" update="@all"
 																		styleClass="glyphicon glyphicon-play" 
 																		onstart="if(confirmDelete())return true; else return false;"
-																		style="margin-bottom: -3px;height: 27px; margin-top: -6px;margin: -4px;color:#333;">
+																		style="margin-bottom: -3px;height: 27px; margin-top: -6px;margin: -4px;color:#0000EE;">
 																		<f:param name="deJobId" value="#{o.id}" />
 																	</p:commandLink>
 																</h:column></td>

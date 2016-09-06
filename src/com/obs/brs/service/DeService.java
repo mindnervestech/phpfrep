@@ -237,6 +237,13 @@ public class DeService implements IDeService{
 	public DeJob getDeJobByParentImageId(long id) {
 		return getDeServiceDAO().getDeJobByParentImageId(id);
 	}
+	
+	@Override
+	public List<Map<String, Object>> getDedupeStatusList() {
+		return getDeServiceDAO().getDedupeStatusLists();
+	}
+	
+	
     /*
      * (non-Javadoc)
      * @see com.obs.brs.service.IDeService#getDataEntryByParentImageId(long)
@@ -452,10 +459,17 @@ public class DeService implements IDeService{
 		// TODO Auto-generated method stub
 	     getDeServiceDAO().saveOcrTextResult(ocr);	
 	}
+	
 	@Transactional
 	public List<ScoreData> getDeoByReleavance() {
 		// TODO Auto-generated method stub
 	    return  getDeServiceDAO().getDeoByReleavance();	
+	}
+	
+	@Transactional
+	public List<Map<String, Object>> getDedupeStatusLists() {
+		// TODO Auto-generated method stub
+	    return  getDeServiceDAO().getDedupeStatusLists();	
 	}
 	
 	

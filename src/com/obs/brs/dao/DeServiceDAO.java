@@ -3,19 +3,20 @@ package com.obs.brs.dao;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.SessionFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.obs.brs.controller.ScoreData;
+import com.obs.brs.model.DataEntry;
 import com.obs.brs.model.DeCompany;
 import com.obs.brs.model.DeJob;
-import com.obs.brs.model.DataEntry;
 import com.obs.brs.model.OcrTextMatchResult;
 import com.obs.brs.model.ParentImage;
-import com.obs.brs.session.manager.SessionManager;
 
 /**
  * 
@@ -25,6 +26,17 @@ import com.obs.brs.session.manager.SessionManager;
 public class DeServiceDAO implements IDeServiceDAO {
 
 	private SessionFactory sessionFactory;
+	
+    private JdbcTemplate jt;
+    
+	public JdbcTemplate getJt() {
+		return jt;
+	}
+
+	public void setJt(JdbcTemplate jt) {
+		this.jt = jt;
+	}
+
 	/**
 	 * Get Hibernate Session Factory
 	 * 
@@ -571,6 +583,51 @@ public class DeServiceDAO implements IDeServiceDAO {
 		if(isExists == false){
 		  getSessionFactory().getCurrentSession().save(ocr);	
 		}
+	}
+	
+	
+
+	@Override
+	public List<Map<String, Object>> getDedupeStatusLists() {
+		
+		String query = "select cropped.id as croppedId,"+
+				" cropped.width as cropWidth, "+
+				" cropped.length as cropLenght,"+
+				" live.width as liveWidth,"+
+				" live.length as liveLength,"+
+				" live.id as liveId ,"+
+				" cropped.childImage as croppedChildImageId,"+
+				" live.childImage as liveChildImageId "+
+				" from OcrTextMatchResult ocr, DataEntry live, DataEntry cropped "+ 
+				" where "+
+				" ocr.isDuplicate = '0' and " +
+				"ocr.statusChangedDate IS NULL and "+
+				"ocr.croppedData = cropped.id and "+ 
+				"ocr.liveData = live.id and "+ 
+				"cropped.deCompany IS NULL";
+		
+		List<Map<String,Object>> results = getSessionFactory().getCurrentSession().createQuery(query).list();
+
+		/*String query = "select cropped.DN_ID as 'croppedId',"+
+				" cropped.DC_WIDTH as cropWidth, "+
+				" cropped.DC_LENGTH as cropLenght,"+
+				" live.DC_WIDTH as liveWidth,"+
+				" live.DC_LENGTH as liveLength,"+
+				" live.DN_ID as 'liveId' ,"+
+				" cropped.DN_CHILD_IMAGE_ID as 'croppedChildImageId',"+
+				" live.DN_CHILD_IMAGE_ID as 'liveChildImageId' "+
+				" from tbl_ocr_text_match_result ocr, tbl_de_data live, tbl_de_data cropped "+ 
+				" where "+
+				" ocr.DC_IS_DUPLICATE = '0' and " +
+				"ocr.STATUS_CHANGED_DATE IS NULL and "+
+				"ocr.DC_CROPPED_JOBID = cropped.DN_ID and "+ 
+				"ocr.DC_LIVE_JOBID = live.DN_ID and "+ 
+				"cropped.DN_DECOMPANY_ID IS NULL";
+		*/
+		
+	//	List<Map<String,Object>> results =  jt.queryForList(query);
+		return results;
+		
 	}
 	
 	@Override

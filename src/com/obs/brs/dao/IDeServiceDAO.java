@@ -2,6 +2,7 @@ package com.obs.brs.dao;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.obs.brs.controller.ScoreData;
@@ -280,4 +281,6 @@ public interface IDeServiceDAO {
 	public List<DataEntry>	getCropedImagesJobs();
 	public void saveOcrTextResult(OcrTextMatchResult ocr);
 	public List<ScoreData> getDeoByReleavance();
+
+	public List<Map<String, Object>> getDedupeStatusLists();
 }

@@ -2017,6 +2017,21 @@ public class DeManagedBean implements Serializable{
 	 *    add new DE
 	 */
 	
+	
+	public Boolean checkDedupeStatus(){
+
+		List<Map<String,Object>> results=deService.getDedupeStatusList();
+		
+		if(results.size()>0){
+			System.out.println("map is not empty");
+			return true;
+		}else{
+			System.out.println("map is empty");
+			return false;
+		}
+
+	}
+	
 	public String saveAndExitDeData() 
 	{
 		
