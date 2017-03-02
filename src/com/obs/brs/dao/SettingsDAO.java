@@ -105,7 +105,7 @@ public class SettingsDAO implements ISettingsDAO{
 		
 		Long l=b.longValue();
 		
-		String sql="select * from tab_Role r where r.tab_id='"+l+"' and r.role_id="+id; 
+		String sql="select * from tab_role r where r.tab_id='"+l+"' and r.role_id="+id; 
 		
 		List userTab = getSessionFactory().getCurrentSession().createSQLQuery(sql)
 				.list();
