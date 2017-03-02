@@ -97,8 +97,6 @@ public class SettingsDAO implements ISettingsDAO{
 	@Override
 	public Boolean getUserTabPermission(String tabName,long id) {
 		
-	
-		System.out.println("tabName is "+tabName);
 		String tabSql="select t.tab_id from all_tabs t where t.tab_name='"+tabName+"'";
 		List<BigInteger> tab = getSessionFactory().getCurrentSession().createSQLQuery(tabSql).list();
 		BigInteger b=tab.get(0);
