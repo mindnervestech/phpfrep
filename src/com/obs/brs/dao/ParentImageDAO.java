@@ -156,7 +156,6 @@ public class ParentImageDAO implements IParentImageDAO{
 								 }
 	     			        }	
 			        }
-			         
 		}
 		
 	}

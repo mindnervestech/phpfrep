@@ -55,4 +55,6 @@ public interface ISettingsService {
 	 */
 	public Boolean roleHasPermission(String menuValue, long id);
 
+	public Boolean getUserTabPermission(String tabName, long id);
+
 }

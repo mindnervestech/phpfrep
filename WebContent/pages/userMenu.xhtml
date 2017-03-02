@@ -14,48 +14,58 @@
 						<!-- <li class="p-t-20"></li> -->
 						<li id="menu2" title="Manage Users"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{settingsBean.checkVisible(2) || userBean.loginUser.userType.userType=='Super Admin'}">
+								rendered="#{settingsBean.checkPermission('Manage Users')}">
 								<i class="fa fa-user"></i>
 								<span class="sidebar-text">Manage Users</span>
 								<f:param name="menuId" value="2" />
 							</h:commandLink></li>
-						<li id="menu3" title="Manage Subscriber"><h:commandLink
+						    <li id="menu3" title="Manage Subscriber"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{settingsBean.checkVisible(3) || userBean.loginUser.userType.userType=='Super Admin'}">
+								rendered="#{settingsBean.checkPermission('Manage Subscriber')}">
 								<i class="fa fa-group" style="margin-left:-4px;"></i>
 								<span class="sidebar-text">Manage Subscriber </span>
 								<f:param name="menuId" value="3" />
 							</h:commandLink></li>
 							<li id="menu7" title="Manage Configurations"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{settingsBean.checkVisible(7) || userBean.loginUser.userType.userType=='Super Admin'}">
+								rendered="#{settingsBean.checkPermission('Manage Configurations')}">
 								<i class="fa fa-group" style="margin-left:-4px;"></i>
 								<span class="sidebar-text">Manage Configurations </span>
 								<f:param name="menuId" value="7" />
 							</h:commandLink></li>
 							<li id="menu5" title="Image Upload"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{settingsBean.checkVisible(5)}">
+								rendered="#{settingsBean.checkPermission('Image upload')}">
 								<i class="fa fa-cloud-upload"></i><span class="sidebar-text">Image upload</span>
 								<f:param name="menuId" value="5" />
 							</h:commandLink></li>
-								<li id="menu27" title="Upload History"><h:commandLink
+								
+							<li id="menu27" title="Upload History"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								rendered="#{settingsBean.checkPermission('Upload History')}">
 								<i class="glyphicon glyphicon-th-list"></i>
 								<span class="sidebar-text">Upload History</span>
 								<f:param name="menuId" value="27" />
 							</h:commandLink></li>
+							
+							<li id="menu45" title="Manage Permission"><h:commandLink
+								action="#{userBean.redirctMenuLink}" 
+								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
+								<i class="fa fa-cogs"></i>
+								<span class="sidebar-text">Manage Permission</span>
+								<f:param name="menuId" value="45" />
+							</h:commandLink></li>
+							
 							<li id="menu8" title="Settings"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
+								rendered="#{settingsBean.checkPermission('Settings')}">
 								<i class="fa fa-gear"></i>
 								<span class="sidebar-text">Settings</span>
 								<f:param name="menuId" value="8" />
 							</h:commandLink></li>
 						    <li id="menu12" title="Manage Company"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
+								rendered="#{settingsBean.checkPermission('Manage Company')}">
 								<i class="glyphicon glyphicon-globe" style="margin-left:-4px;"></i>
 								<span class="sidebar-text">Manage Company </span>
 								<f:param name="menuId" value="12" />
@@ -63,62 +73,62 @@
 							
 							<li id="menu9" title="QC Job"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Quality Check'}">
+								rendered="#{settingsBean.checkPermission('QC Job')}">
 								<i class="glyph-icon flaticon-frontend"></i>
 								<span class="sidebar-text">QC Job</span>
 								<f:param name="menuId" value="9" />
 							</h:commandLink></li>
 						<li id="menu13" title="Reports"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
+								rendered="#{settingsBean.checkPermission('Reports')}">
 								<i class="fa fa-file" style="margin-left:-4px;"></i>
 								<span class="sidebar-text">Reports </span>
 								<f:param name="menuId" value="13" />
 							</h:commandLink></li>
 						<li id="menu14" title="Manage Regions"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
+								rendered="#{settingsBean.checkPermission('Manage Regions')}">
 								<i class="glyphicon glyphicon-globe" style="margin-left:-4px;"></i>
 								<span class="sidebar-text">Manage Regions </span>
 								<f:param name="menuId" value="14" />
 							</h:commandLink></li>
 							<li id="menu26" title="Cropping Image"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								rendered="#{settingsBean.checkPermission('Cropping Image')}">
 								<i class="glyphicon glyphicon-scissors"></i>
 								<span class="sidebar-text">Parent Image Crop</span>
 								<f:param name="menuId" value="26" />
 							</h:commandLink></li>
 						<li id="menu17" title="Dedup"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								rendered="#{settingsBean.checkPermission('Dedup')}">
 								<i class="glyphicon glyphicon-duplicate" style="margin-left:-4px;"></i>
 								<span class="sidebar-text">Dedup</span>
 								<f:param name="menuId" value="17" />
 							</h:commandLink></li>
 						<li id="menu18" title="Dedup Match"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								rendered="#{settingsBean.checkPermission('Dedup Match')}">
 								<i class="glyphicon glyphicon-check" style="margin-left:-4px;"></i>
 								<span class="sidebar-text">Dedup Match</span>
 								<f:param name="menuId" value="18" />
 							</h:commandLink></li>
 						<li id="menu19" title="Dedup No Match"><h:commandLink
 							action="#{userBean.redirctMenuLink}"
-							rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+							rendered="#{settingsBean.checkPermission('Dedup No Match')}">
 							<i class="glyphicon glyphicon-share" style="margin-left:-4px;"></i>
 							<span class="sidebar-text">Dedup No Match</span>
 							<f:param name="menuId" value="19" />
 						</h:commandLink></li>
 						<li id="menu44" title="DEDUP Alert"><h:commandLink 
-								rendered="#{deBean.checkDedupeStatus()}" id="DedupStatus">
+								rendered="#{settingsBean.checkPermission('DEDUP Alert')}" id="DedupStatus">
 								<i class="fa fa-circle" aria-hidden="true" style="color:red;"></i>
 								<span class="sidebar-text">alert</span>
 								<f:param name="menuId" value="44" />
 								</h:commandLink></li>	
 						<li id="menu4" title="Transcription"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{settingsBean.checkVisible(4)}" id="transcription">
+								rendered="#{settingsBean.checkPermission('Transcription')}" id="transcription">
 								<i class="glyphicon glyphicon-list-alt"></i>
 								<!-- <p:tooltip for="transcription" showEffect="fade" value="Transcription" style="padding:10px;" /> -->
 								<span class="sidebar-text">Transcription</span>
@@ -126,49 +136,49 @@
 								</h:commandLink></li>
 						<li id="menu28" title="Folio Index"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								rendered="#{settingsBean.checkPermission('Folio Index')}">
 								<i class="glyphicon glyphicon-folder-open"></i>
 								<span class="sidebar-text">Folio Index</span>
 								<f:param name="menuId" value="28" />
 							</h:commandLink></li>
 						<li id="menu30" title="Tag-Active Files"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								rendered="#{settingsBean.checkPermission('Tag-Active Files')}">
 								<i class="glyphicon glyphicon-th-large"></i>
 								<span class="sidebar-text">Tag-Active Files</span>
 								<f:param name="menuId" value="30" />
 							</h:commandLink></li>
 						<li id="menu32" title="Tag-Reference Index"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								rendered="#{settingsBean.checkPermission('Tag-Reference Index')}">
 								<i class="glyphicon glyphicon-th-large"></i>
 								<span class="sidebar-text">Tag-Reference Index</span>
 								<f:param name="menuId" value="32" />
 							</h:commandLink></li>	
 						<li id="menu31" title="FAQ"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Super Admin' || userBean.loginUser.userType.userType=='Data Entry'}">
+								rendered="#{settingsBean.checkPermission('FAQ')}">
 								<i class="fa fa-question-circle"></i>
 								<span class="sidebar-text">FAQ</span>
 								<f:param name="menuId" value="31" />
 							</h:commandLink></li>
 							<li id="menu29" title="Create Task"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
+								rendered="#{settingsBean.checkPermission('Create Task')}">
 								<i class="glyphicon glyphicon-tasks"></i>
 								<span class="sidebar-text">Create Task</span>
 								<f:param name="menuId" value="29" />
 							</h:commandLink></li>
 							<li id="menu6" title="Cropping"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{settingsBean.checkVisible(6)}">
+								rendered="#{settingsBean.checkPermission('Cropping')}">
 								<i class="glyphicon glyphicon-scissors" style ="color: #333"></i>
 								<span class="sidebar-text">Parent Image</span>
 								<f:param name="menuId" value="6" />
 							</h:commandLink></li>
 							<li id="menu16" title="Change Buckets"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
-								rendered="#{userBean.loginUser.userType.userType=='Data Entry'}">
+								rendered="#{settingsBean.checkPermission('Change Buckets')}">
 								<i class="glyphicon glyphicon-warning-sign"  style ="color: #333"></i>
 								<span class="sidebar-text"> new Scientist Gallary</span>
 								<f:param name="menuId" value="16" />

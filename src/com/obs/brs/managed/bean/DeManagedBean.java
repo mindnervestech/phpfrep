@@ -2023,10 +2023,8 @@ public class DeManagedBean implements Serializable{
 		List<Map<String,Object>> results=deService.getDedupeStatusList();
 		
 		if(results.size()>0){
-			System.out.println("map is not empty");
 			return true;
 		}else{
-			System.out.println("map is empty");
 			return false;
 		}
 

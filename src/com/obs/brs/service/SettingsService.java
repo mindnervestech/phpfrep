@@ -84,4 +84,12 @@ public class SettingsService implements ISettingsService{
 	public Boolean roleHasPermission(String menuValue, long id) {
 		return getSettingsDAO().roleHasPermission(menuValue, id);
 	}
+	
+	@Override
+	public Boolean getUserTabPermission(String tabName,long id) {
+		
+		return getSettingsDAO().getUserTabPermission(tabName,id);
+	}
+	
+	
 }

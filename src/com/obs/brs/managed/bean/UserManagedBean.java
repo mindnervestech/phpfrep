@@ -1453,7 +1453,10 @@ implements Serializable
 			break;
 		case 31:
 			redirectLink = "/pages/de/faq_angular.xhtml";
-			break;		
+			break;	
+		case 45:
+			redirectLink = "/pages/de/manage_permission.xhtml";
+			break;	
 		
 		}
 		this.sessionManager.setSessionAttributeInSession("pageChanged", "1");

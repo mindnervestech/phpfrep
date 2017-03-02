@@ -609,6 +609,21 @@ public class SettingsManagedBean implements Serializable{
 		}
 		return false;
 	}
+	
+	public Boolean checkPermission(String tabName){
+		Boolean permission=false;
+		try {
+			User user = (User) sessionManager.getSessionAttribute(SessionManager.LOGINUSER);
+			
+			permission =settingsService.getUserTabPermission(tabName,user.getUserType().getId());
+			
+			return permission;
+		} catch (Exception e) {
+			permission=false;
+			e.printStackTrace();
+		}
+		return permission;
+	}
 	/**
 	 * redirect to the menu link
 	 * set activeMenu id in session.

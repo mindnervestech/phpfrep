@@ -3,6 +3,7 @@
  */
 package com.obs.brs.dao;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -16,7 +17,8 @@ import com.obs.brs.model.Settings;
 public class SettingsDAO implements ISettingsDAO{
 
 	private SessionFactory sessionFactory;
-
+	
+  
 	/**
 	 * Get Hibernate Session Factory
 	 * 
@@ -91,4 +93,27 @@ public class SettingsDAO implements ISettingsDAO{
 		}
 		return false;
 	}
+	
+	@Override
+	public Boolean getUserTabPermission(String tabName,long id) {
+		
+	
+		System.out.println("tabName is "+tabName);
+		String tabSql="select t.tab_id from All_tabs t where t.tab_name='"+tabName+"'";
+		List<BigInteger> tab = getSessionFactory().getCurrentSession().createSQLQuery(tabSql).list();
+		BigInteger b=tab.get(0);
+		
+		Long l=b.longValue();
+		
+		String sql="select * from Tab_Role r where r.tab_id='"+l+"' and r.role_id="+id; 
+		
+		List userTab = getSessionFactory().getCurrentSession().createSQLQuery(sql)
+				.list();
+		
+		if (userTab.size() > 0) {
+			return true;
+		}
+		return false;
+	}
+	
 }

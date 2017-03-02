@@ -178,13 +178,83 @@ public class GalleryController {
 		
 		
 	}
+		
+	@RequestMapping(value="/change_tab_permissions", method=RequestMethod.POST)
+	@ResponseBody
+	public String changeTabPermissions(@RequestBody UserPermissionVm userPermission ){
+		
+		System.out.println("type is "+userPermission.getUserTypeId());
+		System.out.println("tab is "+userPermission.getTabId());
+		
+		List<Map<String,Object>> userTab=new ArrayList<Map<String,Object>>();
+		String userTabSql="select * from tab_role r where r.tab_id="+userPermission.getTabId()+" and r.role_id="+userPermission.userTypeId;
+		userTab=jt.queryForList(userTabSql);
+		
+		if(userTab.isEmpty()){
+			String sql="INSERT INTO tab_role (tab_id,role_id) VALUES('"+userPermission.getTabId()+"','"+userPermission.getUserTypeId()+"')";			
+			jt.execute(sql);
+		}else{
+			String sql="delete from tab_role where tab_id="+userPermission.getTabId()+" and role_id="+userPermission.userTypeId;
+			jt.execute(sql);
+		}
+				
+		return "success";
+	}
 	
+	
+	@RequestMapping(value="/get_all_tab_permissions", method=RequestMethod.GET)
+	@ResponseBody
+	public Object getAllTabPermissions(){
+		
+		List<Map<String,Object>> allTabs=new ArrayList<Map<String,Object>>();
+		String tabSql="select * from all_tabs";
+		allTabs=jt.queryForList(tabSql);
+		
+		List<Map<String,Object>> userType=new ArrayList<Map<String,Object>>();
+		String userSql="select * from tbl_user_type t";
+		userType=jt.queryForList(userSql);
+		
+		
+		Map<String, Object> permissionList= new HashMap<String, Object>();
+		
+		for (Map<String, Object> map : userType) {
+			
+			String userTypeName=map.get("DC_TYPE_NAME").toString();
+			
+			long userTypeId=Long.parseLong(map.get("DN_TYPEID").toString());
+			
+			List<Map<String,Object>> userTab=new ArrayList<Map<String,Object>>();
+			String userTabSql="select a.tab_name from tab_role r inner join all_tabs a on r.tab_id=a.tab_id  where r.role_id="+userTypeId;
+			userTab=jt.queryForList(userTabSql);
+			
+			List<String> roleAssignTab= new ArrayList<String>();
+			for (Map<String, Object> map2 : userTab) {
+				roleAssignTab.add(map2.get("tab_name").toString());
+			}
+			
+			
+			List<UserPermissionVm> UserPermission= new ArrayList<UserPermissionVm>();
+			for (Map<String, Object> map3 : allTabs) {
+				String tabNmae=map3.get("tab_name").toString();
+				UserPermissionVm vm= new UserPermissionVm();
+				vm.setUserTypeId(userTypeId);
+				vm.setTabId(Long.parseLong(map3.get("tab_id").toString()));
+				vm.setTabName(tabNmae);
+				if(roleAssignTab.contains(tabNmae)){
+					vm.setStatus(true);
+				}else{
+					vm.setStatus(false);
+				}
+				UserPermission.add(vm);
+			}
+			permissionList.put(userTypeName, UserPermission);
+		}
+		return permissionList;
+	}
 	
 	@RequestMapping(value="/all_publication_list", method=RequestMethod.GET)
 	@ResponseBody
 	public List<Map<String, Object>> allPublicationList(){
-	
-		
 	
 		
 		List<Map<String,Object>> allPublication=new ArrayList<Map<String,Object>>();

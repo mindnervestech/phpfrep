@@ -266,7 +266,6 @@ public class ReportsManagedBean implements Serializable{
 	 * @return the calendatReportPath
 	 */
 	public String getCalendatReportPath() {
-		System.out.print("\n\n\t calendatReportPath : "+calendatReportPath);
 		return calendatReportPath;
 	}
 	/**
