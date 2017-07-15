@@ -1386,7 +1386,8 @@ implements Serializable
 		switch (menuId)
 		{
 		case 2: 
-			redirectLink = "manageUser";
+			//redirectLink = "manageUser";
+			redirectLink = "/pages/de/manageUser_angular.xhtml";
 			break;
 		case 3: 
 			redirectLink = "manageSubscriber";

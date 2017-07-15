@@ -48,14 +48,6 @@
 								<f:param name="menuId" value="27" />
 							</h:commandLink></li>
 							
-							<li id="menu45" title="Manage Permission"><h:commandLink
-								action="#{userBean.redirctMenuLink}" 
-								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
-								<i class="fa fa-cogs"></i>
-								<span class="sidebar-text">Manage Permission</span>
-								<f:param name="menuId" value="45" />
-							</h:commandLink></li>
-							
 							<li id="menu8" title="Settings"><h:commandLink
 								action="#{userBean.redirctMenuLink}"
 								rendered="#{settingsBean.checkPermission('Settings')}">
@@ -183,6 +175,20 @@
 								<span class="sidebar-text"> new Scientist Gallary</span>
 								<f:param name="menuId" value="16" />
 							</h:commandLink></li>
+							<li id="menu37" title="FlowChart"><h:commandLink
+								action="#{userBean.redirctMenuLink}"
+								rendered="#{settingsBean.checkPermission('FlowChart')}">
+								<i class="glyphicon glyphicon-th-list"></i>
+								<span class="sidebar-text">FlowChart</span>
+								<f:param name="menuId" value="37" />
+							</h:commandLink></li>
+							<li id="menu45" title="Manage Permission"><h:commandLink
+								action="#{userBean.redirctMenuLink}" 
+								rendered="#{userBean.loginUser.userType.userType=='Super Admin'}">
+								<i class="fa fa-cogs"></i>
+								<span class="sidebar-text">Manage Permission</span>
+								<f:param name="menuId" value="45" />
+							</h:commandLink></li>
 								
 					</ul>
 				</div>
@@ -233,6 +239,8 @@
 				document.getElementById("menu27").setAttribute("class", "current active");
 			}else if (menuval == "30") {
 				document.getElementById("menu30").setAttribute("class", "current active");
+			}else if (menuval == "37") {
+				document.getElementById("menu37").setAttribute("class", "current active");
 			}else if (menuval == "28") {
 				document.getElementById("menu28").setAttribute("class", "current active");
 			}else if (menuval == "111") {
@@ -241,9 +249,9 @@
 				document.getElementById("menu32").setAttribute("class", "");
 			} else if (menuval == "44") {
 				document.getElementById("menu44").setAttribute("class", "current active");
-			} else {
+			}   else {
 				document.getElementById("menu2").setAttribute("class", "current active");
-			}
+			}  
 		});
 		
 	</script>

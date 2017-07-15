@@ -95,12 +95,12 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>manageUser</from-outcome>
-			<to-view-id>/pages/admin/manageUsers.xhtml</to-view-id>
+			<to-view-id>/pages/de/manageUser_angular.xhtml</to-view-id>
 			<redirect include-view-params="true" />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>returnmanageuser</from-outcome>
-			<to-view-id>/pages/admin/manageUsers.xhtml</to-view-id>
+			<to-view-id>/pages/de/manageUser_angular.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>addUser</from-outcome>
