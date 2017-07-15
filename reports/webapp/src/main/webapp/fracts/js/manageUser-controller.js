@@ -184,6 +184,11 @@ app.controller('MainController',function($scope,$http,notificationService,$filte
 			});
 		}
 		
+		$scope.closeEditUser = function()
+		{
+			$scope.showEditFields = false;
+		}
+		
 		$scope.addUserGroup=function(){
 			console.log("new user Group: ",$scope.newUserGroup);
 			$http.post('/webapp/fracts/addUserGroup',$scope.newUserGroup).success(function(data) {
@@ -213,6 +218,7 @@ app.controller('MainController',function($scope,$http,notificationService,$filte
 			$http.post('/webapp/fracts/updateGroup',$scope.updateUserGroup).success(function(data) {
 				console.log('data is ',data);
 				$scope.getAllRoles();
+				$scope.getAllUsers();
 				$('#editUserGroup').modal('hide');
 				notificationService.success("User group updated successfully");
 			}).error(function(err) {
@@ -226,6 +232,7 @@ app.controller('MainController',function($scope,$http,notificationService,$filte
 			$scope.confirmPassword = "";
 			var message = document.getElementById('confirmMessage');
 			message.innerHTML = "";
+			$scope.showFields = false;
 		}
 		
 		$('#roleSelect').prop('disabled', true);

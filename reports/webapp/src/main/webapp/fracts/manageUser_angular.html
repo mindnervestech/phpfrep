@@ -354,7 +354,7 @@
 		    <div class="modal-dialog modal-lg">
 		      <div class="modal-content">
 		        <div class="modal-header">
-		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <button type="button" class="close" data-dismiss="modal" ng-click="closeEditUser()">&times;</button>
 		          <h2 class="modal-title">Edit User</h2>
 		        </div>
 		        <div class="modal-body">
@@ -378,7 +378,7 @@
 						    </div>
 						     <div class="form-group">
 						      <label >Password*</label>
-						      <input type="password" class="form-control" ng-model="editUser.password" placeholder="Password" required>
+						      <input type="text" class="form-control" ng-model="editUser.password" placeholder="Password" required>
 						    </div>
 						    <div style="text-align:center;cursor:pointer;"><a ng-show="!showEditFields" ng-click="showMoreEdit()">More Fields</a></div>
 						    <div style="text-align:center;cursor:pointer;"><a ng-show="showEditFields" ng-click="hideFieldsEdit()">Hide Fields</a></div>
@@ -417,7 +417,7 @@
 							    </div>
 						   </div>
 						    <button type="submit" class="btn btn-primary">Update</button>
-						     <button type="button" class="btn btn-default" style="float:right" data-dismiss="modal">Close</button>
+						     <button type="button" class="btn btn-default" style="float:right" data-dismiss="modal" ng-click="closeEditUser()">Close</button>
 						  </form>
 		        </div>
 		        <!-- <div class="modal-footer">
