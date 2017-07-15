@@ -1,10 +1,15 @@
 package com.mnt.report.service;
 
 import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +19,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
-
 @Controller
 @RequestMapping(value="/fracts")
 public class FractsController {
@@ -520,6 +525,197 @@ public class FractsController {
 		}
 	}
 	
+	@RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
+	@ResponseBody public List<userVM> getAllUsers() {
+		
+		List<userVM> users = jt.query(
+		        "select * from tbl_user where DN_USER_TYPE <> 1 and DB_DELETED = 0",
+		        new RowMapper<userVM>() {
+		            public userVM mapRow(ResultSet rs, int rowNum) throws SQLException {
+		            	userVM user = new userVM();
+		                user.email=rs.getString("DC_EMAIL");
+		                user.firstName=rs.getString("DC_FIRSTNAME");
+		                user.lastName=rs.getString("DC_LASTNAME");
+		                user.status=rs.getString("DB_ACTIVE");
+		                user.roleId= Integer.parseInt(rs.getString("DN_USER_TYPE"));
+		                user.userId=Long.parseLong(rs.getString("DN_ID"));
+		                user.address = rs.getString("DC_ADDRESS_LINE_1");
+		                user.city = rs.getString("DC_CITY");
+		                user.country = rs.getString("DC_COUNTRY");
+		                user.phone = rs.getString("DC_PHONE");
+		                user.state = rs.getString("DC_STATE");
+		                user.zipCode = rs.getString("DC_ZIPCODE");
+		                user.roleName = jt.queryForObject(
+		                        "select DC_TYPE_NAME from tbl_user_type where DN_TYPEID = ?",
+		                        new Object[]{user.roleId}, String.class);
+		                
+		                return user;
+		            }
+		        });
+		return users;
+	}
+	
+	@RequestMapping(value = "/getAllRoles", method = RequestMethod.GET)
+	@ResponseBody public List<userRoleVM> getAllRoles() {
+		
+		List<userRoleVM> roles = jt.query(
+		        "select * from tbl_user_type where DN_TYPEID <> 1",
+		        new RowMapper<userRoleVM>() {
+		            public userRoleVM mapRow(ResultSet rs, int rowNum) throws SQLException {
+		            	userRoleVM role = new userRoleVM();
+		                role.roleName=rs.getString("DC_TYPE_NAME");
+		                role.roleId=Long.parseLong(rs.getString("DN_TYPEID"));
+		                return role;
+		            }
+		        });
+		return roles;
+	}
+	
+	
+	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
+	@ResponseBody public String addUser(@RequestBody userAddVM list){
+		int countOfActorsNamedJoe = jt.queryForObject(
+		        "select count(*) from tbl_user where DC_EMAIL = ?", Integer.class, list.email);
+		System.out.println("Count : "+countOfActorsNamedJoe);
+		
+		if(countOfActorsNamedJoe != 0)
+		{
+			return "Email Already Exist..";
+		}else{
+			Date date = new Date();
+			jt.update(
+			        "insert into tbl_user (DC_EMAIL, DC_PASSWORD, DN_USER_TYPE, DC_FIRSTNAME, DC_LASTNAME, DC_PHONE, DN_CREATED_BY, DD_CREATED_ON, DN_DELETED_BY, DC_ADDRESS_LINE_1, DC_CITY, DC_COUNTRY, DC_STATE, DC_ZIPCODE, DB_ACTIVE, DC_FORGOTPWD_ENCP, DN_GENDER, DC_USER_IMAGE) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			        list.email, list.password, Integer.parseInt(list.roleId), list.firstName, list.lastName, list.phone, Long.parseLong(list.createdBy), date, 0, list.address, list.city, list.country, list.state, list.zipCode, 0, "NULL", Integer.parseInt(list.gender), "NULL");
+			return "";
+		}
+	}
+	
+	@RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+	@ResponseBody public void updateUser(@RequestBody userAddVM list){
+		jt.update(
+		        "update tbl_user set DC_EMAIL = ?, DC_PASSWORD = ? , DN_USER_TYPE = ?, DC_FIRSTNAME = ?, DC_LASTNAME = ?, DC_PHONE = ?, DC_ADDRESS_LINE_1 = ?, DC_CITY = ?, DC_COUNTRY = ?, DC_STATE = ?, DC_ZIPCODE = ?, DN_GENDER = ? where DN_ID = ?",
+		        list.email, list.password, Integer.parseInt(list.roleId), list.firstName, list.lastName, list.phone, list.address, list.city, list.country, list.state,list.zipCode, Integer.parseInt(list.gender), list.userId);
+	}
+	
+	@RequestMapping(value = "/addUserGroup", method = RequestMethod.POST)
+	@ResponseBody public void addUserGroup(@RequestBody userAddGroupVM list){
+		jt.update(
+		        "insert into tbl_user_type (DC_TYPE_NAME) values (?)",
+		        list.userType);
+	}
+	
+	@RequestMapping(value = "/activeUser", method = RequestMethod.POST)
+	@ResponseBody public List<String> activeUser(@RequestBody List<Long> list){
+		 List<String> status = new ArrayList<String>();
+		for(Long id : list) {
+			userAddVM userData = jt.queryForObject(
+			        "select * from tbl_user where DN_ID = ?", new Object[]{id},
+			        new RowMapper<userAddVM>() {
+			            public userAddVM mapRow(ResultSet rs, int rowNum) throws SQLException {
+			            	userAddVM role = new userAddVM();
+			                role.firstName=rs.getString("DC_FIRSTNAME");
+			                role.active=rs.getInt("DB_ACTIVE");
+			                return role;
+			            }
+			        });
+			
+				if(userData.active == 1)
+				{
+					status.add(userData.firstName+" "+"has been already Activated.");
+					
+				}else{
+					jt.update(
+						    "update tbl_user set DB_ACTIVE = ? where DN_ID = ?", 1, id);
+					status.add(userData.firstName+" "+"has been Activated Successfully.");
+				}
+			
+		}
+		return status;
+		
+	}
+	
+	@RequestMapping(value = "/deactiveUser", method = RequestMethod.POST)
+	@ResponseBody public List<String> deactiveUser(@RequestBody List<Long> list){
+		 List<String> status = new ArrayList<String>();
+		for(Long id : list) {
+			userAddVM userData = jt.queryForObject(
+			        "select * from tbl_user where DN_ID = ?", new Object[]{id},
+			        new RowMapper<userAddVM>() {
+			            public userAddVM mapRow(ResultSet rs, int rowNum) throws SQLException {
+			            	userAddVM role = new userAddVM();
+			                role.firstName=rs.getString("DC_FIRSTNAME");
+			                role.active=rs.getInt("DB_ACTIVE");
+			                return role;
+			            }
+			        });
+			
+				if(userData.active == 0)
+				{
+					status.add(userData.firstName+" "+"has been already Deactivated.");
+					
+				}else{
+					jt.update(
+						    "update tbl_user set DB_ACTIVE = ? where DN_ID = ?", 0, id);
+					status.add(userData.firstName+" "+"has been Deactivated Successfully.");
+				}
+			
+		}
+		return status;
+		
+	}
+	
+	
+	@RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
+	@ResponseBody public void deleteUser(@RequestBody List<Long> list, @RequestParam ("loginUserId") String loginUserId){
+		for(Long id : list) {
+			jt.update(
+			        "update tbl_user set DB_DELETED = ?,DN_DELETED_BY = ? where DN_ID = ?",
+			        1,Long.parseLong(loginUserId),id);
+			
+		}
+		System.out.println("Add User List"+list);
+	}
+	
+	
+	@RequestMapping(value = "/getUserDetailsById", method = RequestMethod.GET)
+	@ResponseBody public userVM getUserDetailsById(@RequestParam("userId") Long id){
+		userVM userData = jt.queryForObject(
+		        "select * from tbl_user where DN_ID = ?", new Object[]{id},
+		        new RowMapper<userVM>() {
+		            public userVM mapRow(ResultSet rs, int rowNum) throws SQLException {
+		            	userVM user = new userVM();
+		            	user.email=rs.getString("DC_EMAIL");
+		                user.firstName=rs.getString("DC_FIRSTNAME");
+		                user.lastName=rs.getString("DC_LASTNAME");
+		                user.status=rs.getString("DB_ACTIVE");
+		                user.roleId= Integer.parseInt(rs.getString("DN_USER_TYPE"));
+		                user.userId=Long.parseLong(rs.getString("DN_ID"));
+		                user.address = rs.getString("DC_ADDRESS_LINE_1");
+		                user.city = rs.getString("DC_CITY");
+		                user.country = rs.getString("DC_COUNTRY");
+		                user.phone = rs.getString("DC_PHONE");
+		                user.state = rs.getString("DC_STATE");
+		                user.zipCode = rs.getString("DC_ZIPCODE");
+		                user.gender = rs.getString("DN_GENDER");
+		                user.password = rs.getString("DC_PASSWORD");
+		                user.roleName = jt.queryForObject(
+		                        "select DC_TYPE_NAME from tbl_user_type where DN_TYPEID = ?",
+		                        new Object[]{user.roleId}, String.class);
+		                
+		                return user;
+		            }
+		        });
+		return userData;
+	}
+	
+	
+	@RequestMapping(value = "/updateGroup", method = RequestMethod.POST)
+	@ResponseBody public void updateGroup(@RequestBody userAddGroupVM list){
+		jt.update(
+		        "update tbl_user_type set DC_TYPE_NAME = ? where DN_TYPEID = ?",
+		         list.userType, list.id);
+	}
+	
 	public static class CroppedVM {
 		public Long id;
 		public Long childImageId;
@@ -533,4 +729,61 @@ public class FractsController {
 		
 		public List<CroppedVM> revelanceList;
 	}
+	
+	public static class userVM {
+		public Long userId;
+		public String email;
+		public int roleId;
+		public String roleName;
+		public String status;
+		public String firstName;
+		public String lastName;
+		public String phone;
+		public String address;
+		public String city;
+		public String state;
+		public String country;
+		public String zipCode;
+		public String password;
+		public String gender;
+	}
+
+	public static class userRoleVM {
+		public Long roleId;
+		public String roleName;
+	}
+	
+	public static class userAddVM {
+		
+		public Long userId;
+		public String email;
+		public String password;
+		public String roleId;
+		public String firstName;
+		public String lastName;
+		public String phone;
+		public int deleteId;
+		public String address;
+		public String dob;
+		public String city;
+		public String country;
+		public String state;
+		public String zipCode;
+		public int active;
+		public String gender;
+		public String userImage;
+		public String createdBy;
+		public String createdOn;
+		public String deletedBy;
+		public String deletedOn;
+		public String forgotPassEn;
+		
+	}
+	
+	public static class userAddGroupVM{
+		
+		public Long id;
+		public String userType;
+	}
+	
 }
